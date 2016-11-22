@@ -58,7 +58,7 @@ Entry Year	:	2013
 
 1. On progress, Indonesia HKI, 2016
 
-> I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team**.  
+> I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team** and **mentors**.  
 
 ## Reach out to my amazing team mate, currently and used to be:
 No | Name | Team
@@ -67,18 +67,23 @@ No | Name | Team
 2|[Hendri Mukri](https://www.facebook.com/hendri.mukri) | Light
 3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light
 4|[Nur Shiyaam](https://www.facebook.com/nurshiyaam)|Light
-5|[Reynold Erwandi](https://www.facebook.com/rerwandi)|Upsee Studio
-6|[Reza S. Asmuruf](https://www.facebook.com/reza.a.39)|Upsee Studio
-7|[Ibrahim Al-Mahi](https://www.facebook.com/iebtek)|Upsee Studio
-4|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee Studio
-5|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee Studio
-6|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Upsee Studio and Buah Batu
-7|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|Buah Batu
-8|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|Buah Batu
-9|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|Buah Batu
-10|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|Buah Batu
-11|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|Buah Batu
-12|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse Team
-13|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse Team
-14|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse Team
-15|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse Team
+5|[Hilman Fauzi Tsp](https://www.facebook.com/imantsp)|Mentor of Light
+6|[Reynold Erwandi](https://www.facebook.com/rerwandi)|Upsee
+7|[Reza S. Asmuruf](https://www.facebook.com/reza.a.39)|Upsee
+8|[Ibrahim Al-Mahi](https://www.facebook.com/iebtek)|Upsee
+9|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee
+10|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee
+11|[Alfian Akbar Gozali](https://www.facebook.com/alfianakbargozali)|Mentor of Upsee
+12|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Upsee and BuahBatu
+13|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|BuahBatu
+14|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|BuahBatu
+15|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu
+16|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu
+17|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
+18|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
+19|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
+20|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
+21|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
+22|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
+23|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
+24|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
