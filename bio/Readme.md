@@ -45,6 +45,7 @@ Entry Year	:	2013
 3. Lead Assistant, Mobile Innovation, 2016
 
 ### Club and Community
-1. Founder, Celebes Developer Club(CDC), 2014-2015
-2. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
-3. Member, PB Telkom (Badminton club), 2013-2014
+1. Performer, Festival Seni dan Budaya Sulawesi, 2013
+2. Founder, Celebes Developer Club(CDC), 2014-2015
+3. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
+4. Member, PB Telkom (Badminton club), 2013-2014
