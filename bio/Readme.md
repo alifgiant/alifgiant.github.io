@@ -95,6 +95,6 @@ No | Name | Team | Speciality
 21|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu|[Neurology](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html)
 22|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse|Artificial Intelligence
 23|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse|Videography
-24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse|Product Designer
+24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse|Product Design
 25|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse|Electronics
 26|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse|[Electorics, Networks](https://www.scopus.com/authid/detail.uri?authorId=55799743500)
