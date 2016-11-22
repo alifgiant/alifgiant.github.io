@@ -6,7 +6,7 @@
 Name	:	Muhammad Alif Akbar  
 Univ	:	Telkom University	
 Major	:	S1 Teknik Informatika  
-Entry Year	:	2013
+Entry Year	:	2013  
 Speciality	: Android Mobile Dev
 
 ## Organization
@@ -71,7 +71,7 @@ Speciality	: Android Mobile Dev
 > "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
 
 No | Name | Team | Speciality
---- | --- | --- | ---
+--- | --- | --- | ---:
 1|[Lilin](https://www.facebook.com/linlilin11)|Light|Soft Computing
 2|[Hendri Mukri](https://www.facebook.com/hendri.mukri)|Light|Mechanics
 3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light|Electronics
