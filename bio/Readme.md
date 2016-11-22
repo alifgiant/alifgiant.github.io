@@ -12,9 +12,9 @@ Entry Year	:	2013
 ### Social
 1. Trainer, IT Defend-Teach Tech to Disabled community, 2015
 
-### Laboratorium
+### Laboratory
 1. Member, Computing Laboratory, 2014-2015
-2. Practicum Assistant, IF lab, 2014-2016
+2. Practicum Assistant, IF laboratory, 2014-2016
 3. Lead Assistant, Mobile Innovation, 2016
 
 ### Club and Community
@@ -25,10 +25,6 @@ Entry Year	:	2013
 5. Member, Proclub, 2013-2016
 
 ## Achievement
-### Call for Paper
-
-1. Best 100 paper on ISSC, 2014
-
 ### Competition
 
 1. Consolation winner, Chess Competition Telkom-U, 2013
@@ -49,6 +45,9 @@ Entry Year	:	2013
 16. Finalist, Final Project Competition - Explosif Telkom-U, 2016
 17. On Going, APICTA participant-Taipei, 2016
 
+### Call for Paper
+1. Best 100 paper on ISSC, 2014
+
 ### Award
 1. Indonesia Top Developer, Intel, 2015
 2. Outstanding stundent, Informatic Department Telkom University, 2015
@@ -56,7 +55,7 @@ Entry Year	:	2013
 
 ### Copy Rights
 
-1. On progress, Indonesia HKI, 2016
+1. On progress, BloodEy-Indonesia HKI, 2016
 
 ### Reach out to my amazing team mate, currently and used to be:
 
