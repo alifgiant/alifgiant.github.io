@@ -23,11 +23,13 @@ Entry Year	:	2013
 8. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
 9. Runner Up, Smart Application Blue Techno Telkom-U, 2015
 10. Winner, Final Project Competition - Explosif Telkom-U, 2015
-11. Semi Finalist, Global Innovator-4YFN, 2016
-12. Pitch Round, Swiss Innovation, 2016
-13. Runner Up, Indonesia Imagine Cup, 2016
-14. Runner Up, Telemedicine Challange-Malaysia, 2016
-15. On Going, APICTA participant-Taipei, 2016
+11. Top 7, Makasssar 1.0 Hackathon, 2016
+12. Semi Finalist, Global Innovator-4YFN, 2016
+13. Pitch Round, Swiss Innovation, 2016
+14. Runner Up, Indonesia Imagine Cup, 2016
+15. Runner Up, Telemedicine Challange-Malaysia, 2016
+16. Finalist, Final Project Competition - Explosif Telkom-U, 2016
+17. On Going, APICTA participant-Taipei, 2016
 
 ### Award
 1. Indonesia Top Developer, Intel, 2015
