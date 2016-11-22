@@ -90,7 +90,7 @@ No | Name | Team | Speciality
 16|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu|Electronics
 17|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu|Photography
 18|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu|Videography
-19|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu|Visual Artist, Mobile Dev
+19|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu|UI/UX Design
 20|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu|Marketing
 21|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu|[Neurology](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html)
 22|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse|Artificial Intelligence
