@@ -89,7 +89,7 @@ No | Name | Team
 17|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
 18|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu
 19|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
-20|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
+20|[Prof. Tauhid Nur Azhar](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html), [FB](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
 21|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
 22|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
 23|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
