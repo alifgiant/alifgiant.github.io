@@ -58,6 +58,8 @@ Entry Year	:	2013
 
 1. On progress, Indonesia HKI, 2016
 
+### Reach out to my amazing team mate, currently and used to be:
+
 > "I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team** and **mentors**" --My Self
 
 > "Alone we can do so little, together we can do so much." --Helen Keller
@@ -66,7 +68,6 @@ Entry Year	:	2013
 
 > "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
 
-## Reach out to my amazing team mate, currently and used to be:
 No | Name | Team
 --- | --- | ---
 1|[Lilin](https://www.facebook.com/linlilin11) | Light
