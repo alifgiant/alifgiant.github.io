@@ -49,6 +49,6 @@ Entry Year	:	2013
 
 ### Club and Community
 1. Performer, Festival Seni dan Budaya Sulawesi, 2013
-2. Founder, Celebes Developer Club(CDC), 2014-2015
-3. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
-4. Member, PB Telkom (Badminton club), 2013-2014
+2. Member, PB Telkom (Badminton club), 2013-2014
+3. Founder, Celebes Developer Club(CDC), 2014-2015
+4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
