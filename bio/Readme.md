@@ -32,19 +32,20 @@ Entry Year	:	2013
 3. Finalist, Islam ICT - UI, 2014
 4. Finalist, MTQMN, 2015
 5. Finalist, Compfest - UI, 2015
-6. Runner Up, Indonesia Imagine Cup, 2015
-7. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
-8. Runner Up, Smart Application Blue Techno Telkom-U, 2015
-9. Winner, Final Project Competition - Explosif Telkom-U, 2015
-10. Winner, MGDC Rookie Dicoding, 2015
-11. Top 7, Makasssar 1.0 Hackathon, 2016
-12. Pitch Round, Swiss Innovation, 2016
-13. Semi Finalist, Global Innovator-4YFN, 2016
-14. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
-15. Finalist, Final Project Competition - Explosif Telkom-U, 2016
-16. Runner Up, Indonesia Imagine Cup, 2016
-17. Runner Up, Telemedicine Challange-Malaysia, 2016
-18. On Going, APICTA participant-Taipei, 2016
+6. Finalist, Asean Youth Creative, 2015
+7. Runner Up, Indonesia Imagine Cup, 2015
+8. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
+9. Runner Up, Smart Application Blue Techno Telkom-U, 2015
+10. Winner, Final Project Competition - Explosif Telkom-U, 2015
+11. Winner, MGDC Rookie Dicoding, 2015
+12. Top 7, Makasssar 1.0 Hackathon, 2016
+13. Pitch Round, Swiss Innovation, 2016
+14. Semi Finalist, Global Innovator-4YFN, 2016
+15. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
+16. Finalist, Final Project Competition - Explosif Telkom-U, 2016
+17. Runner Up, Indonesia Imagine Cup, 2016
+18. Runner Up, Telemedicine Challange-Malaysia, 2016
+19. On Going, APICTA participant-Taipei, 2016
 
 ### Call for Paper
 1. Best 100 paper on ISSC, 2014
