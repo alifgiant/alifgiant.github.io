@@ -1,7 +1,7 @@
 # Short Bio
 
 ## Profile
-Name	:	Muhammad Alif Akbar
+Name	:	Muhammad Alif Akbar  
 Univ	:	Telkom University	
 Major	:	S1 Teknik Informatika  
 Entry Year	:	2013
