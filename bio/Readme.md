@@ -8,6 +8,22 @@ Univ	:	Telkom University
 Major	:	S1 Teknik Informatika  
 Entry Year	:	2013
 
+## Organization
+### Social
+1. Trainer, IT Defend-Teach Tech to Disabled community, 2015
+
+### Laboratorium
+1. Member, Computing Laboratory, 2014-2015
+2. Practicum Assistant, IF lab, 2014-2016
+3. Lead Assistant, Mobile Innovation, 2016
+
+### Club and Community
+1. Performer, Festival Seni dan Budaya Sulawesi, 2013
+2. Member, PB Telkom (Badminton club), 2013-2014
+3. Founder, Celebes Developer Club(CDC), 2014-2015
+4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
+5. Member, Proclub, 2013-2016
+
 ## Achievement
 ### Call for Paper
 
@@ -42,17 +58,27 @@ Entry Year	:	2013
 
 1. On progress, Indonesia HKI, 2016
 
-## Organization
-### Social
-1. Trainer, IT Defend-Teach Tech to Disabled community, 2015
+> I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team**.  
 
-### Laboratorium
-1. Member, Computing Laboratory, 2014-2015
-2. Practicum Assistant, IF lab, 2014-2016
-3. Lead Assistant, Mobile Innovation, 2016
-
-### Club and Community
-1. Performer, Festival Seni dan Budaya Sulawesi, 2013
-2. Member, PB Telkom (Badminton club), 2013-2014
-3. Founder, Celebes Developer Club(CDC), 2014-2015
-4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
+## Reach out to my amazing team mate, currently and used to be:
+No | Name | Team
+--- | --- | ---
+1|[Lilin](https://www.facebook.com/linlilin11) | Light
+2|[Hendri Mukri](https://www.facebook.com/hendri.mukri) | Light
+3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light
+4|[Nur Shiyaam](https://www.facebook.com/nurshiyaam)|Light
+5|[Reynold Erwandi](https://www.facebook.com/rerwandi)|Upsee Studio
+6|[Reza S. Asmuruf](https://www.facebook.com/reza.a.39)|Upsee Studio
+7|[Ibrahim Al-Mahi](https://www.facebook.com/iebtek)|Upsee Studio
+4|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee Studio
+5|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee Studio
+6|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Upsee Studio and Buah Batu
+7|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|Buah Batu
+8|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|Buah Batu
+9|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|Buah Batu
+10|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|Buah Batu
+11|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|Buah Batu
+12|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse Team
+13|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse Team
+14|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse Team
+15|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse Team
