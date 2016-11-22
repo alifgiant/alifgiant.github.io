@@ -58,7 +58,13 @@ Entry Year	:	2013
 
 1. On progress, Indonesia HKI, 2016
 
-> I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team** and **mentors**.  
+> "I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team** and **mentors**" --My Self
+
+> "Alone we can do so little, together we can do so much." --Helen Keller
+
+> "None of us is as smart as all of us." --Ken Blanchard
+
+> "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
 
 ## Reach out to my amazing team mate, currently and used to be:
 No | Name | Team
