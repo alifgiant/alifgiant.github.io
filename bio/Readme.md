@@ -86,10 +86,11 @@ No | Name | Team
 15|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu
 16|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu
 17|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
-18|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
-19|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
-20|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
-21|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
-22|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
-23|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
-24|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
+18|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu
+19|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
+20|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
+21|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
+22|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
+23|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
+24|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
+25|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
