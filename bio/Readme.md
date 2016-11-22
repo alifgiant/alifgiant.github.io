@@ -1,5 +1,7 @@
 # Short Bio
 
+![profile image](http://alifgiant.github.io/images/avatar.png)
+
 ## Profile
 Name	:	Muhammad Alif Akbar  
 Univ	:	Telkom University	
