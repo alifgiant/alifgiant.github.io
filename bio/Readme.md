@@ -7,6 +7,7 @@ Name	:	Muhammad Alif Akbar
 Univ	:	Telkom University	
 Major	:	S1 Teknik Informatika  
 Entry Year	:	2013
+Speciality	: Android Mobile Dev
 
 ## Organization
 ### Social
@@ -69,31 +70,31 @@ Entry Year	:	2013
 
 > "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
 
-No | Name | Team
---- | --- | ---
-1|[Lilin](https://www.facebook.com/linlilin11) | Light
-2|[Hendri Mukri](https://www.facebook.com/hendri.mukri) | Light
-3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light
-4|[Nur Shiyaam](https://www.facebook.com/nurshiyaam)|Light
-5|[Hilman Fauzi Tsp](https://www.facebook.com/imantsp)|Mentor of Light
-6|[Reynold Erwandi](https://www.facebook.com/rerwandi)|Upsee
-7|[Reza S. Asmuruf](https://www.facebook.com/reza.a.39)|Upsee
-8|[Ibrahim Al-Mahi](https://www.facebook.com/iebtek)|Upsee
-9|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee
-10|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee
-11|[Alfian Akbar Gozali](https://www.facebook.com/alfianakbargozali)|Mentor of Upsee
-12|[Rahmat Ridha Mustakim](https://www.facebook.com/rnr.ugha)|Anak Rantau
-13|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Anak Rantau, Upsee and BuahBatu
-14|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|BuahBatu
-15|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|BuahBatu
-16|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu
-17|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu
-18|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
-19|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu
-20|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
-21|[Prof. Tauhid Nur Azhar](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html), [FB](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
-22|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
-23|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
-24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
-25|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
-26|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
+No | Name | Team | Speciality
+--- | --- | --- | ---
+1|[Lilin](https://www.facebook.com/linlilin11)|Light|Soft Computing
+2|[Hendri Mukri](https://www.facebook.com/hendri.mukri)|Light|Mechanics
+3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light|Electronics
+4|[Nur Shiyaam](https://www.facebook.com/nurshiyaam)|Light|Industry
+5|[Hilman Fauzi Tsp](https://www.facebook.com/imantsp)|Mentor of Light|Electronics
+6|[Reynold Erwandi](https://www.facebook.com/rerwandi)|Upsee|Unity Game Dev
+7|[Reza S. Asmuruf](https://www.facebook.com/reza.a.39)|Upsee|Android Dev
+8|[Ibrahim Al-Mahi](https://www.facebook.com/iebtek)|Upsee|Visual Artist
+9|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee|Character Artist
+10|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee|Music Composser, I.o.T Dev
+11|[Alfian Akbar Gozali](https://www.facebook.com/alfianakbargozali)|Mentor of Upsee|Database, Machine Learning
+12|[Rahmat Ridha Mustakim](https://www.facebook.com/rnr.ugha)|Anak Rantau|Android Dev
+13|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Anak Rantau, Upsee and BuahBatu|Unity Game Dev
+14|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|BuahBatu|Marketing
+15|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|BuahBatu|Fullstack Web Dev
+16|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu|Electronics
+17|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu|Photography
+18|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu|Videography
+19|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu|Visual Artist, Mobile Dev
+20|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu|Marketing
+21|[Prof. Tauhid Nur Azhar](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu|[Neurology](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html)
+22|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse|Artificial Intelligence
+23|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse|Marketing
+24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse|Product Designer
+25|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse|Electronics
+26|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse|[Electorics, Networks](https://www.scopus.com/authid/detail.uri?authorId=55799743500)
