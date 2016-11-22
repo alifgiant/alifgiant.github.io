@@ -81,17 +81,18 @@ No | Name | Team
 9|[Andini Setya Arianti](https://www.facebook.com/andini.s.arianti)|Upsee
 10|[Adnan Surya Azis](https://www.facebook.com/honsukiken)|Upsee
 11|[Alfian Akbar Gozali](https://www.facebook.com/alfianakbargozali)|Mentor of Upsee
-12|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Upsee and BuahBatu
-13|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|BuahBatu
-14|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|BuahBatu
-15|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu
-16|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu
-17|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
-18|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu
-19|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
-20|[Prof. Tauhid Nur Azhar](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html), [FB](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
-21|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
-22|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
-23|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
-24|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
-25|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
+12|[Rahmat Ridha Mustakim](https://www.facebook.com/rnr.ugha)|Anak Rantau
+13|[Januar Triandy N. E.](https://www.facebook.com/januartriandy.nurelsan)|Anak Rantau, Upsee and BuahBatu
+14|[Putri Meuthia Pratiwi](https://www.facebook.com/putri.meuthia)|BuahBatu
+15|[Dede Kiswanto](https://www.facebook.com/kiswanto.d2)|BuahBatu
+16|[Muhammad Qasim](https://www.facebook.com/muh.qqasim)|BuahBatu
+17|[Andi Ahmad Irfa](https://www.facebook.com/andi.irfa)|BuahBatu
+18|[Fadhlu Rahman](https://www.facebook.com/faaadhlu)|BuahBatu
+19|[Taufiq Syahrir](https://www.facebook.com/taufiq.syahrir)|BuahBatu
+20|[Cut Irna Setiawati](https://www.facebook.com/cut.setiawati)|Mentor of BuahBatu
+21|[Prof. Tauhid Nur Azhar](http://www.probioterra.com/artikelberita/tim-ahli/185-curriculum-vitae-tauhid-nur-azhar.html), [FB](https://www.facebook.com/tauhid.nurazhar)|Mentor of BuahBatu
+22|[Masyithah Nur Aulia](https://www.facebook.com/masyithahaulia)|Pulse
+23|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse
+24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse
+25|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse
+26|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse
