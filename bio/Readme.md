@@ -13,7 +13,7 @@ Entry Year	:	2013
 
 ### Competition
 
-1. Harapan 2, Chess Competition Telkom-U, 2013
+1. Consolation winner, Chess Competition Telkom-U, 2013
 2. Fund Grant Receiver, PKM Dikti, 2014
 3. Finalist, Islam ICT - UI, 2014
 4. Finalist, MTQMN, 2015
@@ -22,9 +22,12 @@ Entry Year	:	2013
 7. Finalist, Compfest - UI, 2015
 8. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
 9. Runner Up, Smart Application Blue Techno Telkom-U, 2015
-10. Runner Up, Indonesia Imagine Cup, 2016
-11. Runner Up, Telemedicine Challange-Malaysia, 2016
-12. On Going, APICTA participant-Taipei, 2016
+10. Winner, Final Project Competition - Explosif Telkom-U, 2015
+11. Semi Finalist, Global Innovator-4YFN, 2015
+12. Pitch Round, Swiss Innovation, 2015
+13. Runner Up, Indonesia Imagine Cup, 2016
+14. Runner Up, Telemedicine Challange-Malaysia, 2016
+15. On Going, APICTA participant-Taipei, 2016
 
 ### Award
 1. Indonesia Top Developer, Intel, 2015
