@@ -43,9 +43,9 @@ Speciality	: Android Mobile Dev
 13. Pitch Round, Swiss Innovation, 2016
 14. Semi Finalist, Global Innovator-4YFN, 2016
 15. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
-16. Winner, Final Project Competition - Explosif Telkom-U, 2016
-17. Runner Up, Indonesia Imagine Cup, 2016
-18. Runner Up, Telemedicine Challange-Malaysia, 2016
+16. Runner Up, Indonesia Imagine Cup, 2016
+17. Runner Up, Telemedicine Challange-Malaysia, 2016
+18. Winner, Final Project Competition - Explosif Telkom-U, 2016
 19. On Going, APICTA participant-Taipei, 2016
 
 ### Call for Paper
