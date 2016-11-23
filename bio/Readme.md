@@ -43,7 +43,7 @@ Speciality	: Android Mobile Dev
 13. Pitch Round, Swiss Innovation, 2016
 14. Semi Finalist, Global Innovator-4YFN, 2016
 15. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
-16. Finalist, Final Project Competition - Explosif Telkom-U, 2016
+16. Winner, Final Project Competition - Explosif Telkom-U, 2016
 17. Runner Up, Indonesia Imagine Cup, 2016
 18. Runner Up, Telemedicine Challange-Malaysia, 2016
 19. On Going, APICTA participant-Taipei, 2016
@@ -71,7 +71,7 @@ Speciality	: Android Mobile Dev
 > "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
 
 No | Name | Team | Speciality
---- | --- | --- | ---:
+--- | --- | --- | ---
 1|[Lilin](https://www.facebook.com/linlilin11)|Light|Soft Computing
 2|[Hendri Mukri](https://www.facebook.com/hendri.mukri)|Light|Mechanics
 3|[Fareza Rizky Ramadhan](https://www.facebook.com/farezarizky.ramadhan)|Light|Electronics
