@@ -46,7 +46,7 @@ Speciality	: Android Mobile Dev
 16. Runner Up, Indonesia Imagine Cup, 2016
 17. Runner Up, Telemedicine Challange-Malaysia, 2016
 18. Winner, Final Project Competition - Explosif Telkom-U, 2016
-19. On Going, APICTA participant-Taipei, 2016
+19. Merit Grant, APICTA -Taipei, 2016
 
 ### Call for Paper
 1. Best 100 paper on ISSC, 2014
@@ -97,4 +97,5 @@ No | Name | Team | Speciality
 23|[Shamila](https://www.facebook.com/shamil.shingo)|Pulse|Videography
 24|[Rengganis E. Siregar](https://www.facebook.com/ega.egha)|Pulse|Product Design
 25|[Musa Abdul Aziz](https://www.facebook.com/M0zhe3z)|Pulse|Electronics
-26|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse|[Electorics, Networks](https://www.scopus.com/authid/detail.uri?authorId=55799743500)
+26|[Qhansa Di Ayu Putri](https://www.facebook.com/qhansa.dp)|Pulse|Presenter
+27|[Dr. Satria Mandala](https://www.scopus.com/authid/detail.uri?authorId=55799743500)|Mentor of Pulse|[Electorics, Networks](https://www.scopus.com/authid/detail.uri?authorId=55799743500)
