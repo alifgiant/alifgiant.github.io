@@ -46,15 +46,17 @@ Speciality	: Android Mobile Dev
 16. Runner Up, Indonesia Imagine Cup, 2016
 17. Runner Up, Telemedicine Challange-Malaysia, 2016
 18. Winner, Final Project Competition - Explosif Telkom-U, 2016
-19. Merit Grant, APICTA -Taipei, 2016
+19. Favorite Place, Bukalapak Bandung Talent Show, Bukalapak Anniversary, 2019
 
-### Call for Paper
-1. Best 100 paper on ISSC, 2014
+### Paper
+1. IoT on Heart Arrhythmia Real Time Monitoring, Indo-JC
+2. Concept of Cost Efficient Smart CCTV Network for Cities in Developing Country, [IEEE](https://doi.org/10.1109/ICTSS.2018.8550016)
 
 ### Award
 1. Indonesia Top Developer, Intel, 2015
 2. Outstanding stundent, Informatic Department Telkom University, 2015
 3. Outstanding stundent, Rektor Award Telkom University, 2015
+4. Merit Grant, APICTA - Taipei, 2016
 
 ### Copy Rights
 
