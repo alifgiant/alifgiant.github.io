@@ -58,9 +58,6 @@ Speciality	: Android Mobile Dev
 3. Outstanding stundent, Rektor Award Telkom University, 2015
 4. Merit Grant, APICTA - Taipei, 2016
 
-### Copy Rights
-
-1. On progress, BloodEy-Indonesia HKI, 2016
 
 ### Reach out to my amazing team mate, currently and used to be:
 
