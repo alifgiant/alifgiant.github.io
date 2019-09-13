@@ -3,8 +3,8 @@
 ![profile image](http://alifgiant.github.io/images/avatar.png)
 
 ## Profile
-Name	:	Muhammad Alif Akbar  
-Univ	:	Telkom University	
+Name	:	Muhammad Alif Akbar   
+Univ	:	Telkom University	   
 Major	:	S1 Teknik Informatika  
 Entry Year	:	2013  
 Graduate Year : 2017  
