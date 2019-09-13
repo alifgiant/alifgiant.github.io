@@ -7,6 +7,7 @@ Name	:	Muhammad Alif Akbar
 Univ	:	Telkom University	
 Major	:	S1 Teknik Informatika  
 Entry Year	:	2013  
+Graduate Year : 2017
 Speciality	: Android Mobile Dev
 
 ## Organization
