@@ -13,6 +13,8 @@ Speciality	: Android Mobile Dev
 ## Organization
 ### Social
 1. Trainer, IT Defend-Teach Tech to Disabled community, 2015
+2. Public Relation Division, Selasar Imaji (A program by Turun Tangan Bandung), 2018
+3. Knowledge Division, Selasar Imaji (A program by Turun Tangan Bandung), 2019
 
 ### Laboratory
 1. Member, Computing Laboratory, 2014-2015
