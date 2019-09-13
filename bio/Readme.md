@@ -17,12 +17,12 @@ Speciality	: Android Mobile Dev
 ### Laboratory
 1. Member, Computing Laboratory, 2014-2015
 2. Practicum Assistant, IF laboratory, 2014-2016
-3. Lead Assistant, Mobile Innovation, 2016
+3. Lead Assistant, Mobile Innovation, 2016-2017
 
 ### Club and Community
 1. Performer, Festival Seni dan Budaya Sulawesi, 2013
 2. Member, PB Telkom (Badminton club), 2013-2014
-3. Founder, Celebes Developer Club(CDC), 2014-2015
+3. Founder, Celebes Developer Club (CDC), 2014-2015
 4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
 5. Member, Proclub, 2013-2016
 
