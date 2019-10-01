@@ -16,13 +16,13 @@ Entry Year	  :	2013
 Graduate Year : 2017   
 
 ## Work Experience
-### Mobile Developer at Bukalapak, __April 2018 - now__
+### Mobile Developer at Bukalapak, _April 2018 - now_
 1. asd
 2. asd
-### Backend Developer at Xtremax, __October 2017 - March 2018__
+### Backend Developer at Xtremax, _October 2017 - March 2018_
 1. asd
 2. asd
-### Freelance Developer, __October 2016 - now__
+### Freelance Developer, _October 2016 - now_
 1. sad
 2. asda
 
