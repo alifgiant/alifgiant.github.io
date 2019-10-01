@@ -1,14 +1,30 @@
-# Short Bio
+# Complete Bio
 
 ![profile image](http://alifgiant.github.io/images/avatar.png)
 
 ## Profile
-Name	:	Muhammad Alif Akbar   
-Univ	:	Telkom University	   
-Major	:	S1 Teknik Informatika  
-Entry Year	:	2013  
-Graduate Year : 2017  
-Speciality	: Android Mobile Dev
+Name	        : Muhammad Alif Akbar      
+Place of Birth  : Banjarmasin     
+Date of Birth   : 02 December 1995     
+Speciality	    : Mobile (Android) Development   
+
+## Education
+Univ	      :	Telkom University	    
+Degree        : Undergraduate   
+Major	      :	Informatics Engineering   
+Entry Year	  :	2013  
+Graduate Year : 2017   
+
+## Work Experience
+### Mobile Developer at Bukalapak, __April 2018 - now__
+1. asd
+2. asd
+### Backend Developer at Xtremax, __October 2017 - March 2018__
+1. asd
+2. asd
+### Freelance Developer, __October 2016 - now__
+1. sad
+2. asda
 
 ## Organization
 ### Social
@@ -27,6 +43,13 @@ Speciality	: Android Mobile Dev
 3. Founder, Celebes Developer Club (CDC), 2014-2015
 4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
 5. Member, Proclub, 2013-2016
+
+## Skill
+### Mobile Development
+### Game Development
+### Web Development
+### Tools
+### Has Experience With
 
 ## Achievement
 ### Competition
