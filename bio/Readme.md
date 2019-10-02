@@ -1,12 +1,12 @@
-# Complete Bio
+# More Detailed CV
 
-![profile image](http://alifgiant.github.io/images/avatar.png)
+![profile image](https://github.com/alifgiant/alifgiant.github.io/blob/full-cv/images/avatar.png?raw=true)
 
 ## Profile
 Name	        : Muhammad Alif Akbar      
 Place of Birth  : Banjarmasin     
 Date of Birth   : 02 December 1995     
-Speciality	    : Mobile (Android) Development   
+Expertise	    : Mobile (Android) Development   
 
 ## Education
 Univ	      :	Telkom University	    
@@ -16,13 +16,17 @@ Entry Year	  :	2013
 Graduate Year : 2017   
 
 ## Work Experience
-### Mobile Developer at Bukalapak, _April 2018 - now_
-1. asd
+### Mobile Developer at Bukalapak, (`Apr 2018 - Now`)
+1. I started work in a product squad focused on developing experimentation features to be used for marketing or branding. The resulted products often be shown on TVs special events, commercial breaks and/or had a lot of offline stands to be directly marketed. Those features has resulted billions of GMV for the company and used by millions of users. Therefore, I had to works closely with UX designer to think the best way to serves the users needs while keeping the app as small and fast as possible. One of the solution implemented is building a modular and on-demand features.
+2. I worked as mobile dev lead in building an online-offline video streaming feature. I had to communicate with third party video provider about how to efficiently integrated their streaming video into our e-commerce application. 
+3. I worked as mobile dev lead in building on demand bike sharing feature. I had to implement efficient location tracking to the app.
+4. I worked as mobile dev in building many features with high society impact such as Vehicle and Public Tax Payment, Donation, and Islamic contents (Sholat reminder, Zakat, Ramadhan Calender, Sunnah, quran and more).
+5. Currently, I work on integrating `DANA` as payment method in the company.
+
+### Backend Developer at Xtremax, (`Oct 2017 - Mar 2018`)
+1. I worked using ASP.NET as a web framework. Most of the websites i build are using CMS such as [Sitecore](https://www.sitecore.com)and [Sitefinity](https://www.progress.com/sitefinity-cms)
 2. asd
-### Backend Developer at Xtremax, _October 2017 - March 2018_
-1. asd
-2. asd
-### Freelance Developer, _October 2016 - now_
+### Freelance Developer, (`Aug 2016 - now`)
 1. sad
 2. asda
 
@@ -52,48 +56,37 @@ Graduate Year : 2017
 ### Has Experience With
 
 ## Achievement
-### Competition
-
-1. Consolation winner, Chess Competition Telkom-U, 2013
-2. Fund Grant Receiver, PKM Dikti, 2014
-3. Finalist, Islam ICT - UI, 2014
-4. Finalist, MTQMN, 2015
-5. Finalist, Compfest - UI, 2015
-6. Finalist, Asean Youth Creative, 2015
-7. Runner Up, Indonesia Imagine Cup, 2015
+### Honor & Awards
+1. Fund Grant Receiver, PKM Dikti, 2014
+2. Finalist, Islam ICT - UI, 2014
+3. Finalist, MTQMN, 2015
+4. Finalist, Compfest - UI, 2015
+5. Finalist, Asean Youth Creative, 2015
+6. Runner Up, Indonesia Imagine Cup, 2015
+7. Indonesia Top Developer, Intel, 2015
 8. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
 9. Runner Up, Smart Application Blue Techno Telkom-U, 2015
-10. Winner, Final Project Competition - Explosif Telkom-U, 2015
-11. Winner, MGDC Rookie Dicoding, 2015
-12. Top 7, Makasssar 1.0 Hackathon, 2016
-13. Pitch Round, Swiss Innovation, 2016
-14. Semi Finalist, Global Innovator-4YFN, 2016
-15. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
-16. Runner Up, Indonesia Imagine Cup, 2016
-17. Runner Up, Telemedicine Challange-Malaysia, 2016
-18. Winner, Final Project Competition - Explosif Telkom-U, 2016
-19. Favorite Place, Bukalapak Bandung Talent Show, Bukalapak Anniversary, 2019
+10. Winner, MGDC Rookie Dicoding, 2015
+11. Outstanding stundent, Informatic Department Telkom University, 2015
+12. Outstanding stundent, Rektor Award Telkom University, 2015
+13. Top 7, Makasssar 1.0 Hackathon, 2016
+14. Pitch Round, Swiss Innovation, 2016
+15. Semi Finalist, Global Innovator-4YFN, 2016
+16. Semi Finalist, Bussiness Plan Comp-Telkom U, 2016
+17. Runner Up, Indonesia Imagine Cup, 2016
+18. Runner Up, Telemedicine Challange-Malaysia, 2016
+19. Merit Grant, APICTA - Taipei, 2016
+20. Favorite Place, Bukalapak Bandung Talent Show, Bukalapak Anniversary, 2019   
 
 ### Paper
 1. IoT on Heart Arrhythmia Real Time Monitoring, Indo-JC
 2. Concept of Cost Efficient Smart CCTV Network for Cities in Developing Country, [IEEE](https://doi.org/10.1109/ICTSS.2018.8550016)
 
-### Award
-1. Indonesia Top Developer, Intel, 2015
-2. Outstanding stundent, Informatic Department Telkom University, 2015
-3. Outstanding stundent, Rektor Award Telkom University, 2015
-4. Merit Grant, APICTA - Taipei, 2016
 
-
-### Reach out to my amazing team mate, currently and used to be:
-
-> "I **can't achieve** anything **by my own**, These achievements are **thank to my amazing team** and **mentors**" --My Self
-
-> "Alone we can do so little, together we can do so much." --Helen Keller
-
-> "None of us is as smart as all of us." --Ken Blanchard
-
-> "Unity is strength. . . when there is teamwork and collaboration, wonderful things can be achieved." --Mattie Stepanek
+### Amazing Teams
+```
+Reach out to my amazing team mates, currently or used to be:
+```
 
 No | Name | Team | Speciality
 --- | --- | --- | ---
