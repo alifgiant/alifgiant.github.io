@@ -111,11 +111,39 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 5. Member, Proclub, 2013-2016
 
 ## Skill
+### Programming Languange
+- Python : v2.7 + v3.2, Scipy, NLTK, PIL, Scikit-Learn, Paho-MQTT - C ++ : Arduino Development
+- C# : Unity Game Development, ASP.Net, .Net Core
+- Java : Android
+- Kotlin : Android (MVP, MVVM Design Pattern) 
+- Javascript : ES6, Node.Js
+- Dart
 ### Mobile Development
+- Android Native : Support Library, Butterknife, Firebase, Glide, Realm.io, Flutter 
+- IOS Native : Flutter
 ### Game Development
+- Unity : 2D and 3D, Facebook App API, Google Play API
 ### Web Development
+- Framework / CMS : Express.Js, Sitefinity, Sitecore, Keystone.Js
+- Database : MySQL, MongoDb, Firebase
+- Front-End : Boostrap, JQuery, Pug
+- Implementation of REST API, Socket, MQTT, Firebase Cloud Functions - Deployment : Heroku, Firebase Host, Docker, Google Cloud Platform
 ### Tools
+- Version Control : GIT
+- Image Editor : Photoshop CS6, Figma
+- IDE : Android Studio, Visual Studio, Platform.io
+- Collaboration : Notion, Miro, Google hangout, google drive 
+- Document : Office Suite, Google Docs suite, LaTex, Markdown
+
 ### Has Experience With
+- iOS Development : swift
+- PHP : XAMPP
+- Machine Learning and Classification 
+- Competitive Programming
+- IoT Developement : Arduino, ESP, Raspberry-Pi 
+- Signal Processing
+- CI / CD : CircleCI, Jenkins, Codemagic.io
+
 
 ## Achievement
 ### Honor & Awards
