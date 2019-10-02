@@ -24,12 +24,12 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
 ## Work Experience
 ### Mobile Developer at Bukalapak, (`Apr 2018 - Now`)
-1. I work in a squad focused on developing experimentation features to be used for marketing or branding. The resulted products often be shown on TVs special events, commercial breaks and/or had a lot of offline stands to be directly marketed. Those features are used by millions of users and has resulted billions of GMV for the company. Therefore, I had to works closely with UX designer to think the best way to serves the users needs while keeping the app as small and fast as possible. Some of the solution include implementing design system with atomic design approach, a modular code base, and on-demand features.
-2. I worked as mobile dev lead in building an online-offline video streaming feature. I had to communicate with third party video provider about how to efficiently integrated their streaming video into our e-commerce application. 
-3. I worked as mobile dev lead in building on demand bike sharing feature. I had to implement efficient location tracking to the app.
+1. I work in a squad `focused on developing experimentation` features to be used for marketing or branding. The resulted products often be shown on TVs special events, commercial breaks and/or had a lot of offline stands to be directly marketed. Those features are used by millions of users and has resulted billions of GMV for the company. Therefore, I had to `works closely with UX designer` to think the best way to serves the users needs while keeping the app as small and fast as possible. Some of the solution include `implementing design system with atomic design approach`, a modular code base, and on-demand features.
+2. I worked as `mobile dev lead` in building an online-offline video streaming feature. I had to communicate with third party video provider about how to efficiently integrated their streaming video into our e-commerce application. 
+3. I worked as mobile dev lead in building `on demand bike sharing feature`. I had to implement efficient location tracking to the app.
 4. I worked as mobile dev in building many features with high society impact such as Vehicle and Public Tax Payment, Donation, and Islamic contents (Sholat reminder, Zakat, Ramadhan Calender, Sunnah, quran and more).
 5. I work on integrating `DANA` as payment method in the app.
-6. On the company we use SCRUM methodology as a management process. Integreted heavily with Github, Jira and Confluence.
+6. On the company we use `SCRUM methodology` as a management process. Integreted heavily with `Github`, `Jira` and `Confluence`.
 
 ### Backend Developer at Xtremax, (`Oct 2017 - Mar 2018`)
 1. I worked using ASP.NET as a web framework. Most of the jobs require me to create or mantain websites which build using CMS such as [Sitecore](https://www.sitecore.com) and [Sitefinity](https://www.progress.com/sitefinity-cms). 
