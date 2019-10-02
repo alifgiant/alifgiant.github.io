@@ -107,12 +107,16 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 1. Performer, Festival Seni dan Budaya Sulawesi, 2013
 2. Member, PB Telkom (Badminton club), 2013-2014
 3. Founder, Celebes Developer Club (CDC), 2014-2015
+
+    In collaboration spirit i and several student found a developer club on the campus. We teach software development to other student from the same ethnic.
+
 4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
 5. Member, Proclub, 2013-2016
 
 ## Skill
 ### Programming Languange
-- Python : v2.7 + v3.2, Scipy, NLTK, PIL, Scikit-Learn, Paho-MQTT - C ++ : Arduino Development
+- Python : v2.7 + v3.2, Scipy, NLTK, PIL, Scikit-Learn, Paho-MQTT 
+- C ++ : Arduino Development
 - C# : Unity Game Development, ASP.Net, .Net Core
 - Java : Android
 - Kotlin : Android (MVP, MVVM Design Pattern) 
