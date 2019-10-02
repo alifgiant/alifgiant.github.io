@@ -17,7 +17,7 @@ Graduate Year : 2017
 
 ### Final Project
 
-I build an `IoT platform` to help monitor arrhythmia activity for users. The research goes to figure out how to detect arryhthmia using `PPG` sensor and making `the cloud system` run as fast as possible since the data transfered throught the system shoukd reach at least 30Hz. The end product precission is not very good. But it serves as a proof of concept that an IoT based monitoring can be achieved to help patient all over the world whom has a history of cardiac arrest.
+I build an `IoT platform` to help monitor arrhythmia activity for users. The research goes to figure out how to detect arryhthmia using `PPG` sensor and making `the cloud system` run as fast as possible since the data transfered throught the system should reach at least 30Hz. The end product precission is not very good. But it serves as a proof of concept that an IoT based monitoring can be achieved to help patient all over the world whom has a history of cardiac arrest.
 
 Publication: 
 IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telkomuniversity.ac.id/ojs/index.php/indojc/article/view/170)
