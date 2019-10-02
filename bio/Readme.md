@@ -131,7 +131,8 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 - Framework / CMS : Express.Js, Sitefinity, Sitecore, Keystone.Js
 - Database : MySQL, MongoDb, Firebase
 - Front-End : Boostrap, JQuery, Pug
-- Implementation of REST API, Socket, MQTT, Firebase Cloud Functions - Deployment : Heroku, Firebase Host, Docker, Google Cloud Platform
+- Implementation of REST API, Socket, MQTT, Firebase Cloud Functions 
+- Deployment : Heroku, Firebase Host, Docker, Google Cloud Platform
 ### Tools
 - Version Control : GIT
 - Image Editor : Photoshop CS6, Figma
