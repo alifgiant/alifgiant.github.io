@@ -17,14 +17,14 @@ Graduate Year : 2017
 
 ### Final Project
 
-I build an `IoT platform` to help monitor arrhythmia activity for users. The research goes to figure out how to detect arryhthmia using `PPG` sensor and making `the cloud system` run as fast as possible since the data transfered throught the system should reach at least 30Hz. The end product precission is not very good. But it serves as a proof of concept that an IoT based monitoring can be achieved to help patient all over the world whom has a history of cardiac arrest.
+I build an `IoT platform` to help monitor arrhythmia activity for users. The research is about figuring out how to detect arryhthmia using `PPG` sensor and making `the cloud system` run as fast as possible since the data transfered through the system should reach at least 30Hz. The end product precission is not very good. But it serves as a proof of concept that an IoT based monitoring can be achieved to help patient all over the world whom has a history of cardiac arrest.
 
 Publication: 
 IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telkomuniversity.ac.id/ojs/index.php/indojc/article/view/170)
 
 ## Work Experience
 ### Mobile Developer at Bukalapak, (`Apr 2018 - Now`)
-1. I work in a squad `focused on developing experimentation` features to be used for marketing or branding. The resulted products often be shown on TVs special events, commercial breaks and/or had a lot of offline stands to be directly marketed. Those features are used by millions of users and has resulted billions of GMV for the company. Therefore, I had to `works closely with UX designer` to think the best way to serves the users needs while keeping the app as small and fast as possible. Some of the solution include `implementing design system with atomic design approach`, a modular code base, and on-demand features.
+1. I work in a squad `focused on developing experimentation` features to be used for marketing or branding. The resulted products often be shown on TVs special events, commercial breaks and/or had a lot of offline stands to be directly marketed. Those features are used by millions of users and has resulted billions of GMV for the company. Therefore, I had to `works closely with UX designer` to sets up the best way to serves the users needs while keeping the app as small and fast as possible. Some of the solution include `implementing design system with atomic design approach`, a modular code base, and on-demand module.
 2. I worked as `mobile dev lead` in building an online-offline video streaming feature. I had to communicate with third party video provider about how to efficiently integrated their streaming video into our e-commerce application. 
 3. I worked as mobile dev lead in building `on demand bike sharing feature`. I had to implement efficient location tracking to the app.
 4. I worked as mobile dev in building many features with high society impact such as Vehicle and Public Tax Payment, Donation, and Islamic contents (Sholat reminder, Zakat, Ramadhan Calender, Sunnah, quran and more).
@@ -33,28 +33,28 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
 ### Backend Developer at Xtremax, (`Oct 2017 - Mar 2018`)
 1. I worked using ASP.NET as a web framework. Most of the jobs require me to create or mantain websites which build using CMS such as [Sitecore](https://www.sitecore.com) and [Sitefinity](https://www.progress.com/sitefinity-cms). 
-2. The websites I work on will have custom modules that are written on ASP.NET with many functionality such as custom REST request and post and email schedulling. The database server is Microsoft SQL Server.
+2. The websites I work on will have custom modules that are written on ASP.NET with many functionality such as custom REST request and post or email schedulling. The database server is Microsoft SQL Server.
 
 ### Freelance and Self-Employeed Developer, (`Aug 2016 - now`)
 1. SIC Commerce
 
-    The aplication is requested by a collegue to help him built his company simple commerce website. The project include a website for users and admin and mobile app for users. I work as the project manager and developer lead. The team working on the project mostly work remotely from jakarta and bandung. The project progress is documented using online tools `Notion` and the team doing meeting and `google hangout`. 
+    The aplication is requested by a collegue to help him built his company's commerce website. The project consist of a website and a mobile app. I work as the project manager and developer lead. The team working on the project mostly work remotely from jakarta and bandung. The project progress is documented using online tools `Notion` and the team doing online meeting on `google hangout`. 
 
 2. Sabang 17
 
-    The aplication is requested by HMI (Himpunan Mahasiswa Islam) of Jawa Barat branch. The app consist of mobile app and admin web dashboard. I work alone for the app and website, which was possible bacause i am using `Firebase` platform from google as database and serverless.
+    The aplication is requested by HMI (Himpunan Mahasiswa Islam of Jawa Barat branch. The app consist of mobile app and admin web dashboard. I work alone for the app and website, which was possible bacause i am using `Firebase` platform from google as database and serverless.
 
     [Play Store](https://play.google.com/store/apps/details?id=com.buahbatu.sabang17) and [Site](https://sabang-17.firebaseapp.com/)
 
 3. SatuTanya
 
-    An app that pick random questions from a set of question list, to be asked during any gathering with friends or family. The app store its database on Firebase, configs on github and implement `google admobs` as a revenue stream. I also work alone for this project. Satu tanya is built using the hyped technology called `Flutter` which allow developer to code once and publish it for both android and iOS. 
+    An app that pick random questions, from a set of question list, to be asked during any gathering with friends or family. I set the database on Firebase, configs on github and implement `google admobs` as a revenue stream. I also work alone for this project. Satu tanya is built using the hyped technology called `Flutter` which allow developer to code once and publish it for both android and iOS. 
 
     [Play Store](https://s.id/satu-tanya-web) and [Site](https://satu-tanya.web.app)
 
 4. PesanMang
     
-    A project consist of two apps. The app is about food ordering and delivery system which let the seller deliver their own food. The product targeted those merchant which already has their own delivery fleet. The app is build on top google cloud platform. I work on the project as mobile developer lead.
+    The project consist of two apps. The app is about food ordering and delivery system which let the seller deliver their own food. The product targeted those merchant which already has their own delivery fleet. The app is build on top google cloud platform. I work on the project as mobile developer lead.
 
     [Play Store - User App](play.google.com/store/apps/details?id=com.pesanmang.user) and [Play Store - Shop App](play.google.com/store/apps/details?id=com.pesanmang.shop)
 
@@ -73,42 +73,40 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
 8. PentAs
 
-    App which focused on simplifing activity scheduling for eldeer people. The app is a research done by Telkom University student.
+    App which focused on simplifing activities scheduling for elder people. The app is a research done by a Telkom University student.
 
 9. Land on Stage
 
-    A games to about world wide know circus show with mission to help bringing fun to kids all over the world. The game is built on `Unity3d`. I work as a game developer on multiple stage/level in the game. The game it self won several award such as `Mobile Games Developer Competition - Rookie` and runner up at Indonesian `Imagine Cup`.
+    A games about world wide known circus shows which has mission to bring fun for kids all over the world. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game. The game it self won several awards such as `Mobile Games Developer Competition - Rookie` and runner up at Indonesian `Imagine Cup`.
 
 10. PilihanKu
 
-    A games to teach kid about making right decision. The game is built on `Unity3d`. I work as a game developer on multiple stage/level in the game.
-
-
+    A games to teach kid about making right decision. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game.
 
 ## Organization
 ### Social
 1. Trainer, IT Defend-Teach Tech to Disabled community, 2015
 2. Head of Public Relation Division, Selasar Imaji (A program by Turun Tangan Bandung), 2018
 
-    I work to help publicitize the organization through out bandung. During my 1 year as management commitee we conclude several join class and collaboration with several socail organization throught Bandung.
+    I work to help publicitize the organization throughout bandung. During my 1 year as management commitee we conclude several join class and collaboration with several social organization throught Bandung.
 
 3. Member of Knowledge Division, Selasar Imaji (A program by Turun Tangan Bandung), 2019
 
-    I step down as head position after 1 year. But still contributing as knowledge division which in charge to help the new volunteer organize donated books and other knowledge things.
+    I step down as head public relation after 1 year. But still contributing as knowledge division which in charge to help the new volunteer organize donated books and other knowledge things.
 
 ### Laboratory
 1. Member, Computing Laboratory, 2014-2015
 2. Practicum Assistant, IF laboratory, 2014-2016
 3. Lead Assistant, Mobile Innovation, 2016-2017
 
-    On my final year of study, i help lectures to manage a mobile focused laboratory. I am in charge to coordinate daily activity and research on the laboratory. I oversee 34 stundent in total.
+    On my final year of study, i help lectures to manage a mobile innovation focused laboratory. I am in charge to coordinate daily activity and research on the laboratory. I oversee 34 stundents in total.
 
 ### Club and Community
 1. Performer, Festival Seni dan Budaya Sulawesi, 2013
 2. Member, PB Telkom (Badminton club), 2013-2014
 3. Founder, Celebes Developer Club (CDC), 2014-2015
 
-    In collaboration spirit i and several student found a developer club on the campus. We teach software development to other student from the same ethnic.
+    I and several students found a developer club on the campus. We teach software development to other student from the same ethnic.
 
 4. Member, Keluarga Besar Mahasiswa Sulawesi (KBMS), 2013-2016
 5. Member, Proclub, 2013-2016
