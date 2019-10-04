@@ -174,8 +174,9 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 1. [Facebook](https://fb.com/m.alif.akbar)
 2. [LinkedIn](http://linkedin.com/in/muhammad-alif-akbar/)
 3. [Instagram](http://instagram.com/muh.alifgiant/)
-4. [Website](https://alifgiant.github.io)
-5. [Website](https://alifakbar.com)
+4. [github](http://github.com/alifgiant/)
+5. [Website 1](https://alifgiant.github.io)
+6. [Website 2](https://alifakbar.com)
 
 ## Achievement
 ### Honor & Awards
