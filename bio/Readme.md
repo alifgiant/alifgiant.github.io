@@ -6,7 +6,7 @@
 Name	        : Muhammad Alif Akbar      
 Place of Birth  : Banjarmasin     
 Date of Birth   : 02 December 1995     
-Expertise	    : Mobile (Android) Development   
+Expertise	    : Mobile (Android) Development ![android](https://github.com/alifgiant/alifgiant.github.io/blob/full-cv/images/android.png?raw=true)![android studio](https://github.com/alifgiant/alifgiant.github.io/blob/full-cv/images/android-studio.png?raw=true)![flutter](https://github.com/alifgiant/alifgiant.github.io/blob/full-cv/images/flutter.png?raw=true)   
 
 ## Education
 Univ	      :	Telkom University	    
