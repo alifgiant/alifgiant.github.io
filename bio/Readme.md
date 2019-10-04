@@ -60,7 +60,8 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
     [Play Store](https://s.id/satu-tanya-web) and [Site](https://satu-tanya.web.app)
 
-    ![sic](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/satu-tanya/satu-analytic-1.png?raw=true)
+    ![satu-tanya](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/satu-tanya/satu-tanya.png?raw=true)
+    ![satu-tanya](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/satu-tanya/satu-analytic-1.png?raw=true)
     [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/freelance/satu-tanya)
 
 4. PesanMang
@@ -69,9 +70,9 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
     [Play Store - User App](play.google.com/store/apps/details?id=com.pesanmang.user) and [Play Store - Shop App](play.google.com/store/apps/details?id=com.pesanmang.shop)
 
-    ![user](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-user.png?raw=true)
     ![shop](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-shop.png?raw=true)    
-
+    ![user](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-user.png?raw=true)
+    
 5. Perpus Imaji
 
     An application for library management. I build this for `Selasar Imaji` a social community based on Bandung which focused on improving child literacy. The app help volunteers to work as an amateur libraian. I work on this project as a community contribution project.
@@ -90,7 +91,7 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 8. PentAs
 
     App which focused on simplifing activities scheduling for elder people. The app is a research done by a Telkom University student.
-    ![pentas](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/auto2000/pentas.png?raw=true)
+    ![pentas](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pentas/pentas.png?raw=true)
 
 9. Land on Stage
 
