@@ -6,7 +6,9 @@
 Name	        : Muhammad Alif Akbar      
 Place of Birth  : Banjarmasin     
 Date of Birth   : 02 December 1995     
-Expertise	    : Mobile (Android) Development ![android](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/android.png?raw=true)![android studio](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/android-studio.png?raw=true)![flutter](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/flutter.png?raw=true)   
+Expertise	    : Mobile (Android) Development 
+
+![android](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/android.png?raw=true)![android studio](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/android-studio.png?raw=true)![flutter](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/flutter.png?raw=true)   
 
 ## Education
 Univ	      :	Telkom University	    
@@ -168,6 +170,12 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 - Signal Processing
 - CI / CD : CircleCI, Jenkins, Codemagic.io
 
+## Social Media
+1. [Facebook](https://fb.com/m.alif.akbar)
+2. [LinkedIn](http://linkedin.com/in/muhammad-alif-akbar/)
+3. [Instagram](http://instagram.com/muh.alifgiant/)
+4. [Website](https://alifgiant.github.io)
+5. [Website](https://alifakbar.com)
 
 ## Achievement
 ### Honor & Awards
