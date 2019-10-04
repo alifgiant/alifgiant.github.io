@@ -30,15 +30,23 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 4. I worked as mobile dev in building many features with high society impact such as Vehicle and Public Tax Payment, Donation, and Islamic contents (Sholat reminder, Zakat, Ramadhan Calender, Sunnah, quran and more).
 5. I work on integrating `DANA` as payment method in the app.
 6. On the company we use `SCRUM methodology` as a management process. Integreted heavily with `Github`, `Jira` and `Confluence`.
+![BukaBike](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/bukalapak/bukabike/bike-1.png?raw=true)
+![BukaPajak](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/bukalapak/bukapajak/pajak-2.png?raw=true)
+![InfoSholat](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/bukalapak/islamic/info-sholat-mapping.png?raw=true)
+[More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/bukalapak)
 
 ### Backend Developer at Xtremax, (`Oct 2017 - Mar 2018`)
 1. I worked using ASP.NET as a web framework. Most of the jobs require me to create or mantain websites which build using CMS such as [Sitecore](https://www.sitecore.com) and [Sitefinity](https://www.progress.com/sitefinity-cms). 
 2. The websites I work on will have custom modules that are written on ASP.NET with many functionality such as custom REST request and post or email schedulling. The database server is Microsoft SQL Server.
+![SIWW](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/xtremax/siww-1.png?raw=true)
+[More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/xtremax)
 
 ### Freelance and Self-Employeed Developer, (`Aug 2016 - now`)
 1. SIC Commerce
 
     The aplication is requested by a collegue to help him built his company's commerce website. The project consist of a website and a mobile app. I work as the project manager and developer lead. The team working on the project mostly work remotely from jakarta and bandung. The project progress is documented using online tools `Notion` and the team doing online meeting on `google hangout`. 
+
+    ![sic](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/sic/sic.png?raw=true)
 
 2. Sabang 17
 
@@ -52,36 +60,48 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
     [Play Store](https://s.id/satu-tanya-web) and [Site](https://satu-tanya.web.app)
 
+    ![sic](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/satu-tanya/satu-analytic-1.png?raw=true)
+    [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/freelance/satu-tanya)
+
 4. PesanMang
     
     The project consist of two apps. The app is about food ordering and delivery system which let the seller deliver their own food. The product targeted those merchant which already has their own delivery fleet. The app is build on top google cloud platform. I work on the project as mobile developer lead.
 
     [Play Store - User App](play.google.com/store/apps/details?id=com.pesanmang.user) and [Play Store - Shop App](play.google.com/store/apps/details?id=com.pesanmang.shop)
 
+    ![user](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-user.png?raw=true)
+    ![shop](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-shop.png?raw=true)    
+
 5. Perpus Imaji
 
     An application for library management. I build this for `Selasar Imaji` a social community based on Bandung which focused on improving child literacy. The app help volunteers to work as an amateur libraian. I work on this project as a community contribution project.
     [Source Code](https://github.com/alifgiant/Perpus-Selasar-Imaji)
+    ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/perpus/perpus.png?raw=true)
 
 6. UKM Market
 
     An e-commerce application for startup with same name. I work as freelance developer on ongoing project. I specifically work on the checkout process.
     
-7. Auto 1000
+7. Auto2000
 
     App for doing real time tracking of sales. I work as mobile app lead developer. The team trying to implement `realtime tracking` using GPS which embeded on the mobile phone. 
+    ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/auto2000/auto2000.png?raw=true)
 
 8. PentAs
 
     App which focused on simplifing activities scheduling for elder people. The app is a research done by a Telkom University student.
+    ![pentas](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/auto2000/pentas.png?raw=true)
 
 9. Land on Stage
 
     A games about world wide known circus shows which has mission to bring fun for kids all over the world. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game. The game it self won several awards such as `Mobile Games Developer Competition - Rookie` and runner up at Indonesian `Imagine Cup`.
+    ![los-1](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/los/los-1.png?raw=true)
+    ![los-2](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/los/los-2.png?raw=true)
 
 10. PilihanKu
 
     A games to teach kid about making right decision. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game.
+    ![pilihan](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pilihan/pilihan.png?raw=true)
 
 ## Organization
 ### Social
@@ -133,7 +153,7 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 - Deployment : Heroku, Firebase Host, Docker, Google Cloud Platform
 ### Tools
 - Version Control : GIT
-- Image Editor : Photoshop CS6, Figma
+- Image Editor : Photoshop CS6, Figma, Abstract
 - IDE : Android Studio, Visual Studio, Platform.io
 - Collaboration : Notion, Miro, Google hangout, google drive 
 - Document : Office Suite, Google Docs suite, LaTex, Markdown
