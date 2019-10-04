@@ -190,8 +190,8 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 8. Runner Up, Smart Application Category of Indonesia C-Gen, 2015
 9. Runner Up, Smart Application Blue Techno Telkom-U, 2015
 10. Winner, MGDC Rookie Dicoding, 2015
-11. Outstanding stundent, Informatic Department Telkom University, 2015
-12. Outstanding stundent, Rektor Award Telkom University, 2015
+11. Outstanding student, Informatic Department Telkom University, 2015
+12. Outstanding student, Rektor Award Telkom University, 2015
 13. Top 7, Makasssar 1.0 Hackathon, 2016
 14. Pitch Round, Swiss Innovation, 2016
 15. Semi Finalist, Global Innovator-4YFN, 2016
