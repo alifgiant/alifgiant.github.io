@@ -50,11 +50,12 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 
     ![sic](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/sic/sic.png?raw=true)
 
-2. Sabang 17
+2. E-Niaja
 
-    The aplication is requested by HMI (Himpunan Mahasiswa Islam of Jawa Barat branch. The app consist of mobile app and admin web dashboard. I work alone for the app and website, which was possible bacause i am using `Firebase` platform from google as database and serverless.
+    The aplication is build to accomadate the needs to handle presence system of local gov office in Makassar. The app is design to replace presence device. The app build using flutter and implement many mobile phone native APIs like fingerprint, QR Code reader, and coordinate reader (GPS). The backend system is handled by other person in the team while all the work on mobile apps is done by myself.
 
-    [Play Store](https://play.google.com/store/apps/details?id=com.buahbatu.sabang17) and [Site](https://sabang-17.firebaseapp.com/)
+    ![e-niaja](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/e-niaja/e-niaja.png?raw=true)
+    [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/freelance/e-niaja)
 
 3. SatuTanya
 
@@ -80,28 +81,34 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
     An application for library management. I build this for `Selasar Imaji` a social community based on Bandung which focused on improving child literacy. The app help volunteers to work as an amateur libraian. I work on this project as a community contribution project.
     [Source Code](https://github.com/alifgiant/Perpus-Selasar-Imaji)
     ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/perpus/perpus.png?raw=true)
-
-6. UKM Market
-
-    An e-commerce application for startup with same name. I work as freelance developer on ongoing project. I specifically work on the checkout process.
     
-7. Auto2000
+6. Auto2000
 
     App for doing real time tracking of sales. I work as mobile app lead developer. The team trying to implement `realtime tracking` using GPS which embeded on the mobile phone. 
     ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/auto2000/auto2000.png?raw=true)
 
-8. PentAs
+7. Sabang 17
+
+    The aplication is requested by HMI (Himpunan Mahasiswa Islam of Jawa Barat branch. The app consist of mobile app and admin web dashboard. I work alone for the app and website, which was possible bacause i am using `Firebase` platform from google as database and serverless.
+
+    [Play Store](https://play.google.com/store/apps/details?id=com.buahbatu.sabang17) and [Site](https://sabang-17.firebaseapp.com/)
+
+8. UKM Market
+
+    An e-commerce application for startup with same name. I work as freelance developer on ongoing project. I specifically work on the checkout process.
+
+9. PentAs
 
     App which focused on simplifing activities scheduling for elder people. The app is a research done by a Telkom University student.
     ![pentas](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pentas/pentas.png?raw=true)
 
-9. Land on Stage
+10. Land on Stage
 
     A games about world wide known circus shows which has mission to bring fun for kids all over the world. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game. The game it self won several awards such as `Mobile Games Developer Competition - Rookie` and runner up at Indonesian `Imagine Cup`.
     ![los-1](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/los/los-1.png?raw=true)
     ![los-2](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/los/los-2.png?raw=true)
 
-10. PilihanKu
+11. PilihanKu
 
     A games to teach kid about making right decision. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game.
     ![pilihan](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pilihan/pilihan.png?raw=true)
