@@ -44,20 +44,14 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
 [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/xtremax)
 
 ### Freelance and Self-Employeed Developer, (`Aug 2016 - now`)
-1. SIC Commerce
-
-    The aplication is requested by a collegue to help him built his company's commerce website. The project consist of a website and a mobile app. I work as the project manager and developer lead. The team working on the project mostly work remotely from jakarta and bandung. The project progress is documented using online tools `Notion` and the team doing online meeting on `google hangout`. 
-
-    ![sic](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/sic/sic.png?raw=true)
-
-2. E-Niaja
+1. E-Niaja
 
     The aplication is build to accomadate the needs to handle presence system of local gov office in Makassar. The app is design to replace presence device. The app build using `flutter` and implement many mobile phone native APIs like fingerprint, QR Code reader, and coordinate reader `(GPS)`. The backend system is handled by other person in the team while all the work on mobile apps is done by myself.
 
     ![e-niaja](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/e-niaja/e-niaja.png?raw=true)
     [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/freelance/e-niaja)
 
-3. Relieve.Id
+2. Relieve.Id
 
     A product of my team to help Users being aware of disaster near them and their families. We called the innovation as `"Disaster ready family app"`. The app is built using `Flutter`, `Google Cloud Platform`, and `Firebase`. I work on the mobile client and Website Page also act as the project manager.
 
@@ -65,7 +59,7 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
     ![relieve_id](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/relieve/relieve-app.png?raw=true)
     [Website](https://relieve-production.web.app)
 
-4. SatuTanya
+3. SatuTanya
 
     An app that pick random questions, from a set of question list, to be asked during any gathering with friends or family. I set the database on Firebase, configs on github and implement `google admobs` as a revenue stream. I also work alone for this project. Satu tanya is built using the hyped technology called `Flutter` which allow developer to code once and publish it for both android and iOS. 
 
@@ -75,7 +69,7 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
     ![satu-tanya](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/satu-tanya/satu-analytic-1.png?raw=true)
     [More Screenshots](https://github.com/alifgiant/alifgiant.github.io/tree/master/images/portfolio/freelance/satu-tanya)
 
-5. PesanMang
+4. PesanMang
     
     The project consist of two apps. The app is about food ordering and delivery system which let the seller deliver their own food. The product targeted those merchant which already has their own delivery fleet. The app is build on top google cloud platform. I work on the project as mobile developer lead.
 
@@ -84,33 +78,33 @@ IoT on Heart Arrhythmia Real Time Monitoring, [Indo-JC, 2018](https://socj.telko
     ![shop](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-shop.png?raw=true)    
     ![user](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pesan-mang/pesan-user.png?raw=true)
     
-6. Perpus Imaji
+5. Perpus Imaji
 
     An application for library management. I build this for `Selasar Imaji` a social community based on Bandung which focused on improving child literacy. The app help volunteers to work as an amateur libraian. I work on this project as a community contribution project.
     [Source Code](https://github.com/alifgiant/Perpus-Selasar-Imaji)
     ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/perpus/perpus.png?raw=true)
     
-7. Auto2000
+6. Auto2000
 
     App for doing real time tracking of sales. I work as mobile app lead developer. The team trying to implement `realtime tracking` using GPS which embeded on the mobile phone. 
     ![perpus](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/auto2000/auto2000.png?raw=true)
 
-8. Sabang 17
+7. Sabang 17
 
     The aplication is requested by HMI (Himpunan Mahasiswa Islam of Jawa Barat branch. The app consist of mobile app and admin web dashboard. I work alone for the app and website, which was possible bacause i am using `Firebase` platform from google as database and serverless.
 
     [Play Store](https://play.google.com/store/apps/details?id=com.buahbatu.sabang17) and [Site](https://sabang-17.firebaseapp.com/)
 
-10. UKM Market
+8. UKM Market
 
     An e-commerce application for startup with same name. I work as freelance developer on ongoing project. I specifically work on the checkout process.
 
-11. PentAs
+9. PentAs
 
     App which focused on simplifing activities scheduling for elder people. The app is a research done by a Telkom University student.
     ![pentas](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/pentas/pentas.png?raw=true)
 
-12. Land on Stage
+10. Land on Stage
 
     A games about world wide known circus shows which has mission to bring fun for kids all over the world. The game is built on `Unity3D`. I work as a game developer on multiple stages/levels in the game. The game it self won several awards such as `Mobile Games Developer Competition - Rookie` and runner up at Indonesian `Imagine Cup`.
     ![los-1](https://github.com/alifgiant/alifgiant.github.io/blob/master/images/portfolio/freelance/los/los-1.png?raw=true)
