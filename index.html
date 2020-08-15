@@ -1,62 +1,79 @@
 <!DOCTYPE HTML>
-<!--
-	Strata by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 
 <head>
-	<title>Alif Akbar Personal Portofolio</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery.poptrox.min.js"></script>
-	<script src="js/skel.min.js"></script>
-	<script src="js/init.js"></script>
-	<noscript>
-		<link rel="stylesheet" href="css/skel.css" />
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/style-xlarge.css" />
-	</noscript>
-	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	<title>Alif Akbar Site</title>
+	<meta name="description" content="Blog of whom love to learn new things and challenge himself." />
+	<meta property="og:title" content="Alif Akbar Site" />
+	<meta property="og:site_name" content="alifakbar.com" />
+	<meta property="og:description" content="Blog of whom love to learn new things and challenge himself." />
+	<meta property="og:type" content="blog.blog" />
+	<meta property="og:url" content="/" />
+	<meta property="og:image" content={`${withPrefix("/")}favicon.png`} />
+	<script defer src="https://kit.fontawesome.com/ad68aef9c2.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="css/my.css">
 </head>
 
-<body id="top">
-
-	<!-- Header -->
-	<header id="header">
-		<a href="#" class="image avatar"><img src="images/avatar.png" alt="" /></a>
-		<h1><strong>Hello! I am Alif</strong>, <br />
-			I am interested in software development<br />
-			Maintenence 😆
-			Especially android and game dev.</h1>
-	</header>
-
-
-
-	<!-- Footer -->
-	<footer id="footer">
-		<ul class="icons">
-			<li><a href="http://fb.com/m.alif.akbar" target="_blank" class="icon fa-facebook"><span
-						class="label">Facebook</span></a></li>
-			<li><a href="http://twitter.com/alifgiant" target="_blank" class="icon fa-twitter"><span
-						class="label">Twitter</span></a></li>
-			<li><a href="http://github.com/alifgiant" target="_blank" class="icon fa-github"><span
-						class="label">Github</span></a></li>
-			<li><a href="http://instagram.com/muh.alifgiant" target="_blank" class="icon fa-instagram"><span
-						class="label">Instagram</span></a></li>
-			<li><a href="http://alifgiant.tumblr.com" target="_blank" class="icon fa-tumblr"><span
-						class="label">tumblr</span></a></li>
-		</ul>
-		<ul class="copyright">
-			<li>&copy; alifgiant web portofolio</li>
-			<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-		</ul>
+<body>
+	<div class="uk-section" id="about">
+		<div class="uk-container">
+			<div class="uk-flex uk-flex-center uk-flex-wrap">
+				<div>
+					<img class="uk-border-circle"
+						src="https://www.gravatar.com/avatar/6f16a13c13154a4060cd0a9c88e9b078?s=200&d=monsterid&r=g"
+						alt="Portfolios" width="100" height="100" loading="lazy" />
+				</div>
+				<div class="alif profile">
+					<div class="uk-text-large uk-text-bolder uk-text-center uk-text-left@s alif title">
+						Muhammad Alif Akbar
+					</div>
+					<div class="uk-text-center uk-text-left@s alif subtitle">
+						Blog of whom love to learn new things and challenge himself.
+					</div>
+					<div
+						class="uk-text-center uk-text-left@s uk-text-bolder uk-text-italic uk-margin-top alif subtitle">
+						'"Non est ad astra mollis e terris via" -Seneca'
+					</div>
+					<div class="uk-flex uk-flex-wrap uk-flex-center uk-flex-left@s uk-margin-small-top">
+						<a href="https://fb.com/m.alif.akbar" key="socmed-Facebook" style="text-decoration: none;"
+							class="uk-margin-small-right uk-icon-button">
+							<span class="fab fa-facebook-f" />
+						</a>
+						<a href="https://instagram.com/muh.alifgiant" key="socmed-Instagram"
+							style="text-decoration: none;" class="uk-margin-small-right uk-icon-button">
+							<span class="fab fa-instagram" />
+						</a>
+						<a href="https://www.linkedin.com/in/muhammad-alif-akbar/" key="socmed-LinkedIn"
+							style="text-decoration: none;" class="uk-margin-small-right uk-icon-button">
+							<span class="fab fa-linkedin-in" />
+						</a>
+						<a href="https://github.com/alifgiant" key="socmed-Github" style="text-decoration: none;"
+							class="uk-margin-small-right uk-icon-button">
+							<span class="fab fa-github" />
+						</a>
+						<a href="mailto:hello@alifakbar.com" key="socmed-Email" style="text-decoration: none;"
+							class="uk-margin-small-right uk-icon-button">
+							<span class="far fa-envelope" />
+						</a>
+						<a class="uk-button uk-button-primary primary-button" href={page.cv}>
+							Read My CV
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="uk-section" id="blog-list">
+		<div class="uk-container blog">
+			<!-- <BlogRoll /> -->
+		</div>
+	</div>
+	<footer>
+		<div class="uk-container blog uk-text-small uk-text-center uk-margin-bottom uk-text-muted	">
+			Copyright © 2020 Muhammad Alif Akbar. All Rights Reserved.
+		</div>
 	</footer>
-
 </body>
 
 </html>
