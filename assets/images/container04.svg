@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Design" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1280 720" style="enable-background:new 0 0 1280 720;" xml:space="preserve">
+<style type="text/css">
+	.st0 { fill: none; stroke: #000000; stroke-miterlimit:10; stroke-width: 1px; enable-background: new; }
+</style>
+<path class="st0" d="M184.6,73.9L572.5-314c37.3-37.3,97.8-37.3,135.1,0l387.9,387.9c60.2,60.2,17.6,163-67.5,163H252.1 C167,236.9,124.4,134.1,184.6,73.9z" vector-effect="non-scaling-stroke" />
+<path class="st0" d="M1384.5,659.6l-387.9,387.9c-37.3,37.3-97.8,37.3-135.1,0L473.7,659.6c-60.2-60.2-17.6-163,67.5-163H1317 C1402.1,496.5,1444.7,599.4,1384.5,659.6z" vector-effect="non-scaling-stroke"  />
+<path class="st0" d="M674.9-551.7l387.9,387.9c37.3,37.3,37.3,97.8,0,135.1L674.9,359.1c-60.2,60.2-163,17.5-163-67.5v-775.7 C511.8-569.3,614.7-611.9,674.9-551.7z" vector-effect="non-scaling-stroke" />
+<path class="st0" d="M508.6,886.4L120.8,498.6c-37.3-37.3-37.3-97.8,0-135.1L508.6-24.4c60.2-60.2,163-17.6,163,67.5v775.7 C671.7,904,568.8,946.6,508.6,886.4z" vector-effect="non-scaling-stroke" />
+</svg>
