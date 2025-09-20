@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex Chen's Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,67 +14,9 @@
             font-family: 'Inter', sans-serif;
             color: #1f2937;
             background-color: #f3f4f6;
-            padding: 0;
-            margin: 0;
         }
         .header {
             background: linear-gradient(to right, #1f2937, #374151);
-            color: white;
-            padding: 2.5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .header-content {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        .header-content h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            margin-bottom: 1rem;
-        }
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            gap: 0.5rem;
-        }
-        .contact-info .item {
-            display: flex;
-            align-items: center;
-        }
-        .contact-info a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .contact-info .icon {
-            color: #2dd4bf;
-            margin-right: 0.5rem;
-        }
-        .main-content {
-            padding: 2rem;
-        }
-        .section {
-            margin-bottom: 2rem;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .list-style-none {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .item-spacing {
-            margin-bottom: 0.5rem;
         }
         .list-style-none .item-spacing:before {
             content: '›';
@@ -81,213 +24,138 @@
             color: #2dd4bf;
             font-weight: bold;
         }
-        .experience-item {
-            margin-bottom: 1.5rem;
-        }
-        .experience-item h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 0.25rem;
-        }
-        .experience-item p.italic {
-            font-style: italic;
-            color: #6b7280;
-            margin: 0;
-        }
-        .experience-item ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-        .experience-item ul li {
-            margin-bottom: 0.5rem;
-        }
-        .education-item {
-            margin-bottom: 1rem;
-        }
-        .education-item h3 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: #1f2937;
-            margin-top: 0;
-            margin-bottom: 0.25rem;
-        }
-        .education-item p {
-            font-style: italic;
-            color: #6b7280;
-            margin: 0;
-        }
-        
-        /* Media query for small screens */
-        @media (min-width: 640px) {
-            .header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .header-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .header-content h1 {
-                margin-bottom: 0;
-            }
-            .contact-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .contact-info .item {
-                flex-direction: row;
-                align-items: center;
-            }
-        }
-        
+
         /* Print-specific styles for a clean PDF */
         @media print {
             body {
-                margin: 0 !important;
                 padding: 0 !important;
+                margin: 0 !important;
                 box-shadow: none !important;
                 background-color: white !important;
             }
             .header, .main-content {
                 padding: 1.5rem !important;
             }
-            .bg-gradient-to-r {
-                background: linear-gradient(to right, #1f2937, #374151) !important;
-                color: white !important;
-            }
-            .section-title-icon {
-                color: #2dd4bf !important;
-            }
-            a {
-                text-decoration: none !important;
-            }
-            .list-style-none li:before {
+            .list-style-none .item-spacing:before {
                 color: #2dd4bf !important;
             }
         }
     </style>
 </head>
-<body>
+<body class="p-0 m-0">
     <div class="resume-container">
         <!-- Header Section with a gradient -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="text-white">Alex Chen</h1>
-                <div class="contact-info">
-                    <div class="item">
-                        <i class="fa-solid fa-phone icon"></i>
-                        <a href="tel:555-123-4567">555-123-4567</a>
-                    </div>
-                    <div class="item">
-                        <i class="fa-solid fa-envelope icon"></i>
-                        <a href="mailto:alex.chen@email.com">alex.chen@email.com</a>
-                    </div>
-                    <div class="item">
-                        <i class="fa-brands fa-linkedin icon"></i>
-                        <a href="https://www.linkedin.com/in/alexchen">/in/alexchen</a>
-                    </div>
+        <header class="header text-white p-10 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+            <h1 class="text-3xl font-bold tracking-tight mb-4 sm:mb-0">Alex Chen</h1>
+            <div class="contact-info flex flex-col text-sm gap-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-[#2dd4bf]"></i>
+                    <a href="tel:555-123-4567" class="text-white">555-123-4567</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-[#2dd4bf]"></i>
+                    <a href="mailto:alex.chen@email.com" class="text-white">alex.chen@email.com</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-brands fa-linkedin text-[#2dd4bf]"></i>
+                    <a href="https://www.linkedin.com/in/alexchen" class="text-white">/in/alexchen</a>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content p-8">
             <!-- Professional Summary Section -->
-            <section class="section">
-                <h2 class="section-title">Professional Summary</h2>
-                <p>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Professional Summary</h2>
+                <p class="text-gray-700">
                     Results-driven Senior Software Engineer with over 8 years of experience designing, developing, and deploying scalable web applications and microservices. Proven leader in agile environments, with a track record of mentoring junior developers and driving cross-functional collaboration. Expertise in full-stack development, cloud architecture, and optimizing system performance to meet business goals.
                 </p>
             </section>
             
             <!-- Skills Section -->
-            <section class="section">
-                <h2 class="section-title">Skills</h2>
-                <ul class="list-style-none">
-                    <li class="item-spacing"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</li>
-                    <li class="item-spacing"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
-                    <li class="item-spacing"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</li>
-                    <li class="item-spacing"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
-                    <li class="item-spacing"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</li>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
+                <ul class="list-style-none p-0 m-0">
+                    <li class="item-spacing pb-2 text-gray-700"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</li>
                 </ul>
             </section>
 
             <!-- Work Experience Section (Simplified for ATS) -->
-            <section class="section">
-                <h2 class="section-title">Work Experience</h2>
-                <ul class="list-style-none">
-                    <li class="item-spacing"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
-                    <li class="item-spacing"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
-                    <li class="item-spacing"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Work Experience</h2>
+                <ul class="list-style-none p-0 m-0">
+                    <li class="item-spacing pb-2 text-gray-700"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
+                    <li class="item-spacing pb-2 text-gray-700"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
                 </ul>
             </section>
             
             <!-- Key Projects & Contributions Section -->
-            <section class="section">
-                <h2 class="section-title">Key Projects & Contributions</h2>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Key Projects & Contributions</h2>
                 
-                <div class="experience-item">
-                    <h3>E-commerce Platform Development</h3>
-                    <p class="italic">at Tech Innovators, Inc.</p>
-                    <ul>
-                        <li>Spearheaded the development of a new e-commerce platform, leading a team of 5 engineers to implement a new caching strategy that increased transaction speed by 30% and reduced server costs by 15% within six months.</li>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">E-commerce Platform Development</h3>
+                    <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li class="mb-2">Spearheaded the development of a new e-commerce platform, leading a team of 5 engineers to implement a new caching strategy that increased transaction speed by 30% and reduced server costs by 15% within six months.</li>
                         <li>Designed and built scalable APIs using Node.js and RESTful principles, supporting a user base of over 1 million active monthly users.</li>
                     </ul>
                 </div>
 
-                <div class="experience-item">
-                    <h3>Legacy System Migration</h3>
-                    <p class="italic">at Tech Innovators, Inc.</p>
-                    <ul>
-                        <li>Drove the migration of legacy monolithic applications to a modern microservices architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Legacy System Migration</h3>
+                    <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li class="mb-2">Drove the migration of legacy monolithic applications to a modern microservices architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
                         <li>Mentored 3 junior software engineers, providing technical guidance, conducting code reviews, and fostering a collaborative team environment.</li>
                     </ul>
                 </div>
 
-                <div class="experience-item">
-                    <h3>SaaS Product Feature Development</h3>
-                    <p class="italic">at Digital Solutions Co.</p>
-                    <ul>
-                        <li>Developed and maintained core features for a SaaS product, resulting in a 25% increase in customer retention over two years.</li>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">SaaS Product Feature Development</h3>
+                    <p class="italic text-gray-500 text-sm mb-2">at Digital Solutions Co.</p>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li class="mb-2">Developed and maintained core features for a SaaS product, resulting in a 25% increase in customer retention over two years.</li>
                         <li>Reduced database query times by 40% by refactoring complex SQL queries and implementing performance tuning strategies.</li>
                     </ul>
                 </div>
 
-                <div class="experience-item">
-                    <h3>Serverless Portfolio Site</h3>
-                    <p class="italic">Side Projects</p>
-                    <ul>
-                        <li>A high-performance, cost-effective personal portfolio site hosted entirely on serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native development.</li>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Serverless Portfolio Site</h3>
+                    <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li class="mb-2">A high-performance, cost-effective personal portfolio site hosted entirely on serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native development.</li>
                     </ul>
                 </div>
 
-                <div class="experience-item">
-                    <h3>Real-Time Chat Application</h3>
-                    <p class="italic">Side Projects</p>
-                    <ul>
-                        <li>A full-stack application built with React, Node.js, and WebSockets that provides real-time, bi-directional communication between clients and a server, showcasing skills in real-time data handling.</li>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Real-Time Chat Application</h3>
+                    <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li class="mb-2">A full-stack application built with React, Node.js, and WebSockets that provides real-time, bi-directional communication between clients and a server, showcasing skills in real-time data handling.</li>
                     </ul>
                 </div>
 
             </section>
 
             <!-- Education Section -->
-            <section class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-item">
-                    <h3>Master of Science, Computer Science</h3>
-                    <p>University of Washington, 2015</p>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Education</h2>
+                <div class="mb-2">
+                    <h3 class="text-base font-semibold text-gray-800 mb-1">Master of Science, Computer Science</h3>
+                    <p class="italic text-gray-500 text-sm mb-0">University of Washington, 2015</p>
                 </div>
-                <div class="education-item">
-                    <h3>Bachelor of Science, Computer Engineering</h3>
-                    <p>Oregon State University, 2013</p>
+                <div>
+                    <h3 class="text-base font-semibold text-gray-800 mb-1">Bachelor of Science, Computer Engineering</h3>
+                    <p class="italic text-gray-500 text-sm mb-0">Oregon State University, 2013</p>
                 </div>
             </section>
-
         </main>
     </div>
 </body>
