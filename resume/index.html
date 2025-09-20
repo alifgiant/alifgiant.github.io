@@ -31,10 +31,10 @@
         @media print {
             body {
                 background-color: white !important;
-                padding: 0 !important;
+                padding: 0.75in !important;
             }
             .max-w-4xl {
-                max-width: none !important;
+                max-width: 100% !important;
             }
             .bg-white, .shadow-xl, .rounded-2xl {
                 background-color: white !important;
@@ -42,22 +42,26 @@
                 border-radius: 0 !important;
             }
             .bg-gradient-to-r {
-                background: none !important;
-                background-color: #4b5563 !important; /* A solid color for the header */
+                background: linear-gradient(to right, #1f2937, #374151) !important;
                 color: white !important;
             }
             .p-4, .p-6, .p-8 {
+                padding: 0 !important;
+            }
+            main {
                 padding: 1rem !important;
             }
-            h1, h2, h3, b {
-                color: #000 !important;
+            h1, h2, h3, b, .section-title, .text-teal-400 {
+                color: #4b5563 !important; /* Keep section title and icon colors */
+            }
+            header a, header .fa-solid, header .fa-brands {
+                color: #fff !important; /* Keep header text/icon white for contrast */
             }
             a {
-                color: #000 !important;
                 text-decoration: none !important;
             }
-            .text-teal-400 {
-                color: #000 !important; /* Make icons black */
+            .section-title, .text-teal-400 {
+                color: #2dd4bf !important; /* Vibrant teal */
             }
         }
     </style>
