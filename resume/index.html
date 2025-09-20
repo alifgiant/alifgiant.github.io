@@ -11,6 +11,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            color: #1f2937;
             background-color: #f3f4f6;
             padding: 0;
             margin: 0;
@@ -66,27 +67,18 @@
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
         }
-        .section-title-icon {
-            color: #4b5563;
-        }
-        .skills-list {
-            display: flex;
-            flex-direction: column;
-            color: #4b5563;
-        }
         .list-style-none {
             list-style: none;
             padding: 0;
             margin: 0;
-            color: #4b5563;
         }
-        .list-style-none li {
+        .item-spacing {
             margin-bottom: 0.5rem;
         }
-        .list-style-none li:before {
+        .list-style-none .item-spacing:before {
             content: '›';
             margin-right: 0.5rem;
-            color: #4b5563;
+            color: #2dd4bf;
             font-weight: bold;
         }
         .experience-item {
@@ -96,18 +88,20 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: #1f2937;
+            margin-bottom: 0.25rem;
         }
         .experience-item p.italic {
             font-style: italic;
             color: #6b7280;
-            margin-top: 0.25rem;
-            margin-bottom: 0.5rem;
+            margin: 0;
         }
         .experience-item ul {
             list-style-type: disc;
             padding-left: 1.5rem;
             margin-top: 0.5rem;
-            color: #4b5563;
+        }
+        .experience-item ul li {
+            margin-bottom: 0.5rem;
         }
         .education-item {
             margin-bottom: 1rem;
@@ -116,11 +110,13 @@
             font-size: 1.125rem;
             font-weight: 500;
             color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
         }
         .education-item p {
             font-style: italic;
             color: #6b7280;
-            margin-top: 0.25rem;
+            margin: 0;
         }
         
         /* Media query for small screens */
@@ -130,21 +126,21 @@
                 justify-content: space-between;
                 align-items: center;
             }
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
             .header-content h1 {
                 margin-bottom: 0;
             }
             .contact-info {
-                flex-direction: row;
-                gap: 1.5rem;
+                flex-direction: column;
+                gap: 0.5rem;
             }
             .contact-info .item {
                 flex-direction: row;
                 align-items: center;
-            }
-            .skills-list {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 1rem;
             }
         }
         
@@ -211,22 +207,22 @@
             <!-- Skills Section -->
             <section class="section">
                 <h2 class="section-title">Skills</h2>
-                <div class="skills-list">
-                    <p><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</p>
-                    <p><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</p>
-                    <p><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</p>
-                    <p><b>Databases:</b> PostgreSQL, MongoDB, Redis</p>
-                    <p><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</p>
-                </div>
+                <ul class="list-style-none">
+                    <li class="item-spacing"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</li>
+                    <li class="item-spacing"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
+                    <li class="item-spacing"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</li>
+                    <li class="item-spacing"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
+                    <li class="item-spacing"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</li>
+                </ul>
             </section>
 
             <!-- Work Experience Section (Simplified for ATS) -->
             <section class="section">
                 <h2 class="section-title">Work Experience</h2>
                 <ul class="list-style-none">
-                    <li><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
-                    <li><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
-                    <li><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
+                    <li class="item-spacing"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
+                    <li class="item-spacing"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
+                    <li class="item-spacing"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
                 </ul>
             </section>
             
