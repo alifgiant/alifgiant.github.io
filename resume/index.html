@@ -85,9 +85,9 @@
         <section class="mb-8">
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Professional Summary</h2>
             <p class="text-gray-700">
-                Results-driven Senior Mobile App Engineer with <b>over 8 years of experience</b>, specializing in
-                building robust and scalable cross-platform solutions with <b>Flutter</b>. I possess a comprehensive
-                understanding of the entire app lifecycle, from initial concept into deployment to post-release
+                Results-driven Senior Mobile App Engineer with <b>8 years of experience</b>, specializing in
+                building robust and scalable cross-platform solutions with <b>Flutter</b>. I possess a <b>comprehensive
+                    understanding of the entire app lifecycle</b>, from initial concept into deployment to post-release
                 monitoring and maintenance. My expertise lies in architecting and optimizing applications, and I am
                 passionate about leveraging cutting-edge technology to create engaging mobile applications that deliver
                 significant business value.
@@ -98,14 +98,13 @@
         <section class="mb-8">
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
             <ul class="list-disc-marker p-0 m-0">
-                <li class="mb-2 text-gray-700"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java
-                </li>
-                <li class="mb-2 text-gray-700"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
-                <li class="mb-2 text-gray-700"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS),
-                    Docker, Kubernetes</li>
-                <li class="mb-2 text-gray-700"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
-                <li class="mb-2 text-gray-700"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful
-                    APIs</li>
+                <li class="mb-2 text-gray-700"><b>Mobile App:</b> Android, iOS, Flutter, Dart, Kotlin, Java, Swift, FCM,
+                    Sockets</li>
+                <li class="mb-2 text-gray-700"><b>DevOps:</b> Git, CI/CD, Docker, Firebase, Datadog, Clarity</li>
+                <li class="mb-2 text-gray-700"><b>Backend:</b> Node.js, Express.js, JS, Hono.js, Cloudflare Worker,
+                    PostgreSQL</li>
+                <li class="mb-2 text-gray-700"><b>Other Tools:</b> Jira, Notion, Confluence, Slack, Superset, Cursor,
+                    Claude, n8n</li>
             </ul>
         </section>
 
@@ -113,12 +112,10 @@
         <section class="mb-8">
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Work Experience</h2>
             <ul class="list-disc-marker p-0 m-0">
-                <li class="mb-2 text-gray-700"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 –
-                    Present)</li>
-                <li class="mb-2 text-gray-700"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May
-                    2021)</li>
-                <li class="mb-2 text-gray-700"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July
-                    2017)</li>
+                <li class="mb-2 text-gray-700"><b>Senior Software Engineer, Mobile</b>, Grab | (Aug 2021 - Present)</li>
+                <li class="mb-2 text-gray-700"><b>Software Engineer, Mobile Apps</b>, Bukalapak | (Apr 2018
+                    - Jul 2021)</li>
+                <li class="mb-2 text-gray-700"><b>Back End Developer</b>, Xtremax | (Oct 2017 - Mar 2018)</li>
             </ul>
         </section>
 
@@ -127,31 +124,36 @@
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Key Projects & Contributions</h2>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">E-commerce Platform Development</h3>
-                <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">GrabMerchant App Optimization</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Grab</p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Spearheaded the development of a new e-commerce platform, leading a team of 5
-                        engineers to implement a new caching strategy that increased transaction speed by 30% and
-                        reduced server costs by 15% within six months.</li>
-                    <li>Designed and built scalable APIs using Node.js and RESTful principles, supporting a user base of
-                        over 1 million active monthly users.</li>
+                    <li>Reduce app memory usage by 16.9%, by finding rarely used Isolate and removing it.</li>
+                    <li>Reduce critical webview load time from ~10s to <1s, by enabling content preload.</li>
+                    <li>Reduce localization delivery time from biweekly to daily, by designing and delivering
+                        localization Over The Air workflow.</li>
+                    <li>Reduce overall app size by 2%, by enabling asset compression on git pipeline.</li>
+                    <li>Improve more menu's page load time by 38%, by strategically create factory pattern over the menu
+                        options and run them in parallel. Furthermore, succesfully incrase the module code coverage by
+                        15%</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Legacy System Migration</h3>
-                <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Architecture Migration From FishRedux to MVVM</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Grab</p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Drove the migration of legacy monolithic applications to a modern microservices
-                        architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
-                    <li>Mentored 3 junior software engineers, providing technical guidance, conducting code reviews, and
+                    <li class="mb-2">Unblocking Flutter Version Upgrade</li>
+                    <li>Static code analysis to find code owners and creating adoption chart</li>
+                    <li>Plan for migration of architecture from FishRedux to In House MVVM and Design plug and play route selection on RouteMap</li>
+                    <li>Oversee removal of 1400 code file of deprecated FishRedux</li>
+                    <li>Mentored 5+ junior/mid software engineers, providing technical guidance, conducting code reviews, and
                         fostering a collaborative team environment.</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">SaaS Product Feature Development</h3>
-                <p class="italic text-gray-500 text-sm mb-2">at Digital Solutions Co.</p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Complete Rewrite of An Internal App To Flutter</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Grab</p>
                 <ul class="list-disc pl-6 text-gray-700">
                     <li class="mb-2">Developed and maintained core features for a SaaS product, resulting in a 25%
                         increase in customer retention over two years.</li>
@@ -161,17 +163,28 @@
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Serverless Portfolio Site</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Multiple Payment Gateway Integration</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Bukalapak</p>
                 <ul class="list-disc pl-6 text-gray-700">
                     <li class="mb-2">A high-performance, cost-effective personal portfolio site hosted entirely on
                         serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native
                         development.</li>
+                    <li>Reduce codebase by 15%</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Real-Time Chat Application</h3>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Fullstack Devlopment of Pharmacy Management System</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">A full-stack application built with React, Node.js, and WebSockets that provides
+                        real-time, bi-directional communication between clients and a server, showcasing skills in
+                        real-time data handling.</li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Face Recognition for Attendance System</h3>
                 <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
                 <ul class="list-disc pl-6 text-gray-700">
                     <li class="mb-2">A full-stack application built with React, Node.js, and WebSockets that provides
