@@ -8,17 +8,80 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2bF6/K68E8M8T1zN6nB/4r+j7S6a2f8d8u2V9V1R6K8h8R5c4oI4v5i7F5Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
+            padding: 0;
+            margin: 0;
+        }
+        .header {
+            background: linear-gradient(to right, #1f2937, #374151);
+            color: white;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .header-content h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 1rem;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            gap: 0.5rem;
+        }
+        .contact-info .item {
+            display: flex;
+            align-items: center;
+        }
+        .contact-info a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .contact-info .icon {
+            color: #2dd4bf;
+            margin-right: 0.5rem;
+        }
+        .main-content {
+            padding: 2rem;
+        }
+        .section {
+            margin-bottom: 2rem;
         }
         .section-title {
-            color: #4b5563; /* A professional dark gray */
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .section-title-icon {
+            color: #4b5563;
+        }
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            color: #4b5563;
         }
         .list-style-none {
             list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #4b5563;
+        }
+        .list-style-none li {
+            margin-bottom: 0.5rem;
         }
         .list-style-none li:before {
             content: '›';
@@ -26,84 +89,129 @@
             color: #4b5563;
             font-weight: bold;
         }
-
+        .experience-item {
+            margin-bottom: 1.5rem;
+        }
+        .experience-item h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .experience-item p.italic {
+            font-style: italic;
+            color: #6b7280;
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .experience-item ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            color: #4b5563;
+        }
+        .education-item {
+            margin-bottom: 1rem;
+        }
+        .education-item h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+        .education-item p {
+            font-style: italic;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        
+        /* Media query for small screens */
+        @media (min-width: 640px) {
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .header-content h1 {
+                margin-bottom: 0;
+            }
+            .contact-info {
+                flex-direction: row;
+                gap: 1.5rem;
+            }
+            .contact-info .item {
+                flex-direction: row;
+                align-items: center;
+            }
+            .skills-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+        
         /* Print-specific styles for a clean PDF */
         @media print {
             body {
-                background-color: white !important;
-                padding: 0.75in !important;
-            }
-            .max-w-4xl {
-                max-width: 100% !important;
-            }
-            .bg-white, .shadow-xl, .rounded-2xl {
-                background-color: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
                 box-shadow: none !important;
-                border-radius: 0 !important;
+                background-color: white !important;
+            }
+            .header, .main-content {
+                padding: 1.5rem !important;
             }
             .bg-gradient-to-r {
                 background: linear-gradient(to right, #1f2937, #374151) !important;
                 color: white !important;
             }
-            .p-4, .p-6, .p-8 {
-                padding: 0 !important;
-            }
-            main {
-                padding: 1rem !important;
-            }
-            h1, h2, h3, b, .section-title, .text-teal-400 {
-                color: #4b5563 !important; /* Keep section title and icon colors */
-            }
-            header a, header .fa-solid, header .fa-brands {
-                color: #fff !important; /* Keep header text/icon white for contrast */
+            .section-title-icon {
+                color: #2dd4bf !important;
             }
             a {
                 text-decoration: none !important;
             }
-            .section-title, .text-teal-400 {
-                color: #2dd4bf !important; /* Vibrant teal */
+            .list-style-none li:before {
+                color: #2dd4bf !important;
             }
         }
     </style>
 </head>
-<body class="bg-gray-100 p-4 sm:p-8">
-    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-
+<body>
+    <div class="resume-container">
         <!-- Header Section with a gradient -->
-        <header class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 sm:p-8 rounded-t-2xl">
-            <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center">
-                <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4 sm:mb-0">Alex Chen</h1>
-                <div class="flex flex-col space-y-2 text-sm sm:text-base">
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-phone text-teal-400 mr-2"></i>
-                        <a href="tel:555-123-4567" class="hover:underline ml-1">555-123-4567</a>
+        <header class="header">
+            <div class="header-content">
+                <h1 class="text-white">Alex Chen</h1>
+                <div class="contact-info">
+                    <div class="item">
+                        <i class="fa-solid fa-phone icon"></i>
+                        <a href="tel:555-123-4567">555-123-4567</a>
                     </div>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-envelope text-teal-400 mr-2"></i>
-                        <a href="mailto:alex.chen@email.com" class="hover:underline ml-1">alex.chen@email.com</a>
+                    <div class="item">
+                        <i class="fa-solid fa-envelope icon"></i>
+                        <a href="mailto:alex.chen@email.com">alex.chen@email.com</a>
                     </div>
-                    <div class="flex items-center">
-                        <i class="fa-brands fa-linkedin text-teal-400 mr-2"></i>
-                        <a href="https://www.linkedin.com/in/alexchen" class="hover:underline ml-1">/in/alexchen</a>
+                    <div class="item">
+                        <i class="fa-brands fa-linkedin icon"></i>
+                        <a href="https://www.linkedin.com/in/alexchen">/in/alexchen</a>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="p-6 sm:p-8 space-y-8">
+        <main class="main-content">
             <!-- Professional Summary Section -->
-            <section class="mb-6">
-                <h2 class="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-4 section-title">Professional Summary</h2>
-                <p class="text-gray-700 leading-relaxed">
+            <section class="section">
+                <h2 class="section-title">Professional Summary</h2>
+                <p>
                     Results-driven Senior Software Engineer with over 8 years of experience designing, developing, and deploying scalable web applications and microservices. Proven leader in agile environments, with a track record of mentoring junior developers and driving cross-functional collaboration. Expertise in full-stack development, cloud architecture, and optimizing system performance to meet business goals.
                 </p>
             </section>
             
             <!-- Skills Section -->
-            <section class="mb-6">
-                <h2 class="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-4 section-title">Skills</h2>
-                <div class="flex flex-col sm:flex-row sm:flex-wrap text-gray-700 sm:gap-x-4">
+            <section class="section">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-list">
                     <p><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</p>
                     <p><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</p>
                     <p><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</p>
@@ -113,9 +221,9 @@
             </section>
 
             <!-- Work Experience Section (Simplified for ATS) -->
-            <section class="mb-6">
-                <h2 class="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-4 section-title">Work Experience</h2>
-                <ul class="list-style-none text-gray-700 space-y-2">
+            <section class="section">
+                <h2 class="section-title">Work Experience</h2>
+                <ul class="list-style-none">
                     <li><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
                     <li><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
                     <li><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
@@ -123,48 +231,48 @@
             </section>
             
             <!-- Key Projects & Contributions Section -->
-            <section class="mb-6">
-                <h2 class="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-4 section-title">Key Projects & Contributions</h2>
+            <section class="section">
+                <h2 class="section-title">Key Projects & Contributions</h2>
                 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">E-commerce Platform Development</h3>
-                    <p class="text-gray-600 italic mb-2">at Tech Innovators, Inc.</p>
-                    <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <div class="experience-item">
+                    <h3>E-commerce Platform Development</h3>
+                    <p class="italic">at Tech Innovators, Inc.</p>
+                    <ul>
                         <li>Spearheaded the development of a new e-commerce platform, leading a team of 5 engineers to implement a new caching strategy that increased transaction speed by 30% and reduced server costs by 15% within six months.</li>
                         <li>Designed and built scalable APIs using Node.js and RESTful principles, supporting a user base of over 1 million active monthly users.</li>
                     </ul>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">Legacy System Migration</h3>
-                    <p class="text-gray-600 italic mb-2">at Tech Innovators, Inc.</p>
-                    <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <div class="experience-item">
+                    <h3>Legacy System Migration</h3>
+                    <p class="italic">at Tech Innovators, Inc.</p>
+                    <ul>
                         <li>Drove the migration of legacy monolithic applications to a modern microservices architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
                         <li>Mentored 3 junior software engineers, providing technical guidance, conducting code reviews, and fostering a collaborative team environment.</li>
                     </ul>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">SaaS Product Feature Development</h3>
-                    <p class="text-gray-600 italic mb-2">at Digital Solutions Co.</p>
-                    <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <div class="experience-item">
+                    <h3>SaaS Product Feature Development</h3>
+                    <p class="italic">at Digital Solutions Co.</p>
+                    <ul>
                         <li>Developed and maintained core features for a SaaS product, resulting in a 25% increase in customer retention over two years.</li>
                         <li>Reduced database query times by 40% by refactoring complex SQL queries and implementing performance tuning strategies.</li>
                     </ul>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">Serverless Portfolio Site</h3>
-                    <p class="text-gray-600 italic mb-2">Side Projects</p>
-                    <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <div class="experience-item">
+                    <h3>Serverless Portfolio Site</h3>
+                    <p class="italic">Side Projects</p>
+                    <ul>
                         <li>A high-performance, cost-effective personal portfolio site hosted entirely on serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native development.</li>
                     </ul>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">Real-Time Chat Application</h3>
-                    <p class="text-gray-600 italic mb-2">Side Projects</p>
-                    <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                <div class="experience-item">
+                    <h3>Real-Time Chat Application</h3>
+                    <p class="italic">Side Projects</p>
+                    <ul>
                         <li>A full-stack application built with React, Node.js, and WebSockets that provides real-time, bi-directional communication between clients and a server, showcasing skills in real-time data handling.</li>
                     </ul>
                 </div>
@@ -172,15 +280,15 @@
             </section>
 
             <!-- Education Section -->
-            <section class="mb-6">
-                <h2 class="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-4 section-title">Education</h2>
-                <div class="mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">Master of Science, Computer Science</h3>
-                    <p class="text-gray-600 italic">University of Washington, 2015</p>
+            <section class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <h3>Master of Science, Computer Science</h3>
+                    <p>University of Washington, 2015</p>
                 </div>
-                <div>
-                    <h3 class="text-lg font-medium text-gray-800">Bachelor of Science, Computer Engineering</h3>
-                    <p class="text-gray-600 italic">Oregon State University, 2013</p>
+                <div class="education-item">
+                    <h3>Bachelor of Science, Computer Engineering</h3>
+                    <p>Oregon State University, 2013</p>
                 </div>
             </section>
 
