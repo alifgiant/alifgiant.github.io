@@ -12,16 +12,19 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            color: #1f2937;
-            background-color: #f3f4f6;
+            background-color: #F8F9FA;
+            color: #212529;
         }
         .header {
-            background: linear-gradient(to right, #1f2937, #374151);
+            background: linear-gradient(to right, #1a2a38, #34495e);
         }
-        .list-style-none .item-spacing:before {
+        .list-disc-marker {
+            list-style: none;
+        }
+        .list-disc-marker li:before {
             content: '›';
             margin-right: 0.5rem;
-            color: #2dd4bf;
+            color: #1a2a38;
             font-weight: bold;
         }
 
@@ -36,127 +39,125 @@
             .header, .main-content {
                 padding: 1.5rem !important;
             }
-            .list-style-none .item-spacing:before {
-                color: #2dd4bf !important;
+            .list-disc-marker li:before {
+                color: #0056b3 !important;
             }
         }
     </style>
 </head>
 <body class="p-0 m-0">
-    <div class="resume-container">
-        <!-- Header Section with a gradient -->
-        <header class="header text-white p-10 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-            <h1 class="text-3xl font-bold tracking-tight mb-4 sm:mb-0">Alex Chen</h1>
-            <div class="contact-info flex flex-col text-sm gap-2">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-phone text-[#2dd4bf]"></i>
-                    <a href="tel:555-123-4567" class="text-white">555-123-4567</a>
-                </div>
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-envelope text-[#2dd4bf]"></i>
-                    <a href="mailto:alex.chen@email.com" class="text-white">alex.chen@email.com</a>
-                </div>
-                <div class="flex items-center gap-2">
-                    <i class="fa-brands fa-linkedin text-[#2dd4bf]"></i>
-                    <a href="https://www.linkedin.com/in/alexchen" class="text-white">/in/alexchen</a>
-                </div>
+    <!-- Header Section with a gradient -->
+    <header class="header text-white p-10 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+        <h1 class="text-3xl font-bold tracking-tight mb-4 sm:mb-0">Alex Chen</h1>
+        <div class="flex flex-col text-sm gap-2">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-phone text-white"></i>
+                <a href="tel:555-123-4567" class="text-white">555-123-4567</a>
             </div>
-        </header>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-envelope text-white"></i>
+                <a href="mailto:alex.chen@email.com" class="text-white">alex.chen@email.com</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-brands fa-linkedin text-white"></i>
+                <a href="https://www.linkedin.com/in/alexchen" class="text-white">/in/alexchen</a>
+            </div>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main-content p-8">
-            <!-- Professional Summary Section -->
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Professional Summary</h2>
-                <p class="text-gray-700">
-                    Results-driven Senior Software Engineer with over 8 years of experience designing, developing, and deploying scalable web applications and microservices. Proven leader in agile environments, with a track record of mentoring junior developers and driving cross-functional collaboration. Expertise in full-stack development, cloud architecture, and optimizing system performance to meet business goals.
-                </p>
-            </section>
+    <!-- Main Content -->
+    <main class="main-content p-8">
+        <!-- Professional Summary Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Professional Summary</h2>
+            <p class="text-gray-700">
+                Results-driven Senior Software Engineer with over 8 years of experience designing, developing, and deploying scalable web applications and microservices. Proven leader in agile environments, with a track record of mentoring junior developers and driving cross-functional collaboration. Expertise in full-stack development, cloud architecture, and optimizing system performance to meet business goals.
+            </p>
+        </section>
+        
+        <!-- Skills Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
+            <ul class="list-disc-marker p-0 m-0">
+                <li class="mb-2 text-gray-700"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</li>
+                <li class="mb-2 text-gray-700"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
+                <li class="mb-2 text-gray-700"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</li>
+                <li class="mb-2 text-gray-700"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
+                <li class="mb-2 text-gray-700"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</li>
+            </ul>
+        </section>
+
+        <!-- Work Experience Section (Simplified for ATS) -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Work Experience</h2>
+            <ul class="list-disc-marker p-0 m-0">
+                <li class="mb-2 text-gray-700"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
+                <li class="mb-2 text-gray-700"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
+                <li class="mb-2 text-gray-700"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
+            </ul>
+        </section>
+        
+        <!-- Key Projects & Contributions Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Key Projects & Contributions</h2>
             
-            <!-- Skills Section -->
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
-                <ul class="list-style-none p-0 m-0">
-                    <li class="item-spacing pb-2 text-gray-700"><b>Programming Languages:</b> JavaScript (ES6+), Python, TypeScript, Java</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Frameworks & Libraries:</b> Node.js, React, Django, Express.js</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Cloud Platforms:</b> Amazon Web Services (AWS) (EC2, Lambda, S3, RDS), Docker, Kubernetes</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Databases:</b> PostgreSQL, MongoDB, Redis</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Tools & Methodologies:</b> Git, Jira, Agile, Scrum, CI/CD, RESTful APIs</li>
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">E-commerce Platform Development</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">Spearheaded the development of a new e-commerce platform, leading a team of 5 engineers to implement a new caching strategy that increased transaction speed by 30% and reduced server costs by 15% within six months.</li>
+                    <li>Designed and built scalable APIs using Node.js and RESTful principles, supporting a user base of over 1 million active monthly users.</li>
                 </ul>
-            </section>
+            </div>
 
-            <!-- Work Experience Section (Simplified for ATS) -->
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Work Experience</h2>
-                <ul class="list-style-none p-0 m-0">
-                    <li class="item-spacing pb-2 text-gray-700"><b>Senior Software Engineer</b>, Tech Innovators, Inc. | (June 2021 – Present)</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Software Engineer</b>, Digital Solutions Co. | (August 2017 – May 2021)</li>
-                    <li class="item-spacing pb-2 text-gray-700"><b>Junior Software Developer</b>, Startup Nexus | (September 2015 – July 2017)</li>
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Legacy System Migration</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">Drove the migration of legacy monolithic applications to a modern microservices architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
+                    <li>Mentored 3 junior software engineers, providing technical guidance, conducting code reviews, and fostering a collaborative team environment.</li>
                 </ul>
-            </section>
-            
-            <!-- Key Projects & Contributions Section -->
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Key Projects & Contributions</h2>
-                
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">E-commerce Platform Development</h3>
-                    <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
-                    <ul class="list-disc pl-6 text-gray-700">
-                        <li class="mb-2">Spearheaded the development of a new e-commerce platform, leading a team of 5 engineers to implement a new caching strategy that increased transaction speed by 30% and reduced server costs by 15% within six months.</li>
-                        <li>Designed and built scalable APIs using Node.js and RESTful principles, supporting a user base of over 1 million active monthly users.</li>
-                    </ul>
-                </div>
+            </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Legacy System Migration</h3>
-                    <p class="italic text-gray-500 text-sm mb-2">at Tech Innovators, Inc.</p>
-                    <ul class="list-disc pl-6 text-gray-700">
-                        <li class="mb-2">Drove the migration of legacy monolithic applications to a modern microservices architecture on AWS, improving system reliability and reducing deployment time by 50%.</li>
-                        <li>Mentored 3 junior software engineers, providing technical guidance, conducting code reviews, and fostering a collaborative team environment.</li>
-                    </ul>
-                </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">SaaS Product Feature Development</h3>
+                <p class="italic text-gray-500 text-sm mb-2">at Digital Solutions Co.</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">Developed and maintained core features for a SaaS product, resulting in a 25% increase in customer retention over two years.</li>
+                    <li>Reduced database query times by 40% by refactoring complex SQL queries and implementing performance tuning strategies.</li>
+                </ul>
+            </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">SaaS Product Feature Development</h3>
-                    <p class="italic text-gray-500 text-sm mb-2">at Digital Solutions Co.</p>
-                    <ul class="list-disc pl-6 text-gray-700">
-                        <li class="mb-2">Developed and maintained core features for a SaaS product, resulting in a 25% increase in customer retention over two years.</li>
-                        <li>Reduced database query times by 40% by refactoring complex SQL queries and implementing performance tuning strategies.</li>
-                    </ul>
-                </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Serverless Portfolio Site</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">A high-performance, cost-effective personal portfolio site hosted entirely on serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native development.</li>
+                </ul>
+            </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Serverless Portfolio Site</h3>
-                    <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
-                    <ul class="list-disc pl-6 text-gray-700">
-                        <li class="mb-2">A high-performance, cost-effective personal portfolio site hosted entirely on serverless architecture (AWS Lambda, API Gateway, S3) to demonstrate proficiency in cloud-native development.</li>
-                    </ul>
-                </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Real-Time Chat Application</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
+                <ul class="list-disc pl-6 text-gray-700">
+                    <li class="mb-2">A full-stack application built with React, Node.js, and WebSockets that provides real-time, bi-directional communication between clients and a server, showcasing skills in real-time data handling.</li>
+                </ul>
+            </div>
 
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Real-Time Chat Application</h3>
-                    <p class="italic text-gray-500 text-sm mb-2">Side Projects</p>
-                    <ul class="list-disc pl-6 text-gray-700">
-                        <li class="mb-2">A full-stack application built with React, Node.js, and WebSockets that provides real-time, bi-directional communication between clients and a server, showcasing skills in real-time data handling.</li>
-                    </ul>
-                </div>
+        </section>
 
-            </section>
-
-            <!-- Education Section -->
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Education</h2>
-                <div class="mb-2">
-                    <h3 class="text-base font-semibold text-gray-800 mb-1">Master of Science, Computer Science</h3>
-                    <p class="italic text-gray-500 text-sm mb-0">University of Washington, 2015</p>
-                </div>
-                <div>
-                    <h3 class="text-base font-semibold text-gray-800 mb-1">Bachelor of Science, Computer Engineering</h3>
-                    <p class="italic text-gray-500 text-sm mb-0">Oregon State University, 2013</p>
-                </div>
-            </section>
-        </main>
-    </div>
+        <!-- Education Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Education</h2>
+            <div class="mb-2">
+                <h3 class="text-base font-semibold text-gray-800 mb-1">Master of Science, Computer Science</h3>
+                <p class="italic text-gray-500 text-sm mb-0">University of Washington, 2015</p>
+            </div>
+            <div>
+                <h3 class="text-base font-semibold text-gray-800 mb-1">Bachelor of Science, Computer Engineering</h3>
+                <p class="italic text-gray-500 text-sm mb-0">Oregon State University, 2013</p>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
