@@ -51,6 +51,10 @@
             .list-disc-marker li:before {
                 color: #0056b3 !important;
             }
+
+            .section-title::after {
+                background: #1a2a38 !important;
+            }
         }
     </style>
 </head>
@@ -87,7 +91,7 @@
             <p class="text-gray-700">
                 Results-driven Senior Mobile App Engineer with <b>8 years of experience</b>, specializing in
                 building robust and scalable cross-platform solutions with <b>Flutter</b>. I possess a <b>comprehensive
-                    understanding of the entire app lifecycle</b>, from initial concept into deployment to post-release
+                    understanding of the entire app lifecycle</b>, from initial concept through deployment to post-release
                 monitoring and maintenance. My expertise lies in architecting and optimizing applications, and I am
                 passionate about leveraging cutting-edge technology to create engaging mobile applications that deliver
                 significant business value.
@@ -99,7 +103,7 @@
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
             <ul class="list-disc-marker p-0 m-0">
                 <li class="mb-2 text-gray-700"><b>Mobile App:</b> Flutter, Dart, Android, Kotlin, Java, iOS, Swift, FCM,
-                    Sockets</li>
+                    WebSockets</li>
                 <li class="mb-2 text-gray-700"><b>DevOps:</b> Git, CI/CD, Docker, Firebase, Datadog, Clarity</li>
                 <li class="mb-2 text-gray-700"><b>Backend:</b> Node.js, Express.js, JS, Hono.js, Cloudflare Worker,
                     PostgreSQL</li>
@@ -108,7 +112,7 @@
             </ul>
         </section>
 
-        <!-- Work Experience Section (Simplified for ATS) -->
+        <!-- Work Experience Section -->
         <section class="mb-8">
             <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Work Experience</h2>
             <ul class="list-disc-marker p-0 m-0">
@@ -125,93 +129,65 @@
 
             <div class="mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-1">GrabMerchant App Optimization</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Over the years <b>at Grab</b></p>
+                <p class="italic text-gray-500 text-sm mb-2">Multiple optimization initiatives <b>at Grab</b></p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Reduce app memory usage by 16.9%, by finding rarely used Isolate and removing it.
-                    </li>
-                    <li class="mb-2">Reduce overall app size by 2%, by enabling asset compression on git pipeline.</li>
-                    <li class="mb-2">Reduce academy webview load time from ~10s to &lt;1s, by enabling content
-                        preload.</li>
-                    <li class="mb-2">Improve more menu's page load time by 38%, by implementing asyncronous factory
-                        pattern over the options. Furthermore, succesfully incrase module code coverage by 15%</li>
-                    <li class="mb-2">Reduce localization delivery time from biweekly to daily, by designing and
-                        delivering localization Over The Air workflow.</li>
+                    <li class="mb-2">Reduced app memory usage by 16.9% by identifying and removing rarely used Isolates.</li>
+                    <li class="mb-2">Reduced overall app size by 2% by enabling asset compression in the Git pipeline.</li>
+                    <li class="mb-2">Reduced academy webview load time from ~10s to &lt;1s by enabling content preload.</li>
+                    <li class="mb-2">Improved menu page load time by 38% by implementing asynchronous factory pattern for options. Additionally, successfully increased module code coverage by 15%</li>
+                    <li class="mb-2">Reduced localization delivery time from bi-weekly to daily by designing and delivering localization Over-The-Air workflow.</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Architecture Migration From FishRedux to MVVM</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Lead major initiative aimed to unblock Flutter version
-                    upgrade
-                    <b>at Grab</b>
-                </p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Architecture Migration from FishRedux to MVVM</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Led major initiative aimed at unblocking Flutter version upgrade <b>at Grab</b></p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Lead overall migration process, colaborate with 15 contributors from 4 different
-                        teams</li>
-                    <li class="mb-2">Come out with plans and timeline. Including scope defining via initial
-                        static code analysis on the legacy modules and setting up a burn down chart</li>
-                    <li class="mb-2">Introduce migration guide to ease out the process and code utilities to do safe
-                        migration. While also mentored 5 junior/mid level engineers, providing technical guidance,
-                        conducting code reviews, and fostering a collaborative team environment.</li>
-                    <li class="mb-2">Completed the project with removing a total of over 1400 files</li>
+                    <li class="mb-2">Led overall migration process, collaborating with 15 contributors from 4 different teams</li>
+                    <li class="mb-2">Developed comprehensive plans and timeline, including scope definition via initial static code analysis on legacy modules and setting up burn-down charts</li>
+                    <li class="mb-2">Introduced migration guide to streamline the process and created code utilities for safe migration. Mentored 5 junior/mid-level engineers, providing technical guidance, conducting code reviews, and fostering a collaborative team environment.</li>
+                    <li class="mb-2">Successfully completed the project by removing over 1,400 files total</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Complete Rewrite of An Internal App To Flutter</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Revitalizing and reducing time to update with cross
-                    platform <b>at Grab</b></p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Complete Rewrite of Internal App to Flutter</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Revitalizing and reducing update time with cross-platform approach <b>at Grab</b></p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Lead overall rewrite process, colaborate with 3 contributors</li>
-                    <li class="mb-2">Do initial requirement gathering across different stakeholders.</li>
-                    <li class="mb-2">Design and implement app's state management, screen utility, secure storage, and
-                        routing.
-                    </li>
-                    <li class="mb-2">Connect CI/CD with internal release train for Android and iOS, and achieving over
-                        99% Crash Free Rate on completion</li>
+                    <li class="mb-2">Led overall rewrite process, collaborating with 3 contributors</li>
+                    <li class="mb-2">Conducted initial requirements gathering across different stakeholders.</li>
+                    <li class="mb-2">Designed and implemented app's state management, screen utilities, secure storage, and routing.</li>
+                    <li class="mb-2">Connected CI/CD with internal release train for Android and iOS, achieving over 99% Crash-Free Rate upon completion</li>
                 </ul>
             </div>
 
             <div class="mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-1">Multiple Payment Gateway Integration</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Prepare abstraction layer ready for multiple gateway option
-                    <b>at Bukalapak</b>
-                </p>
+                <p class="italic text-gray-500 text-sm mb-2">Prepared abstraction layer ready for multiple gateway options <b>at Bukalapak</b></p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Act as Individual Contributor to integrate a new E-Wallet as payment option.
-                    <li class="mb-2">Saw a problem where integrating a new payment option took us a lot of time which a
-                        disadvantage for an ecommerce platform.</li>
-                    <li class="mb-2">I propose to build an abstraction layer where a new SDK will only need team to
-                        implement a single adapter to be integrated.</li>
-                    <li>Implemented abstraction layer reduce overall codebase for payment module by ~9%</li>
+                    <li class="mb-2">Acted as Individual Contributor to integrate a new E-Wallet as payment option.
+                    <li class="mb-2">Identified problem where integrating new payment options was time-consuming, creating a disadvantage for an e-commerce platform.</li>
+                    <li class="mb-2">Proposed building an abstraction layer where new SDKs would only require teams to implement a single adapter for integration.</li>
+                    <li>Implemented abstraction layer that reduced overall codebase for payment module by ~9%</li>
                 </ul>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-1">Development of Pharmacy Management System
-                </h3>
-                <p class="italic text-gray-500 text-sm mb-2">Side project to build a fullstack application with
-                    Dart</p>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Development of Pharmacy Management System</h3>
+                <p class="italic text-gray-500 text-sm mb-2">Side project to build a full-stack application with Dart</p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Frontend build with Flutter web on Backend build with Dart command line app</li>
-                    <li class="mb-2">Automate all deployement using CI/CD. Where, frontend deployed as SPA into
-                        Cloudflare worker and backend deployed as
-                        Docker container into a VM in Oracle Cloud
-                    </li>
-                    <li class="mb-2">Managed with a monorepo where data transfers clasess and utilities are shared,
-                        which resulted in better AI guided development due to full context</li>
+                    <li class="mb-2">Frontend built with Flutter Web and backend built with Dart command-line app</li>
+                    <li class="mb-2">Automated all deployment using CI/CD: frontend deployed as SPA to Cloudflare Workers and backend deployed as Docker container to VM in Oracle Cloud</li>
+                    <li class="mb-2">Managed with monorepo where data transfer classes and utilities are shared, resulting in better AI-guided development due to full context</li>
                 </ul>
             </div>
 
             <div class="mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-1">Face Recognition for Attendance System</h3>
-                <p class="italic text-gray-500 text-sm mb-2">Side Project to build in-device face recognition using
-                    Flutter
-                </p>
+                <p class="italic text-gray-500 text-sm mb-2">Side project to build in-device face recognition using Flutter</p>
                 <ul class="list-disc pl-6 text-gray-700">
-                    <li class="mb-2">Implement face detection using GoogleML Kit and face feature extraction using
-                        FaceNet</li>
-                    <li class="mb-2">Implement face recognition using consine similarity algoritm</li>
+                    <li class="mb-2">Implemented face detection using Google ML Kit and face feature extraction using FaceNet</li>
+                    <li class="mb-2">Implemented face recognition using cosine similarity algorithm</li>
                 </ul>
             </div>
 
@@ -226,17 +202,16 @@
             </div>
         </section>
 
-        <!-- Published Paper -->
+        <!-- Published Papers -->
         <section class="mb-8">
-            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Published Paper</h2>
+            <h2 class="text-xl font-semibold border-b-2 border-gray-200 pb-2 mb-4">Published Papers</h2>
             <div class="mb-2">
                 <h3 class="text-base text-gray-800 mb-1">
                     Akbar, M. A., & Mandala, S. (2018). IoT on Heart Arrhythmia Real Time Monitoring. Indonesian Journal
-                    on Computing (Indo-JC), 3(2), 1-0.
+                    on Computing (Indo-JC), 3(2), 1-10.
                     <a href="https://doi.org/10.21108/INDOJC.2018.3.2.170"
                         class="italic text-gray-500 font-small text-sm mb-0">doi: 10.21108/INDOJC.2018.3.2.170</a>
                 </h3>
-
             </div>
             <div class="mb-2">
                 <h3 class="text-base text-gray-800 mb-1">
