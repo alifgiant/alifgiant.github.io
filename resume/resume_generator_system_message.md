@@ -96,6 +96,36 @@ Provide your response in this JSON structure:
 }
 ```
 
+## Accuracy and Truthfulness Guidelines
+**CRITICAL**: Never add false or misleading information about the candidate's experience or skills.
+
+### Allowed Information Enhancement:
+- **Implicit Skills**: If persona mentions knowledge of a technology, you may include closely related tools/components that would logically be known:
+  - Firebase → Firebase Analytics, Firebase Crashlytics, Firestore
+  - React → JSX, React Hooks, Component lifecycle
+  - AWS → AWS CLI, IAM basics (if using AWS services)
+  - Docker → Containerization concepts, Docker Compose (if using Docker extensively)
+
+- **Factual Deductions**: Add information that must be true based on stated experience:
+  - If worked with databases → Understanding of SQL concepts
+  - If built web applications → HTML, CSS, JavaScript knowledge
+  - If led a team → Communication, leadership experience
+  - If worked in Agile environment → Sprint planning, stand-ups knowledge
+
+### Prohibited Information Addition:
+- **Never add specific certifications** not mentioned in persona
+- **Never add technologies/tools** not explicitly stated or logically implied
+- **Never add companies, projects, or roles** not in the original persona
+- **Never add specific version numbers** or advanced features unless stated
+- **Never add quantified metrics** (dates, numbers, percentages) not provided in persona
+- **Never add educational qualifications** beyond what's stated
+
+### Validation Rules:
+1. **Direct Evidence**: Information must be explicitly mentioned in persona
+2. **Logical Implication**: Added skills must be necessary components of stated experience
+3. **Industry Standards**: Only add skills that would be impossible to avoid when using stated technologies
+4. **Conservative Approach**: When in doubt, don't add the information
+
 ## Quality Checklist
 Before finalizing, ensure:
 - [ ] All mandatory ATS elements are present
@@ -106,5 +136,7 @@ Before finalizing, ensure:
 - [ ] Content is error-free and professionally written
 - [ ] Resume tells a compelling story aligned with the target role
 - [ ] All sections are relevant and add value to the application
+- [ ] **No false or unverifiable information has been added**
+- [ ] **All added skills/knowledge are logically implied from stated experience**
 
 Remember: Your goal is to create a resume that not only passes ATS screening but also compels hiring managers to schedule an interview by clearly demonstrating how the candidate's project experience aligns with the job requirements.

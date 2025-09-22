@@ -14,8 +14,7 @@ Results-driven Senior Mobile App Engineer with **8+ years of comprehensive exper
 
 ## Education
 **Bachelor of Informatics Engineering**  
-Telkom University (2013-2017)  
-GPA: 3.5
+Telkom University (2013-2017) | GPA: 3.5
 
 **Final Project**: IoT platform for arrhythmia monitoring using PPG sensor with real-time cloud system processing at 30Hz frequency. Research focused on cardiac arrest prevention through IoT-based monitoring solutions.
 
@@ -138,19 +137,198 @@ GPA: 3.5
 
 ## Major Project Portfolio
 
-### Professional Projects at Scale
+### Professional Projects at Scale (Grab - 2021-2025)
 
-#### GrabMerchant App Ecosystem (2021-2025)
-- **User Base**: Millions of merchants across Southeast Asia
-- **Performance Achievements**: 16.9% memory reduction, 2%+ app size reduction, 38% load time improvement
-- **Architecture Impact**: Led 1,466-file migration affecting entire development organization
-- **Business Impact**: Cost optimization from 207% deficit to 24% surplus, 40k+ user feedback entries
+#### 1H2025 - In-App Feedback System Implementation
+- **Role**: Engineering Owner
+- **Impact**: Gathered more than 40k feedback entries, app score improved to average 4.53 on June 9
+- **Technical Details**: Built on top of existing scribe/analytic platform to reduce effort and enable future extensions
+- **Implementation**: Handled app-side implementation and enabled Superset dashboard
+- **Business Value**: Allows user identification for feedback investigation and analysis, unlike GooglePlay/AppStore reviews
 
-#### Bukalapak Feature Development (2018-2021)
-- **Scale**: 100+ million users, billions in GMV impact
-- **Payment Innovation**: Abstraction layer reducing integration complexity by 9%
-- **Social Impact**: Tax payment, donation, and Islamic content features serving Indonesian market
-- **Technical Leadership**: Mobile dev lead for video streaming and location-based services
+#### 1H2025 - OTP Count Reduction and Flow Enhancement
+- **Role**: App Engineer 
+- **Business Impact**: Optimized OTP budget from monthly deficit of 207.79% to monthly surplus of 24.08%
+- **Technical Contribution**: App issue fixing contributed to reducing OTP QPS more than 33%
+- **Enhanced Flow**: Implemented reuse OTP, reset password after OTP, added OTP delivery duration tracking
+- **Additional Impact**: New enhanced flow helped further reduce QPS by 13%
+
+#### 1H2025 - Bottom Sheet Optimization
+- **Role**: Engineering Owner
+- **Technical Achievement**: Refactored codebase into factory pattern, increased overall code coverage by 15% reaching 64%, core (usecase) code at 93.5%
+- **Performance**: Reduced sheet load time by 38%
+- **Problem Solved**: Complex codebase, lack of unit tests, missing instrumentation, slow menu loading
+- **Collaborators**: @gabriel.setyaputra, @randhika.ryan
+
+#### 1H2025 - Other Major Contributions
+- **MRC Integration**: Enabled MRC to replace GrabAcademy in app, allowing up-to-date learning content delivery while sunsetting Academy based on MSFT platform
+- **Duxton Icon Pipeline**: Introduced one-tap pipeline allowing engineers to pull new icons to Duxton repo
+- **Pages Style Migration**: Migrated 5 pages and converted several components to Duxton style
+- **Michelin Improvements**: Completed 4 user experience improvements on login flow and employee management
+- **Migration Follow-ups**: Redux deprecation, Mex API migration, and issue fixes in centralized 401 handler
+
+#### 2H2024 - Redux Deprecation and Removal Leadership
+- **Role**: Engineering Owner
+- **Scale**: Led migration of 1466 files from Redux to MVVM architecture across multiple PST and TF (BP, TP, ACE, ADS)
+- **Progress**: Achieved 45.43% overall progress with 30.76% Redux pages eliminated and 14.67% completed development awaiting experimentation
+- **Direct Impact**: Authentication scope achieved 100% Redux removal, improved code coverage from 12.5% to 48.1%
+- **Innovation**: Designed and began implementing architecture rewrite for simplifying Mex App's authentication process
+- **Documentation**: Created comprehensive migration guides, code guards, instrumentation, and monitoring dashboards
+
+#### 2H2024 - Internal Tech Sharing Initiative
+- **Role**: Initiator + First Presenter
+- **Impact**: Sparked two additional live sessions led by other engineers for 12-member Mex App Platform mobile team
+- **Innovation**: Learned Figma to create interactive slides achieving 80% excellent feedback
+- **Content**: 5 topics shared (MVVM, Dependency Injection, Unit testing improvements, best practices, Dart analyzer optimization)
+- **Future Plans**: Expanding sessions to all Mex mobile engineers across different teams
+
+#### 2H2024 - Android Crash Resolution (Side-loading Issue)
+- **Role**: Engineering Owner
+- **Problem**: Top 1 Android crash causing 0.2% drop in crash-free rates
+- **Root Cause**: Missing resources in side-loaded apps, primarily on Huawei devices with PlayStore restrictions
+- **Solution**: Implemented crash prevention with informative pop-up guiding users to official download sources
+- **Validation**: Simulated app integrity attacks through resource removal and repackaging
+- **Results**: 81% of crashes were from side-loaded apps, 6% from outdated versions, 13% unknown
+- **Collaborators**: @chang.gan, @tan.tran, @yori.hutagalung
+
+#### 1H2024 - User Permission Check Migration
+- **Role**: Mobile Engineer Owner (took ownership from @yori.hutagalung)
+- **Scope**: Migrated user permission checks across BP multiple feature modules (Store management, Homepage, Setting, Insight, Report)
+- **Impact**: Foundation for custom role/dynamic permission system implementation to improve user experiences
+- **Technical Work**: Complete migration on mentioned modules, prepared and maintained feature flags, refactored code for growing requirements and bug fixes
+- **Collaborators**: @junyan.xu, @steven.arifianto, @milap.wadhwa, @huimin.tan, @nanda.firdaus, @yori.hutagalung
+
+#### 1H2024 - Localization Over The Air Initiative
+- **Role**: Initiator and Owner
+- **Impact**: Reduced time-to-market for localization updates/fixes, enhanced user experience, targeted app size reduction of 6.8MB by end of June
+- **Technical Work**: Led discussions, researched implementation approaches considering engineering effort and monetary cost, created initial library for Phrase OTA SDK, coordinated with QA/content teams/feature owners
+- **Innovation**: First implementation of OTA localization system at Grab
+- **Collaborators**: @vincent.setiawan, @gracetl.tan, @lanbao.nguyen, @oleksandr.prokofiev
+
+#### 1H2024 - Duxton Component Adoption in Login Flow
+- **Role**: Mobile Engineer
+- **Impact**: Increased user experience consistency across Login pages and Grab app
+- **Technical Work**: Explored login flow to identify legacy components, refactored code to adopt new design system components
+- **Collaborators**: @rifa.fauzi, @sella.natasha
+
+#### 1H2024 - Remote Asset Kit Collaboration
+- **Role**: Collaborator and Co-owner
+- **Target Impact**: Reduce app size by approximately 14.71 MB by offloading images from Mex app binary
+- **Contribution**: Participated in project discussions, engaged in code reviews
+- **Status**: Project delayed due to lack of engineering resources
+- **Collaborator**: @enghoe.lee
+
+#### 2H2023 - Memory Usage Reduction
+- **Achievement**: Reduced app memory usage by 16.9%
+- **Method**: Identified and removed flutter_isolate package
+- **Impact**: Enabled MEX app to run on more constrained devices
+- **Role**: Identified problem, shared with team, implemented solution
+
+#### 2H2023 - LINE App x Grab Merchant Integration
+- **Role**: Mobile-side Engineering Owner
+- **Market**: Thailand (TH country team preference for LINE communications)
+- **Results**: 1.4k stores linked LINE and MEX accounts, 100% success rate from LINE entry vs 94% from MEX App
+- **Technical**: Designed mobile system architecture, prepared feature flags, implemented multiple flow pages (Feature Intro, linking process, etc.)
+- **Collaborators**: @bustanil.arifin, @aditya.satriady, @defi.mediana, @hianto.hendry, @kotchawan.peungpun, @pornphat.wattanakorn, @sella.natasha, @yori.hutagalung, @zeling.xu
+
+#### 2H2023 - Other Major Contributions
+- **CI/CD Automation**: Setup automated target version tagging to MR, enabling developers and QA to easily determine version inclusion, easier tracking of MR changes in releases
+- **RTC Integration**: Attached event tracker to RTC SDK for easier debugging of comms issues in MEX app, worked on both iOS and Android message center plugin
+- **MexI Development**: Helped @rifa.fauzi extend Mex DevTools to include HTTP Inspector
+- **Component Updates**: Updated component design to use Mortar design system
+- **Bug Fixes**: Resolved various OPIs and system issues
+- **Collaborators**: @hung.pham, @rifa.fauzi, @chang.gan, @batho.pham, @tan.tran, @norman.lie, @wenyang.lee
+
+#### 2H2022 - Message Center SDK Integration
+- **Role**: Main Engineer PIC from MEX TF
+- **Challenge**: Previous SDK was months behind updates, contained optimized performance/storage/size improvements and bug fixes
+- **Technical Work**: Updated Flutter plugin and Dart side, debugged multiple issues including "chatroom open failure on fresh install", "Chatroom Title Text empty", "Help Center can't open", "Crash on embedding chat list"
+- **Communication**: Coordinated with QA and MEX TF team for bug-free upgrade
+
+#### 2H2022 - Pax Initiated MEX Chat Features
+- **Role**: Engineering Owner
+- **Impact**: Increased PAX-MEX engagement for better order experience rating (experiment started Dec 2022)
+- **Technical Scope**: Designed overall technical architecture across Mobile, Backend, and Data Engineers
+- **Implementation**: Developed inbox updates on MEX app, PAX interaction on PAX Android app (CTA buttons, Toast messages, API calls), refactored MEX chat implementation for better separation from Picker Chat
+- **Progress Tracking**: Coordinated development progress across teams, created feature flags
+- **Collaborators**: @daryyl.tan, @laura.lugaresi, @hianto.hendry, @yori.hutagalung, @budi.suryanto, @rony.cahya, @defi.mediana, @yifen.wu, @yanggang.zhu
+
+#### 2H2022 - MEX Experience Rating Implementation
+- **Role**: Mobile Engineer
+- **Purpose**: Gain insight on order experience from MEX side (experiment started Dec 2022)
+- **Technical Work**: Designed overall technical architecture with Mobile, Backend, Data Engineers; developed MEX interaction including CTA buttons, Toast messages, API calls
+- **Collaborators**: @daryyl.tan, @yori.hutagalung, @laura.lugaresi, @bram.kurniaji, @aditya.satriyady, @defi.mediana
+
+#### 2H2022 - MEX-Engagement Custom Module Implementation
+- **Role**: Mobile Engineer
+- **Impact**: Better separation for MEX-Engagement Features enabling faster development rate, reduced unnecessary mentions for code review, independent team architecting, easier testing through feature abstraction
+- **Technical Work**: Discussed separation approach, structure and bridges; implemented base module and bridge
+- **Collaborator**: @yori.hutagalung
+
+#### 2H2021 - Grab Academy User Journey Fixes
+- **Problems Solved**: Missing users due to wrong routing (users went to inactive academy v1 route), high user drop rate, poor loading experience
+- **Solutions Implemented**: Fixed routing problems, implemented web preload to improve drop rate, implemented dynamic loading screen for better UX
+- **Collaborators**: @budi.suryanto (EM), @arif.ariyan (Mobile Developer), @tingting.zhang (PM), @erna.widyawati (QA), @abdul.rahman.hakim (BE), @evelyn.tan (PA)
+
+#### 2H2021 - Mobile Development Lifecycle Initiatives
+- **Code Ownership**: Established Mex Mobile Code Owners system for better code review process
+- **Web View Preload Kit**: Built custom Flutter plugin for preloading web views, improving performance
+- **Project Structure Documentation**: Compiled comprehensive information for Mex Mobile App project structure
+- **Slack Bot Innovation**: Created ideation for custom Slack-Bot responses for engineering team
+- **Collaborators**: @budi.suryanto (EM), @arif.ariyan (Mobile Developer), @tingting.zhang (PM), @erna.widyawati (QA)
+
+#### 1H2022 - Gundala Framework Creation and Implementation
+- **Role**: Co-creator and implementer
+- **Purpose**: Custom Flutter framework designed from ground up for Grab's specific needs
+- **Technical Components**: Secure local storage, custom dependency injection, screen wrappers
+- **Applications**: Successfully released Grab AM and Sales apps
+- **Benefits**: Mobile engineers easily pinpoint bug locations, decreased QA time by removing rebuild needs, multiple ENV testing without rebuilds, HTTP request monitoring without rebuilds
+
+#### 1H2022 - Flutter Knowledge Sharing Program
+- **Role**: Session Facilitator for "Mex Flutter School" (7 series)
+- **Impact**: Enabled 3 existing Mex FE engineers to transition to Flutter development
+- **Scope**: Created learning syllabus, conducted sessions, provided daily project support including code reviews and pair programming
+- **Business Need**: Addressed Flutter engineer resource shortage for planned features
+
+### Professional Projects at Scale (Bukalapak - 2018-2021)
+
+#### Experimentation Squad Leadership
+- **Squad Focus**: Developing experimentation features for marketing and branding
+- **Distribution**: Features shown on TV special events, commercial breaks, offline marketing stands
+- **Scale Impact**: Used by millions of users, resulted in billions of GMV for company
+- **Technical Approach**: Implemented design system with atomic design approach, modular codebase, on-demand modules
+- **Collaboration**: Worked closely with UX designers to optimize user experience while maintaining app performance
+
+#### Video Streaming Platform Development
+- **Role**: Mobile dev lead
+- **Project**: Online-offline video streaming feature integration
+- **Technical Challenge**: Efficient integration of third-party video provider into e-commerce application
+- **Implementation**: Seamless streaming experience within existing app architecture
+
+#### On-Demand Bike Sharing Feature
+- **Role**: Mobile dev lead
+- **Technical Focus**: Efficient location tracking implementation
+- **Innovation**: Real-time GPS integration for bike sharing service
+
+#### Payment Gateway Abstraction Layer
+- **Problem Identified**: Integrating new payment options was time-consuming, creating e-commerce disadvantage
+- **Solution Proposed**: Built abstraction layer where new SDKs only require single adapter implementation
+- **Technical Achievement**: Reduced overall payment module codebase by ~9%
+- **Specific Integration**: Successfully integrated DANA as payment method
+
+#### Social Impact Features Development
+- **High-Impact Features**: Vehicle and Public Tax Payment, Donation systems, comprehensive Islamic content
+- **Islamic Features**: Sholat reminder, Zakat, Ramadhan Calendar, Sunnah, Quran integration and more
+- **Market Significance**: Serving Indonesian market's specific religious and civic needs
+
+### Professional Projects at Scale (Xtremax - 2017-2018)
+
+#### Enterprise Web Development
+- **Framework**: ASP.NET web development
+- **CMS Platforms**: Sitecore and Sitefinity website creation and maintenance
+- **Custom Modules**: Built ASP.NET modules with REST requests, email scheduling functionality
+- **Database**: Microsoft SQL Server management and integration
+- **Enterprise Integration**: Worked with enterprise-level content management systems
 
 ### Personal & Community Projects
 
