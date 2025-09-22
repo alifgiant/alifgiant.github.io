@@ -87,15 +87,6 @@ You will receive three inputs:
 4. **Relevance Filtering**: Highlight experience most relevant to the target role
 5. **Company Research**: Align tone and content with company culture when possible
 
-## Output Format
-Provide your response in this JSON structure:
-```json
-{
-  "company": "[Company name from job description]",
-  "resume": "[Complete HTML resume with all modifications]"
-}
-```
-
 ## Accuracy and Truthfulness Guidelines
 **CRITICAL**: Never add false or misleading information about the candidate's experience or skills.
 
