@@ -3,47 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Deeplink Tester</title>
-    <style>
-        .wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-        #urlInput {
-            width: 400px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        #redirectButton {
-            width: 400px;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #00b24f;
-            color: white;
-            border: none;
-            margin-top: 10px;
-            border-radius: 25px;
-        }
-    </style>
+    <title>Instant URL & Deeplink Tester</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <div class="wrapper">
-        <input type="text" id="urlInput" placeholder="Enter URL or deep link">
-        <button id="redirectButton" onclick="redirectToUrl()">Go</button>
-    </div>
+    <section class="hero is-fullheight is-link is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                
+                <h1 class="title is-1">
+                    Instant Redirect Tester
+                </h1>
+                <p class="subtitle is-3">
+                    Quickly test your mobile deeplinks, universal links, and web URLs to ensure they work as expected.
+                </p>
+
+                <div class="columns is-centered mt-5">
+                    <div class="column is-half">
+                        <div class="box">
+                            <form id="redirectForm">
+                                <div class="field">
+                                    <label class="label is-medium has-text-left">Enter URL or Deeplink</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input is-large" type="text" id="urlInput" placeholder="https://example.com or myapp://screen">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-link"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field mt-4">
+                                    <button class="button is-primary is-large is-fullwidth has-text-weight-bold">
+                                        <span>Test Redirect</span>
+                                        <span class="icon">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script type="text/javascript">
-        function redirectToUrl() {
-            var url = document.getElementById('urlInput').value;
+        // Get the form element
+        const redirectForm = document.getElementById('redirectForm');
+
+        // Add an event listener for the form's 'submit' event
+        redirectForm.addEventListener('submit', function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault(); 
+            
+            // Get the URL from the input field
+            const url = document.getElementById('urlInput').value;
+            
+            // If a URL is entered, redirect the window
             if (url) {
                 window.location.href = url;
             } else {
-                alert('Please enter a URL or deep link');
+                // Otherwise, show an alert
+                alert('Please enter a URL or deep link.');
             }
-            event.preventDefault();
-        }
+        });
     </script>
 </body>
 </html>
