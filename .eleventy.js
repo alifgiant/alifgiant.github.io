@@ -19,11 +19,14 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy({ 'src/css': 'css' });
     eleventyConfig.addPassthroughCopy({ 'src/js': 'js' });
 
-    // Ignore the old index.html and design-ref folder
+    // Ignore files that shouldn't be processed
     eleventyConfig.ignores.add('index.html');
     eleventyConfig.ignores.add('design-ref/**');
     eleventyConfig.ignores.add('resume/**');
     eleventyConfig.ignores.add('deeplink.html');
+    eleventyConfig.ignores.add('README.md');
+    eleventyConfig.ignores.add('.agent/**');
+    eleventyConfig.ignores.add('node_modules/**');
 
     // Create blog posts collection sorted by date (newest first)
     eleventyConfig.addCollection('posts', function (collectionApi) {

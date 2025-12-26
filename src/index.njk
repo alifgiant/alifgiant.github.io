@@ -1,6 +1,7 @@
 ---
 layout: layouts/base.njk
 title: Home
+permalink: /
 ---
 
 {# Hero Section #}
@@ -149,77 +150,31 @@ title: Home
     </div>
 </section>
 
-{# Contact Section #}
+{# Social Dock Section #}
 <section class="w-full max-w-[1400px]" id="connect">
-    <div class="bg-gradient-to-br from-[#1F1A16] to-[#2C241F] rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-white shadow-2xl">
-        <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
-            <div class="flex flex-col justify-center gap-8">
-                <div>
-                    <div class="inline-block px-4 py-1 rounded-full border border-white/20 bg-white/5 text-sm font-medium tracking-wider mb-4">
-                        LET'S TALK
-                    </div>
-                    <h3 class="text-5xl md:text-6xl font-bold leading-tight mb-6 font-display">
-                        Have an idea?<br/>
-                        <span class="text-primary">Let's build it.</span>
-                    </h3>
-                    <p class="text-white/60 text-lg max-w-md leading-relaxed">
-                        I'm currently available for freelance projects and open to full-time opportunities.
-                    </p>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <span class="text-sm uppercase tracking-widest text-white/40 font-bold">Email Me</span>
-                    <a class="text-2xl md:text-3xl font-medium hover:text-primary transition-colors underline decoration-primary/50 underline-offset-8 decoration-1"
-                       href="mailto:{{ site.author.email }}">
-                        {{ site.author.email }}
-                    </a>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300"
-                   href="{{ site.social.linkedin }}" target="_blank" rel="noopener">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">work</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-lg">LinkedIn</span>
-                            <span class="text-sm text-white/50">Professional Network</span>
-                        </div>
-                    </div>
-                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </a>
-                
-                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300"
-                   href="{{ site.social.github }}" target="_blank" rel="noopener">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">code</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-lg">GitHub</span>
-                            <span class="text-sm text-white/50">Code Repositories</span>
-                        </div>
-                    </div>
-                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </a>
-                
-                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 sm:col-span-2"
-                   href="{{ site.social.twitter }}" target="_blank" rel="noopener">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">alternate_email</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-lg">Twitter / X</span>
-                            <span class="text-sm text-white/50">Thoughts &amp; Updates</span>
-                        </div>
-                    </div>
-                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </a>
-            </div>
+    <div class="flex flex-col items-center gap-6">
+        <p class="text-text-muted text-sm uppercase tracking-widest font-bold">Connect</p>
+        <div class="flex items-center gap-4 p-2 bg-white/50 rounded-full border border-stone-200 backdrop-blur-sm">
+            <a aria-label="Github" 
+               class="size-12 rounded-full bg-[#1c1917] flex items-center justify-center text-white hover:bg-primary hover:-translate-y-1 transition-all duration-300 group" 
+               href="{{ site.social.github }}" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">code</span>
+            </a>
+            <a aria-label="LinkedIn" 
+               class="size-12 rounded-full bg-[#1c1917] flex items-center justify-center text-white hover:bg-[#0077b5] hover:-translate-y-1 transition-all duration-300 group" 
+               href="{{ site.social.linkedin }}" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">work</span>
+            </a>
+            <a aria-label="Instagram" 
+               class="size-12 rounded-full bg-[#1c1917] flex items-center justify-center text-white hover:bg-[#E1306C] hover:-translate-y-1 transition-all duration-300 group" 
+               href="{{ site.social.instagram }}" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">photo_camera</span>
+            </a>
+            <a aria-label="Email" 
+               class="size-12 rounded-full bg-[#1c1917] flex items-center justify-center text-white hover:bg-primary hover:-translate-y-1 transition-all duration-300 group" 
+               href="mailto:{{ site.author.email }}">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform">mail</span>
+            </a>
         </div>
     </div>
 </section>
