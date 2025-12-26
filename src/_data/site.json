@@ -11,9 +11,12 @@
     },
     "skills": [
         "Flutter",
-        "Kotlin",
-        "Swift",
-        "React Native"
+        "Android",
+        "Git",
+        "CI/CD",
+        "Cloudflare Worker",
+        "SQL",
+        "Jira"
     ],
     "social": {
         "github": "https://github.com/alifgiant",
