@@ -16,6 +16,7 @@ on:
 
 jobs:
   build:
+    if: "github.actor != 'github-actions[bot]'"
     runs-on: ubuntu-latest
     
     steps:
@@ -36,12 +37,14 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       
-      - name: Build site
-        run: npm run build
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+      - name: Commit fetched content
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update content from CMS [skip ci]"
+            git push
+          fi
