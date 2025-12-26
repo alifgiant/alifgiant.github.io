@@ -51,7 +51,7 @@ permalink: /blog/
 
 {# Header Section - using config values #}
 <section class="size-full max-w-[1400px] flex flex-col md:flex-row justify-between items-end gap-8 mb-12 md:mb-16">
-    <div class="flex flex-col gap-6 w-full md:w-auto">
+    <div class="flex flex-col gap-6 w-full">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 w-fit">
             <span class="size-2 rounded-full bg-primary animate-pulse"></span>
             <span class="text-xs font-bold uppercase tracking-widest text-primary">Journal &amp; Notes</span>
@@ -59,15 +59,28 @@ permalink: /blog/
         <h1 class="text-6xl md:text-7xl lg:text-8xl font-display font-bold text-text-main leading-[0.9] tracking-tight">
             {{ site.pages.blog.title }}<br/><span class="text-stone-300">Unfiltered.</span>
         </h1>
+        <p class="text-lg text-text-muted leading-relaxed">
+            {{ site.pages.blog.subtitle }}
+        </p>
 
         {# Search and Filters #}
-        <div class="flex flex-col gap-6 mt-8 w-full max-w-2xl">
-            <div class="relative group">
-                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors">search</span>
-                <input type="text" 
-                       x-model="search"
-                       placeholder="Search articles..." 
-                       class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-stone-200 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-text-main shadow-sm" />
+        <div class="flex flex-col gap-6 mt-8 w-full">
+            <div class="flex items-center gap-4 w-full">
+                <div class="relative group flex-1">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input type="text" 
+                           x-model="search"
+                           placeholder="Search articles..." 
+                           class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-stone-200 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-text-main shadow-sm" />
+                </div>
+
+                <div class="flex items-center gap-3 whitespace-nowrap">
+                    <div class="text-sm text-stone-400">Total</div>
+                    <div class="px-3 py-2 bg-white border border-stone-200 rounded-full text-text-main font-bold">
+                        <span x-text="posts.length"></span>
+                        <span class="text-stone-400 ml-2 text-xs">posts</span>
+                    </div>
+                </div>
             </div>
             
             <div class="flex flex-wrap gap-2">
@@ -83,11 +96,7 @@ permalink: /blog/
             </div>
         </div>
     </div>
-    <div class="hidden md:flex flex-col gap-4 max-w-sm text-right">
-        <p class="text-lg text-text-muted leading-relaxed">
-            {{ site.pages.blog.subtitle }}
-        </p>
-    </div>
+    
 </section>
 
 {# Blog Posts #}
