@@ -14,9 +14,9 @@
         "fs-extra": "^11.3.3",
         "globby": "^16.1.0",
         "imagemin": "^9.0.1",
-        "imagemin-mozjpeg": "^10.0.0",
-        "imagemin-pngquant": "^10.0.0",
+        "imagemin-optipng": "^8.0.0",
         "imagemin-svgo": "^11.0.1",
-        "markdown-it": "^14.0.0"
+        "markdown-it": "^14.0.0",
+        "sharp": "^0.34.5"
     }
 }

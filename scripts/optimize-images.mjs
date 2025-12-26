@@ -1,10 +1,10 @@
-import imagemin from 'imagemin';
-import imageminMozjpeg from 'imagemin-mozjpeg';
-import imageminPngquant from 'imagemin-pngquant';
-import imageminSvgo from 'imagemin-svgo';
 import { globby } from 'globby';
 import fs from 'fs-extra';
 import path from 'path';
+import sharp from 'sharp';
+import imagemin from 'imagemin';
+import imageminSvgo from 'imagemin-svgo';
+import imageminOptipng from 'imagemin-optipng';
 
 async function optimizeImages() {
     const paths = await globby([
@@ -22,30 +22,45 @@ async function optimizeImages() {
     for (const filePath of paths) {
         const originalBuffer = await fs.readFile(filePath);
         const originalSize = originalBuffer.length;
+        let optimizedBuffer;
 
-        let plugins = [];
         const ext = path.extname(filePath).toLowerCase();
 
-        if (ext === '.jpg' || ext === '.jpeg') {
-            plugins = [imageminMozjpeg({ quality: 80 })];
-        } else if (ext === '.png') {
-            plugins = [imageminPngquant({ quality: [0.6, 0.8] })];
-        } else if (ext === '.svg') {
-            plugins = [imageminSvgo({
-                plugins: [
-                    { name: 'removeViewBox', active: false },
-                    { name: 'cleanupIDs', active: false }
-                ]
-            })];
-        }
-
-        if (plugins.length === 0) continue;
-
         try {
-            const optimizedBuffer = await imagemin.buffer(originalBuffer, { plugins });
+            if (ext === '.jpg' || ext === '.jpeg') {
+                // Sharp with fixed quality is idempotent
+                optimizedBuffer = await sharp(originalBuffer)
+                    .jpeg({ quality: 80, mozjpeg: true, progressive: true })
+                    .toBuffer();
+            } else if (ext === '.png') {
+                // Optipng is lossless and guaranteed to stabilize after 1-2 runs
+                optimizedBuffer = await imagemin.buffer(originalBuffer, {
+                    plugins: [
+                        imageminOptipng({ optimizationLevel: 3 })
+                    ]
+                });
+            } else if (ext === '.svg') {
+                optimizedBuffer = await imagemin.buffer(originalBuffer, {
+                    plugins: [
+                        imageminSvgo({
+                            plugins: [
+                                { name: 'removeViewBox', active: false },
+                                { name: 'cleanupIds', active: false }
+                            ]
+                        })
+                    ]
+                });
+            }
+
+            if (!optimizedBuffer) continue;
+
             const optimizedSize = optimizedBuffer.length;
+
+            if (optimizedSize >= originalSize) continue;
+
             const reduction = ((originalSize - optimizedSize) / originalSize) * 100;
 
+            // Only save if reduction is significant (> 5%)
             if (reduction > 5) {
                 await fs.writeFile(filePath, optimizedBuffer);
                 console.log(`Optimized: ${filePath} (${originalSize} -> ${optimizedSize}, -${reduction.toFixed(2)}%)`);
