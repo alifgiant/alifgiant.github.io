@@ -36,12 +36,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      # Uncomment when CMS integration is ready
-      # - name: Fetch content from CMS
-      #   run: npm run fetch-content
-      #   env:
-      #     CMS_API_URL: ${{ secrets.CMS_API_URL }}
-      #     CMS_API_KEY: ${{ secrets.CMS_API_KEY }}
+      - name: Fetch content from CMS
+        run: npm run fetch-content
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       
       - name: Build site
         run: npm run build

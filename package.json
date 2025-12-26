@@ -4,7 +4,8 @@
     "description": "Personal portfolio static site",
     "scripts": {
         "dev": "npx @11ty/eleventy --serve",
-        "build": "npx @11ty/eleventy"
+        "build": "npx @11ty/eleventy",
+        "fetch-content": "node scripts/fetch-notion-blogs.js"
     },
     "devDependencies": {
         "@11ty/eleventy": "^3.0.0",

@@ -7,8 +7,6 @@ layout: layouts/base.njk
     <div class="flex items-center gap-3 text-sm font-medium text-primary uppercase tracking-wider">
         <span>Blog</span>
         <span class="text-stone-300">•</span>
-        <span>{{ category or 'Article' }}</span>
-        <span class="text-stone-300">•</span>
         <span>{{ date | formatDate }}</span>
     </div>
     <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-text-main leading-[1.1] tracking-tight">
@@ -92,7 +90,6 @@ layout: layouts/base.njk
                             {% endif %}
                             <div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors"></div>
                         </div>
-                        <span class="text-xs font-bold text-primary mb-1 block">{{ post.data.category or 'Blog' }}</span>
                         <h4 class="font-bold text-text-main leading-tight group-hover:text-primary transition-colors">
                             {{ post.data.title }}
                         </h4>
@@ -132,3 +129,43 @@ layout: layouts/base.njk
         </div>
     {% endif %}
 </div>
+
+{# Mermaid Support #}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+            primaryColor: '#3b82f6',
+            primaryTextColor: '#fff',
+            primaryBorderColor: '#2563eb',
+            lineColor: '#94a3b8',
+            secondaryColor: '#f8fafc',
+            tertiaryColor: '#f1f5f9',
+            fontFamily: 'Inter, sans-serif'
+        }
+    });
+
+    // Handle mermaid blocks rendered by Markdown-it
+    document.addEventListener('DOMContentLoaded', () => {
+        // Find all mermaid blocks
+        document.querySelectorAll('pre.language-mermaid').forEach(pre => {
+            const code = pre.querySelector('code');
+            if (code) {
+                const div = document.createElement('div');
+                div.className = 'mermaid my-12 flex justify-center bg-white p-8 rounded-3xl border border-stone-100 shadow-sm overflow-x-auto';
+                div.textContent = code.textContent;
+                pre.replaceWith(div);
+            }
+        });
+        mermaid.init();
+    });
+</script>
+
+<style>
+    .mermaid svg {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
