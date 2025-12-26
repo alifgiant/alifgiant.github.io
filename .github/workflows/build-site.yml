@@ -37,6 +37,9 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       
+      - name: Optimize Images
+        run: node scripts/optimize-images.mjs
+      
       - name: Commit fetched content
         run: |
           git config user.name "github-actions[bot]"
@@ -45,6 +48,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update content from CMS [skip ci]"
+            git commit -m "chore: update content and optimize images [skip ci]"
             git push
           fi
