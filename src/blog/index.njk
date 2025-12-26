@@ -4,7 +4,7 @@ title: Blog
 permalink: /blog/
 ---
 
-{# Header Section #}
+{# Header Section - using config values #}
 <section class="w-full max-w-[1400px] flex flex-col md:flex-row justify-between items-end gap-8 mb-16 md:mb-24">
     <div class="flex flex-col gap-6">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 w-fit">
@@ -12,26 +12,19 @@ permalink: /blog/
             <span class="text-xs font-bold uppercase tracking-widest text-primary">Journal &amp; Notes</span>
         </div>
         <h1 class="text-6xl md:text-7xl lg:text-8xl font-display font-bold text-text-main leading-[0.9] tracking-tight">
-            Insights<br/><span class="text-stone-300">Unfiltered.</span>
+            {{ site.pages.blog.title }}<br/><span class="text-stone-300">Unfiltered.</span>
         </h1>
     </div>
     <div class="flex flex-col gap-4 max-w-sm text-right md:text-left">
         <p class="text-lg text-text-muted leading-relaxed">
-            Explorations into software engineering, mobile development, and building digital products.
+            {{ site.pages.blog.subtitle }}
         </p>
         <div class="flex flex-wrap gap-2 md:justify-start" x-data="{ category: 'all' }">
-            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-lg shadow-stone-300/20"
-                    :class="category === 'all' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
-                    @click="category = 'all'">All</button>
+            {% for cat in site.pages.blog.categories %}
             <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
-                    :class="category === 'engineering' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
-                    @click="category = 'engineering'">Engineering</button>
-            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
-                    :class="category === 'design' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
-                    @click="category = 'design'">Design</button>
-            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
-                    :class="category === 'career' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
-                    @click="category = 'career'">Career</button>
+                    :class="category === '{{ cat | lower }}' ? 'bg-text-main text-white shadow-lg shadow-stone-300/20' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                    @click="category = '{{ cat | lower }}'">{{ cat }}</button>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -67,7 +60,7 @@ permalink: /blog/
                         {{ featuredPost.data.description }}
                     </p>
                     <div class="flex items-center gap-2 mt-2">
-                        <span class="text-sm font-bold text-text-main border-b-2 border-primary/30 group-hover:border-primary transition-all">Read Article</span>
+                        <span class="text-sm font-bold text-text-main border-b-2 border-primary/30 group-hover:border-primary transition-all">{{ site.pages.blog.read_more }}</span>
                         <span class="material-symbols-outlined text-lg text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </div>
                 </div>

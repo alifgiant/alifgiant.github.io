@@ -4,11 +4,11 @@ title: Experience
 permalink: /experience/
 ---
 
-{# Header Section #}
+{# Header Section - using config values #}
 <div class="mb-16">
-    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-text-main tracking-tight font-display">Professional Journey</h1>
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-text-main tracking-tight font-display">{{ site.pages.experience.title }}</h1>
     <p class="text-text-muted text-lg leading-relaxed max-w-2xl">
-        A detailed timeline of my career, grouping key contributions, architectural migrations, and performance initiatives by role and organization.
+        {{ site.pages.experience.subtitle }}
     </p>
     <div class="h-1.5 w-16 bg-gradient-to-r from-primary to-primary/50 mt-8 rounded-full"></div>
 </div>
@@ -79,3 +79,16 @@ permalink: /experience/
         <p class="text-sm text-text-muted font-medium pt-0.5 uppercase tracking-wider">Career Started</p>
     </div>
 </div>
+
+{# CTA Section #}
+<section class="mt-24 mb-8">
+    <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-[2rem] p-8 md:p-12 text-center border border-primary/20">
+        <h3 class="text-2xl md:text-3xl font-bold text-text-main font-display mb-4">{{ site.pages.experience.cta.title }}</h3>
+        <p class="text-text-muted mb-6 max-w-lg mx-auto">{{ site.pages.experience.cta.description }}</p>
+        <a href="mailto:{{ site.author.email }}" 
+           class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary-hover transition-colors">
+            <span class="material-symbols-outlined">mail</span>
+            {{ site.pages.experience.cta.button_text }}
+        </a>
+    </div>
+</section>

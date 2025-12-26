@@ -3,15 +3,21 @@
     "title": "Senior Software Engineer",
     "description": "Professional Mobile Engineer, read more about me here :)",
     "url": "https://alifakbar.com",
+    "copyright_year": "2025",
     "author": {
         "name": "Muhammad Alif Akbar",
         "email": "hello@alifakbar.com",
         "bio": "Senior Software Engineer focused on Mobile App development. Send me a challenge and I'll overcome."
     },
+    "skills": [
+        "Flutter",
+        "Kotlin",
+        "Swift",
+        "React Native"
+    ],
     "social": {
         "github": "https://github.com/alifgiant",
         "linkedin": "https://www.linkedin.com/in/muhammad-alif-akbar/",
-        "twitter": "https://instagram.com/muh.alifgiant",
         "facebook": "https://fb.com/m.alif.akbar",
         "instagram": "https://instagram.com/muh.alifgiant"
     },
@@ -28,5 +34,53 @@
             "label": "Blog",
             "url": "/blog/"
         }
-    ]
+    ],
+    "pages": {
+        "home": {
+            "hero": {
+                "scroll_hint": "Explore"
+            },
+            "about": {
+                "title": "About Me",
+                "stack_label": "Stack"
+            },
+            "explore": {
+                "title": "Explore My World",
+                "blog": {
+                    "label": "Blog",
+                    "title": "Into My Mind",
+                    "description": "Technical writing, random opinions, and project showcases."
+                },
+                "experience": {
+                    "label": "Experience",
+                    "title": "My Journey",
+                    "description": "A timeline of my professional growth."
+                }
+            },
+            "cta": {
+                "title": "Let's build something extraordinary."
+            }
+        },
+        "experience": {
+            "title": "Experience",
+            "subtitle": "A timeline of my professional journey",
+            "cta": {
+                "title": "Let's Work Together",
+                "description": "I'm always open to discussing new projects and opportunities.",
+                "button_text": "Get In Touch"
+            }
+        },
+        "blog": {
+            "title": "Blog",
+            "subtitle": "Technical writings, project showcases, and random thoughts",
+            "categories": [
+                "All",
+                "Tech",
+                "Design",
+                "Career"
+            ],
+            "read_more": "Read More",
+            "reading_time_suffix": "min read"
+        }
+    }
 }
