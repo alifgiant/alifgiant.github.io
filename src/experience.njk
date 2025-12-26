@@ -5,116 +5,77 @@ permalink: /experience/
 ---
 
 {# Header Section #}
-<header class="w-full max-w-[1200px] mb-20 md:mb-32 relative">
-    <div class="animate-fade-in">
-        <h1 class="text-[12vw] md:text-[8rem] font-bold leading-[0.85] tracking-tighter text-text-main/10 select-none absolute top-10 left-0 -z-10 blur-[2px] font-display">
-            HISTORY
-        </h1>
-        <div class="relative z-10 pt-10 md:pt-20">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="h-[2px] w-12 bg-primary"></div>
-                <span class="uppercase tracking-[0.2em] text-sm font-semibold text-primary">Professional Journey</span>
-            </div>
-            <h2 class="text-5xl md:text-7xl font-bold text-text-main tracking-tight mb-8 font-display">
-                Crafting digital<br/>
-                <span class="text-primary italic font-serif">experiences</span> since 2016.
-            </h2>
-            <p class="max-w-xl text-lg text-text-muted leading-relaxed">
-                A timeline of my growth from junior developer to senior engineer.
-                Building scalable solutions and leading projects across diverse industries.
-            </p>
-        </div>
-    </div>
-    <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] -z-20 pointer-events-none"></div>
-</header>
+<div class="mb-16">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-text-main tracking-tight font-display">Professional Journey</h1>
+    <p class="text-text-muted text-lg leading-relaxed max-w-2xl">
+        A detailed timeline of my career, grouping key contributions, architectural migrations, and performance initiatives by role and organization.
+    </p>
+    <div class="h-1.5 w-16 bg-gradient-to-r from-primary to-primary/50 mt-8 rounded-full"></div>
+</div>
 
-{# Timeline Section #}
-<section class="w-full max-w-[1200px] relative">
+{# Timeline #}
+<div class="relative space-y-16 pl-2 md:pl-0">
     {# Timeline line #}
-    <div class="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/20 via-primary/40 to-transparent md:-translate-x-1/2 z-0"></div>
+    <div class="absolute left-[19px] top-6 bottom-0 w-[2px] bg-stone-200 z-0"></div>
     
-    <div class="flex flex-col gap-16 md:gap-32">
-        {% for exp in collections.experiences %}
-            {% set isEven = loop.index0 % 2 == 0 %}
-            {% set isCurrent = exp.data.current %}
+    {% for exp in collections.experiences %}
+        <div class="relative md:pl-16 pl-12 group">
+            {# Timeline dot #}
+            <div class="absolute left-[10px] top-1.5 h-5 w-5 rounded-full bg-white border-4 {% if exp.data.current %}border-primary{% else %}border-stone-300 group-hover:border-primary{% endif %} z-10 shadow-sm transition-transform group-hover:scale-110"></div>
             
-            <div class="relative flex flex-col md:flex-row items-start justify-between gap-8 md:gap-0 group animate-fade-in">
-                {# Timeline dot #}
-                <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-background-light border-[3px] {% if isCurrent %}border-primary{% else %}border-text-muted/30 group-hover:border-primary{% endif %} rounded-full z-10 md:-translate-x-1/2 flex items-center justify-center shadow-[0_0_0_8px_rgba(235,229,223,0.5)] group-hover:scale-110 transition-all duration-500">
-                    {% if loop.last %}
-                        <span class="material-symbols-outlined text-sm font-bold text-text-muted group-hover:text-primary transition-colors">star</span>
-                    {% else %}
-                        <div class="w-2 h-2 {% if isCurrent %}bg-primary{% else %}bg-text-muted/30 group-hover:bg-primary{% endif %} rounded-full transition-colors"></div>
-                    {% endif %}
+            {# Company header #}
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-text-main font-display">{{ exp.data.company }}</h2>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-base mt-1.5">
+                    <span class="font-medium text-primary">{{ exp.data.role }}</span>
+                    <span class="text-text-muted text-xs">•</span>
+                    <span class="text-text-muted text-sm">{{ exp.data.period }}</span>
                 </div>
-                
-                {# Date and title - alternating sides #}
-                {% if isEven %}
-                    {# Left side: Date/Title, Right side: Content #}
-                    <div class="pl-16 md:pl-0 md:w-1/2 md:pr-20 md:text-right order-1">
-                        <span class="inline-block py-1 px-3 rounded-full {% if isCurrent %}bg-primary/10 text-primary{% else %}bg-text-muted/10 text-text-muted group-hover:bg-primary/10 group-hover:text-primary{% endif %} font-bold text-sm mb-2 transition-colors">
-                            {{ exp.data.period }}
-                        </span>
-                        <h3 class="text-4xl font-bold text-text-main font-display">{{ exp.data.company }}</h3>
-                        <p class="text-xl text-text-muted mt-1 font-medium">{{ exp.data.role }}</p>
-                    </div>
-                    <div class="pl-16 md:pl-20 md:w-1/2 order-2">
-                        <div class="bg-surface/60 backdrop-blur-md p-8 rounded-2xl border border-white shadow-lg hover:shadow-xl hover:bg-surface/90 transition-all duration-500 group-hover:-translate-y-1">
-                            <div class="text-text-muted leading-relaxed mb-6">
-                                {{ exp.content | safe }}
+            </div>
+            
+            {# Project/Achievement cards #}
+            <div class="space-y-6">
+                {% if exp.data.projects %}
+                    {% for project in exp.data.projects %}
+                        <div class="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm p-6 rounded-2xl hover:shadow-md transition-all duration-300 hover:bg-white/90">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-4">
+                                <h3 class="text-lg font-bold text-text-main">{{ project.title }}</h3>
+                                {% if project.tag %}
+                                    <span class="text-xs font-semibold text-primary mt-2 md:mt-0 px-3 py-1 bg-primary/10 rounded-full w-fit">{{ project.tag }}</span>
+                                {% endif %}
                             </div>
-                            {% if exp.data.skills %}
-                                <div class="flex flex-wrap gap-2">
-                                    {% for skill in exp.data.skills %}
-                                        <span class="px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-semibold text-text-muted uppercase tracking-wider">{{ skill }}</span>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            <ul class="space-y-3 text-text-muted list-none text-sm leading-relaxed">
+                                {% for item in project.achievements %}
+                                    <li class="flex items-start gap-2">
+                                        <span class="material-symbols-outlined text-base text-primary mt-0.5 shrink-0">check_small</span>
+                                        <span>{{ item | safe }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                    </div>
+                    {% endfor %}
                 {% else %}
-                    {# Left side: Content, Right side: Date/Title #}
-                    <div class="pl-16 md:pl-0 md:pr-20 md:w-1/2 md:order-1 order-2">
-                        <div class="bg-surface/60 backdrop-blur-md p-8 rounded-2xl border border-white shadow-lg hover:shadow-xl hover:bg-surface/90 transition-all duration-500 group-hover:-translate-y-1">
-                            <div class="text-text-muted leading-relaxed mb-6">
-                                {{ exp.content | safe }}
-                            </div>
-                            {% if exp.data.skills %}
-                                <div class="flex flex-wrap gap-2">
-                                    {% for skill in exp.data.skills %}
-                                        <span class="px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-semibold text-text-muted uppercase tracking-wider">{{ skill }}</span>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                    {# Fallback for simple experience entries without projects #}
+                    <div class="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm p-6 rounded-2xl">
+                        <div class="text-text-muted leading-relaxed mb-4">
+                            {{ exp.content | safe }}
                         </div>
-                    </div>
-                    <div class="pl-16 md:pl-20 md:w-1/2 md:order-2 order-1 md:text-left">
-                        <span class="inline-block py-1 px-3 rounded-full {% if isCurrent %}bg-primary/10 text-primary{% else %}bg-text-muted/10 text-text-muted group-hover:bg-primary/10 group-hover:text-primary{% endif %} font-bold text-sm mb-2 transition-colors">
-                            {{ exp.data.period }}
-                        </span>
-                        <h3 class="text-4xl font-bold text-text-main font-display">{{ exp.data.company }}</h3>
-                        <p class="text-xl text-text-muted mt-1 font-medium">{{ exp.data.role }}</p>
+                        {% if exp.data.skills %}
+                            <div class="flex flex-wrap gap-2">
+                                {% for skill in exp.data.skills %}
+                                    <span class="px-3 py-1 bg-stone-100 border border-stone-200 rounded-full text-xs font-semibold text-text-muted uppercase tracking-wider">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
-        {% endfor %}
-    </div>
-</section>
-
-{# CTA Banner #}
-<section class="w-full max-w-[1200px] mt-32 relative">
-    <div class="w-full h-[400px] rounded-[2rem] md:rounded-[3rem] overflow-hidden relative group shadow-2xl shadow-primary/10">
-        <img alt="Abstract Background" 
-             class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-all duration-1000 ease-in-out mix-blend-multiply"
-             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80" />
-        <div class="absolute inset-0 bg-gradient-to-r from-primary/60 to-transparent mix-blend-multiply"></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-            <h3 class="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg font-display">Ready to build together?</h3>
-            <a href="mailto:{{ site.author.email }}"
-               class="bg-white text-text-main hover:bg-text-main hover:text-white px-8 py-3 rounded-full font-bold tracking-wide transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center gap-2 group/btn">
-                <span>Download Full Resume</span>
-                <span class="material-symbols-outlined group-hover/btn:translate-y-1 transition-transform">download</span>
-            </a>
         </div>
+    {% endfor %}
+    
+    {# Career Started marker #}
+    <div class="relative pl-16">
+        <div class="absolute left-[14px] top-1 h-3 w-3 rounded-full bg-stone-300"></div>
+        <p class="text-sm text-text-muted font-medium pt-0.5 uppercase tracking-wider">Career Started</p>
     </div>
-</section>
+</div>
