@@ -12,9 +12,14 @@
     "skills": [
         "Flutter",
         "Android",
+        "n8n",
         "Git",
         "CI/CD",
+        "Python",
+        "Firebase",
+        "Datadog",
         "Cloudflare Worker",
+        "Superset",
         "SQL",
         "Jira"
     ],
