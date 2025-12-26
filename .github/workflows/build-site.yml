@@ -3,11 +3,6 @@ name: Build and Deploy Site
 # Manual trigger for external API calls (e.g., from CMS webhooks)
 on:
   workflow_dispatch:
-    inputs:
-      trigger_source:
-        description: 'Source of trigger (e.g., CMS update)'
-        required: false
-        default: 'manual'
   
   # Also trigger on push to main branch
   push:
