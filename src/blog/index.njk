@@ -1,0 +1,106 @@
+---
+layout: layouts/base.njk
+title: Blog
+---
+
+{# Header Section #}
+<section class="w-full max-w-[1400px] flex flex-col md:flex-row justify-between items-end gap-8 mb-16 md:mb-24">
+    <div class="flex flex-col gap-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 w-fit">
+            <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-widest text-primary">Journal &amp; Notes</span>
+        </div>
+        <h1 class="text-6xl md:text-7xl lg:text-8xl font-display font-bold text-text-main leading-[0.9] tracking-tight">
+            Insights<br/><span class="text-stone-300">Unfiltered.</span>
+        </h1>
+    </div>
+    <div class="flex flex-col gap-4 max-w-sm text-right md:text-left">
+        <p class="text-lg text-text-muted leading-relaxed">
+            Explorations into software engineering, mobile development, and building digital products.
+        </p>
+        <div class="flex flex-wrap gap-2 md:justify-start" x-data="{ category: 'all' }">
+            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-lg shadow-stone-300/20"
+                    :class="category === 'all' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                    @click="category = 'all'">All</button>
+            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                    :class="category === 'engineering' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                    @click="category = 'engineering'">Engineering</button>
+            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                    :class="category === 'design' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                    @click="category = 'design'">Design</button>
+            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                    :class="category === 'career' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                    @click="category = 'career'">Career</button>
+        </div>
+    </div>
+</section>
+
+{# Blog Posts #}
+<div class="w-full max-w-[1400px] flex flex-col gap-12">
+    {% set featuredPost = collections.posts | selectattr("data.featured") | first %}
+    
+    {# Featured Post (first post marked as featured) #}
+    {% if featuredPost %}
+        <a class="group relative w-full bg-white rounded-[2.5rem] p-6 md:p-10 shadow-xl shadow-stone-200/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-white hover:border-primary/20 overflow-hidden"
+           href="{{ featuredPost.url }}">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="h-64 md:h-[400px] lg:h-[500px] w-full rounded-3xl overflow-hidden relative">
+                    <img alt="{{ featuredPost.data.title }}"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                         src="{{ featuredPost.data.image or 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80' }}" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold uppercase tracking-wider">
+                        Featured
+                    </div>
+                </div>
+                <div class="flex flex-col gap-6 lg:pr-10">
+                    <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-primary">
+                        <span>{{ featuredPost.data.category or 'Blog' }}</span>
+                        <span class="text-stone-300">•</span>
+                        <span>{{ featuredPost.date | formatDate }}</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-text-main leading-tight group-hover:text-primary transition-colors">
+                        {{ featuredPost.data.title }}
+                    </h2>
+                    <p class="text-lg text-text-muted leading-relaxed line-clamp-3">
+                        {{ featuredPost.data.description }}
+                    </p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-sm font-bold text-text-main border-b-2 border-primary/30 group-hover:border-primary transition-all">Read Article</span>
+                        <span class="material-symbols-outlined text-lg text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endif %}
+    
+    {# Post Grid #}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        {% for post in collections.posts %}
+            {% if not post.data.featured %}
+                <a class="group flex flex-col bg-white rounded-[2rem] p-6 shadow-lg shadow-stone-200/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 border border-stone-100 h-full"
+                   href="{{ post.url }}">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-stone-100 text-xs font-bold text-stone-500 uppercase">{{ post.data.category or 'Blog' }}</span>
+                            <span class="text-xs text-stone-400">{{ post.date | formatDate }}</span>
+                        </div>
+                        <span class="material-symbols-outlined text-stone-300 group-hover:text-primary transition-colors">north_east</span>
+                    </div>
+                    <h3 class="text-3xl font-display font-bold text-text-main mb-4 group-hover:text-primary transition-colors">
+                        {{ post.data.title }}
+                    </h3>
+                    <p class="text-text-muted mb-6 flex-grow leading-relaxed">
+                        {{ post.data.description }}
+                    </p>
+                    <div class="flex items-center gap-4 text-sm text-stone-400 font-medium">
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">schedule</span>
+                            {{ post.data.readTime or (post.content | readingTime) }}
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

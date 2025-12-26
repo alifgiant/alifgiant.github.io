@@ -1,0 +1,54 @@
+name: Build and Deploy Site
+
+# Manual trigger for external API calls (e.g., from CMS webhooks)
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_source:
+        description: 'Source of trigger (e.g., CMS update)'
+        required: false
+        default: 'manual'
+  
+  # Also trigger on push to main branch
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'contents/**'
+      - 'package.json'
+      - '.eleventy.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Uncomment when CMS integration is ready
+      # - name: Fetch content from CMS
+      #   run: npm run fetch-content
+      #   env:
+      #     CMS_API_URL: ${{ secrets.CMS_API_URL }}
+      #     CMS_API_KEY: ${{ secrets.CMS_API_KEY }}
+      
+      - name: Build site
+        run: npm run build
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site

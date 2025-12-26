@@ -1,0 +1,23 @@
+{# Footer Component - Dark footer with CTA #}
+<footer class="w-full bg-[#1c1917] relative z-10 text-stone-400">
+    {# CTA Section #}
+    <div class="max-w-[1400px] mx-auto px-4 md:px-10 lg:px-20 py-16 flex flex-col md:flex-row justify-between items-center gap-6 border-b border-white/5 pb-12 mb-8">
+        <h2 class="text-3xl font-display font-bold text-white tracking-tight">
+            Let's build<br/>something extraordinary.
+        </h2>
+        <a class="px-8 py-3 rounded-full bg-white text-stone-900 font-bold hover:bg-primary hover:text-white transition-all duration-300"
+           href="mailto:{{ site.author.email }}">Get in Touch</a>
+    </div>
+    
+    {# Copyright Section #}
+    <div class="max-w-[1400px] mx-auto px-4 md:px-10 lg:px-20 pb-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex flex-col items-center md:items-start gap-2">
+            <p class="text-white font-bold text-lg font-display">{{ site.name | upper }}</p>
+            <p class="text-sm">© 2024. All rights reserved.</p>
+        </div>
+        <div class="flex items-center gap-8">
+            <a class="text-sm hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <a class="text-sm hover:text-primary transition-colors" href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>

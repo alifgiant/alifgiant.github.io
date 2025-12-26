@@ -1,0 +1,225 @@
+---
+layout: layouts/base.njk
+title: Home
+---
+
+{# Hero Section #}
+<section class="w-full max-w-[1400px] flex flex-col relative mb-24 lg:mb-32">
+    <div class="flex flex-col relative z-10">
+        {# Large background text #}
+        <h1 class="absolute top-0 left-1/2 -translate-x-1/2 w-full text-center text-[18vw] leading-[0.8] font-bold tracking-tighter text-primary/5 pointer-events-none select-none -z-10 blur-[2px] mix-blend-multiply font-display">
+            {{ site.name | upper | replace(" ", "<br/>") | safe }}
+        </h1>
+        
+        <div class="flex flex-col gap-12 mt-10 lg:mt-24">
+            <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-10 lg:gap-8 pb-8">
+                {# Name and title #}
+                <div class="flex flex-col relative">
+                    <div class="hidden lg:block w-24 h-1 bg-primary mb-8 ml-1"></div>
+                    <h2 class="text-6xl md:text-8xl xl:text-9xl font-bold tracking-tight text-text-main leading-[0.9] font-display">
+                        {% set nameParts = site.name.split(' ') %}
+                        {{ nameParts[0] | upper }}<br/>
+                        <span class="text-primary opacity-90">{{ nameParts[1] | upper if nameParts[1] }}</span>
+                    </h2>
+                </div>
+                
+                {# About card #}
+                <div class="flex flex-col max-w-md lg:mb-4 self-start lg:self-end">
+                    <div class="bg-white/60 backdrop-blur-md border border-white/80 p-6 md:p-8 rounded-[1.5rem] shadow-xl shadow-primary/5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-3xl"></div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary">verified_user</span>
+                            <h3 class="text-sm font-bold uppercase tracking-widest text-text-muted">About Me</h3>
+                        </div>
+                        <p class="text-lg text-text-main font-medium leading-relaxed">
+                            {{ site.title }}.
+                        </p>
+                        <p class="text-text-muted text-base mt-2 leading-relaxed">
+                            {{ site.author.bio }}
+                        </p>
+                        <div class="mt-6 flex gap-2">
+                            <div class="h-1 flex-1 bg-primary/20 rounded-full overflow-hidden">
+                                <div class="h-full w-3/4 bg-primary rounded-full"></div>
+                            </div>
+                            <div class="h-1 flex-1 bg-primary/20 rounded-full overflow-hidden">
+                                <div class="h-full w-1/2 bg-primary/60 rounded-full"></div>
+                            </div>
+                            <div class="h-1 flex-1 bg-primary/20 rounded-full overflow-hidden">
+                                <div class="h-full w-5/6 bg-primary/40 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {# Hero image #}
+            <div class="w-full h-[300px] md:h-[500px] rounded-[2rem] md:rounded-[3rem] overflow-hidden relative group shadow-2xl shadow-primary/10 border-4 border-white">
+                <img alt="Abstract Background" 
+                     class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-all duration-1000 ease-in-out"
+                     src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#E6DCD3] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12">
+                    <a href="/blog/"
+                       class="bg-white/80 backdrop-blur-md border border-white text-text-main pl-8 pr-2 py-2 rounded-full font-bold tracking-wide hover:bg-text-main hover:text-white transition-all duration-300 flex items-center gap-4 group/btn shadow-lg">
+                        <span class="uppercase text-sm tracking-widest">View Blog</span>
+                        <div class="bg-primary text-white rounded-full p-3 group-hover/btn:rotate-45 transition-transform duration-300 group-hover/btn:bg-white group-hover/btn:text-text-main">
+                            <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Explore Section #}
+<section class="w-full max-w-[1400px] mb-24 lg:mb-32" id="explore">
+    <div class="flex flex-col gap-10">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="p-3 rounded-full bg-primary/10 text-primary">
+                <span class="material-symbols-outlined text-3xl">grid_view</span>
+            </div>
+            <h3 class="text-3xl font-bold text-text-main font-display">Explore My World</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {# Portfolio Card #}
+            <a class="group relative flex flex-col justify-between min-h-[420px] bg-white rounded-[2.5rem] p-8 md:p-10 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2"
+               href="/blog/">
+                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+                    <span class="material-symbols-outlined text-text-main">north_east</span>
+                </div>
+                <div class="relative z-10 mt-auto">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-primary/20">
+                        <span class="material-symbols-outlined text-sm">code</span>
+                        Portfolio
+                    </div>
+                    <h4 class="text-3xl md:text-4xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors font-display">
+                        Recent<br/>Work
+                    </h4>
+                    <p class="text-text-muted text-base leading-relaxed max-w-[90%]">
+                        Showcasing applications built for scale.
+                    </p>
+                </div>
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-orange-200/40 rounded-full blur-[80px] group-hover:bg-orange-300/50 transition-all duration-700"></div>
+            </a>
+            
+            {# Blog Card #}
+            <a class="group relative flex flex-col justify-between min-h-[420px] bg-white rounded-[2.5rem] p-8 md:p-10 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 lg:translate-y-16 hover:lg:translate-y-14"
+               href="/blog/">
+                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+                    <span class="material-symbols-outlined text-text-main">north_east</span>
+                </div>
+                <div class="relative z-10 mt-auto">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 text-stone-600 text-xs font-bold uppercase tracking-wider mb-6 border border-stone-200">
+                        <span class="material-symbols-outlined text-sm">edit_note</span>
+                        Blog
+                    </div>
+                    <h4 class="text-3xl md:text-4xl font-bold text-text-main mb-3 group-hover:text-stone-600 transition-colors font-display">
+                        Technical<br/>Writing
+                    </h4>
+                    <p class="text-text-muted text-base leading-relaxed max-w-[90%]">
+                        Thoughts on software development and engineering culture.
+                    </p>
+                </div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-stone-200/60 rounded-full blur-[80px] group-hover:bg-stone-300/60 transition-all duration-700"></div>
+            </a>
+            
+            {# Experience Card #}
+            <a class="group relative flex flex-col justify-between min-h-[420px] bg-white rounded-[2.5rem] p-8 md:p-10 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2"
+               href="/experience/">
+                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+                    <span class="material-symbols-outlined text-text-main">north_east</span>
+                </div>
+                <div class="relative z-10 mt-auto">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider mb-6 border border-amber-200">
+                        <span class="material-symbols-outlined text-sm">history_edu</span>
+                        Experience
+                    </div>
+                    <h4 class="text-3xl md:text-4xl font-bold text-text-main mb-3 group-hover:text-amber-700 transition-colors font-display">
+                        My<br/>Journey
+                    </h4>
+                    <p class="text-text-muted text-base leading-relaxed max-w-[90%]">
+                        A timeline of my professional growth.
+                    </p>
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-100/60 rounded-full blur-[80px] group-hover:bg-amber-200/60 transition-all duration-700"></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# Contact Section #}
+<section class="w-full max-w-[1400px]" id="connect">
+    <div class="bg-gradient-to-br from-[#1F1A16] to-[#2C241F] rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-white shadow-2xl">
+        <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
+            <div class="flex flex-col justify-center gap-8">
+                <div>
+                    <div class="inline-block px-4 py-1 rounded-full border border-white/20 bg-white/5 text-sm font-medium tracking-wider mb-4">
+                        LET'S TALK
+                    </div>
+                    <h3 class="text-5xl md:text-6xl font-bold leading-tight mb-6 font-display">
+                        Have an idea?<br/>
+                        <span class="text-primary">Let's build it.</span>
+                    </h3>
+                    <p class="text-white/60 text-lg max-w-md leading-relaxed">
+                        I'm currently available for freelance projects and open to full-time opportunities.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm uppercase tracking-widest text-white/40 font-bold">Email Me</span>
+                    <a class="text-2xl md:text-3xl font-medium hover:text-primary transition-colors underline decoration-primary/50 underline-offset-8 decoration-1"
+                       href="mailto:{{ site.author.email }}">
+                        {{ site.author.email }}
+                    </a>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300"
+                   href="{{ site.social.linkedin }}" target="_blank" rel="noopener">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">work</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg">LinkedIn</span>
+                            <span class="text-sm text-white/50">Professional Network</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+                
+                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300"
+                   href="{{ site.social.github }}" target="_blank" rel="noopener">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">code</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg">GitHub</span>
+                            <span class="text-sm text-white/50">Code Repositories</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+                
+                <a class="group flex items-center justify-between p-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 sm:col-span-2"
+                   href="{{ site.social.twitter }}" target="_blank" rel="noopener">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-full bg-white/10 text-white group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">alternate_email</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg">Twitter / X</span>
+                            <span class="text-sm text-white/50">Thoughts &amp; Updates</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-white/30 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,135 @@
+---
+layout: layouts/base.njk
+tags: posts
+---
+
+{# Article Header #}
+<section class="w-full max-w-4xl flex flex-col gap-8 mb-12 animate-fade-in">
+    <div class="flex items-center gap-3 text-sm font-medium text-primary uppercase tracking-wider">
+        <span>Blog</span>
+        <span class="text-stone-300">•</span>
+        <span>{{ category or 'Article' }}</span>
+        <span class="text-stone-300">•</span>
+        <span>{{ date | formatDate }}</span>
+    </div>
+    <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-text-main leading-[1.1] tracking-tight">
+        {{ title }}
+    </h1>
+    <div class="flex items-center justify-between border-b border-stone-200 pb-8 mt-4">
+        <div class="flex items-center gap-4">
+            <div class="size-12 rounded-full bg-stone-200 flex items-center justify-center text-xl font-bold font-display text-primary">
+                {{ site.name | slice(0, 2) | upper }}
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm font-bold text-text-main">{{ site.name }}</span>
+                <span class="text-xs text-text-muted">{{ site.title }}</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 text-text-muted text-sm">
+            <span class="material-symbols-outlined text-[18px]">schedule</span>
+            {{ readTime or (content | readingTime) }}
+        </div>
+    </div>
+</section>
+
+{# Featured Image #}
+{% if image %}
+    <div class="w-full max-w-6xl h-[400px] md:h-[600px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-stone-900/10 mb-20 relative">
+        <img alt="{{ title }}" class="w-full h-full object-cover" src="{{ image }}" />
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent"></div>
+    </div>
+{% endif %}
+
+{# Article Content #}
+<div class="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+    {# Share sidebar #}
+    <div class="hidden lg:flex lg:col-span-1 flex-col items-center sticky top-32 h-fit gap-6">
+        <span class="text-xs font-bold text-stone-400 uppercase rotate-180" style="writing-mode: vertical-rl;">Share</span>
+        <div class="h-8 w-[1px] bg-stone-300"></div>
+        <button class="p-3 rounded-full bg-white border border-stone-200 text-stone-500 hover:text-primary hover:border-primary transition-all shadow-sm">
+            <span class="material-symbols-outlined text-xl">ios_share</span>
+        </button>
+        <button class="p-3 rounded-full bg-white border border-stone-200 text-stone-500 hover:text-primary hover:border-primary transition-all shadow-sm">
+            <span class="material-symbols-outlined text-xl">favorite</span>
+        </button>
+    </div>
+    
+    {# Main content #}
+    <article class="col-span-1 lg:col-span-8 blog-content">
+        {% if description %}
+            <p class="lead text-xl md:text-2xl font-display font-medium text-text-main mb-10 leading-relaxed">
+                {{ description }}
+            </p>
+        {% endif %}
+        
+        {{ content | safe }}
+    </article>
+    
+    {# Sidebar #}
+    <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-32 flex flex-col gap-10">
+            {# Table of contents placeholder #}
+            {% if toc %}
+                <div class="flex flex-col gap-4">
+                    <h5 class="font-display font-bold text-sm uppercase tracking-widest text-text-muted">On this page</h5>
+                    <nav class="flex flex-col gap-3 border-l-2 border-stone-200 pl-4">
+                        {% for item in toc %}
+                            <a class="text-sm font-medium text-text-muted hover:text-text-main transition-all" href="#{{ item.id }}">{{ item.title }}</a>
+                        {% endfor %}
+                    </nav>
+                </div>
+            {% endif %}
+            
+            {# Read Next #}
+            <div class="flex flex-col gap-4 mt-8">
+                <h5 class="font-display font-bold text-sm uppercase tracking-widest text-text-muted">Read Next</h5>
+                {% set otherPosts = collections.posts | rejectattr("url", "equalto", page.url) %}
+                {% for post in otherPosts | slice(0, 1) %}
+                    <a class="group block bg-white rounded-2xl p-4 shadow-lg shadow-stone-200/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 border border-stone-100"
+                       href="{{ post.url }}">
+                        <div class="aspect-video w-full rounded-xl bg-stone-100 mb-4 overflow-hidden relative">
+                            {% if post.data.image %}
+                                <img alt="{{ post.data.title }}" class="w-full h-full object-cover" src="{{ post.data.image }}" />
+                            {% endif %}
+                            <div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors"></div>
+                        </div>
+                        <span class="text-xs font-bold text-primary mb-1 block">{{ post.data.category or 'Blog' }}</span>
+                        <h4 class="font-bold text-text-main leading-tight group-hover:text-primary transition-colors">
+                            {{ post.data.title }}
+                        </h4>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+
+{# Tags and Share #}
+<div class="w-full max-w-4xl mt-20 border-t border-stone-200 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-text-muted">Share this article:</span>
+        <div class="flex gap-2">
+            <button class="size-10 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-lg">link</span>
+            </button>
+            <button class="size-10 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center text-text-main hover:bg-[#0077b5] hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-lg">work</span>
+            </button>
+            <button class="size-10 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center text-text-main hover:bg-black hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-lg">alternate_email</span>
+            </button>
+        </div>
+    </div>
+    {% if tags %}
+        <div class="flex gap-4">
+            <span class="text-sm font-medium text-text-muted">Tags:</span>
+            <div class="flex gap-2">
+                {% for tag in tags %}
+                    {% if tag != 'posts' %}
+                        <span class="px-3 py-1 rounded-full bg-white border border-stone-200 text-xs font-bold text-stone-600">{{ tag }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>

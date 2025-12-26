@@ -1,0 +1,32 @@
+{
+    "name": "Muhammad Alif Akbar",
+    "title": "Senior Software Engineer",
+    "description": "Professional Mobile Engineer, read more about me here :)",
+    "url": "https://alifakbar.com",
+    "author": {
+        "name": "Muhammad Alif Akbar",
+        "email": "hello@alifakbar.com",
+        "bio": "Senior Software Engineer focused on Mobile App development. Send me a challenge and I'll overcome."
+    },
+    "social": {
+        "github": "https://github.com/alifgiant",
+        "linkedin": "https://www.linkedin.com/in/muhammad-alif-akbar/",
+        "twitter": "https://instagram.com/muh.alifgiant",
+        "facebook": "https://fb.com/m.alif.akbar",
+        "instagram": "https://instagram.com/muh.alifgiant"
+    },
+    "navigation": [
+        {
+            "label": "Home",
+            "url": "/"
+        },
+        {
+            "label": "Experience",
+            "url": "/experience/"
+        },
+        {
+            "label": "Blog",
+            "url": "/blog/"
+        }
+    ]
+}
