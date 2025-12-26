@@ -71,12 +71,7 @@
         },
         "experience": {
             "title": "Experience",
-            "subtitle": "A timeline of my professional journey",
-            "cta": {
-                "title": "Let's Work Together",
-                "description": "I'm always open to discussing new projects and opportunities.",
-                "button_text": "Get In Touch"
-            }
+            "subtitle": "A timeline of my professional journey"
         },
         "blog": {
             "title": "Insights",
