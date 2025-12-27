@@ -1,0 +1,248 @@
+---
+layout: layouts/base.njk
+title: Timestamp Converter
+permalink: /tools/timestamp/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="timestampTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">schedule</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Timestamp Converter
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Quickly convert Unix timestamps to human-readable dates and vice versa, across any timezone.
+        </p>
+    </div>
+
+    {# Modes #}
+    <div class="flex justify-center p-1 bg-stone-100/80 backdrop-blur rounded-2xl w-fit mx-auto border border-stone-200">
+        <button @click="mode = 'tsToDate'; calculate()" :class="mode === 'tsToDate' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Timestamp to Date</button>
+        <button @click="mode = 'dateToTs'; calculate()" :class="mode === 'dateToTs' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Date to Timestamp</button>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-10">
+            
+            {# Common Settings: Timezone #}
+            <div class="flex flex-col gap-4">
+                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Target Timezone</label>
+                <div class="relative">
+                    <select x-model="timezone" @change="calculate()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                        <template x-for="tz in enrichedTimezones">
+                            <option :value="tz.id" x-text="tz.label" :selected="tz.id === timezone"></option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+
+            <div class="h-px bg-stone-100"></div>
+
+            {# Mode 1: Timestamp to Date #}
+            <div x-show="mode === 'tsToDate'" class="flex flex-col gap-8 animate-fade-in">
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center ml-1">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted">Unix Timestamp</label>
+                        <button @click="timestamp = Math.floor(Date.now() / 1000); calculate()" class="text-[10px] font-bold text-primary uppercase tracking-widest hover:text-primary-dark transition-colors">Use Current Now</button>
+                    </div>
+                    <input type="number" x-model="timestamp" @input="calculate()" placeholder="e.g., 1703649600" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-2xl font-mono shadow-inner">
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Readable Date</label>
+                    <div class="p-8 bg-stone-900 text-stone-100 rounded-[2rem] font-mono shadow-2xl relative overflow-hidden group">
+                        <div class="relative z-10 flex flex-col gap-2">
+                            <span class="text-3xl font-bold break-words" x-text="resultDate"></span>
+                            <span class="text-xs text-stone-400 uppercase tracking-widest" x-text="timezoneLabel"></span>
+                        </div>
+                        <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                        
+                        {# Action buttons #}
+                        <div class="absolute top-4 right-4 flex gap-2">
+                            <button @click="copyToClipboard(resultDate)" class="p-3 bg-white/10 hover:bg-white/20 rounded-xl text-stone-100 transition-all">
+                                <span class="material-symbols-outlined text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Mode 2: Date to Timestamp #}
+            <div x-show="mode === 'dateToTs'" class="flex flex-col gap-8 animate-fade-in" x-cloak>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col gap-4">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Date</label>
+                        <input type="date" x-model="inputDate" @input="calculateFromDate()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Time</label>
+                        <input type="time" step="1" x-model="inputTime" @input="calculateFromDate()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Resulting Timestamp</label>
+                    <div class="p-8 bg-stone-900 text-stone-100 rounded-[2rem] font-mono shadow-2xl relative overflow-hidden group">
+                        <div class="relative z-10 flex flex-col gap-2">
+                            <span class="text-4xl font-bold break-words" x-text="timestamp"></span>
+                            <span class="text-xs text-stone-400 uppercase tracking-widest">Unix Seconds</span>
+                        </div>
+                        <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                        
+                        <div class="absolute top-4 right-4 flex gap-2">
+                            <button @click="copyToClipboard(timestamp)" class="p-3 bg-white/10 hover:bg-white/20 rounded-xl text-stone-100 transition-all">
+                                <span class="material-symbols-outlined text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {# Tips #}
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">info</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            <strong>Unix Timestamp:</strong> The number of seconds that have elapsed since January 1, 1970 (UTC). This tool handles both second-based and millisecond-based timestamps automatically.
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function timestampTool() {
+        const { DateTime } = luxon;
+        
+        return {
+            mode: 'tsToDate',
+            timestamp: Math.floor(Date.now() / 1000),
+            timezone: DateTime.local().zoneName,
+            resultDate: '',
+            inputDate: DateTime.local().toFormat('yyyy-MM-dd'),
+            inputTime: DateTime.local().toFormat('HH:mm:ss'),
+            enrichedTimezones: [],
+            timezones: [
+                'Pacific/Midway',      // -11
+                'Pacific/Honolulu',    // -10
+                'America/Anchorage',   // -09
+                'America/Los_Angeles', // -08
+                'America/Vancouver',   // -08
+                'America/Denver',      // -07
+                'America/Phoenix',     // -07
+                'America/Chicago',     // -06
+                'America/Mexico_City', // -06
+                'America/New_York',    // -05
+                'America/Toronto',     // -05
+                'America/Caracas',     // -04
+                'America/Santiago',    // -04
+                'America/Argentina/Buenos_Aires', // -03
+                'America/Sao_Paulo',   // -03
+                'America/Noronha',     // -02
+                'Atlantic/Cape_Verde', // -01
+                'UTC',                 // +00
+                'Europe/London',       // +00
+                'Europe/Lisbon',       // +00
+                'Europe/Berlin',       // +01
+                'Europe/Paris',        // +01
+                'Europe/Rome',         // +01
+                'Europe/Amsterdam',    // +01
+                'Europe/Cairo',        // +02
+                'Europe/Istanbul',     // +03
+                'Europe/Moscow',       // +03
+                'Asia/Dubai',          // +04
+                'Asia/Karachi',        // +05
+                'Asia/Kolkata',        // +05:30
+                'Asia/Bangkok',        // +07
+                'Asia/Jakarta',        // +07
+                'Asia/Ho_Chi_Minh',    // +07
+                'Asia/Singapore',      // +08
+                'Asia/Kuala_Lumpur',   // +08
+                'Asia/Hong_Kong',      // +08
+                'Asia/Makassar',       // +08
+                'Asia/Manila',         // +08
+                'Asia/Tokyo',          // +09
+                'Asia/Seoul',          // +09
+                'Australia/Perth',     // +08
+                'Australia/Sydney',    // +10
+                'Australia/Melbourne', // +10
+                'Pacific/Guadalcanal', // +11
+                'Pacific/Auckland',    // +12
+                'Pacific/Tongatapu',   // +13
+                'Pacific/Kiritimati'   // +14
+            ],
+
+            init() {
+                // Deduplicate timezones
+                const uniqueTz = [...new Set(this.timezones)];
+                
+                // Enrich with offsets and sort by numeric offset
+                this.enrichedTimezones = uniqueTz.map(tz => {
+                    const dt = DateTime.local().setZone(tz);
+                    const offset = dt.toFormat('ZZ');
+                    const offsetValue = dt.offset; // Luxon numeric offset in minutes
+                    return {
+                        id: tz,
+                        label: `${tz} (UTC ${offset})`,
+                        offsetValue: offsetValue
+                    };
+                }).sort((a, b) => a.offsetValue - b.offsetValue);
+
+                this.calculate();
+            },
+
+            get timezoneLabel() {
+                return this.enrichedTimezones.find(t => t.id === this.timezone)?.label || this.timezone;
+            },
+
+            calculate() {
+                if (!this.timestamp) {
+                    this.resultDate = 'Invalid Timestamp';
+                    return;
+                }
+
+                let ts = parseFloat(this.timestamp);
+                
+                let dt;
+                if (ts > 9999999999) {
+                    dt = DateTime.fromMillis(ts).setZone(this.timezone);
+                } else {
+                    dt = DateTime.fromSeconds(ts).setZone(this.timezone);
+                }
+
+                if (dt.isValid) {
+                    this.resultDate = dt.toFormat('DDDD, ttt');
+                } else {
+                    this.resultDate = 'Invalid Date';
+                }
+            },
+
+            calculateFromDate() {
+                const combined = `${this.inputDate}T${this.inputTime}`;
+                const dt = DateTime.fromISO(combined, { zone: this.timezone });
+                
+                if (dt.isValid) {
+                    this.timestamp = Math.floor(dt.toSeconds());
+                }
+            },
+
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text);
+            }
+        }
+    }
+</script>

@@ -139,6 +139,13 @@
                     "url": "/tools/regex/",
                     "icon": "regular_expression",
                     "tag": "Dev"
+                },
+                {
+                    "title": "Timestamp Converter",
+                    "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
+                    "url": "/tools/timestamp/",
+                    "icon": "schedule",
+                    "tag": "Utility"
                 }
             ]
         }
