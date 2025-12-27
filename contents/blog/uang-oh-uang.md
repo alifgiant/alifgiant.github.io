@@ -1,6 +1,6 @@
 ---
 title: "Uang oh uang!"
-date: "2024-02-06"
+date: "2021-07-24"
 tags: ["Rants"]
 featured: false
 description: "Premis 1: Banyak yang menilai hutang dengan bunga itu buruk, bahkan agama Islam mengharamkan. Premis 2: Terbukti, banyak orang, perusahaan bahkan negara meng..."

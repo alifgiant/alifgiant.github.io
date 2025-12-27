@@ -1,6 +1,6 @@
 ---
 title: "Perjalanan saya belajar web dan mebuat personal site, untuk blog dan portfolio (Part-3)"
-date: "2024-02-06"
+date: "2020-05-10"
 tags: ["Tech"]
 featured: false
 description: "GatsbyJS, Netlify, Netlify CMS, dan Github ❤️ Beberapa bulan berjalan dengan Wordpress, tapi saya tidak merasa puas. Jiwa jiwa geek meronta untuk mempelajari..."

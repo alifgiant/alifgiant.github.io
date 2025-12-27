@@ -1,6 +1,6 @@
 ---
 title: "Iman = Penenang Terbaik Overthinking (Part-1)"
-date: "2024-02-06"
+date: "2020-08-30"
 tags: []
 featured: false
 description: "Sedikit Latar duluu... Nyapa - nyapa dikit.. Halo pembaca yang lagi gabut 😘, Iya.. kamu, kamu yang lagi membaca blog ini. Mau minta maaf kalau kamu salah sa..."

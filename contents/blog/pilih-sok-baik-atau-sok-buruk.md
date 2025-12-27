@@ -1,6 +1,6 @@
 ---
 title: "Pilih \"Sok baik\" atau \"Sok buruk\"?"
-date: "2024-02-06"
+date: "2020-09-11"
 tags: []
 featured: false
 description: "Coba jawab pertanyaan diatas.. Sudah? Mari ku tebak.. kau memilih “sok buruk” Sekali lagi, izikan aku tebak alasannya.. Karena kamu berpikir bahwa kata “sok”..."

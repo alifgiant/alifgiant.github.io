@@ -1,6 +1,6 @@
 ---
 title: "Zero to One, Engineering A Mobile Application (Part 1: Pre Development)"
-date: "2024-02-06"
+date: "2021-08-08"
 tags: ["Tech"]
 featured: false
 description: "\"Kak, Bagaimana cara membuat aplikasi mobile?\" \"Kak, Bagaimana cara kamu membuat aplikasi mobile?\" Untuk menjawab pertanyaan ini saya akan menulisnya menjadi..."

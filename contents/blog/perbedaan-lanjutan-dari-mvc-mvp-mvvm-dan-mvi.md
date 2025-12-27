@@ -1,6 +1,6 @@
 ---
 title: "Perbedaan (Lanjutan) dari MVC, MVP, MVVM dan MVI"
-date: "2024-02-06"
+date: "2021-07-20"
 tags: ["Tech"]
 featured: false
 description: "Artikel kali ini ingin melajutkan tulisan saya sebelumnya Perbedaan Sederhana dari MVC, MVP, MVVM dan MVIhttps://www.notion.so/712d06d102ce46f387041cb444ba87..."

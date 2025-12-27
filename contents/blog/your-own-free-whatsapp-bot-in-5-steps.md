@@ -64,7 +64,7 @@ We need to make sure that only your GOWA instance can send messages to your n8n 
   ![Image](/assets/images/blog/254835c2-e62f-808a-8723-d47c2442ba1a-1.png)
   ![Image](/assets/images/blog/254835c2-e62f-808a-8723-d47c2442ba1a-2.png)
   ---
-# Step 4: Add the Brain: Connect to an LLM 🧠
+# Step 4: Add the Brain: Connect to an LLM ����
 Now for the fun part. We'll give our bot a brain by connecting our workflow to a large language model (LLM) that can actually hold a conversation.
 1. Drag an **AI Agent** node onto the n8n canvas and link it to the `if` action.
 1. You'll need an API key to talk to an LLM. We'll use OpenRouter.ai, as it gives you access to a ton of different AI models with just one key. Go to OpenRouter, sign up, and get your new API key from your dashboard.

@@ -1,6 +1,6 @@
 ---
 title: "Apakah kita membutuhkan Builder Pattern di bahasa Kotlin?"
-date: "2024-02-06"
+date: "2020-10-31"
 tags: []
 featured: false
 description: "Mungkin beberapa dari pembaca tidak mengenal pattern ini, tapi pasti pernah menemukannya dalam codebase kalian. Builder pattern dapat diidentifikasi dengan m..."

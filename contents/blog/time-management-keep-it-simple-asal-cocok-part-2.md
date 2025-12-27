@@ -1,6 +1,6 @@
 ---
 title: "Time Management, Keep It Simple, Asal Cocok (Part-2)"
-date: "2024-02-06"
+date: "2020-09-08"
 tags: []
 featured: false
 description: "Apa yang berhasil buat saya? Untuk menjawab hal ini sebenarnya sangat simpel, yaitu yang cocok. Apa itu yang cocok? Yaitu yang memenuhi kebutuhan. Memangnya ..."

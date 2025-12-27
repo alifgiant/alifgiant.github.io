@@ -1,6 +1,6 @@
 ---
 title: "Kegagalan dan Percaya Diri"
-date: "2024-02-06"
+date: "2020-10-17"
 tags: []
 featured: false
 description: "Kegagalan dan kesedihan, merupakan hal yang wajar. Semua orang pernah melaluinya bukan hanya saya maupun anda. Kalau saja Edison saat itu menyerah pada perco..."

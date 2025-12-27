@@ -1,6 +1,6 @@
 ---
 title: "Free!!! Notion To Blog With Custom Domain"
-date: "2024-02-06"
+date: "2024-02-08"
 tags: ["Tech"]
 featured: false
 description: "Halo teman teman, Kali ini saya mau membagikan cara terbaru saya untuk membuat Blog blog.alifakbar.comhttp://blog.alifakbar.com/. Dari judulnya bisa ditebak ..."

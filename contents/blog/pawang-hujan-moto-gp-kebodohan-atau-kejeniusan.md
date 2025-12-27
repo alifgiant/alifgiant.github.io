@@ -1,6 +1,6 @@
 ---
 title: "Pawang Hujan moto GP, Kebodohan atau Kejeniusan?"
-date: "2024-02-06"
+date: "2022-03-22"
 tags: ["Rants"]
 featured: false
 description: "Sebuah event besar berlangsung pada Minggu 20 Maret 2022 di pulau Lombok, Indonesia. Event yang ditunggu-tunggu kehadirannya, sejak terakhir kali berlangsung..."

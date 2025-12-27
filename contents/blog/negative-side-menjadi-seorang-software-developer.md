@@ -1,6 +1,6 @@
 ---
 title: "Negative Side Menjadi Seorang Software Developer"
-date: "2024-02-06"
+date: "2020-09-06"
 tags: ["Rants","Tech"]
 featured: false
 description: "Siapakah saya? Walaupun saya yakin pengunjung blog ini adalah teman-teman yang mengenal saya secara pribadi, izinkan saya sedikit mengenalkan diri untuk yang..."

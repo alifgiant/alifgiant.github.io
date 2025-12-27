@@ -1,6 +1,6 @@
 ---
 title: "Flutter x VS Code Server = \"Mobile\" Developer (PART-2)"
-date: "2024-02-06"
+date: "2020-06-17"
 tags: []
 featured: false
 description: "Tutorial Setup VS Code Server Di post sebelumnya part-1, saya menceritakan kenapa tutorial ini sangat menarik. Kebebasan yang ditawarkan konfigurasi ini sang..."

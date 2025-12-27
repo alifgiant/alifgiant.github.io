@@ -1,6 +1,6 @@
 ---
 title: "Menerapkan Strategi Catur Dalam Berkarir"
-date: "2024-02-06"
+date: "2023-04-17"
 tags: ["Rants"]
 featured: false
 description: "Belakangan ini dunia semakin tidak jelas. Terjadi banyak PHK, baik perusahaan kecil maupun besar. Tidak memandang posisi kamu staf ataupun manajer, semua bis..."

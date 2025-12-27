@@ -1,6 +1,6 @@
 ---
 title: "Rethinking View State in Flutter: Don’t use class inheritance for view state"
-date: "2024-02-06"
+date: "2024-04-17"
 tags: ["Tech","Flutter"]
 featured: false
 description: "In the ever-evolving world of software development, efficiency is king. But sometimes, the quest for a robust codebase leads us down a path of unnecessary co..."

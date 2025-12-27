@@ -1,6 +1,6 @@
 ---
 title: "Pada akhirnya kita lebih belajar dari kesalahan, kegagalan, keterpurukan yang pernah dialami."
-date: "2024-02-06"
+date: "2020-09-14"
 tags: []
 featured: false
 description: "Dengan belajar kita bertumbuh. Namun tak banyak yang ingin. Karena memperbaiki kesalahan, mencoba kembali dan bangkit dari keterpurukan adalah sebuah kisah k..."

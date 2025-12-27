@@ -1,6 +1,6 @@
 ---
 title: "Andai dulu Matematika SD diajarkan hal ini"
-date: "2024-02-06"
+date: "2023-08-25"
 tags: ["Rants"]
 featured: false
 description: "Bank SeaBank 👀 🌊🏦 memberi bunga sebesar 3.75% p.a, Lalu bunga ini dibayarkan setiap hari. Berapakah nilai bunga sebenarnya yang diterima dalam satu tahun?..."

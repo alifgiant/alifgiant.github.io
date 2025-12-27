@@ -317,10 +317,12 @@ function extractProperties(page) {
     }
 
     // Extract date
-    if (props['Created time']?.created_time) {
-        frontmatter.date = props['Created time'].created_time.split('T')[0];
-    } else if (props.Created?.created_time) {
-        frontmatter.date = props.Created.created_time.split('T')[0];
+    const dateProp = props['Created time'] || props.Created || props.Date || props.date;
+
+    if (dateProp?.created_time) {
+        frontmatter.date = dateProp.created_time.split('T')[0];
+    } else if (dateProp?.date?.start) {
+        frontmatter.date = dateProp.date.start.split('T')[0];
     } else {
         frontmatter.date = page.created_time.split('T')[0];
     }

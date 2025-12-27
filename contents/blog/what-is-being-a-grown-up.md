@@ -1,6 +1,6 @@
 ---
 title: "What is being a grown up"
-date: "2024-02-06"
+date: "2020-10-18"
 tags: []
 featured: false
 description: "Understand that - not all things you want, you can get. - not all plans you made can be realised. - you can't be liked by everyone. - you don't have unlimite..."

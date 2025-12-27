@@ -1,6 +1,6 @@
 ---
 title: "Perbedaan Sederhana dari MVC, MVP, MVVM dan MVI"
-date: "2024-02-06"
+date: "2020-11-12"
 tags: ["Tech"]
 featured: false
 description: "Kita pasti sudah tidak asing dengan architecture design pattern yang saya sebutkan di judul MVC, MVP, MVVM dan MVI. Semuanya mengajarkan mengenai bagaimana s..."

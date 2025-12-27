@@ -1,6 +1,6 @@
 ---
 title: "Perjalanan karir di Bukalapak sebagai Mobile Developer"
-date: "2024-02-06"
+date: "2021-07-30"
 tags: ["Rants"]
 featured: false
 description: "Tanggal 30 Juli 2021, saya secara resmi menjalani hari terakhir berstatus sebagai karyawan Bukalapak. Terhitung telah berlalu 3 tahun 4 bulan semenjak saya b..."

@@ -1,6 +1,6 @@
 ---
 title: "Mengapa tidak di medium.com"
-date: "2024-02-06"
+date: "2020-06-07"
 tags: []
 featured: false
 description: "1. Menulis blog merupakan sebuah kebiasaan baru yang mau saya latih Seperti yang semua orang ketahui, menulis adalah sebuah kebiasaan bagus yang produktif. K..."

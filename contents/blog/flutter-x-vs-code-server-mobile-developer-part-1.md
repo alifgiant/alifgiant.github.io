@@ -1,6 +1,6 @@
 ---
 title: "Flutter x VS Code Server = \"Mobile\" Developer (PART-1)"
-date: "2024-02-06"
+date: "2020-06-16"
 tags: ["Tech"]
 featured: false
 description: "Cerita dulu dikit, Santai.. Jangan buru buru, awas nabrak.. Sebagai seorang developer, ada satu benda yang hampir selalu dibawa setiap kali berpergian. Ya be..."
