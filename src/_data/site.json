@@ -65,7 +65,7 @@
                 },
                 "experience": {
                     "label": "Work",
-                    "title": "My Journey",
+                    "title": "My Professional Journey",
                     "description": "A timeline of my professional growth."
                 },
                 "tools": {
@@ -95,35 +95,35 @@
             "reading_time_suffix": "min read"
         },
         "tools": {
-            "title": "Dev Tools",
-            "subtitle": "A collection of useful online utilities",
+            "title": "Online Dev Tools",
+            "subtitle": "Useful utilities for developers and power users",
             "list": [
                 {
                     "title": "Deeplink Tester",
                     "description": "Test mobile app deeplinks and universal links easily.",
                     "url": "/tools/deeplink/",
-                    "icon": "link",
-                    "tag": "Mobile"
+                    "icon": "terminal",
+                    "tag": "Dev"
                 },
                 {
                     "title": "Bcrypt Hash",
                     "description": "Securely hash and verify strings using the bcrypt algorithm.",
                     "url": "/tools/bcrypt/",
-                    "icon": "vignette",
+                    "icon": "lock",
                     "tag": "Security"
                 },
                 {
                     "title": "Text Diff",
                     "description": "Compare two strings or code snippets to find differences.",
                     "url": "/tools/diff/",
-                    "icon": "difference",
-                    "tag": "Utility"
+                    "icon": "data_object",
+                    "tag": "Data"
                 },
                 {
                     "title": "Hash & Encode",
                     "description": "Quickly generate MD5, SHA-256, and Base64 hashes/encodings.",
                     "url": "/tools/hash/",
-                    "icon": "enhanced_encryption",
+                    "icon": "lock",
                     "tag": "Security"
                 },
                 {
@@ -137,14 +137,14 @@
                     "title": "Regex Checker",
                     "description": "Test and debug regular expressions with real-time matching.",
                     "url": "/tools/regex/",
-                    "icon": "regular_expression",
+                    "icon": "terminal",
                     "tag": "Dev"
                 },
                 {
                     "title": "Timestamp Converter",
                     "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
                     "url": "/tools/timestamp/",
-                    "icon": "schedule",
+                    "icon": "build",
                     "tag": "Utility"
                 }
             ]

@@ -4,41 +4,121 @@ title: Tools
 permalink: /tools/
 ---
 
-<div class="w-full max-w-[1400px] flex flex-col gap-12" x-data>
+{# Tools Data JSON #}
+<script id="tools-data" type="application/json">
+{{ site.pages.tools.list | dump | safe }}
+</script>
+
+<div class="w-full max-w-[1400px] flex flex-col gap-12" 
+     x-data="{ 
+        search: '', 
+        activeTag: 'all',
+        tools: JSON.parse(document.getElementById('tools-data').textContent),
+        tagColors: {
+            'Dev': 'bg-blue-100 text-blue-700 border-blue-200',
+            'Security': 'bg-rose-100 text-rose-700 border-rose-200',
+            'Data': 'bg-amber-100 text-amber-700 border-amber-200',
+            'Utility': 'bg-stone-100 text-stone-600 border-stone-200'
+        },
+        get filteredTools() {
+            return this.tools.filter(tool => {
+                const matchesSearch = tool.title.toLowerCase().includes(this.search.toLowerCase()) || 
+                                    tool.description.toLowerCase().includes(this.search.toLowerCase());
+                const matchesTag = this.activeTag === 'all' || tool.tag === this.activeTag;
+                return matchesSearch && matchesTag;
+            });
+        },
+        get allTags() {
+            const tags = new Set();
+            this.tools.forEach(tool => {
+                if (tool.tag) tags.add(tool.tag);
+            });
+            return Array.from(tags).sort();
+        }
+     }">
     {# Header #}
-    <div class="flex flex-col gap-4">
-        <h1 class="text-5xl md:text-7xl font-bold text-text-main font-display">
-            {{ site.pages.tools.title }}
-        </h1>
-        <p class="text-xl text-text-muted max-w-2xl leading-relaxed">
-            {{ site.pages.tools.subtitle }}
-        </p>
+    <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-4">
+            <h1 class="text-5xl md:text-7xl font-bold text-text-main font-display">
+                {{ site.pages.tools.title }}
+            </h1>
+            <p class="text-xl text-text-muted max-w-2xl leading-relaxed">
+                {{ site.pages.tools.subtitle }}
+            </p>
+        </div>
+
+        {# Search and Filters #}
+        <div class="flex flex-col gap-6 w-full">
+            <div class="flex flex-col md:flex-row items-center gap-4 w-full">
+                <div class="relative group flex-1 w-full">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input type="text" 
+                           x-model="search"
+                           placeholder="Search tools..." 
+                           class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-stone-200 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-text-main shadow-sm" />
+                </div>
+
+                <div class="flex items-center gap-3 whitespace-nowrap self-end md:self-auto">
+                    <div class="text-sm text-stone-400">Total</div>
+                    <div class="px-3 py-2 bg-white border border-stone-200 rounded-full text-text-main font-bold">
+                        <span x-text="filteredTools.length"></span>
+                        <span class="text-stone-400 ml-2 text-xs">tools</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+                <button @click="activeTag = 'all'"
+                        :class="activeTag === 'all' ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                        class="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm">All</button>
+                <template x-for="tag in allTags" :key="tag">
+                    <button @click="activeTag = tag"
+                            :class="activeTag === tag ? 'bg-text-main text-white' : 'bg-white border border-stone-200 text-text-muted hover:border-primary hover:text-primary'"
+                            class="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                            x-text="tag"></button>
+                </template>
+            </div>
+        </div>
     </div>
 
     {# Tools Grid #}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for tool in site.pages.tools.list %}
-        <a href="{{ tool.url }}" class="group relative flex flex-col min-h-[320px] bg-white rounded-[2.5rem] p-8 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2">
-            <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
-                <span class="material-symbols-outlined text-text-main">north_east</span>
-            </div>
-            
-            <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 text-stone-600 text-xs font-bold uppercase tracking-wider mb-6 border border-stone-200">
-                    <span class="material-symbols-outlined text-sm">{{ tool.icon }}</span>
-                    {{ tool.tag }}
+        <template x-for="tool in filteredTools" :key="tool.url">
+            <a :href="tool.url" class="group relative flex flex-col min-h-[320px] bg-white rounded-[2.5rem] p-8 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2">
+                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+                    <span class="material-symbols-outlined text-text-main">north_east</span>
                 </div>
-                <h2 class="text-3xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors font-display">
-                    {{ tool.title }}
-                </h2>
-                <p class="text-text-muted text-base leading-relaxed">
-                    {{ tool.description }}
-                </p>
-            </div>
-            
-            {# Background decorative element #}
-            <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-all duration-700"></div>
-        </a>
-        {% endfor %}
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border"
+                         :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600 border-stone-200'">
+                        <span class="material-symbols-outlined text-sm" x-text="tool.icon"></span>
+                        <span x-text="tool.tag"></span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors font-display"
+                        x-text="tool.title">
+                    </h2>
+                    <p class="text-text-muted text-base leading-relaxed"
+                       x-text="tool.description">
+                    </p>
+                </div>
+                
+                {# Background decorative element #}
+                <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-all duration-700"></div>
+            </a>
+        </template>
     </div>
+
+    {# No results #}
+    <template x-if="filteredTools.length === 0">
+        <div class="w-full py-24 flex flex-col items-center justify-center text-center gap-4 bg-stone-50 rounded-[3rem] border-2 border-dashed border-stone-200">
+            <span class="material-symbols-outlined text-6xl text-stone-300">search_off</span>
+            <div class="flex flex-col">
+                <h3 class="text-2xl font-display font-bold text-text-main">No tools found</h3>
+                <p class="text-text-muted">Try adjusting your search or filter to find what you're looking for.</p>
+            </div>
+            <button @click="search = ''; activeTag = 'all'" 
+                    class="mt-4 px-6 py-2 bg-text-main text-white rounded-full font-bold text-sm hover:bg-primary transition-colors">Clear all filters</button>
+        </div>
+    </template>
 </div>
