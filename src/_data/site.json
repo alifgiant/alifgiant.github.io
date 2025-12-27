@@ -132,6 +132,13 @@
                     "url": "/tools/json/",
                     "icon": "data_object",
                     "tag": "Data"
+                },
+                {
+                    "title": "Regex Checker",
+                    "description": "Test and debug regular expressions with real-time matching.",
+                    "url": "/tools/regex/",
+                    "icon": "regular_expression",
+                    "tag": "Dev"
                 }
             ]
         }
