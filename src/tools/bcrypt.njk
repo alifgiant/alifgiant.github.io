@@ -1,0 +1,181 @@
+---
+layout: layouts/base.njk
+title: Bcrypt Hash & Verify
+permalink: /tools/bcrypt/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="bcryptTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">vignette</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Bcrypt Hash & Verify
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Generate secure hashes or verify them using the bcrypt algorithm with configurable work factors.
+        </p>
+    </div>
+
+    {# Tabs #}
+    <div class="flex justify-center p-1 bg-stone-100/80 backdrop-blur rounded-2xl w-fit mx-auto border border-stone-200">
+        <button @click="mode = 'hash'" :class="mode === 'hash' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Hash</button>
+        <button @click="mode = 'verify'" :class="mode === 'verify' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Verify</button>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        
+        {# Hash Mode #}
+        <div x-show="mode === 'hash'" x-transition:enter="transition ease-out duration-300 transform opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="flex flex-col gap-8">
+            <div class="flex flex-col gap-6">
+                {# Input String #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Input String</label>
+                    <textarea x-model="inputString" rows="3" placeholder="Enter text to hash..." class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner resize-none"></textarea>
+                </div>
+
+                {# Rounds #}
+                <div class="flex flex-col gap-3">
+                    <div class="flex justify-between items-center ml-1">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted">Salt Rounds</label>
+                        <span class="text-xs font-bold text-primary" x-text="rounds"></span>
+                    </div>
+                    <input type="range" x-model="rounds" min="4" max="20" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-primary">
+                    <div class="flex justify-between text-[10px] text-text-muted uppercase font-bold tracking-tighter">
+                        <span>Faster (4)</span>
+                        <span>Standard (12)</span>
+                        <span>Secure (20)</span>
+                    </div>
+                </div>
+            </div>
+
+            <button @click="generateHash()" :disabled="isLoading" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-primary text-white rounded-2xl font-bold text-xl hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-50">
+                <span x-show="!isLoading">Generate Hash</span>
+                <span x-show="isLoading" class="animate-pulse">Hashing...</span>
+                <span x-show="!isLoading" class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">sync</span>
+            </button>
+
+            {# Output #}
+            <div x-show="outputHash" class="flex flex-col gap-3 animate-fade-in" x-cloak>
+                <div class="flex justify-between items-center ml-1">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted">Resulting Hash</label>
+                    <button @click="copyToClipboard(outputHash)" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        <span x-text="copyLabel"></span>
+                    </button>
+                </div>
+                <div class="p-6 bg-stone-900 text-stone-100 rounded-2xl font-mono text-sm break-all shadow-inner border border-stone-800 relative overflow-hidden">
+                    <span x-text="outputHash"></span>
+                    <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+
+        {# Verify Mode #}
+        <div x-show="mode === 'verify'" x-transition:enter="transition ease-out duration-300 transform opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="flex flex-col gap-8" x-cloak>
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Plain Text</label>
+                    <input type="text" x-model="verifyText" placeholder="String to verify" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Bcrypt Hash</label>
+                    <textarea x-model="verifyHash" rows="2" placeholder="Paste hash here ($2a$...)" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner resize-none"></textarea>
+                </div>
+            </div>
+
+            <button @click="verify()" :disabled="isLoading || !verifyText || !verifyHash" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-text-main text-white rounded-2xl font-bold text-xl hover:bg-black transition-all duration-300 shadow-xl shadow-black/10 active:scale-[0.98] disabled:opacity-50">
+                <span x-show="!isLoading">Verify Match</span>
+                <span x-show="isLoading" class="animate-pulse">Comparing...</span>
+                <span x-show="!isLoading" class="material-symbols-outlined">rule</span>
+            </button>
+
+            {# Verification Result #}
+            <div x-show="verificationResult !== null" class="animate-fade-in" x-cloak>
+                <div :class="verificationResult ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-rose-50 text-rose-700 border-rose-100'" class="p-6 rounded-2xl border flex items-center gap-4">
+                    <span class="material-symbols-outlined text-3xl" x-text="verificationResult ? 'check_circle' : 'cancel'"></span>
+                    <div>
+                        <h4 class="font-bold" x-text="verificationResult ? 'Match Confirmed' : 'Verification Failed'"></h4>
+                        <p class="text-sm opacity-80" x-text="verificationResult ? 'The plain text correctly matches the provided hash.' : 'The plain text does not match the provided bcrypt hash.'"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Info Note #}
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">security_update_good</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            <strong>Client-side Processing:</strong> All hashing and verification happens entirely in your browser. Your data never leaves your device and is not sent to any server.
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function bcryptTool() {
+        return {
+            mode: 'hash',
+            inputString: '',
+            rounds: 12,
+            outputHash: '',
+            isLoading: false,
+            copyLabel: 'Copy',
+            verifyText: '',
+            verifyHash: '',
+            verificationResult: null,
+
+            generateHash() {
+                if (!this.inputString) return;
+                this.isLoading = true;
+                this.outputHash = '';
+                
+                // Use a timeout to allow UI to update before heavy computation
+                setTimeout(() => {
+                    try {
+                        const salt = dcodeIO.bcrypt.genSaltSync(parseInt(this.rounds));
+                        this.outputHash = dcodeIO.bcrypt.hashSync(this.inputString, salt);
+                    } catch (e) {
+                        alert('Error generating hash: ' + e.message);
+                    } finally {
+                        this.isLoading = false;
+                    }
+                }, 50);
+            },
+
+            verify() {
+                this.isLoading = true;
+                this.verificationResult = null;
+                
+                setTimeout(() => {
+                    try {
+                        this.verificationResult = dcodeIO.bcrypt.compareSync(this.verifyText, this.verifyHash);
+                    } catch (e) {
+                        alert('Invalid hash format');
+                        this.verificationResult = false;
+                    } finally {
+                        this.isLoading = false;
+                    }
+                }, 50);
+            },
+
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text);
+                this.copyLabel = 'Copied!';
+                setTimeout(() => this.copyLabel = 'Copy', 2000);
+            }
+        }
+    }
+</script>

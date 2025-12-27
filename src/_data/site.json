@@ -104,6 +104,13 @@
                     "url": "/tools/deeplink/",
                     "icon": "link",
                     "tag": "Mobile"
+                },
+                {
+                    "title": "Bcrypt Hash",
+                    "description": "Securely hash and verify strings using the bcrypt algorithm.",
+                    "url": "/tools/bcrypt/",
+                    "icon": "vignette",
+                    "tag": "Security"
                 }
             ]
         }
