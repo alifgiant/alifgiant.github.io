@@ -125,6 +125,13 @@
                     "url": "/tools/hash/",
                     "icon": "enhanced_encryption",
                     "tag": "Security"
+                },
+                {
+                    "title": "JSON Formatter",
+                    "description": "Beautify, minify, and validate JSON data instantly.",
+                    "url": "/tools/json/",
+                    "icon": "data_object",
+                    "tag": "Data"
                 }
             ]
         }
