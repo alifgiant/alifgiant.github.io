@@ -1,0 +1,304 @@
+---
+layout: layouts/base.njk
+title: Color Converter
+permalink: /tools/color/
+---
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="colorTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-indigo-50 text-indigo-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">sync</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Color Converter
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Beautifully convert between HEX, RGB, HSL, and HSV. Pick a color or enter values to see instant previews.
+        </p>
+    </div>
+
+    {# Main Input Area #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-indigo-200/20 transition-all duration-500">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div class="flex flex-col gap-6">
+                <div class="relative group">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block ml-1">Pick a color</label>
+                    <div class="relative h-48 w-full rounded-3xl overflow-hidden border-4 border-white shadow-xl shadow-stone-200/50 cursor-pointer group-hover:scale-[1.02] transition-transform duration-500"
+                         :style="`background-color: ${hex}`">
+                        <input type="color" x-model="hex" @input="fromHex()" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                        <div class="absolute inset-x-0 bottom-0 bg-black/10 backdrop-blur-sm py-3 px-4 flex justify-between items-center text-white">
+                            <span class="font-mono font-bold" x-text="hex.toUpperCase()"></span>
+                            <span class="material-symbols-outlined text-sm">colorize</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">HEX Value</label>
+                    <div class="flex gap-2">
+                        <input type="text" x-model="tempHex" @input="fromInputHex()" @blur="cleanupHex()" placeholder="#FFFFFF" class="flex-1 px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main font-mono focus:outline-none focus:border-indigo-300 focus:bg-white transition-all shadow-inner">
+                        <button @click="copy(hex.toUpperCase())" class="p-4 bg-white border border-stone-200 rounded-2xl hover:border-indigo-400 hover:text-indigo-600 transition-all active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Results Grid #}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {# RGB #}
+        <div class="bg-white/60 backdrop-blur-sm border border-white rounded-3xl p-6 shadow-xl shadow-stone-200/30">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted">RGB</span>
+                <button @click="copy(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`)" class="text-stone-300 hover:text-indigo-600 transition-colors">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="font-mono text-center text-lg font-bold text-text-main py-3 bg-stone-50 rounded-xl" x-text="`${rgb.r}, ${rgb.g}, ${rgb.b}`"></div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-rose-500">R</span>
+                        <input type="range" min="0" max="255" x-model="rgb.r" @input="fromRgb()" class="flex-1 accent-rose-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-emerald-500">G</span>
+                        <input type="range" min="0" max="255" x-model="rgb.g" @input="fromRgb()" class="flex-1 accent-emerald-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-blue-500">B</span>
+                        <input type="range" min="0" max="255" x-model="rgb.b" @input="fromRgb()" class="flex-1 accent-blue-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# HSL #}
+        <div class="bg-white/60 backdrop-blur-sm border border-white rounded-3xl p-6 shadow-xl shadow-stone-200/30">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted">HSL</span>
+                <button @click="copy(`hsl(${hsl.h}°, ${hsl.s}%, ${hsl.l}%)`)" class="text-stone-300 hover:text-indigo-600 transition-colors">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="font-mono text-center text-lg font-bold text-text-main py-3 bg-stone-50 rounded-xl" x-text="`${hsl.h}°, ${hsl.s}%, ${hsl.l}%`"></div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">H</span>
+                        <input type="range" min="0" max="360" x-model="hsl.h" @input="fromHsl()" class="flex-1 accent-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">S</span>
+                        <input type="range" min="0" max="100" x-model="hsl.s" @input="fromHsl()" class="flex-1 accent-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">L</span>
+                        <input type="range" min="0" max="100" x-model="hsl.l" @input="fromHsl()" class="flex-1 accent-indigo-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# HSV #}
+        <div class="bg-white/60 backdrop-blur-sm border border-white rounded-3xl p-6 shadow-xl shadow-stone-200/30">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted">HSV</span>
+                <button @click="copy(`hsv(${hsv.h}°, ${hsv.s}%, ${hsv.v}%)`)" class="text-stone-300 hover:text-indigo-600 transition-colors">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="font-mono text-center text-lg font-bold text-text-main py-3 bg-stone-50 rounded-xl" x-text="`${hsv.h}°, ${hsv.s}%, ${hsv.v}%`"></div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">H</span>
+                        <input type="range" min="0" max="360" x-model="hsv.h" @input="fromHsv()" class="flex-1 accent-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">S</span>
+                        <input type="range" min="0" max="100" x-model="hsv.s" @input="fromHsv()" class="flex-1 accent-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 text-[10px] font-bold text-stone-400">V</span>
+                        <input type="range" min="0" max="100" x-model="hsv.v" @input="fromHsv()" class="flex-1 accent-indigo-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center mt-4">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function colorTool() {
+        return {
+            hex: '#8D6E63',
+            tempHex: '#8D6E63',
+            rgb: { r: 141, g: 110, b: 99 },
+            hsl: { h: 16, s: 18, l: 47 },
+            hsv: { h: 16, s: 30, v: 55 },
+
+            fromHex() {
+                this.tempHex = this.hex.toUpperCase();
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.hex);
+                if (result) {
+                    this.rgb.r = parseInt(result[1], 16);
+                    this.rgb.g = parseInt(result[2], 16);
+                    this.rgb.b = parseInt(result[3], 16);
+                    this.updateAllFromRgb();
+                }
+            },
+
+            fromInputHex() {
+                let val = this.tempHex;
+                if (!val.startsWith('#')) val = '#' + val;
+                if (/^#?[0-9A-F]{6}$/i.test(val)) {
+                    this.hex = val;
+                    this.fromHex();
+                }
+            },
+
+            cleanupHex() {
+                this.tempHex = this.hex.toUpperCase();
+            },
+
+            fromRgb() {
+                this.hex = "#" + ((1 << 24) + (parseInt(this.rgb.r) << 16) + (parseInt(this.rgb.g) << 8) + parseInt(this.rgb.b)).toString(16).slice(1);
+                this.tempHex = this.hex.toUpperCase();
+                this.updateAllFromRgb();
+            },
+
+            fromHsl() {
+                const { h, s, l } = this.hsl;
+                const h_norm = h / 360;
+                const s_norm = s / 100;
+                const l_norm = l / 100;
+                
+                let r, g, b;
+                if (s_norm === 0) {
+                    r = g = b = l_norm;
+                } else {
+                    const q = l_norm < 0.5 ? l_norm * (1 + s_norm) : l_norm + s_norm - l_norm * s_norm;
+                    const p = 2 * l_norm - q;
+                    r = this.hueToRgb(p, q, h_norm + 1/3);
+                    g = this.hueToRgb(p, q, h_norm);
+                    b = this.hueToRgb(p, q, h_norm - 1/3);
+                }
+
+                this.rgb.r = Math.round(r * 255);
+                this.rgb.g = Math.round(g * 255);
+                this.rgb.b = Math.round(b * 255);
+                
+                this.hex = "#" + ((1 << 24) + (this.rgb.r << 16) + (this.rgb.g << 8) + this.rgb.b).toString(16).slice(1);
+                this.tempHex = this.hex.toUpperCase();
+                this.updateHsv();
+            },
+
+            fromHsv() {
+                const { h, s, v } = this.hsv;
+                const h_norm = h / 360;
+                const s_norm = s / 100;
+                const v_norm = v / 100;
+
+                let r, g, b;
+                const i = Math.floor(h_norm * 6);
+                const f = h_norm * 6 - i;
+                const p = v_norm * (1 - s_norm);
+                const q = v_norm * (1 - f * s_norm);
+                const t = v_norm * (1 - (1 - f) * s_norm);
+
+                switch (i % 6) {
+                    case 0: r = v_norm, g = t, b = p; break;
+                    case 1: r = q, g = v_norm, b = p; break;
+                    case 2: r = p, g = v_norm, b = t; break;
+                    case 3: r = p, g = q, b = v_norm; break;
+                    case 4: r = t, g = p, b = v_norm; break;
+                    case 5: r = v_norm, g = p, b = q; break;
+                }
+
+                this.rgb.r = Math.round(r * 255);
+                this.rgb.g = Math.round(g * 255);
+                this.rgb.b = Math.round(b * 255);
+                
+                this.hex = "#" + ((1 << 24) + (this.rgb.r << 16) + (this.rgb.g << 8) + this.rgb.b).toString(16).slice(1);
+                this.tempHex = this.hex.toUpperCase();
+                this.updateHsl();
+            },
+
+            hueToRgb(p, q, t) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            },
+
+            updateAllFromRgb() {
+                this.updateHsl();
+                this.updateHsv();
+            },
+
+            updateHsl() {
+                const r = this.rgb.r / 255, g = this.rgb.g / 255, b = this.rgb.b / 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0;
+                } else {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                this.hsl.h = Math.round(h * 360);
+                this.hsl.s = Math.round(s * 100);
+                this.hsl.l = Math.round(l * 100);
+            },
+
+            updateHsv() {
+                const r = this.rgb.r / 255, g = this.rgb.g / 255, b = this.rgb.b / 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, v = max;
+                const d = max - min;
+                s = max === 0 ? 0 : d / max;
+
+                if (max === min) {
+                    h = 0;
+                } else {
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                this.hsv.h = Math.round(h * 360);
+                this.hsv.s = Math.round(s * 100);
+                this.hsv.v = Math.round(v * 100);
+            },
+
+            copy(text) {
+                navigator.clipboard.writeText(text);
+            }
+        }
+    }
+</script>

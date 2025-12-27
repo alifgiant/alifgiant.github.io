@@ -102,8 +102,8 @@
                     "title": "Deeplink Tester",
                     "description": "Test mobile app deeplinks and universal links easily.",
                     "url": "/tools/deeplink/",
-                    "icon": "terminal",
-                    "tag": "Testing"
+                    "icon": "build",
+                    "tag": "Utilities"
                 },
                 {
                     "title": "Bcrypt Hash",
@@ -117,7 +117,7 @@
                     "description": "Compare two strings or code snippets to find differences.",
                     "url": "/tools/diff/",
                     "icon": "build",
-                    "tag": "Utility"
+                    "tag": "Utilities"
                 },
                 {
                     "title": "Hash & Encode",
@@ -130,29 +130,36 @@
                     "title": "JSON Formatter",
                     "description": "Beautify, minify, and validate JSON data instantly.",
                     "url": "/tools/json/",
-                    "icon": "format_align_left",
-                    "tag": "Format"
+                    "icon": "sync",
+                    "tag": "Converter"
                 },
                 {
                     "title": "Regex Checker",
                     "description": "Test and debug regular expressions with real-time matching.",
                     "url": "/tools/regex/",
-                    "icon": "terminal",
-                    "tag": "Testing"
+                    "icon": "build",
+                    "tag": "Utilities"
                 },
                 {
                     "title": "Timestamp Converter",
                     "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
                     "url": "/tools/timestamp/",
-                    "icon": "build",
-                    "tag": "Utility"
+                    "icon": "sync",
+                    "tag": "Converter"
                 },
                 {
                     "title": "Case Converter",
                     "description": "Convert text between camelCase, PascalCase, snake_case, and other formats.",
                     "url": "/tools/case/",
-                    "icon": "format_align_left",
-                    "tag": "Format"
+                    "icon": "sync",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "Color Converter",
+                    "description": "Convert colors between HEX, RGB, HSL, and HSV formats with live preview.",
+                    "url": "/tools/color/",
+                    "icon": "sync",
+                    "tag": "Converter"
                 }
             ]
         }
