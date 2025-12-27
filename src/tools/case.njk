@@ -1,0 +1,117 @@
+---
+layout: layouts/base.njk
+title: Case Converter
+permalink: /tools/case/
+---
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="caseTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">terminal</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Case Converter
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Switch between naming conventions instantly. Perfect for developers working with different code style requirements.
+        </p>
+    </div>
+
+    {# Main Input Area #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-6">
+            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Input Text</label>
+            <textarea x-model="input" @input="convert()" placeholder="type_your_text_here or someText" rows="4" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg font-mono shadow-inner resize-none"></textarea>
+        </div>
+    </div>
+
+    {# Results Grid #}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <template x-for="item in results" :key="item.label">
+            <div class="bg-white/60 backdrop-blur-sm border border-white rounded-3xl p-6 shadow-xl shadow-stone-200/50 group">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted" x-text="item.label"></span>
+                    <button @click="copyToClipboard(item.value, item)" class="p-2 rounded-xl text-stone-300 hover:text-primary hover:bg-primary/5 transition-all active:scale-90">
+                        <span class="material-symbols-outlined text-sm" x-text="item.copied ? 'check' : 'content_copy'"></span>
+                    </button>
+                </div>
+                <div class="font-mono text-sm break-all text-text-main font-bold p-4 bg-stone-50/50 rounded-2xl border border-stone-100 group-hover:border-primary/20 transition-colors" x-text="item.value || '-'"></div>
+            </div>
+        </template>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function caseTool() {
+        return {
+            input: '',
+            results: [
+                { label: 'camelCase', value: '', copied: false },
+                { label: 'PascalCase', value: '', copied: false },
+                { label: 'snake_case', value: '', copied: false },
+                { label: 'kebab-case', value: '', copied: false },
+                { label: 'CONSTANT_CASE', value: '', copied: false },
+                { label: 'Sentence case', value: '', copied: false },
+                { label: 'Title Case', value: '', copied: false },
+                { label: 'lowercase', value: '', copied: false },
+                { label: 'UPPERCASE', value: '', copied: false }
+            ],
+
+            convert() {
+                const text = this.input.trim();
+                if (!text) {
+                    this.results.forEach(r => r.value = '');
+                    return;
+                }
+
+                // Split by spaces, underscores, or hyphens, or camelCase boundaries
+                const words = text
+                    .replace(/([a-z])([A-Z])/g, '$1 $2')
+                    .replace(/[_-]/g, ' ')
+                    .toLowerCase()
+                    .split(/\s+/)
+                    .filter(w => w.length > 0);
+
+                this.results.find(r => r.label === 'camelCase').value = words
+                    .map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))
+                    .join('');
+
+                this.results.find(r => r.label === 'PascalCase').value = words
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join('');
+
+                this.results.find(r => r.label === 'snake_case').value = words.join('_');
+
+                this.results.find(r => r.label === 'kebab-case').value = words.join('-');
+
+                this.results.find(r => r.label === 'CONSTANT_CASE').value = words.join('_').toUpperCase();
+
+                this.results.find(r => r.label === 'Sentence case').value = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+
+                this.results.find(r => r.label === 'Title Case').value = words
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(' ');
+
+                this.results.find(r => r.label === 'lowercase').value = text.toLowerCase();
+
+                this.results.find(r => r.label === 'UPPERCASE').value = text.toUpperCase();
+            },
+
+            copyToClipboard(text, item) {
+                if (!text) return;
+                navigator.clipboard.writeText(text);
+                item.copied = true;
+                setTimeout(() => item.copied = false, 2000);
+            }
+        }
+    }
+</script>
