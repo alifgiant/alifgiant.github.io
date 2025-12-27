@@ -160,6 +160,13 @@
                     "url": "/tools/color/",
                     "icon": "sync",
                     "tag": "Converter"
+                },
+                {
+                    "title": "Snippet Sharer",
+                    "description": "Create and export beautiful code snippets with custom styles and syntax highlighting.",
+                    "url": "/tools/snippet/",
+                    "icon": "build",
+                    "tag": "Utilities"
                 }
             ]
         }

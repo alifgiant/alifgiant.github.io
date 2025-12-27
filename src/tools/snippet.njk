@@ -1,0 +1,323 @@
+---
+layout: layouts/base.njk
+title: Snippet Sharer
+permalink: /tools/snippet/
+---
+
+{# Prism.js for Syntax Highlighting - Loading both Dark and Light themes #}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" id="prism-dark-theme" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" id="prism-light-theme" disabled />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+
+{# html2canvas for Image Export #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<div class="w-full max-w-6xl flex flex-col gap-12" x-data="snippetTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-teal-50 text-teal-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">build</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Snippet Sharer
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Beautifully format and share your code. Customize window styles, padding, and shadows for that perfect look.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {# Configuration Side #}
+        <div class="lg:col-span-4 flex flex-col gap-8">
+            <div class="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-xl shadow-stone-200/50 flex flex-col gap-8">
+                {# Language Selection #}
+                <div class="flex flex-col gap-3">
+                    <div class="flex justify-between items-center ml-1">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted">Language</label>
+                        <button @click="loadExample()" class="text-[10px] font-bold text-teal-600 hover:text-teal-700 transition-colors uppercase tracking-widest">Load Example</button>
+                    </div>
+                    <select x-model="config.language" @change="languageChanged()" class="w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-xl text-sm font-bold focus:outline-none focus:border-teal-300 transition-all appearance-none cursor-pointer">
+                        <template x-for="lang in languages" :key="lang.id">
+                            <option :value="lang.id" x-text="lang.name"></option>
+                        </template>
+                    </select>
+                </div>
+
+                {# (Auto-format / line wrap removed) #}
+
+                {# Window Design #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Window Design</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button @click="config.theme = 'mac'" :class="config.theme === 'mac' ? 'bg-text-main text-white shadow-md' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all">macOS</button>
+                        <button @click="config.theme = 'simple'" :class="config.theme === 'simple' ? 'bg-text-main text-white shadow-md' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all">Simple</button>
+                    </div>
+                </div>
+
+                {# Window Color #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Window Color</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button @click="config.windowColor = 'dark'; updatePrismTheme()" :class="config.windowColor === 'dark' ? 'bg-text-main text-white shadow-md' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all">Dark</button>
+                        <button @click="config.windowColor = 'light'; updatePrismTheme()" :class="config.windowColor === 'light' ? 'bg-text-main text-white shadow-md' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all">Light</button>
+                    </div>
+                </div>
+
+                {# Background Color Picker #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Background Gradient</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button @click="config.bg = 'transparent'" :class="config.bg === 'transparent' ? 'ring-2 ring-teal-400 ring-offset-2' : ''" class="w-8 h-8 rounded-full border border-stone-200 bg-stone-50 flex items-center justify-center transition-all group" title="Transparent">
+                            <span class="material-symbols-outlined text-sm text-stone-300 group-hover:text-stone-400">blur_off</span>
+                        </button>
+                        <template x-for="grad in gradients" :key="grad">
+                            <button @click="config.bg = grad" :class="config.bg === grad ? 'ring-2 ring-teal-400 ring-offset-2 scale-110' : ''" :style="`background: ${grad}`" class="w-8 h-8 rounded-full transition-all active:scale-95"></button>
+                        </template>
+                    </div>
+                </div>
+
+                {# Sliders #}
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-center ml-1">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted">Padding</label>
+                            <span class="text-[10px] font-bold text-teal-600" x-text="config.padding + 'px'"></span>
+                        </div>
+                        <input type="range" x-model="config.padding" min="0" max="120" class="w-full accent-teal-600">
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-center ml-1">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted">Shadow</label>
+                            <span class="text-[10px] font-bold text-teal-600" x-text="config.shadow + '%'"></span>
+                        </div>
+                        <input type="range" x-model="config.shadow" min="0" max="100" class="w-full accent-teal-600">
+                    </div>
+
+                    <!-- line wrap control removed -->
+                </div>
+
+                {# Actions #}
+                <button @click="exportImage()" :disabled="isExporting" class="group relative flex items-center justify-center gap-3 w-full py-4 bg-teal-600 text-white rounded-2xl font-bold text-sm hover:bg-teal-700 transition-all duration-300 shadow-xl shadow-teal-200/50 active:scale-[0.98] disabled:opacity-50 mt-4">
+                    <span x-show="!isExporting">Export Image</span>
+                    <span x-show="isExporting" class="animate-pulse">Exporting...</span>
+                    <span class="material-symbols-outlined text-lg">download</span>
+                </button>
+            </div>
+        </div>
+
+        {# Preview/Input Area #}
+        <div class="lg:col-span-8 flex flex-col gap-8">
+            {# Text Area Input #}
+            <div class="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-xl shadow-stone-200/50">
+                <div class="flex flex-col gap-4">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Input Code</label>
+                    <textarea x-model="code" @input="highlight()" rows="8" placeholder="Paste your code here..." class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-teal-300 focus:bg-white transition-all text-sm font-mono shadow-inner resize-none"></textarea>
+                </div>
+            </div>
+
+            {# Export Preview Container #}
+            <div class="flex flex-col gap-4">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1 text-center">Live Preview</label>
+                <div id="capture-area" 
+                     class="w-full overflow-hidden transition-all duration-500 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-black/10"
+                     :style="`background: ${config.bg}; padding: ${config.padding}px;`"
+                >
+                    {# Rendered Window #}
+                    <div class="w-full transition-all duration-500 rounded-lg overflow-hidden" 
+                        :class="config.windowColor === 'dark' ? 'bg-[#1E1E1E]' : 'bg-[#F8F9FA]'"
+                        :style="config.shadow > 0 ? 'box-shadow: 0 ' + config.shadow/4 + 'px ' + config.shadow + 'px rgba(0,0,0,' + (config.windowColor === 'dark' ? 0.5 : 0.2) + ');' : 'box-shadow: none;'">
+                        
+                        {# Title Bar #}
+                        <div class="h-10 px-4 flex items-center justify-between border-b"
+                             :class="config.windowColor === 'dark' ? 'bg-[#2D2D2D] border-[#3D3D3D]' : 'bg-white border-stone-100'">
+                            {# macOS Dots #}
+                            <div class="flex gap-2" x-show="config.theme === 'mac'">
+                                <div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+                                <div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+                                <div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+                            </div>
+                            <div x-show="config.theme === 'simple'" class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-stone-400 font-mono" x-text="config.language.toUpperCase()"></span>
+                            </div>
+                            <div class="flex items-center gap-1 opacity-20">
+                                <div class="w-1 h-1 rounded-full" :class="config.windowColor === 'dark' ? 'bg-white' : 'bg-black'"></div>
+                                <div class="w-1 h-1 rounded-full" :class="config.windowColor === 'dark' ? 'bg-white' : 'bg-black'"></div>
+                                <div class="w-1 h-1 rounded-full" :class="config.windowColor === 'dark' ? 'bg-white' : 'bg-black'"></div>
+                            </div>
+                        </div>
+
+                            {# Code Content #}
+                            <pre class="m-0 overflow-auto text-sm leading-relaxed" :class="`language-${config.language}`"><code x-ref="output" class="p-8 block font-mono"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center mt-4">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Custom Scrollbar for Code Preview */
+    pre::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+    }
+    pre::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    pre::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    [data-theme='dark'] pre::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<script>
+    function snippetTool() {
+        return {
+            code: '',
+            isExporting: false,
+            config: {
+                language: 'javascript',
+                theme: 'mac',
+                windowColor: 'dark',
+                bg: 'linear-gradient(45deg, #0ea5e9, #2dd4bf)',
+                padding: 64,
+                shadow: 40
+            },
+            languages: [
+                { id: 'javascript', name: 'JavaScript' },
+                { id: 'typescript', name: 'TypeScript' },
+                { id: 'python', name: 'Python' },
+                { id: 'dart', name: 'Dart' },
+                { id: 'kotlin', name: 'Kotlin' },
+                { id: 'java', name: 'Java' },
+                { id: 'swift', name: 'Swift' },
+                { id: 'go', name: 'Go' }
+            ],
+            examples: {
+                javascript: 'function greet(name) {\n  console.log(`Hello, ${name}!`);\n}\n\ngreet("Developer");',
+                typescript: 'interface User {\n  id: number;\n  name: string;\n}\n\nfunction getUser(user: User): string {\n  return user.name;\n}',
+                python: 'def greet(name: str):\n    print(f"Hello, {name}!")\n\nif __name__ == "__main__":\n    greet("Developer")',
+                dart: 'void main() {\n  var name = "Developer";\n  print("Hello, $name!");\n}\n\nclass User {\n  final String name;\n  User(this.name);\n}',
+                kotlin: 'fun main() {\n    val name = "Developer"\n    println("Hello, $name!")\n}\n\ndata class User(val name: String)',
+                java: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Developer!");\n    }\n}',
+                swift: 'import Foundation\n\nlet name = "Developer"\nprint("Hello, \\(name)!")\n\nstruct User {\n    let name: String\n}',
+                go: 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, Developer!")\n}'
+            },
+            gradients: [
+                'linear-gradient(45deg, #0ea5e9, #2dd4bf)',
+                'linear-gradient(45deg, #f43f5e, #fb923c)',
+                'linear-gradient(45deg, #8b5cf6, #d946ef)',
+                'linear-gradient(45deg, #10b981, #3b82f6)',
+                'linear-gradient(45deg, #f59e0b, #ef4444)',
+                '#1E1E1E'
+            ],
+
+            init() {
+                this.loadExample();
+                this.updatePrismTheme();
+                this.$nextTick(() => this.highlight());
+            },
+
+            updatePrismTheme() {
+                const darkTheme = document.getElementById('prism-dark-theme');
+                const lightTheme = document.getElementById('prism-light-theme');
+                
+                if (this.config.windowColor === 'dark') {
+                    darkTheme.disabled = false;
+                    lightTheme.disabled = true;
+                } else {
+                    darkTheme.disabled = true;
+                    lightTheme.disabled = false;
+                }
+                
+                // Allow some time for the CSS to apply before re-highlighting
+                setTimeout(() => this.highlight(), 10);
+            },
+
+            languageChanged() {
+                const isCurrentExample = Object.values(this.examples).includes(this.code);
+                if (!this.code || isCurrentExample) {
+                    this.loadExample();
+                }
+                this.highlight();
+            },
+
+            loadExample() {
+                let example = this.examples[this.config.language] || '';
+                this.code = example;
+            },
+
+            formatCode(code) {
+                // kept for backward compatibility but not used; simple indent clean
+                if (!code) return '';
+                let lines = code.split(/\r?\n/);
+                while (lines.length > 0 && lines[0].trim().length === 0) lines.shift();
+                while (lines.length > 0 && lines[lines.length - 1].trim().length === 0) lines.pop();
+                if (lines.length === 0) return '';
+                const minIndent = lines
+                    .filter(line => line.trim().length > 0)
+                    .reduce((min, line) => {
+                        const match = line.match(/^[\s\t]*/);
+                        const len = match ? match[0].length : 0;
+                        return Math.min(min, len);
+                    }, Infinity);
+                return lines
+                    .map(line => {
+                        if (line.trim().length === 0) return '';
+                        return line.slice(minIndent === Infinity ? 0 : minIndent);
+                    })
+                    .join('\n');
+            },
+
+            highlight() {
+                this.$nextTick(() => {
+                    const codeElement = this.$refs.output;
+                    codeElement.textContent = this.code || '';
+                    codeElement.className = `language-${this.config.language} p-8 block font-mono`;
+                    Prism.highlightElement(codeElement);
+                });
+            },
+
+            exportImage() {
+                this.isExporting = true;
+                const area = document.getElementById('capture-area');
+                
+                html2canvas(area, {
+                    backgroundColor: null,
+                    scale: 3,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `snippet-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    this.isExporting = false;
+                }).catch(err => {
+                    console.error('Export failed:', err);
+                    this.isExporting = false;
+                    alert('Failed to export image. Please try again.');
+                });
+            }
+        }
+    }
+</script>
