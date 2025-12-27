@@ -111,6 +111,13 @@
                     "url": "/tools/bcrypt/",
                     "icon": "vignette",
                     "tag": "Security"
+                },
+                {
+                    "title": "Text Diff",
+                    "description": "Compare two strings or code snippets to find differences.",
+                    "url": "/tools/diff/",
+                    "icon": "difference",
+                    "tag": "Utility"
                 }
             ]
         }

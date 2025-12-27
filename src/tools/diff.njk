@@ -1,0 +1,92 @@
+---
+layout: layouts/base.njk
+title: Text Diff
+permalink: /tools/diff/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/diff@5.2.0/dist/diff.min.js"></script>
+
+<div class="w-full max-w-6xl flex flex-col gap-12" x-data="diffTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">difference</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Text Diff
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Compare two pieces of text to see exactly what changed, what was added, and what was removed.
+        </p>
+    </div>
+
+    {# Comparison Inputs #}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 shadow-xl shadow-primary/5">
+            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-4 mb-2 block">Original Text (A)</label>
+            <textarea x-model="textA" @input="compare()" rows="10" placeholder="Paste your original text here..." class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all font-mono text-sm shadow-inner resize-none"></textarea>
+            <div class="mt-3 ml-4 text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                <span class="material-symbols-outlined text-xs">format_align_left</span>
+                Length: <span x-text="textA.length" class="text-primary"></span> characters
+            </div>
+        </div>
+        <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 shadow-xl shadow-primary/5">
+            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-4 mb-2 block">Modified Text (B)</label>
+            <textarea x-model="textB" @input="compare()" rows="10" placeholder="Paste your modified text here..." class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all font-mono text-sm shadow-inner resize-none"></textarea>
+            <div class="mt-3 ml-4 text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
+                <span class="material-symbols-outlined text-xs">format_align_left</span>
+                Length: <span x-text="textB.length" class="text-primary"></span> characters
+            </div>
+        </div>
+    </div>
+
+    {# Results #}
+    <div x-show="textA || textB" class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500 animate-fade-in">
+        <div class="flex flex-col gap-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-text-main font-display">Diff Result</h2>
+                <div class="flex gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-emerald-100 border border-emerald-200 rounded"></div>
+                        <span class="text-xs font-bold text-text-muted uppercase tracking-wider">Added</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-rose-100 border border-rose-200 rounded"></div>
+                        <span class="text-xs font-bold text-text-muted uppercase tracking-wider">Removed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 bg-stone-50 border-2 border-stone-100 rounded-2xl min-h-[200px] font-mono text-sm whitespace-pre-wrap leading-relaxed shadow-inner overflow-x-auto">
+                <template x-for="part in diffResults">
+                    <span :class="part.added ? 'bg-emerald-100 text-emerald-800' : (part.removed ? 'bg-rose-100 text-rose-800 line-through' : 'text-text-main')" x-text="part.value"></span>
+                </template>
+                <div x-show="diffResults.length === 0" class="text-text-muted italic">Both texts are identical.</div>
+            </div>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function diffTool() {
+        return {
+            textA: '',
+            textB: '',
+            diffResults: [],
+
+            compare() {
+                if (!window.Diff) return;
+                // Use character-based diff for better granularity in string comparison
+                this.diffResults = Diff.diffChars(this.textA, this.textB);
+            }
+        }
+    }
+</script>
