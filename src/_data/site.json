@@ -35,7 +35,7 @@
             "url": "/"
         },
         {
-            "label": "Experience",
+            "label": "Work",
             "url": "/experience/"
         },
         {
@@ -64,7 +64,7 @@
                     "description": "Technical writing, random opinions, and project showcases."
                 },
                 "experience": {
-                    "label": "Experience",
+                    "label": "Work",
                     "title": "My Journey",
                     "description": "A timeline of my professional growth."
                 },
@@ -79,7 +79,7 @@
             }
         },
         "experience": {
-            "title": "Experience",
+            "title": "Work",
             "subtitle": "A timeline of my professional journey"
         },
         "blog": {
@@ -118,6 +118,13 @@
                     "url": "/tools/diff/",
                     "icon": "difference",
                     "tag": "Utility"
+                },
+                {
+                    "title": "Hash & Encode",
+                    "description": "Quickly generate MD5, SHA-256, and Base64 hashes/encodings.",
+                    "url": "/tools/hash/",
+                    "icon": "enhanced_encryption",
+                    "tag": "Security"
                 }
             ]
         }

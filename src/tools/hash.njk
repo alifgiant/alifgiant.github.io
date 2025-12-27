@@ -1,0 +1,155 @@
+---
+layout: layouts/base.njk
+title: Hash & Encode
+permalink: /tools/hash/
+---
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="hashTool()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">enhanced_encryption</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Hash & Encode
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Quickly generate hashes (MD5, SHA-256) or encode/decode strings (Base64, URL).
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        
+        <div class="flex flex-col gap-8">
+            {# Input String #}
+            <div class="flex flex-col gap-3">
+                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Input Text</label>
+                <textarea x-model="inputText" @input="process()" rows="4" placeholder="Enter text to process..." class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner resize-none font-mono"></textarea>
+                <div class="mt-1 ml-1 text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                    Length: <span x-text="inputText.length" class="text-primary"></span> characters
+                </div>
+            </div>
+
+            {# Algorithm Selection #}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <template x-for="alg in algorithms">
+                    <button @click="selectedAlg = alg.id; process()" 
+                            :class="selectedAlg === alg.id ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-stone-50 text-text-muted border-stone-100 hover:bg-white hover:border-primary/20'"
+                            class="px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all duration-300">
+                        <span x-text="alg.name"></span>
+                    </button>
+                </template>
+            </div>
+
+            {# Output Result #}
+            <div x-show="inputText" class="flex flex-col gap-3 animate-fade-in" x-cloak>
+                <div class="flex justify-between items-center ml-1">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted" x-text="selectedAlgName + ' Result'"></label>
+                    <button @click="copyToClipboard(outputValue)" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        <span x-text="copyLabel"></span>
+                    </button>
+                </div>
+                <div class="p-6 bg-stone-900 text-stone-100 rounded-2xl font-mono text-sm break-all shadow-inner border border-stone-800 relative overflow-hidden group">
+                    <span x-text="outputValue"></span>
+                    <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                </div>
+                
+                {# Base64 Reverse Toggle #}
+                <div x-show="selectedAlg === 'base64' || selectedAlg === 'url'" class="flex items-center gap-2 mt-2 ml-1">
+                    <button @click="isReverse = !isReverse; process()" :class="isReverse ? 'bg-primary/10 text-primary border-primary/20' : 'bg-stone-100 text-text-muted border-stone-200'" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all">
+                        <span x-text="isReverse ? 'Decode Mode' : 'Encode Mode'"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Info Note #}
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">privacy_tip</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            <strong>Client-side Processing:</strong> All hashing and encoding operations are performed locally in your browser. Your data is never transmitted to any server.
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function hashTool() {
+        return {
+            inputText: '',
+            selectedAlg: 'sha256',
+            outputValue: '',
+            copyLabel: 'Copy',
+            isReverse: false,
+            algorithms: [
+                { id: 'sha256', name: 'SHA-256' },
+                { id: 'md5', name: 'MD5' },
+                { id: 'base64', name: 'Base64' },
+                { id: 'url', name: 'URL' },
+                { id: 'sha1', name: 'SHA-1' },
+                { id: 'sha512', name: 'SHA-512' }
+            ],
+
+            get selectedAlgName() {
+                return this.algorithms.find(a => a.id === this.selectedAlg)?.name || '';
+            },
+
+            process() {
+                if (!this.inputText) {
+                    this.outputValue = '';
+                    return;
+                }
+
+                try {
+                    switch (this.selectedAlg) {
+                        case 'sha256':
+                            this.outputValue = CryptoJS.SHA256(this.inputText).toString();
+                            break;
+                        case 'md5':
+                            this.outputValue = CryptoJS.MD5(this.inputText).toString();
+                            break;
+                        case 'base64':
+                            if (this.isReverse) {
+                                let words = CryptoJS.enc.Base64.parse(this.inputText);
+                                this.outputValue = CryptoJS.enc.Utf8.stringify(words);
+                            } else {
+                                let words = CryptoJS.enc.Utf8.parse(this.inputText);
+                                this.outputValue = CryptoJS.enc.Base64.stringify(words);
+                            }
+                            break;
+                        case 'url':
+                            this.outputValue = this.isReverse ? decodeURIComponent(this.inputText) : encodeURIComponent(this.inputText);
+                            break;
+                        case 'sha1':
+                            this.outputValue = CryptoJS.SHA1(this.inputText).toString();
+                            break;
+                        case 'sha512':
+                            this.outputValue = CryptoJS.SHA512(this.inputText).toString();
+                            break;
+                    }
+                } catch (e) {
+                    this.outputValue = "Error: Invalid input for processing.";
+                }
+            },
+
+            copyToClipboard(text) {
+                if (!text) return;
+                navigator.clipboard.writeText(text);
+                this.copyLabel = 'Copied!';
+                setTimeout(() => this.copyLabel = 'Copy', 2000);
+            }
+        }
+    }
+</script>
