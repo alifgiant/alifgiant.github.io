@@ -1,0 +1,81 @@
+---
+layout: layouts/base.njk
+title: Deeplink Tester
+permalink: /tools/deeplink/
+---
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="{ url: '' }">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-primary/10 text-primary mb-2">
+            <span class="material-symbols-outlined text-4xl">link</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Deeplink Tester
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Quickly test your mobile deeplinks, universal links, and web URLs to ensure they work as expected.
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10">
+        <form @submit.prevent="if(url) { window.location.href = url } else { alert('Please enter a URL or deep link.') }" class="flex flex-col gap-8">
+            <div class="flex flex-col gap-3">
+                <label for="urlInput" class="text-sm font-bold uppercase tracking-widest text-text-muted ml-1">
+                    Enter URL or Deeplink
+                </label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-text-muted group-focus-within:text-primary transition-colors">link</span>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="urlInput" 
+                        x-model="url"
+                        placeholder="e.g., myapp://screen-a or https://google.com"
+                        class="block w-full pl-14 pr-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner"
+                    >
+                </div>
+            </div>
+
+            <button 
+                type="submit"
+                class="group relative flex items-center justify-center gap-3 w-full py-5 bg-primary text-white rounded-2xl font-bold text-xl hover:bg-primary-dark transition-all duration-300 shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98]"
+            >
+                <span>Test Redirect</span>
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+        </form>
+
+        {# Helpful Tips #}
+        <div class="mt-12 pt-8 border-t border-stone-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-amber-600 text-xl">info</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-text-main mb-1">Custom Schemes</h3>
+                    <p class="text-sm text-text-muted">Use <code>myapp://</code> to trigger installed applications directly.</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-600 text-xl">public</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-text-main mb-1">Universal Links</h3>
+                    <p class="text-sm text-text-muted">Test <code>https://yourdomain.com/path</code> for modern app linking.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>

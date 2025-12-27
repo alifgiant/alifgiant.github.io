@@ -41,6 +41,10 @@
         {
             "label": "Blog",
             "url": "/blog/"
+        },
+        {
+            "label": "Tools",
+            "url": "/tools/"
         }
     ],
     "pages": {
@@ -63,6 +67,11 @@
                     "label": "Experience",
                     "title": "My Journey",
                     "description": "A timeline of my professional growth."
+                },
+                "tools": {
+                    "label": "Tools",
+                    "title": "Online Dev Tools",
+                    "description": "Useful utilities for developers and power users."
                 }
             },
             "cta": {
@@ -84,6 +93,19 @@
             ],
             "read_more": "Read More",
             "reading_time_suffix": "min read"
+        },
+        "tools": {
+            "title": "Dev Tools",
+            "subtitle": "A collection of useful online utilities",
+            "list": [
+                {
+                    "title": "Deeplink Tester",
+                    "description": "Test mobile app deeplinks and universal links easily.",
+                    "url": "/tools/deeplink/",
+                    "icon": "link",
+                    "tag": "Mobile"
+                }
+            ]
         }
     }
 }
