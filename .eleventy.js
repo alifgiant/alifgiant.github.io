@@ -42,7 +42,7 @@ module.exports = function (eleventyConfig) {
     // Create experience collection sorted by order
     eleventyConfig.addCollection('experiences', function (collectionApi) {
         return collectionApi.getAll()
-            .filter(item => item.inputPath.includes('/contents/experience/') && item.inputPath.endsWith('.md'))
+            .filter(item => item.inputPath.includes('/contents/work/') && item.inputPath.endsWith('.md'))
             .sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
     });
 

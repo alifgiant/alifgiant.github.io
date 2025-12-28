@@ -18,7 +18,7 @@ const https = require('https');
 // Configuration
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const DATABASE_ID = '2d5835c2e62f8026abb8f2bdf353ca04'; // From URL: alifgiant/2d5835c2e62f8026abb8f2bdf353ca04
-const EXPERIENCE_DIR = path.join(__dirname, '..', 'contents', 'experience');
+const EXPERIENCE_DIR = path.join(__dirname, '..', 'contents', 'work');
 
 // Company metadata (hardcoded for now, could be moved to separate DB/config)
 const COMPANY_METADATA = {
