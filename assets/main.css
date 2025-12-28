@@ -1255,3 +1255,25 @@ body.is-touch #container04 {
         width: calc(50% + 1.5rem);
     }
 }
+/* Notion Column Layout Support */
+.notion-columns {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.notion-column {
+    flex: 1;
+    min-width: 250px;
+}
+
+@media (max-width: 768px) {
+    .notion-columns {
+        flex-direction: column;
+    }
+    
+    .notion-column {
+        width: 100%;
+    }
+}

@@ -287,6 +287,39 @@ async function blockToMarkdown(block, pageId, imageCounter) {
             }
             break;
 
+        case 'column_list':
+            try {
+                // Fetch columns in the column_list
+                const columnsResponse = await notionRequest(`/v1/blocks/${block.id}/children`, 'GET');
+                const columns = columnsResponse.results;
+
+                // Start a div container for the columns
+                markdown = '<div class="notion-columns">\n';
+
+                for (const column of columns) {
+                    if (column.type === 'column') {
+                        markdown += '<div class="notion-column">\n\n';
+
+                        // Fetch content within each column
+                        const columnContent = await fetchPageContent(column.id);
+                        markdown += columnContent;
+
+                        markdown += '\n</div>\n';
+                    }
+                }
+
+                markdown += '</div>\n\n';
+            } catch (error) {
+                console.error(`  Failed to process column_list: ${error.message}`);
+                markdown = '> [Column layout processing failed]\n';
+            }
+            break;
+
+        case 'column':
+            // Columns are handled by their parent column_list
+            // This case is here to prevent "unsupported" warnings
+            break;
+
         default:
             // Unsupported block types are skipped
             console.log(`  Skipping unsupported block type: ${type}`);
@@ -316,8 +349,12 @@ async function fetchPageContent(pageId) {
             imageCounter = result.imageCounter;
 
             // Handle nested blocks (children)
-            // Skip tables as they are handled explicitly to maintain formatting
-            if (block.has_children && block.type !== 'child_page' && block.type !== 'table') {
+            // Skip tables and column_lists as they are handled explicitly to maintain formatting
+            if (block.has_children && 
+                block.type !== 'child_page' && 
+                block.type !== 'table' && 
+                block.type !== 'column_list' && 
+                block.type !== 'column') {
                 const childContent = await fetchPageContent(block.id);
                 markdown += childContent.split('\n').map(line => '  ' + line).join('\n');
             }

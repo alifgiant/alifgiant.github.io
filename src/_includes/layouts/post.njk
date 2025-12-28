@@ -197,4 +197,31 @@ layout: layouts/base.njk
     .blog-content tr:nth-child(even) {
         background-color: #fcfcfc;
     }
+
+    /* Notion Column Layout */
+    .blog-content .notion-columns {
+        display: flex;
+        gap: 1.5rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+    }
+
+    .blog-content .notion-column {
+        flex: 1 1 300px;
+        min-width: 0;
+    }
+
+    .blog-content .notion-column pre {
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .blog-content .notion-columns {
+            flex-direction: column;
+        }
+        
+        .blog-content .notion-column {
+            width: 100%;
+        }
+    }
 </style>
