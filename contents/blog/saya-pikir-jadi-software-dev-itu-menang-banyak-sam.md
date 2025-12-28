@@ -100,7 +100,7 @@ Masa puncak karier sebelum pensiun dengan THP rata-rata Rp80 juta per bulan dan 
 | Pada Usia | PNS (Kalsel + Bonus) | Karyawan BUMN (Tier 1) |
 | --- | --- | --- |
 | Usia 30 | Rp864 Juta | Rp1,62 Miliar |
-| Usia 40 | Rp2,36 Miliar | **Rp6,62 Miliar** |
+| Usia 40 | Rp2,36 Miliar | Rp6,62 Miliar |
 | Usia 50 | Rp4,46 Miliar | Rp17,62 Miliar |
 | Usia 60 | Rp7,30 Miliar | Rp35,22 Miliar |
 
