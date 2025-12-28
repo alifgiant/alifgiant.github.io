@@ -4,7 +4,6 @@ import path from 'path';
 import sharp from 'sharp';
 import imagemin from 'imagemin';
 import imageminSvgo from 'imagemin-svgo';
-import imageminOptipng from 'imagemin-optipng';
 
 async function optimizeImages() {
     const paths = await globby([
@@ -33,12 +32,10 @@ async function optimizeImages() {
                     .jpeg({ quality: 80, mozjpeg: true, progressive: true })
                     .toBuffer();
             } else if (ext === '.png') {
-                // Optipng is lossless and guaranteed to stabilize after 1-2 runs
-                optimizedBuffer = await imagemin.buffer(originalBuffer, {
-                    plugins: [
-                        imageminOptipng({ optimizationLevel: 3 })
-                    ]
-                });
+                // Sharp with png() is lossless and provides excellent compression
+                optimizedBuffer = await sharp(originalBuffer)
+                    .png({ compressionLevel: 9, effort: 10 })
+                    .toBuffer();
             } else if (ext === '.svg') {
                 optimizedBuffer = await imagemin.buffer(originalBuffer, {
                     plugins: [
