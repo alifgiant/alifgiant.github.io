@@ -10,7 +10,7 @@ on:
       - master
     paths:
       - 'src/**'
-      - 'contents/**'
+      - '.github/workflows/build-site.yml'
       - 'package.json'
       - '.eleventy.js'
 
@@ -48,6 +48,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update content and optimize images [skip ci]"
+            git commit -m "chore: update content and optimize images"
             git push
           fi
