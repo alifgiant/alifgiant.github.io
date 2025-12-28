@@ -141,10 +141,8 @@ Alasan orang tua menyebut PNS itu "Gold Standard" adalah karena mereka ingin mel
 
 Saya tidak ingin nanti saat sudah berusia 60 tahun, saya menoleh ke belakang dan menyesal sambil berujar:
 
-> "Coba dulu saya dengerin mertua buat daftar CPNS."
-"Coba dulu denger bapak daftar BUMN."
-
-
+> "Coba dulu denger bapak daftar BUMN."
+"Coba dulu saya dengerin mertua buat daftar CPNS."
 
 Saya sudah memilih jalur ini, jadi saya harus berjuang maksimal. Saya harus membangun aset mandiri yang membuat standar itu terlihat biasa saja. Karena pada akhirnya, penyesalan di masa tua itu harganya jauh lebih mahal daripada kerja keras dan belajar tiada henti di masa muda.
 
