@@ -13,18 +13,18 @@ image: "/assets/images/blog/cover-184835c2-e62f-80f3-a623-e3188ae893b7.png"
 # **Google Cloud’s Free Tier**
 Google Cloud is one of most prominent cloud platform out there. They offer an always free product in addition to free trial offering. It is very interesting since it mean we virtually could run a full Linux machine with zero cost, *forever*.
 Here is some notable spec that you should remember
-- **Machine Spec : **`e2-micro` (1 vCPU, 1 GB RAM)
-- **Region : **
+- **Machine Spec:** `e2-micro` (1 vCPU, 1 GB RAM)
+- **Region:**
   - Oregon: `us-west1`
   - Iowa: `us-central1`
   - South Carolina: `us-east1`
-  - **Disk Storage : **`30 GB`** **standard persistent disk
-- **Bandwidth** : `~30Gbps`
+  - **Disk Storage:** `30 GB`** **standard persistent disk
+- **Bandwidth:** `~30Gbps`
 - **Egress (Outbound) Volume:**
-  - **Premium tier : **`1 GB` per month, to all region destinations (excluding China and Australia) 
-  - **Standard tier : **`200 GB`** **per month
-  - **Ingress (inbound) Volume : **No limit
-- **Cloud Storage** : `5 GB`
+  - **Premium tier:** `1 GB` per month, to all region destinations (excluding China and Australia) 
+  - **Standard tier:** `200 GB`** **per month
+  - **Ingress (inbound) Volume:** No limit
+- **Cloud Storage:** `5 GB`
 > ⚠️ This numbers might be changed by google, i recommend you to double check on their side
   [https://cloud.google.com/free?hl=en](https://cloud.google.com/free?hl=en)
   # **Alpine Linux**
