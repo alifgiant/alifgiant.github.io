@@ -3,6 +3,7 @@
  * Configures static site generation with Nunjucks templates and markdown content
  */
 const markdownIt = require('markdown-it');
+const multimdTable = require('markdown-it-multimd-table');
 
 module.exports = function (eleventyConfig) {
     // Configure markdown-it with enhanced options
@@ -11,6 +12,9 @@ module.exports = function (eleventyConfig) {
         breaks: true,
         linkify: true
     });
+
+    // Enable multi-markdown table support (GFM-style tables)
+    md.use(multimdTable);
 
     eleventyConfig.setLibrary('md', md);
 

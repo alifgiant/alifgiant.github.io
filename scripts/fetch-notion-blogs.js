@@ -259,6 +259,34 @@ async function blockToMarkdown(block, pageId, imageCounter) {
             }
             break;
 
+        case 'table':
+            try {
+                // Fetch rows specifically for the table
+                const rowsResponse = await notionRequest(`/v1/blocks/${block.id}/children`, 'GET');
+                const rows = rowsResponse.results;
+
+                let tableMarkdown = '';
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (row.type !== 'table_row') continue;
+
+                    const cells = row.table_row?.cells || [];
+                    const cellMarkdowns = cells.map(cell => richTextToMarkdown(cell).replace(/\n/g, ' '));
+                    tableMarkdown += `| ${cellMarkdowns.join(' | ')} |\n`;
+
+                    // Add separator after first row
+                    if (i === 0) {
+                        const separators = new Array(cells.length).fill('---');
+                        tableMarkdown += `| ${separators.join(' | ')} |\n`;
+                    }
+                }
+                markdown = tableMarkdown + '\n';
+            } catch (error) {
+                console.error(`  Failed to process table: ${error.message}`);
+                markdown = '> [Table processing failed]\n';
+            }
+            break;
+
         default:
             // Unsupported block types are skipped
             console.log(`  Skipping unsupported block type: ${type}`);
@@ -288,7 +316,8 @@ async function fetchPageContent(pageId) {
             imageCounter = result.imageCounter;
 
             // Handle nested blocks (children)
-            if (block.has_children && block.type !== 'child_page') {
+            // Skip tables as they are handled explicitly to maintain formatting
+            if (block.has_children && block.type !== 'child_page' && block.type !== 'table') {
                 const childContent = await fetchPageContent(block.id);
                 markdown += childContent.split('\n').map(line => '  ' + line).join('\n');
             }
