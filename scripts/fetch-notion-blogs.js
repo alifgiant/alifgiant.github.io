@@ -357,27 +357,81 @@ async function fetchPageContent(pageId) {
     let startCursor = undefined;
     let imageCounter = 1;
 
+    // Block types that are list items
+    const listTypes = ['bulleted_list_item', 'numbered_list_item', 'to_do'];
+    
+    // Block types that need blank line before/after for proper markdown rendering
+    const blockLevelTypes = ['paragraph', 'heading_1', 'heading_2', 'heading_3', 'quote', 'callout', 'code', 'image', 'video', 'table', 'divider', 'column_list', 'bookmark', 'embed'];
+
     while (hasMore) {
         const endpoint = `/v1/blocks/${pageId}/children${startCursor ? `?start_cursor=${startCursor}` : ''}`;
         const response = await notionRequest(endpoint, 'GET');
 
+        let prevBlockType = null;
+        
         for (const block of response.results) {
             const result = await blockToMarkdown(block, pageId, imageCounter);
-            markdown += result.markdown;
             imageCounter = result.imageCounter;
+
+            const currIsListItem = listTypes.includes(block.type);
+            const prevIsListItem = listTypes.includes(prevBlockType);
+            const currIsBlockLevel = blockLevelTypes.includes(block.type);
+            
+            // Get trimmed content
+            const trimmed = (result.markdown || '').replace(/\s+$/g, '');
+            
+            // Skip completely empty content (but not intentional empty paragraphs)
+            if (!trimmed && block.type !== 'paragraph') {
+                prevBlockType = block.type;
+                continue;
+            }
+            
+            // Determine spacing before this block
+            if (prevBlockType !== null) {
+                if (currIsListItem && prevIsListItem) {
+                    // Consecutive list items: no blank line between them
+                    // (previous block already added \n)
+                } else if (currIsListItem && !prevIsListItem) {
+                    // Starting a new list after non-list: add blank line before
+                    markdown += '\n';
+                } else if (!currIsListItem && prevIsListItem) {
+                    // Ending a list, starting non-list: add blank line before
+                    markdown += '\n';
+                } else if (currIsBlockLevel) {
+                    // Block-level elements need blank line separation
+                    markdown += '\n';
+                }
+            }
+            
+            // Handle empty paragraph (intentional blank line in Notion)
+            if (!trimmed && block.type === 'paragraph') {
+                // Empty paragraph = user wants extra space, add blank line
+                markdown += '\n';
+                prevBlockType = block.type;
+                continue;
+            }
+            
+            // Add the block content with single trailing newline
+            markdown += trimmed + '\n';
 
             // Handle nested blocks (children)
             // Skip tables and column_lists as they are handled explicitly to maintain formatting
-            if (block.has_children && 
-                block.type !== 'child_page' && 
-                block.type !== 'table' && 
-                block.type !== 'column_list' && 
+            if (block.has_children &&
+                block.type !== 'child_page' &&
+                block.type !== 'table' &&
+                block.type !== 'column_list' &&
                 block.type !== 'column') {
-                const childContent = await fetchPageContent(block.id);
-                markdown += childContent.split('\n').map(line => '  ' + line).join('\n');
+                let childContent = await fetchPageContent(block.id);
+                if (childContent) {
+                    // indent child lines
+                    childContent = childContent.split('\n').map(line => '  ' + line).join('\n').replace(/\s+$/g, '') + '\n';
+                    markdown += childContent;
+                }
             }
+            
+            prevBlockType = block.type;
         }
-
+        
         hasMore = response.has_more;
         startCursor = response.next_cursor;
     }
