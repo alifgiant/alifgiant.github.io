@@ -30,13 +30,15 @@ module.exports = function (eleventyConfig) {
 
     // Create blog posts collection sorted by date (newest first)
     eleventyConfig.addCollection('posts', function (collectionApi) {
-        return collectionApi.getFilteredByGlob('contents/blog/*.md')
-            .sort((a, b) => b.date - a.date);
+        return collectionApi.getAll()
+            .filter(item => item.inputPath.includes('/contents/blog/') && item.inputPath.endsWith('.md'))
+            .sort((a, b) => (b.date || 0) - (a.date || 0));
     });
 
     // Create experience collection sorted by order
     eleventyConfig.addCollection('experiences', function (collectionApi) {
-        return collectionApi.getFilteredByGlob('contents/experience/*.md')
+        return collectionApi.getAll()
+            .filter(item => item.inputPath.includes('/contents/experience/') && item.inputPath.endsWith('.md'))
             .sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
     });
 

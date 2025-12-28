@@ -328,7 +328,7 @@ function extractProperties(page) {
     }
 
     // Extract tags
-    if (props.Tags?.multi_select) {
+    if (props.Tags?.multi_select && props.Tags.multi_select.length > 0) {
         frontmatter.tags = props.Tags.multi_select.map(tag => tag.name);
     }
 

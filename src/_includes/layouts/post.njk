@@ -153,4 +153,48 @@ layout: layouts/base.njk
         max-width: 100%;
         height: auto;
     }
+
+    /* Blog Content Styling Improvements */
+    .blog-content p {
+        margin-bottom: 2rem;
+        line-height: 1.8;
+    }
+
+    .blog-content img {
+        border-radius: 1.5rem;
+        margin: 2.5rem auto;
+        display: block;
+        max-width: 100%;
+        height: auto;
+        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+    }
+
+    /* Table Styling */
+    .blog-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2.5rem 0;
+        font-size: 0.95rem;
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+
+    .blog-content th, 
+    .blog-content td {
+        border: 1px solid #e5e7eb;
+        padding: 1rem 1.25rem;
+        text-align: left;
+    }
+
+    .blog-content th {
+        background-color: #f9fafb;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    .blog-content tr:nth-child(even) {
+        background-color: #fcfcfc;
+    }
 </style>
