@@ -9,5 +9,7 @@ image: "/assets/images/placeholder-blog.jpg"
 ---
 
 ![Image](/assets/images/blog/bcd4e90d-c151-404e-a0d9-7adcf9917bc2-1.png)
+
 Moving slowly doesn't mean you're not big.
+
 What is your center?
