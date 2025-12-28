@@ -217,6 +217,16 @@ async function blockToMarkdown(block, pageId, imageCounter) {
             const language = content?.language || '';
             const code = richTextToPlain(content?.rich_text);
             markdown = `\`\`\`${language}\n${code}\n\`\`\`\n`;
+
+            // Preserve caption if present (Notion stores caption as rich_text array)
+            try {
+                const codeCaption = richTextToPlain(content?.caption);
+                if (codeCaption && codeCaption.trim()) {
+                    markdown += `<figcaption class="notion-caption">${codeCaption}</figcaption>\n\n`;
+                }
+            } catch (e) {
+                // ignore
+            }
             break;
 
         case 'divider':
@@ -233,8 +243,12 @@ async function blockToMarkdown(block, pageId, imageCounter) {
                     const filename = `${pageId}-${imageCounter}${ext}`.replace(/[^a-zA-Z0-9.-]/g, '-');
 
                     const localPath = await downloadImage(imageUrl, filename);
-                    const caption = richTextToPlain(content?.caption) || 'Image';
-                    markdown = `![${caption}](${localPath})\n`;
+                    const caption = richTextToPlain(content?.caption) || '';
+                    // Use figure + figcaption to show visible caption on site
+                    markdown = `![${caption || 'Image'}](${localPath})\n`;
+                    if (caption && caption.trim()) {
+                        markdown += `<figcaption class="notion-caption">${caption}</figcaption>\n\n`;
+                    }
                     imageCounter++;
                 }
             } catch (error) {
@@ -256,6 +270,10 @@ async function blockToMarkdown(block, pageId, imageCounter) {
             const videoUrl = content?.file?.url || content?.external?.url;
             if (videoUrl) {
                 markdown = `[Video](${videoUrl})\n`;
+                const videoCaption = richTextToPlain(content?.caption);
+                if (videoCaption && videoCaption.trim()) {
+                    markdown += `<figcaption class="notion-caption">${videoCaption}</figcaption>\n\n`;
+                }
             }
             break;
 
@@ -446,10 +464,17 @@ function calculateReadTime(content) {
  * @returns {string} - Plain text description
  */
 function generateDescription(content) {
-    // Strip markdown formatting roughly
-    const plainText = content
+    // Strip HTML tags first (including figcaption, div, etc.)
+    let plainText = content
+        .replace(/<[^>]*>/g, '')
+        // Strip markdown formatting
         .replace(/[#*`_\[\]()!]/g, '')
+        // Strip image/link markdown syntax leftovers
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+        .replace(/\[[^\]]*\]\([^)]*\)/g, '')
+        // Normalize whitespace
         .replace(/\n+/g, ' ')
+        .replace(/\s+/g, ' ')
         .trim();
 
     if (plainText.length <= 160) return plainText;

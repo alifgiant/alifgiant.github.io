@@ -1277,3 +1277,17 @@ body.is-touch #container04 {
         width: 100%;
     }
 }
+
+/* Notion caption styling for images / code / videos */
+.notion-caption {
+    display: block;
+    text-align: center;
+    color: #6b7280; /* gray-500 */
+    font-size: 0.9rem;
+    margin-top: 0.375rem;
+}
+
+/* Ensure figure captions don't inherit large margins */
+figure {
+    margin: 0;
+}
