@@ -1,7 +1,7 @@
 ---
 title: "Flutter x VS Code Server = \"Mobile\" Developer (PART-3)"
 date: "2020-06-17"
-tags: []
+tags: ["Tech","Flutter"]
 featured: false
 description: "Instalasi Flutter Di post sebelumnya part-2, saya memaparkan bagaimana cara melakukan setup VM dan instalasi VS Code. Sebenarnya tutorial ini bisa berhenti h..."
 readTime: "4 min"

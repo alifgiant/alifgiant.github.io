@@ -1,7 +1,7 @@
 ---
 title: "Time Management, Keep It Simple, Asal Cocok (Part-1)"
 date: "2020-09-08"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Siapa yang pernah bertanya kepada idolanya atau tokoh yang ia jadikan model sebagai orang sukses, > Bagaimana anda mengatur waktu dalam kesibukan anda? > Pak..."
 readTime: "7 min"

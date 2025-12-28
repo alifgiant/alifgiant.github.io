@@ -9,8 +9,8 @@ image: "/assets/images/blog/cover-2d6835c2-e62f-8096-939e-d5cceed3f7b8.png"
 ---
 
 Tadi siang tiba-tiba kepikiran hal yang bener-bener random. Pas lagi bengong di depan layar monitor, kepikiran: "Sebenarnya berapa sih total pendapatan yang dikumpulkan orang kalau kerja jadi PNS sampai pensiun?"
-Jujur, pertanyaan ini muncul karena kita semua tahu lah ya... bagi sebagian besar orang tua atau mertua, **PNS itu adalah Gold Standard.** Disebut "Gold" bukan karena gajinya yang paling besar, tapi karena sifatnya yang *anti-resesi*. Sekali dapat NIP, hidup dianggap "aman" sampai liang lahat. Ada jaminan pensiun, tunjangan kesehatan yang stabil, dan status sosial yang sangat kuat di masyarakat. Di mata orang tua, PNS adalah definisi ketenangan batin.
-Kalau kerja di **BUMN**, mungkin itu dianggap sebagai **Silver Standard**-nya. Disebut "Silver" karena meski bergengsi dan secara materi seringkali jauh lebih mengilap (gaji dan bonusnya lebih besar), tingkat kepastiannya dianggap satu level di bawah PNS. Masih ada risiko restrukturisasi atau efisiensi perusahaan, meskipun tetap jauh lebih stabil dibanding sektor swasta biasa atau dunia startup.
+Jujur, pertanyaan ini muncul karena, kita semua tahu lah ya... bagi sebagian besar orang tua atau mertua, **PNS itu adalah Gold Standard.** Disebut "Gold" bukan karena gajinya yang paling besar, tapi karena sifatnya yang *anti-resesi*. Sekali dapat NIP, hidup dianggap "aman" sampai liang lahat. Ada jaminan pensiun, tunjangan kesehatan yang stabil, dan status sosial yang sangat kuat di masyarakat. Di mata orang tua, PNS adalah definisi ketenangan batin.
+Sedangkan, kerja di **BUMN** bisa dianggap sebagai **Silver Standard**-nya. Disebut "Silver" karena meski bergengsi dan secara materi seringkali jauh lebih mengilap (gaji dan bonusnya lebih besar), tingkat kepastiannya dianggap satu level di bawah PNS. Masih ada risiko restrukturisasi atau efisiensi perusahaan, meskipun tetap jauh lebih stabil dibanding sektor swasta biasa atau dunia startup.
 ![Image](/assets/images/blog/2d6835c2-e62f-8096-939e-d5cceed3f7b8-1.png)
 
 Karena penasaran, saya coba riset kecil-kecilan dibantu Gemini untuk simulasi angka. Saya memilih **Kalimantan Selatan** sebagai basis perhitungan karena memang sekarang saya tinggal dan menetap di sini. Saya ingin tahu angka realistisnya jika mulai kerja dari usia 21 (fresh graduate S1) sampai pensiun di usia 60.
@@ -34,7 +34,14 @@ Masuk Golongan IVa/IVb sebagai ahli madya atau kabid. THP naik ke Rp12 juta/bula
 Golongan IVc ke atas. THP puncak di Rp16 juta/bulan dengan bonus tambahan/narasumber sekitar Rp5 juta/bulan.
 - Hitungan: (Rp16 juta x 14) + (Rp5 juta x 12) = Rp284 juta/tahun.
 - **Akumulasi Usia 60:** Rp4,46 Miliar + (10 tahun x Rp284 juta) = **Rp7,3 Miliar.**
-  Total akumulasi pendapatan seorang PNS di Kalsel selama 39 tahun pengabdian adalah sekitar **7,3 Miliar**. Sekarang, bagaimana jika kita bandingkan dengan jalur BUMN secara bertahap?
+| Pada Usia | Masa Kerja | Total Pendapatan Terakumulasi |
+| --- | --- | --- |
+| Usia 30 | 9 Tahun | Rp864.000.000 |
+| Usia 40 | 19 Tahun | Rp2.364.000.000 |
+| Usia 50 | 29 Tahun | Rp4.464.000.000 |
+| Usia 60 | 39 Tahun | Rp7.304.000.000 |
+
+Total akumulasi pendapatan seorang PNS di Kalsel selama 39 tahun pengabdian adalah sekitar **7,3 Miliar**. Sekarang, bagaimana jika kita bandingkan dengan jalur BUMN?
 ### 2. Jalur Karyawan BUMN Tier 1 **(Pertamina, Telkom, PLN)**
 BUMN tier 1 punya grafik yang jauh lebih curam karena faktor Tantiem (bonus akhir tahun perusahaan). Jika di PNS kenaikannya landai, di BUMN lompatannya sangat agresif terutama saat memasuki level manajemen menengah ke atas.
 **Fase 1: Usia 21-30 (Management Trainee/Officer)**
@@ -53,7 +60,14 @@ Di level ini pendapatan melompat ke Rp50 juta per bulan dengan bonus tahunan men
 Masa puncak karier sebelum pensiun dengan THP rata-rata Rp80 juta per bulan dan bonus tetap di angka 10 kali gaji.
 - Hitungan: (Rp80 juta x 12) + (Rp80 juta x 10) = Rp1,76 Miliar/tahun.
 - **Akumulasi Usia 60:** Rp17,62 Miliar + (10 tahun x Rp1,76 Miliar) = **Rp35,22 Miliar.**
-  Secara nominal, jalur BUMN ini memang menawarkan akumulasi yang jauh melampaui PNS. Namun, di mana posisi saya saat ini?
+| Pada Usia | PNS (Kalsel + Bonus) | Karyawan BUMN (Tier 1) |
+| --- | --- | --- |
+| Usia 30 | Rp864 Juta | Rp1,62 Miliar |
+| Usia 40 | Rp2,36 Miliar | **Rp6,62 Miliar** |
+| Usia 50 | Rp4,46 Miliar | Rp17,62 Miliar |
+| Usia 60 | Rp7,30 Miliar | Rp35,22 Miliar |
+
+Secara nominal, jalur BUMN ini memang menawarkan akumulasi yang jauh melampaui PNS. Namun, di mana posisi saya saat ini?
 ### 3. Realitas di Balik Angka: Karier yang Tidak Selalu Mulus
 Namun, sebelum kita terpaku pada angka miliaran tadi, ada satu realitas besar yang sering terabaikan: simulasi di atas berasumsi segalanya berjalan lancar tanpa hambatan.
 Kenyataannya, banyak rekan di PNS yang kariernya tertahan di tengah jalan karena labirin birokrasi, politik kantor, atau sekadar kuota jabatan yang terbatas. Mereka tidak pernah benar-benar sampai ke puncak eselon. Begitu pula di BUMN, angka fantastis itu hanyalah milik mereka yang berhasil memenangkan "pendakian" tangga korporasi. Sisanya? Banyak yang tertahan di level staf selama belasan tahun tanpa kenaikan yang berarti.
@@ -67,13 +81,14 @@ Keresahan ini menarik karena kita sedang membandingkan dua filosofi hidup yang s
 1. **Software Developer:** Mengandalkan kemampuan diri sendiri secara total. Risikonya adalah kelelahan belajar dan faktor usia, tapi kelebihannya adalah limitasi pendapatan yang jauh lebih luas (*unlimited upside*). Kita adalah "perusahaan" itu sendiri.
 Meninjau ini membantu saya (dan mungkin teman-teman di tech lainnya) untuk sadar bahwa keamanan sejati bukan pada institusi, melainkan pada seberapa siap kita menghadapi ketidakpastian.
 ### Sebuah Kejujuran di Usia 30
-Kalau mau jujur, saat ini di usia 30, pencapaian pendapatan saya memang sudah lebih dari standar simulasi PNS maupun BUMN di atas. Dari gaji remote dan freelance, angkanya sudah melampaui akumulasi PNS usia 30 (Rp864 juta).
-Tapi pertanyaannya: **Apakah ketika umur 40 nanti saya masih akan tetap lebih tinggi? Bagaimana ketika umur 50?**
+Kalau mau jujur, saat ini di usia 30, pencapaian pendapatan saya memang sudah lebih dari standar simulasi PNS maupun BUMN di atas. Tapi pertanyaannya: **Apakah ketika umur 40 nanti saya masih akan tetap lebih tinggi? Bagaimana ketika umur 50, 60?**
 PNS punya grafik yang stabil naik. Sementara di tech, grafiknya bisa eksponensial naik, tapi bisa juga terjun bebas kalau kita berhenti berinovasi. Ini adalah pertaruhan antara *steady growth* melawan *high growth high risk*.
 ### Kesimpulan: Berjuang Melampaui Gold Standard
 Alasan orang tua menyebut PNS itu "Gold Standard" adalah karena mereka ingin melihat anak-anaknya aman. Tugas saya sekarang bukan cuma sekadar menyelesaikan baris kode, tapi berjuang supaya career path ini hasilnya bisa jauh lebih baik dari standar emas tersebut. Saya harus membuktikan bahwa jalur profesional IT punya potensi yang melampaui kenyamanan PNS, asalkan saya pintar mengelola keuangan dan tidak berhenti mengasah diri.
 Saya tidak ingin nanti saat sudah berusia 60 tahun, saya menoleh ke belakang dan menyesal sambil berujar:
+
 > "Coba dulu saya dengerin mertua buat daftar CPNS."
 "Coba dulu denger bapak daftar BUMN."
+
 Saya sudah memilih jalur ini, jadi saya harus berjuang maksimal. Saya harus membangun aset mandiri yang membuat standar itu terlihat biasa saja. Karena pada akhirnya, penyesalan di masa tua itu harganya jauh lebih mahal daripada kerja keras dan belajar tiada henti di masa muda.
 *Teruslah berkarya, teruslah berjuang. Sampai tidak ada lagi kata menyesal saat hari tua tiba.*

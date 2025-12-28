@@ -1,7 +1,7 @@
 ---
 title: "Cinta, Tuhan dan Matematika"
 date: "2020-10-11"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Sering kali kita bersyukur atas rasa cinta kepada pasangan kita. Namun kita melaknat rasa benci. Sadarkah kalian kedua rasa ini adalah karunia dan patut disy..."
 readTime: "1 min"

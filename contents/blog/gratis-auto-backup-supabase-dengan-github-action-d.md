@@ -53,11 +53,15 @@ jobs:
           destination-dir: ${{ steps.datetime.outputs.datetime }}
 
 ```
+<figcaption class="notion-caption">Github Workflow code</figcaption>
+
 Udah, cukup *copy-paste config* diatas, atur *secret-*nya dan selesai. Sampai jumpa di artikel lainnya 🫡. 
 Nah, buat yang ingin membaca lebih jauh terkait cerita dibaliknya, mari kita mulai.
 # Sedikit Cerita
 Saya membuat sebuah aplikasi manajemen dan POS untuk Apotek. Untuk sekarang masih digunakan sendiri dan dikembangkan seorang diri. Oleh karena, itu saya masih termasuk kaum mendang mending, dimana pengen semuanya gratis.
 ![Aplikasi Apotek Kula](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-2.png)
+<figcaption class="notion-caption">Aplikasi Apotek Kula</figcaption>
+
 ## Kenapa Supabase
 Saya seorang mobile engineer, programmer, coder atau apalah istilahnya untuk seorang yang bekerja membuat aplikasi mobile. Saya ahli dalam membuat aplikasi disisi muka (FE) atau disisi user, namun saya tidak ahli untuk aplikasi di belakang layar (BE). Oleh karena itu saya perlu menggunakan layanan DBaaS (Database As A Service).
 Biasanya saya selalu memilih Firebase Firestore karena mudah untuk digunakan. Namun berdasarkan pengalaman, Firestore memiliki banyak keterbatasan, utamanya dalam membuat aplikasi yang memiliki relasi data yang kompleks. Sehingga pada aplikasi Apotek ini saya mencoba eksplorasi alternatif lain seperti [AppWrite](appwrite.io), [PocketBase](https://pocketbase.io/) dan [Supabase](https://supabase.com/).
@@ -79,12 +83,28 @@ Namun saya kurang menyukai hal ini. Karena beberapa hal:
 Sehingga saya mecoba mencari alternatif. Pada akhirnya saya memutuskan menggunakan Cloudlfare R2. Dimana memiliki *tier* gratis yang **sangat baik**, sudah *support* protokol S3, dan mudah disetup.
 [Halaman penawaran Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/)
 ![Pricing dari Cloudflare R2](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-3.png)
-  # Outro
+<figcaption class="notion-caption">Pricing dari Cloudflare R2</figcaption>
+
+| Platform | Storage | Bandwidth | Class A Ops | Class B Ops |
+| --- | --- | --- | --- | --- |
+| Cloudflare | 10GB | Unlimited | 1,000,000 | 10,000,000 |
+| AWS | 5GB | 100GB | 2,000 | 20,000 |
+| Google Cloud | 5GB | 100GB | 5,000 | 50,000 |
+
+# Outro
 Saya membuat cron schedule, untuk melakukan *backup* setiap senin malam menggunakan Github Action. Untuk mempermudah perhitungan, anggaplah saya punya 50MB data yang disimpan setiap minggunya, maka dalam 1 bulan saya akan memakai ~200MB. Maka untuk 1GB, saya akan capai dalam 5 bulan. 
 Dari perhitungan ini, terlihat bahwa jika saya menggunakan git, maka dalam kurang dari 5 bulan, saya harus mengerjakan *backup* ini lagi. Sedangkan jika menggunakan Cloudflare, saya bisa menunggu 50 bulan (~4 tahun) untuk mencapai 10GB. Dalam hitungan optimis pun, dimana data saya membengkak lebih cepat, setidaknya 1 tahun pasti masih tercapai. Bahkan mungkin saya akan menemui *limit* terkait Github Action terlebih dahulu sebelum perlu mengubah *setup backup* *storage* ini.
-  Berikut adalah hasil akhir dari *setup* saya. Yang tentunya semuanya GRATIS! GE-RA-TIS!!
+| Tier | Runtime | Runner Storage (SSD) |
+| --- | --- | --- |
+| Github Free | 2,000 min/month | 14GB |
+
+Berikut adalah hasil akhir dari *setup* saya. Yang tentunya semuanya GRATIS! GE-RA-TIS!!
 ![Github Action Steps](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-4.png)
+<figcaption class="notion-caption">Github Action Steps</figcaption>
+
 ![Cloudflare R2 bucket](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-5.png)
+<figcaption class="notion-caption">Cloudflare R2 bucket</figcaption>
+
 Cukup sekian dan terimakasih, *keep hustling*! 💪🏻
 
 ## Coda

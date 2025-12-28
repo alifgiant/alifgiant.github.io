@@ -1,7 +1,7 @@
 ---
 title: "Let's talk about future: Technology"
 date: "2020-07-12"
-tags: []
+tags: ["Tech"]
 featured: false
 description: "Akhir akhir ini dunia sedang berputar sangat cepat. Berbagai bidang terjadi perubahan baik perkembangan maupun penurunan. Sebagai salah seorang yang menikmat..."
 readTime: "11 min"

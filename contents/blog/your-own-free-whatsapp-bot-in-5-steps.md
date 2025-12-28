@@ -10,6 +10,8 @@ image: "/assets/images/blog/cover-254835c2-e62f-80bb-873e-c202e4918abd.jpg"
 
 What if I told you that you can build your very own AI assistant on WhatsApp, host it yourself, and do it all for free? That's right—no monthly subscriptions, no expensive cloud bills, just a few open-source tools and your own server. This guide will walk you through the entire process, using [**Coolify**](https://coolify.io/) to manage everything, [**n8n**](https://n8n.io/) to build the workflow, and a super-efficient, *unofficial* WhatsApp client called [**GOWA**](https://github.com/aldinokemal/go-whatsapp-web-multidevice).
 ![illustration of final result](/assets/images/blog/254835c2-e62f-80bb-873e-c202e4918abd-1.png)
+<figcaption class="notion-caption">illustration of final result</figcaption>
+
 Interested? Let's get started 😎.
 # Step 1: Install Coolify and Deploy n8n 🗓️
 First things first, let's get your server (VPS) ready. Coolify is the control panel that makes managing everything easy. Then, we'll use it to deploy n8n, the architect of our bot's conversation flow.

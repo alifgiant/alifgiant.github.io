@@ -1,7 +1,7 @@
 ---
 title: "Comparative Study on Flutter State Management"
 date: "2021-08-02"
-tags: ["Tech","Flutter","State Management"]
+tags: ["Tech","Flutter"]
 featured: false
 description: "Background I am going to build a new flutter app. The app is aimed to be quite big. I'm going to need a state management tools. So, I think it’s a good idea ..."
 readTime: "13 min"

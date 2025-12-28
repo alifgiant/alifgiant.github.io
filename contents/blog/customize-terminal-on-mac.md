@@ -1,7 +1,7 @@
 ---
 title: "Customize Terminal on Mac"
 date: "2020-09-15"
-tags: []
+tags: ["Tech"]
 featured: false
 description: "Siapa yang bosan dengan tampilan hitam putih dari default terminal? Ingin bisa punya terminal asik gini? Colourful, Practical dan pastinya Geeky? Image/asset..."
 readTime: "2 min"

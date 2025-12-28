@@ -55,6 +55,8 @@ Widget userAvatar() => InkWell(
   child: CircleAvatar(backgroundImage: NetworkImage(state.url));
 );
 ```
+<figcaption class="notion-caption">Use function for simple widget</figcaption>
+
 This will benefit you in long run due to:
 1. Reduced file count or class count, therefore faster compilation times. 
 1. Reduced context switching while trying to understand a block of code.
@@ -106,6 +108,8 @@ class DemoApp extends StatelessWidget {
   }
 }
 ```
+<figcaption class="notion-caption">Create new widget for complex widget</figcaption>
+
 This will benefit you in long run due to:
 1. Widget will give you access to context. Setting up dependency tends to require context, so making it this way will unlock you from totally dependent to `Provider`.
 1. Easier to refactor to stateful in case you need it. Since this is a complex widget, even though you might not need it now, it does have the possibility in future. I already face the problem where someone introduce multiple intermediary method/widget (i.e runMyApp + buildMyApp + RootApp 👀) just because this app setup is a function and not a Widget.

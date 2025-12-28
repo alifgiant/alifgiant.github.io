@@ -1,7 +1,7 @@
 ---
 title: "Iman = Penenang Terbaik Overthinking (Part-2)"
 date: "2020-08-30"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Hubungannya dengan Iman? Sebelum lebih jauh pastikan udah baca part-1https://blog.alifakbar.com/post/627830488919425024/iman-penenang-terbaik-overthinking-pa..."
 readTime: "5 min"

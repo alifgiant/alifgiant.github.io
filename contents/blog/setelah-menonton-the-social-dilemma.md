@@ -1,7 +1,7 @@
 ---
 title: "Setelah Menonton: The Social Dilemma"
 date: "2020-09-13"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Sekarang aku ngerti, mengapa aku suka takut dengan psikologi. Karena aku mengerti sistem, membuat sistem, dan berada di dalam sistem. Sistem yang menerapkan ..."
 readTime: "2 min"

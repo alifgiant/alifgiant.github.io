@@ -3,7 +3,7 @@ title: "Andai dulu Matematika SD diajarkan hal ini"
 date: "2023-08-25"
 tags: ["Rants"]
 featured: false
-description: "Bank SeaBank 👀 🌊🏦 memberi bunga sebesar 3.75% p.a, Lalu bunga ini dibayarkan setiap hari. Berapakah nilai bunga sebenarnya yang diterima dalam satu tahun?..."
+description: "Bank SeaBank 👀 🌊🏦 memberi bunga sebesar 3.75% p.a, Lalu bunga ini dibayarkan setiap hari. Berapakah nilai bunga sebenarnya yang diterima dalam satu tahun?..."
 readTime: "1 min"
 image: "/assets/images/blog/cover-408af31d-021e-4582-aaf6-2aed21fe87a8.jpg"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Orang tua {tak} menyayangi ku"
 date: "2020-09-05"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Siapa yang sering kali mendengar kalimat di judul di atas? Atau “Orang tua aku tidak mengerti aku”, “Adik/kaka ku lebih disayang”, dll. Semua kalimat senada ..."
 readTime: "3 min"

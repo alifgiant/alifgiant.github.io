@@ -1,7 +1,7 @@
 ---
 title: "Pilih \"Sok baik\" atau \"Sok buruk\"?"
 date: "2020-09-11"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Coba jawab pertanyaan diatas.. Sudah? Mari ku tebak.. kau memilih “sok buruk” Sekali lagi, izikan aku tebak alasannya.. Karena kamu berpikir bahwa kata “sok”..."
 readTime: "8 min"

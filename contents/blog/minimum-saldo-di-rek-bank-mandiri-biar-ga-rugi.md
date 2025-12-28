@@ -1,7 +1,7 @@
 ---
 title: "Minimum Saldo di Rek. Bank Mandiri Biar Ga Rugi"
 date: "2020-10-01"
-tags: []
+tags: ["Rants"]
 featured: false
 description: "Kamu nasabah di Bank Mandiri? Sering ga merhatiin tiap awal dan akhir bulan ada potongan saldo? Kamu terlalu sibuk buat merhati-in? Tenang,.. inilah guna art..."
 readTime: "2 min"

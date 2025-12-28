@@ -46,14 +46,27 @@ OK, now lets get started.
 ## Step by step
 ### **1. Create Google Storage Bucket**
 First thing you have to do is create a cloud storage bucket. This is where you will store a pre-built image of Alpine Linux Cloud to be use as VM custom image. One thing to especially noted of is that this bucket should be located in same region as your targeted region to deploy your VM. For example `us-west1 (Oregon)` . I recommend you to create a folder (i.e `alpine-image`) to store this image, so in future you could store another image that you like in same place.
-    ![Image](/assets/images/blog/186835c2-e62f-802f-84cd-c97caff0f8b7-1.png)
-      ![Image](/assets/images/blog/186835c2-e62f-806a-b2b3-dd9992ebb85b-1.png)
-    
-    ### **2. Create Alpine’s Cloud Image**
+<div class="notion-columns">
+<div class="notion-column">
+
+![Image](/assets/images/blog/186835c2-e62f-802f-84cd-c97caff0f8b7-1.png)
+
+</div>
+<div class="notion-column">
+
+![Image](/assets/images/blog/186835c2-e62f-806a-b2b3-dd9992ebb85b-1.png)
+
+
+</div>
+</div>
+
+### **2. Create Alpine’s Cloud Image**
 After you’re done creating the bucket now you can download the prebuilt cloud image and create VM image out of it. Now open your cloud shell and download alpine with following command.
 ```bash
 wget https://dl-cdn.alpinelinux.org/alpine/v3.21/releases/cloud/gcp_alpine-3.21.2-x86_64-uefi-tiny-r0.raw.tar.gz
 ```
+<figcaption class="notion-caption">Download Alpine GCP image</figcaption>
+
 If the URL above do not work, you might want to check on their [official page](https://alpinelinux.org/cloud/), and copy the download URL there. You need to select :
 1. Cloud provider : Google Cloud
 1. Release : 3.21.2
@@ -62,10 +75,14 @@ If the URL above do not work, you might want to check on their [official page](h
 1. Bootstrap : Tiny Cloud
 1. Machine : Virtual
 ![You can get the url by hovering on download button or click copy url on it](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-1.png)
+<figcaption class="notion-caption">You can get the url by hovering on download button or click copy url on it</figcaption>
+
 After download complete, copy the downloaded file to the bucket you created before
 ```bash
 gcloud storage cp gcp_alpine-3.21.2-x86_64-uefi-tiny-r0.raw.tar.gz gs://[your bucket]/[your image folder]
 ```
+<figcaption class="notion-caption">Copy prebuilt image to cloud storage</figcaption>
+
 Then you can create a VM image from the downloaded file
 ```bash
 gcloud compute images create gcp-alpine-3212-x8664-uefi-tiny
@@ -83,6 +100,8 @@ Command above will let VM to run using `UEFI` and using `GVNIC`. Also a reminder
 ### **3. Create and Launch VM**
 Last but not least, you now can [Create Instance](https://console.cloud.google.com/compute/instancesAdd) based on the Alpine prebuilt image. To do that, you have to select custom images when configuring boot disk. If you have use different region on previous steps you wont see the image here. So make sure you are using same region on all steps including on the VM creation region. You also have to change your boot disk type to `Standard Persistent Disk`, by default you will be selecting `Balanced Persistent Disk` which not included in the free tier.
 ![Select custom image and your newly created VM image.](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-3.png)
+<figcaption class="notion-caption">Select custom image and your newly created VM image.</figcaption>
+
 After preparing boot disk, move onto `Security` section on the creation process. In this phase there is a very important thing to do, which is **adding a manually generated SSH key**. This to ensure you can connect to the VM after creation via SSH. Miss on this step will result on your VM unreachable, because by default your machine will not allowing password login.
 ![Image](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-4.png)
 To create an SSH Key, can run command below. Notice that you have to add `alpine` in the comment param. This have to be done since Google Cloud will use the comment field to determine what user it belongs to.
@@ -111,6 +130,8 @@ doas apk update
 doas apk add htop
 ```
 ![Using htop](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-5.png)
+<figcaption class="notion-caption">Using htop</figcaption>
+
 > 💡 Alpine do not have `sudo` bundled, it uses `doas` as replacement
 # Closing
 Google Cloud’s free-tier VM isn’t “generous,” but Alpine Linux turns it into a viable playground for developers who value control. Unlike restrictive PaaS free tiers, you own the OS—so you can:

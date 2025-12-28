@@ -3,12 +3,14 @@ title: "The Senior Engineer's Playbook for Nailing Live Code Interviews"
 date: "2025-07-17"
 tags: ["Tech"]
 featured: false
-description: "Unsplash - Paul Esch-Laurent/assets/images/blog/233835c2-e62f-805e-ad87-cedc75c3323f-1.jpg Live coding interviews can be stressful. There's a common misconce..."
+description: "Unsplash - Paul Esch-Laurent/assets/images/blog/233835c2-e62f-805e-ad87-cedc75c3323f-1.jpg Unsplash - Paul Esch-Laurent Live coding interviews can be stressf..."
 readTime: "7 min"
 image: "/assets/images/blog/cover-233835c2-e62f-805e-ad87-cedc75c3323f.jpg"
 ---
 
 ![Unsplash - Paul Esch-Laurent](/assets/images/blog/233835c2-e62f-805e-ad87-cedc75c3323f-1.jpg)
+<figcaption class="notion-caption">Unsplash - Paul Esch-Laurent</figcaption>
+
 Live coding interviews can be stressful. There's a common misconception that they're all about finding the cleverest, most optimal solution on the spot. In reality, interviewers are looking for something much more important: **your thought process**. They want to see how you solve problems and collaborate, just like you would on their team.
 So, instead of aiming to be a code ninja, focus on demonstrating the habits of a seasoned engineer. Here’s the playbook.
 To see this playbook in action, let's walk through a classic interview question: **"Write a function that multiplies two numbers without using the ****`*`**** operator."** It seems simple, but how you approach it reveals a lot. Here's how a senior engineer would tackle it, step by step.
