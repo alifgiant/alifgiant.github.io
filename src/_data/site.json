@@ -99,6 +99,13 @@
             "subtitle": "Useful utilities for developers and power users",
             "list": [
                 {
+                    "title": "Math Notes",
+                    "description": "A smart scratchpad for calculations. Type expressions and see results instantly, just like Apple Math Notes.",
+                    "url": "/tools/math-notes/",
+                    "icon": "calculate",
+                    "tag": "Utilities"
+                },
+                {
                     "title": "Deeplink Tester",
                     "description": "Test mobile app deeplinks and universal links easily.",
                     "url": "/tools/deeplink/",
@@ -194,13 +201,6 @@
                     "description": "Digitize buildings, measure polygon areas, and manage KML/Shapefile data with high-res satellite views.",
                     "url": "/tools/kml-viewer/",
                     "icon": "map",
-                    "tag": "Utilities"
-                },
-                {
-                    "title": "Math Notes",
-                    "description": "A smart scratchpad for calculations. Type expressions and see results instantly, just like Apple Math Notes.",
-                    "url": "/tools/math-notes/",
-                    "icon": "calculate",
                     "tag": "Utilities"
                 }
             ]

@@ -6,6 +6,8 @@ permalink: /tools/math-notes/
 
 {# mathjs for calculation #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+{# html2canvas for image export #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <div class="w-full max-w-5xl flex flex-col gap-12" x-data="mathNotes()">
     {# Header #}
@@ -28,10 +30,31 @@ permalink: /tools/math-notes/
                 <span class="material-symbols-outlined text-xl">delete</span>
                 Clear All
             </button>
-            <button @click="copyResults()" class="px-6 py-2.5 rounded-full bg-white border border-stone-200 text-text-main font-medium hover:bg-stone-50 transition-all flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">content_copy</span>
-                Copy Results
-            </button>
+            <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                <button @click="open = !open" class="px-6 py-2.5 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm">
+                    <span class="material-symbols-outlined text-xl">download</span>
+                    Export
+                    <span class="material-symbols-outlined transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                </button>
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-stone-100 py-2 z-50">
+                    <button @click="exportInputs(); open = false" class="w-full px-6 py-3 text-left hover:bg-stone-50 flex items-center gap-3 text-text-main">
+                        <span class="material-symbols-outlined text-lg text-stone-400">text_snippet</span>
+                        Inputs (.txt)
+                    </button>
+                    <button @click="exportResults(); open = false" class="w-full px-6 py-3 text-left hover:bg-stone-50 flex items-center gap-3 text-text-main">
+                        <span class="material-symbols-outlined text-lg text-stone-400">equal</span>
+                        Results (.txt)
+                    </button>
+                    <button @click="exportImage(); open = false" class="w-full px-6 py-3 text-left hover:bg-stone-50 flex items-center gap-3 text-text-main">
+                        <span class="material-symbols-outlined text-lg text-stone-400">image</span>
+                        Image (.png)
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="text-sm text-text-muted italic px-4">
             Supports variables, percentages, and units.
@@ -39,16 +62,22 @@ permalink: /tools/math-notes/
     </div>
 
     {# Editor Container #}
-    <div class="relative bg-[#1e1e1e] rounded-[2.5rem] border border-stone-800 shadow-2xl overflow-hidden min-h-[500px] flex">
+    <div x-ref="editor" class="relative bg-[#1e1e1e] rounded-[2.5rem] border border-stone-800 shadow-2xl overflow-hidden min-h-[500px] flex">
         {# Input Area #}
         <div class="flex-1 relative">
+            {# Syntax Highlighting Layer / Image Export Mirror #}
+            <div x-ref="highlightLayer" 
+                 class="math-input absolute inset-0 w-full h-full bg-transparent text-white font-mono overflow-hidden pointer-events-none"
+                 x-html="highlightedInput">
+            </div>
+            
             <textarea 
                 x-ref="input"
                 x-model="input" 
                 @input="calculate()"
                 @scroll="syncScroll()"
                 spellcheck="false"
-                class="math-input w-full h-full min-h-[500px] bg-transparent text-white font-mono resize-none focus:outline-none border-none overflow-y-auto custom-scrollbar"
+                class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-y-auto custom-scrollbar"
                 placeholder="Type your calculations here...
 e.g. 100 + 20%
 salary = 5000
@@ -62,47 +91,154 @@ total tax = salary * tax"></textarea>
         {# Results Area #}
         <div 
             x-ref="results"
-            class="math-results w-32 md:w-64 bg-[#1a1a1a] text-[#84cc16] font-mono text-right pointer-events-none overflow-hidden select-none">
-            <template x-for="(result, index) in results" :key="index">
-                <div class="math-line" x-text="result"></div>
+            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono text-right pointer-events-none overflow-hidden select-none">
+            <template x-for="(res, index) in results" :key="index">
+                <div class="math-line" 
+                     :class="{ 
+                        'text-[#84cc16]': !res.isHeader, 
+                        'text-indigo-400 font-bold': res.isHeader
+                     }" 
+                     x-text="res.text"></div>
             </template>
         </div>
     </div>
 
     {# Help / Tips #}
+    {# Help / Tips Redesigned #}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-8 rounded-[2rem] bg-indigo-50/50 border border-indigo-100/50">
-            <h3 class="text-lg font-bold text-indigo-900 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined">percentage</span>
-                Percentages
-            </h3>
-            <p class="text-sm text-indigo-800/80 leading-relaxed">
-                Easily add or subtract percentages. <br>
-                <code class="bg-indigo-100 px-1 rounded">100 + 10%</code> = 110 <br>
-                <code class="bg-indigo-100 px-1 rounded">500 - 25%</code> = 375
-            </p>
+        {# Group 1: Basics & Organization #}
+        <div class="space-y-4">
+            <div class="p-6 rounded-[2rem] bg-indigo-50/50 border border-indigo-100/50">
+                <h3 class="text-sm font-bold text-indigo-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">tag</span>
+                    Structure
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-indigo-800/60 font-medium">Header</span>
+                        <code class="bg-indigo-100 px-1.5 py-0.5 rounded text-indigo-900 font-mono"># Project</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-indigo-800/60 font-medium">Comment</span>
+                        <code class="bg-indigo-100 px-1.5 py-0.5 rounded text-indigo-900 font-mono">// description</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-indigo-800/60 font-medium">Label</span>
+                        <code class="bg-indigo-100 px-1.5 py-0.5 rounded text-indigo-900 font-mono">Price: 100</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-[2rem] bg-emerald-50/50 border border-emerald-100/50">
+                <h3 class="text-sm font-bold text-emerald-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">data_object</span>
+                    Variables
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-emerald-800/60 font-medium">Assign</span>
+                        <code class="bg-emerald-100 px-1.5 py-0.5 rounded text-emerald-900 font-mono">tax = 15%</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-emerald-800/60 font-medium">Reuse</span>
+                        <code class="bg-emerald-100 px-1.5 py-0.5 rounded text-emerald-900 font-mono">price * tax</code>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="p-8 rounded-[2rem] bg-emerald-50/50 border border-emerald-100/50">
-            <h3 class="text-lg font-bold text-emerald-900 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined">variable</span>
-                Variables
-            </h3>
-            <p class="text-sm text-emerald-800/80 leading-relaxed">
-                Save values to variables for later use. <br>
-                <code class="bg-emerald-100 px-1 rounded">price = 250</code> <br>
-                <code class="bg-emerald-100 px-1 rounded">total = price * 2</code>
-            </p>
+
+        {# Group 2: Math & Multiline #}
+        <div class="space-y-4">
+            <div class="p-6 rounded-[2rem] bg-amber-50/50 border border-amber-100/50">
+                <h3 class="text-sm font-bold text-amber-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">reorder</span>
+                    Multiline
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-amber-800/60 font-medium">Sum of above</span>
+                        <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">sum</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-amber-800/60 font-medium">Average</span>
+                        <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">avg</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-amber-800/60 font-medium">Last Result</span>
+                        <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">prev</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-[2rem] bg-cyan-50/50 border border-cyan-100/50">
+                <h3 class="text-sm font-bold text-cyan-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">translate</span>
+                    Natural Lang
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Add/Sub</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">10 plus 5 minus 2</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Mul/Div</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">10 times 2 divided by 5</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Scales</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">1.2 million</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Shorthand</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">50k plus 10 thousand</code>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="p-8 rounded-[2rem] bg-amber-50/50 border border-amber-100/50">
-            <h3 class="text-lg font-bold text-amber-900 mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined">straighten</span>
-                Units
-            </h3>
-            <p class="text-sm text-amber-800/80 leading-relaxed">
-                Convert between common units. <br>
-                <code class="bg-amber-100 px-1 rounded">5 km to meters</code> <br>
-                <code class="bg-amber-100 px-1 rounded">2 hours to minutes</code>
-            </p>
+
+        {# Group 3: Units & Conversions #}
+        <div class="space-y-4">
+            <div class="p-6 rounded-[2rem] bg-rose-50/50 border border-rose-100/50">
+                <h3 class="text-sm font-bold text-rose-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">straighten</span>
+                    Units & Bases
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-rose-800/60 font-medium">Length</span>
+                        <code class="bg-rose-100 px-1.5 py-0.5 rounded text-rose-900 font-mono">5 km to m</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-rose-800/60 font-medium">Time</span>
+                        <code class="bg-rose-100 px-1.5 py-0.5 rounded text-rose-900 font-mono">2h to mins</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-rose-800/60 font-medium">Binary</span>
+                        <code class="bg-rose-100 px-1.5 py-0.5 rounded text-rose-900 font-mono">0b1010 to dec</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-rose-800/60 font-medium">Hex</span>
+                        <code class="bg-rose-100 px-1.5 py-0.5 rounded text-rose-900 font-mono">0xff to dec</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-[2rem] bg-slate-50/50 border border-slate-100/50">
+                <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">calculate</span>
+                    Advanced
+                </h3>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-slate-800/60 font-medium">Percent of</span>
+                        <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-900 font-mono">20% of 500</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-slate-800/60 font-medium">Functions</span>
+                        <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-900 font-mono">f(x) = x^2</code>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -112,15 +248,15 @@ total tax = salary * tax"></textarea>
     .math-input,
     .math-results {
         font-size: 18px;
-        line-height: 40px;
-        padding: 32px;
+        line-height: 32px;
+        padding: 24px;
     }
     @media (min-width: 768px) {
         .math-input,
         .math-results {
             font-size: 20px;
-            line-height: 48px;
-            padding: 48px;
+            line-height: 40px;
+            padding: 32px;
         }
     }
     .math-results {
@@ -128,13 +264,13 @@ total tax = salary * tax"></textarea>
         padding-right: 16px;
     }
     .math-line {
-        height: 40px;
+        height: 32px;
         overflow: hidden;
         white-space: nowrap;
     }
     @media (min-width: 768px) {
         .math-line {
-            height: 48px;
+            height: 40px;
         }
     }
 
@@ -151,6 +287,16 @@ total tax = salary * tax"></textarea>
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #444;
     }
+
+    /* Syntax Highlighting */
+    .syntax-header { color: #818cf8; font-weight: bold; }
+    .syntax-comment { color: #9ca3af; font-style: italic; }
+    .syntax-variable { color: #fbbf24; }
+    .syntax-assign { color: #e2e8f0; }
+    .syntax-number { color: #84cc16; }
+    .syntax-operator { color: #f43f5e; }
+    .syntax-unit { color: #22d3ee; }
+    .syntax-keyword { color: #c084fc; font-weight: 500; }
 </style>
 
 <script>
@@ -159,45 +305,165 @@ total tax = salary * tax"></textarea>
             input: '',
             results: [],
             scope: {},
+            history: [],
+            exporting: false,
+
+            get highlightedInput() {
+                if (!this.input) return '';
+                return this.input.split('\n').map(line => {
+                    const highlighted = this.highlightLine(line);
+                    return `<div class="math-line">${highlighted}</div>`;
+                }).join('');
+            },
 
             init() {
-                // Initialize with some example data if empty
-                this.input = '1 + 2\n100 - 10%\n\nsalary = 5000\ntax = 15%\ntotal_tax = salary * tax\n\n5 km to meters\n2 meters + 50 cm';
+                // Initialize with a simple working example using "=" for variables
+                this.input = '# Budget Example\n\nRent = 1500\nFood = 300\nUtilities = 150\nTotal = sum\n\n# Calculations\n100 + 15%\n5 km to meters';
                 this.calculate();
             },
 
             calculate() {
                 const lines = this.input.split('\n');
                 this.results = [];
-                this.scope = {}; // Reset scope on each calculation for clean state
+                this.history = [];
+                this.scope = {};
 
-                lines.forEach((line) => {
-                    const trimmedLine = line.trim();
-                    if (!trimmedLine) {
-                        this.results.push('');
+                // Basic static currency symbols for mapping (simple regex replacement)
+                const currencyMap = {
+                    '\\$': '', 
+                    'EUR': '', '€': '',
+                    'USD': '',
+                    'percent of': '*', // Handle "10% of 100" as "10% * 100"
+                    ' of ': ' * '
+                };
+
+                // Natural language replacements
+                const replacements = [
+                    { reg: /\bplus\b/gi, sub: '+' },
+                    { reg: /\bminus\b/gi, sub: '-' },
+                    { reg: /\btimes\b|\bmultiplied by\b/gi, sub: '*' },
+                    { reg: /\bdivided by\b/gi, sub: '/' },
+                    { reg: /\bin decimal\b|\bto decimal\b/gi, sub: '' }, // mathjs handles 0x, 0b natively
+                    { reg: /\bin hex\b|\bto hex\b/gi, sub: 'in hex' },
+                    { reg: /\bin bin\b|\bto bin\b/gi, sub: 'in bin' },
+                    // Scales
+                    { reg: /\bthousand\b|\bk\b/gi, sub: '* 1000' },
+                    { reg: /\bmillion\b|\bM\b/gi, sub: '* 1000000' },
+                    { reg: /\bbillion\b/gi, sub: '* 1000000000' },
+                ];
+
+                lines.forEach((line, index) => {
+                    let originalLine = line.trim();
+                    let processedLine = originalLine;
+
+                    // 1. Handle Headers - show header text on result panel
+                    if (processedLine.startsWith('#')) {
+                        const headerText = processedLine.slice(1).trim();
+                        this.results.push({ 
+                            text: headerText.toUpperCase(), 
+                            isHeader: true 
+                        });
+                        this.history.push(null);
                         return;
                     }
 
+                    // 2. Clear Comments (// or " ")
+                    processedLine = processedLine.split('//')[0];
+                    processedLine = processedLine.replace(/"[^"]*"/g, '');
+                    
+                    // 3. Handle Labels/Assignments for keyword detection
+                    let assignVar = null;
+                    let evalPart = processedLine;
+                    if (processedLine.includes('=') && !processedLine.includes('==')) {
+                        const parts = processedLine.split('=');
+                        assignVar = parts[0].trim();
+                        evalPart = parts.slice(1).join('=').trim();
+                    } else if (processedLine.includes(':')) {
+                        const parts = processedLine.split(':');
+                        assignVar = parts[0].trim();
+                        evalPart = parts.slice(1).join(':').trim();
+                    }
+
+                    if (!evalPart) {
+                        this.results.push({ text: '', isHeader: false });
+                        this.history.push(null);
+                        return;
+                    }
+
+                    // 4. Handle multiline operators: prev, sum, total, average, avg
+                    const lowerEval = evalPart.toLowerCase();
+                    let customValue = null;
+
+                    if (lowerEval === 'prev') {
+                        customValue = this.getLastNumericResult();
+                    } else if (lowerEval === 'sum') {
+                        const segment = [];
+                        for (let i = this.history.length - 1; i >= 0; i--) {
+                            if (this.history[i] === null) break;
+                            if (typeof this.history[i] === 'number') segment.push(this.history[i]);
+                        }
+                        if (segment.length > 0) customValue = segment.reduce((a, b) => a + b, 0);
+                    } else if (lowerEval === 'avg' || lowerEval === 'average') {
+                        const segment = [];
+                        for (let i = this.history.length - 1; i >= 0; i--) {
+                            if (this.history[i] === null) break;
+                            if (typeof this.history[i] === 'number') segment.push(this.history[i]);
+                        }
+                        if (segment.length > 0) customValue = segment.reduce((a, b) => a + b, 0) / segment.length;
+                    }
+
+                    if (customValue !== null) {
+                        if (assignVar) this.scope[assignVar] = customValue;
+                        this.results.push({ text: this.formatResult(customValue), isHeader: false });
+                        this.history.push(customValue);
+                        return;
+                    }
+
+                    // 5. Apply Natural Language Replacements
+                    replacements.forEach(r => {
+                        evalPart = evalPart.replace(r.reg, r.sub);
+                    });
+
+                    // 6. Handle Currencies (Simple Mock)
+                    Object.keys(currencyMap).forEach(key => {
+                        evalPart = evalPart.replace(new RegExp(key, 'gi'), currencyMap[key]);
+                    });
+
+                    // Prepare full line for mathjs if it was an assignment
+                    const finalEvalLine = assignVar ? `${assignVar} = ${evalPart}` : evalPart;
+
                     try {
-                        // Math.js evaluation
-                        const result = math.evaluate(trimmedLine, this.scope);
+                        const result = math.evaluate(finalEvalLine, this.scope);
                         
-                        if (result === undefined) {
-                            this.results.push('');
+                        if (result === undefined || result === null) {
+                            this.results.push({ text: '', isHeader: false });
+                            this.history.push(null);
                         } else if (typeof result === 'function') {
-                            this.results.push('function');
+                            // Only show result for function calls, not definitions
+                            // math.evaluate returns a function object for definitions like f(x)=x^2
+                            this.results.push({ text: '', isHeader: false });
+                            this.history.push(null);
                         } else if (result && result.isUnit) {
-                            this.results.push(result.toString());
-                        } else if (typeof result === 'object' && !Array.isArray(result)) {
-                            this.results.push(''); // Assignments return object but we don't show result
+                            this.results.push({ text: result.toString(), isHeader: false });
+                            this.history.push(result.toNumber());
                         } else {
-                            // Format number to be readable
-                            this.results.push(this.formatResult(result));
+                            const val = typeof result === 'number' ? result : (result && typeof result.valueOf === 'function' ? result.valueOf() : null);
+                            const formatted = this.formatResult(result);
+                            this.results.push({ text: formatted, isHeader: false });
+                            this.history.push(typeof val === 'number' ? val : null);
                         }
                     } catch (e) {
-                        this.results.push('');
+                        this.results.push({ text: '', isHeader: false });
+                        this.history.push(null);
                     }
                 });
+            },
+
+            getLastNumericResult() {
+                for (let i = this.history.length - 1; i >= 0; i--) {
+                    if (typeof this.history[i] === 'number') return this.history[i];
+                }
+                return 0;
             },
 
             formatResult(res) {
@@ -205,27 +471,134 @@ total tax = salary * tax"></textarea>
                     if (Number.isInteger(res)) return res.toString();
                     return res.toLocaleString(undefined, { maximumFractionDigits: 4 });
                 }
-                return res.toString();
+                if (res && res.toString) return res.toString();
+                return '';
             },
 
             syncScroll() {
                 this.$refs.results.scrollTop = this.$refs.input.scrollTop;
+                this.$refs.highlightLayer.scrollTop = this.$refs.input.scrollTop;
+            },
+
+            highlightLine(line) {
+                if (!line.trim()) return '&nbsp;';
+                
+                let escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                // 1. Header
+                if (escaped.trim().startsWith('#')) {
+                    return `<span class="syntax-header">${escaped}</span>`;
+                }
+
+                // 2. Comments
+                let comment = '';
+                if (escaped.includes('//')) {
+                    const parts = escaped.split('//');
+                    escaped = parts[0];
+                    comment = `<span class="syntax-comment">//${parts.slice(1).join('//')}</span>`;
+                }
+
+                // 3. Variables & Assignment
+                if (escaped.includes('=')) {
+                    const parts = escaped.split('=');
+                    const varPart = parts[0];
+                    const valPart = parts.slice(1).join('=');
+                    escaped = `<span class="syntax-variable">${varPart}</span><span class="syntax-assign">=</span>${this.highlightExpression(valPart)}`;
+                } else if (escaped.includes(':')) {
+                    // Handle labels like "Price: 100" as well
+                    const parts = escaped.split(':');
+                    const labelPart = parts[0];
+                    const valPart = parts.slice(1).join(':');
+                    escaped = `<span class="syntax-variable">${labelPart}</span><span class="syntax-assign">:</span>${this.highlightExpression(valPart)}`;
+                } else {
+                    escaped = this.highlightExpression(escaped);
+                }
+
+                return escaped + comment;
+            },
+
+            highlightExpression(expr) {
+                // Keywords (sum, avg, to, of, etc.)
+                const keywords = ['sum', 'avg', 'average', 'prev', 'to', 'of', 'plus', 'minus', 'times'];
+                keywords.forEach(kw => {
+                    const reg = new RegExp(`\\b${kw}\\b`, 'gi');
+                    expr = expr.replace(reg, '<span class="syntax-keyword">$&</span>');
+                });
+                // Numbers (including percentages)
+                expr = expr.replace(/(\b\d+(\.\d+)?%?)\b/g, '<span class="syntax-number">$1</span>');
+                // Operators - only highlight + and *
+                expr = expr.replace(/([+*])/g, '<span class="syntax-operator">$1</span>');
+                // Units
+                const units = ['km', 'cm', 'mm', 'meters', 'kg', 'hr', 'min', 'usd', 'eur'];
+                units.forEach(u => {
+                    const reg = new RegExp(`\\b${u}\\b`, 'gi');
+                    expr = expr.replace(reg, '<span class="syntax-unit">$&</span>');
+                });
+                return expr;
             },
 
             clearAll() {
                 this.input = '';
                 this.results = [];
+                this.history = [];
                 this.scope = {};
                 this.$refs.input.focus();
             },
 
-            copyResults() {
-                const text = this.results.filter(r => r !== '').join('\n');
+            exportInputs() {
+                if (!this.input) return;
+                this.downloadFile(this.input, `math-notes-input-${Date.now()}.txt`);
+            },
+
+            exportResults() {
+                const text = this.results.map(r => r.text).filter(t => t !== '').join('\n');
                 if (!text) return;
-                
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('Results copied to clipboard!');
-                });
+                this.downloadFile(text, `math-notes-results-${Date.now()}.txt`);
+            },
+
+            async exportImage() {
+                const editor = this.$refs.editor;
+                const input = this.$refs.input;
+                const highlightLayer = this.$refs.highlightLayer;
+
+                this.exporting = true;
+                // Swap textarea visibility for high-quality render
+                input.style.opacity = '0';
+                highlightLayer.style.color = '#fff'; // Make it visible for capture
+                highlightLayer.style.textShadow = 'none';
+
+                await this.$nextTick();
+
+                try {
+                    const canvas = await html2canvas(editor, {
+                        backgroundColor: '#1e1e1e',
+                        scale: 2,
+                        logging: false,
+                        useCORS: true
+                    });
+                    
+                    const link = document.createElement('a');
+                    link.download = `math-notes-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } catch (e) {
+                    console.error('Export Image Error:', e);
+                    alert('Failed to export image.');
+                } finally {
+                    this.exporting = false;
+                    input.style.opacity = '1';
+                    highlightLayer.style.color = 'transparent';
+                }
+            },
+
+            downloadFile(content, filename) {
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.click();
+                URL.revokeObjectURL(url);
             }
         }
     }
