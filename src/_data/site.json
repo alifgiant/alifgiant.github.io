@@ -167,6 +167,13 @@
                     "url": "/tools/snippet/",
                     "icon": "build",
                     "tag": "Utilities"
+                },
+                {
+                    "title": "PDF Compressor",
+                    "description": "Compress PDF files directly in your browser without uploading them to any server.",
+                    "url": "/tools/pdf-compress/",
+                    "icon": "sync",
+                    "tag": "Converter"
                 }
             ]
         }
