@@ -1,0 +1,284 @@
+---
+layout: layouts/base.njk
+title: KML Viewer & Converter
+permalink: /tools/kml-viewer/
+---
+
+{# Leaflet CSS #}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+{# Leaflet JS #}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{# togeojson JS #}
+<script src="https://unpkg.com/@tmcw/togeojson@5.0.0/dist/togeojson.umd.js"></script>
+{# shp-write JS #}
+<script src="https://unpkg.com/shp-write@0.4.0/shpwrite.js"></script>
+
+<div class="w-full max-w-5xl flex flex-col gap-12" x-data="kmlViewer()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-indigo-50 text-indigo-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">map</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            KML Viewer & Converter
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            View KML files on an interactive map and convert them to Shapefile or GeoJSON instantly. Secure and client-side.
+        </p>
+    </div>
+
+    {# Main Tool Content #}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {# Sidebar: Upload & Actions #}
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2rem] p-8 shadow-xl shadow-primary/5">
+                <h3 class="text-sm font-bold text-text-main mb-6 flex items-center gap-2 uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-indigo-500 text-lg">upload_file</span>
+                    Upload KML
+                </h3>
+                
+                <div @dragover.prevent="dragOver = true" 
+                     @dragleave.prevent="dragOver = false" 
+                     @drop.prevent="handleDrop($event)"
+                     :class="dragOver ? 'border-indigo-400 bg-indigo-50/50 scale-[1.02]' : 'border-stone-200 bg-stone-50/30'"
+                     class="relative group border-2 border-dashed rounded-3xl p-8 transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer">
+                    
+                    <input type="file" accept=".kml" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
+                    
+                    <div class="p-4 rounded-xl bg-white shadow-sm border border-stone-100 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl text-indigo-500">upload</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-xs font-bold text-text-main">Click or drop KML</p>
+                        <p class="text-[10px] text-text-muted mt-1">Single or multiple files</p>
+                    </div>
+                </div>
+
+                {# File Info / Status #}
+                <template x-if="fileName">
+                    <div class="mt-6 p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl animate-fade-in">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-emerald-500">check_circle</span>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-text-main truncate" x-text="fileName"></p>
+                                <p class="text-[10px] text-emerald-600 font-medium" x-text="featuresCount + ' features found'"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                {# Actions #}
+                <div class="mt-8 flex flex-col gap-3" x-show="geoJsonData" x-cloak>
+                    <button @click="downloadSHP()" class="flex items-center justify-center gap-2 w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 active:scale-[0.98]">
+                        Download SHP (ZIP)
+                        <span class="material-symbols-outlined text-lg">download</span>
+                    </button>
+                    <button @click="downloadGeoJSON()" class="flex items-center justify-center gap-2 w-full py-4 bg-stone-800 text-white rounded-2xl font-bold text-sm hover:bg-stone-900 transition-all active:scale-[0.98]">
+                        Download GeoJSON
+                        <span class="material-symbols-outlined text-lg">code</span>
+                    </button>
+                    <button @click="reset()" class="flex items-center justify-center gap-2 w-full py-2 text-rose-500 text-[10px] font-bold uppercase tracking-widest hover:text-rose-600 transition-colors">
+                        Clear Map
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                </div>
+            </div>
+
+            {# Tips #}
+            <div class="bg-indigo-50/30 rounded-3xl p-6 border border-indigo-100/50 flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-lg">info</span>
+                    Good to know
+                </div>
+                <p class="text-[11px] text-text-muted leading-relaxed italic">
+                    All processing is local. Your geospatial data never leaves your device. Large KML files might take a few seconds to render.
+                </p>
+            </div>
+        </div>
+
+        {# Map Container #}
+        <div class="lg:col-span-8 h-[600px] bg-stone-100 rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-2xl relative z-0">
+            <div id="map" class="w-full h-full"></div>
+            
+            {# Map Overlay Info #}
+            <template x-if="!geoJsonData">
+                <div class="absolute inset-0 bg-stone-50/90 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-[1000]">
+                    <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-indigo-400 text-3xl animate-bounce">location_on</span>
+                    </div>
+                    <p class="text-sm font-bold text-text-muted">Upload a KML file to view on map</p>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function kmlViewer() {
+        return {
+            map: null,
+            layer: null,
+            geoJsonData: null,
+            fileName: '',
+            featuresCount: 0,
+            dragOver: false,
+
+            init() {
+                this.$nextTick(() => {
+                    this.initMap();
+                });
+            },
+
+            initMap() {
+                if (this.map) return;
+                
+                // Initialize map with OSM tiles
+                this.map = L.map('map').setView([0, 0], 2);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(this.map);
+
+                // Add scale bar
+                L.control.scale().addTo(this.map);
+            },
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) this.processFile(file);
+                e.target.value = '';
+            },
+
+            handleDrop(e) {
+                this.dragOver = false;
+                const file = e.dataTransfer.files[0];
+                if (file) this.processFile(file);
+            },
+
+            async processFile(file) {
+                if (!file.name.toLowerCase().endsWith('.kml')) {
+                    alert('Please upload a valid .kml file');
+                    return;
+                }
+
+                this.fileName = file.name;
+                const text = await file.text();
+                
+                try {
+                    const parser = new DOMParser();
+                    const kmlDoc = parser.parseFromString(text, 'text/xml');
+                    
+                    // togeojson is exposed as toGeoJSON global
+                    const geojson = toGeoJSON.kml(kmlDoc);
+                    this.geoJsonData = geojson;
+                    this.featuresCount = geojson.features.length;
+
+                    this.renderGeoJSON(geojson);
+                } catch (error) {
+                    console.error('Error parsing KML:', error);
+                    alert('Error parsing KML file. Please ensure it is a valid KML.');
+                }
+            },
+
+            renderGeoJSON(geojson) {
+                if (this.layer) {
+                    this.map.removeLayer(this.layer);
+                }
+
+                this.layer = L.geoJSON(geojson, {
+                    style: function (feature) {
+                        return {
+                            color: '#4f46e5',
+                            weight: 3,
+                            opacity: 0.6,
+                            fillColor: '#4f46e5',
+                            fillOpacity: 0.2
+                        };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        if (feature.properties) {
+                            let popupContent = '<div class="p-2 space-y-1">';
+                            for (let key in feature.properties) {
+                                if (key !== 'styleUrl' && key !== 'styleHash' && key !== 'styleMapHash') {
+                                    popupContent += `<p class="text-[10px]"><strong class="font-bold">${key}:</strong> ${feature.properties[key]}</p>`;
+                                }
+                            }
+                            popupContent += '</div>';
+                            layer.bindPopup(popupContent);
+                        }
+                    }
+                }).addTo(this.map);
+
+                // Zoom to bounds
+                const bounds = this.layer.getBounds();
+                if (bounds.isValid()) {
+                    this.map.fitBounds(bounds, { padding: [50, 50] });
+                }
+            },
+
+            downloadGeoJSON() {
+                if (!this.geoJsonData) return;
+                const blob = new Blob([JSON.stringify(this.geoJsonData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = this.fileName.replace('.kml', '.geojson');
+                link.click();
+                URL.revokeObjectURL(url);
+            },
+
+            downloadSHP() {
+                if (!this.geoJsonData) return;
+                
+                // shpwrite is the global from shp-write
+                try {
+                    shpwrite.download(this.geoJsonData, {
+                        folder: this.fileName.replace('.kml', ''),
+                        types: {
+                            point: 'points',
+                            polygon: 'polygons',
+                            line: 'lines'
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error generating Shapefile:', error);
+                    alert('Error generating Shapefile. Some complex geometries might not be supported by the current converter.');
+                }
+            },
+
+            reset() {
+                if (this.layer) {
+                    this.map.removeLayer(this.layer);
+                    this.layer = null;
+                }
+                this.geoJsonData = null;
+                this.fileName = '';
+                this.featuresCount = 0;
+                this.map.setView([0, 0], 2);
+            }
+        }
+    }
+</script>
+
+<style>
+    /* Fix Leaflet pointer issues in some environments */
+    .leaflet-container {
+        cursor: crosshair !important;
+    }
+    .leaflet-popup-content-wrapper {
+        border-radius: 1rem !important;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+    }
+    .leaflet-popup-content {
+        margin: 12px 16px !important;
+    }
+</style>

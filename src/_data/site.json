@@ -188,6 +188,13 @@
                     "url": "/tools/image-convert/",
                     "icon": "sync",
                     "tag": "Converter"
+                },
+                {
+                    "title": "KML Viewer & Converter",
+                    "description": "View KML files on an interactive map and convert them to Shapefile or GeoJSON.",
+                    "url": "/tools/kml-viewer/",
+                    "icon": "map",
+                    "tag": "Converter"
                 }
             ]
         }
