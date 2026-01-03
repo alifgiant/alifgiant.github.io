@@ -1,0 +1,392 @@
+---
+layout: layouts/base.njk
+title: Image Compressor
+permalink: /tools/image-compress/
+---
+
+{# Browser Image Compression #}
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+{# JSZip #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="imageCompressor()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-emerald-50 text-emerald-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">photo_size_select_small</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Image Compressor
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Compress PNG, JPG, WebP, and SVG images with ease. Secure, fast, and entirely local.
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        
+        {# Drop Zone & Settings #}
+        <div class="flex flex-col gap-8">
+            {# Multiple Drop Zone #}
+            <div @dragover.prevent="dragOver = true" 
+                 @dragleave.prevent="dragOver = false" 
+                 @drop.prevent="handleDrop($event)"
+                 :class="dragOver ? 'border-emerald-400 bg-emerald-50/50 scale-[1.01]' : 'border-stone-200 bg-stone-50/30'"
+                 class="relative group border-2 border-dashed rounded-3xl p-10 transition-all duration-300 flex flex-col items-center justify-center gap-6 cursor-pointer overflow-hidden">
+                
+                <input type="file" multiple accept="image/png,image/jpeg,image/webp,image/svg+xml" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
+                
+                <div class="p-5 rounded-2xl bg-white shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <span class="material-symbols-outlined text-4xl text-emerald-500">upload_file</span>
+                </div>
+                
+                <div class="text-center">
+                    <h3 class="text-lg font-bold text-text-main mb-1">Click or drag images here</h3>
+                    <p class="text-xs text-text-muted">Batch process up to 20 files (PNG, JPG, WebP, SVG)</p>
+                </div>
+            </div>
+
+            {# Compression Settings #}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {# Quality #}
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center px-1">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted">Compression Quality</label>
+                        <span class="text-xs font-bold text-emerald-600" x-text="Math.round(quality * 100) + '%'"></span>
+                    </div>
+                    <input type="range" min="0.1" max="1.0" step="0.05" x-model="quality" 
+                           class="w-full h-2 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                    <div class="flex justify-between px-1 text-[8px] font-bold text-stone-400 uppercase tracking-tighter">
+                        <span>Better Quality</span>
+                        <span>Balanced</span>
+                        <span>Smaller Size</span>
+                    </div>
+                </div>
+
+                {# Max Resolution #}
+                <div class="flex flex-col gap-4">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Max Resolution (Width/Height)</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button @click="maxSize = 1080" :class="maxSize === 1080 ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-50 text-text-muted'" class="py-2 rounded-xl text-[10px] font-bold border border-stone-100 transition-all">1080</button>
+                        <button @click="maxSize = 1920" :class="maxSize === 1920 ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-50 text-text-muted'" class="py-2 rounded-xl text-[10px] font-bold border border-stone-100 transition-all">1920</button>
+                        <button @click="maxSize = 4096" :class="maxSize === 4096 ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-50 text-text-muted'" class="py-2 rounded-xl text-[10px] font-bold border border-stone-100 transition-all">4K</button>
+                        <button @click="maxSize = 0" :class="maxSize === 0 ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-50 text-text-muted'" class="py-2 rounded-xl text-[10px] font-bold border border-stone-100 transition-all">ORIG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# File List #}
+        <div x-show="files.length > 0" class="mt-12 flex flex-col gap-4 animate-fade-in" x-cloak>
+            <div class="flex justify-between items-center mb-2">
+                <h4 class="text-sm font-bold text-text-main" x-text="`Queue (${files.length} images)`"></h4>
+                <button @click="clearAll()" class="text-[10px] font-bold text-rose-500 hover:text-rose-600 uppercase tracking-widest">Clear All</button>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <template x-for="(f, index) in files" :key="f.id">
+                    <div class="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100 transition-all" :class="f.status === 'done' ? 'bg-emerald-50/30 border-emerald-100' : ''">
+                        {# Preview/Icon #}
+                        <div class="w-12 h-12 rounded-lg bg-white shadow-sm border border-stone-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <template x-if="f.preview">
+                                <img :src="f.preview" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!f.preview">
+                                <span class="material-symbols-outlined text-xl text-emerald-400">image</span>
+                            </template>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start">
+                                <span class="text-sm font-bold text-text-main truncate pr-4" x-text="f.name"></span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" 
+                                      :class="{
+                                          'bg-stone-200 text-stone-600': f.status === 'queued',
+                                          'bg-emerald-100 text-emerald-600 animate-pulse': f.status === 'processing',
+                                          'bg-emerald-200 text-emerald-800': f.status === 'done',
+                                          'bg-rose-100 text-rose-600': f.status === 'error'
+                                      }" x-text="f.status.toUpperCase()"></span>
+                            </div>
+
+                            {# Size Comparison #}
+                            <div class="flex gap-3 mt-1 items-center">
+                                <template x-if="f.status === 'done'">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] text-rose-500 line-through decoration-rose-500 font-medium" x-text="formatSize(f.size)"></span>
+                                        <span class="material-symbols-outlined text-[10px] text-stone-400">arrow_forward</span>
+                                        <span class="text-[10px] font-bold text-emerald-600" x-text="formatSize(f.blob?.size || 0)"></span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded ml-1" x-text="'-' + f.reduction + '%'"></span>
+                                    </div>
+                                </template>
+                                <template x-if="f.status !== 'done'">
+                                    <span class="text-[10px] text-text-muted" x-text="formatSize(f.size)"></span>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <template x-if="f.status === 'done'">
+                                <a :href="f.downloadUrl" :download="f.resultName" class="p-2 text-emerald-500 hover:bg-emerald-100 rounded-lg transition-all">
+                                    <span class="material-symbols-outlined">download</span>
+                                </a>
+                            </template>
+                            <button @click="removeFile(index)" class="p-2 text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            {# Batch Summary & Actions #}
+            <div class="mt-8 flex flex-col gap-4">
+                <button @click="processAll()" :disabled="!isAnyQueued || processing" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold text-xl hover:bg-emerald-700 transition-all duration-300 shadow-xl shadow-emerald-200/50 active:scale-[0.98] disabled:opacity-50 overflow-hidden">
+                    <span x-show="!processing">Compress All</span>
+                    <span x-show="processing" class="flex items-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Optimizing...
+                    </span>
+                    <span x-show="!processing" class="material-symbols-outlined group-hover:translate-y-1 transition-transform">bolt</span>
+                </button>
+
+                <div x-show="isAllDone && files.length > 0" class="flex flex-col gap-6 animate-fade-in">
+                    <div class="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 rounded-2xl bg-white shadow-sm border border-emerald-50 text-emerald-500">
+                                <span class="material-symbols-outlined">analytics</span>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-text-main">Batch Summary</h4>
+                                <p class="text-xs text-text-muted" x-text="'Optimized ' + files.filter(f => f.status === 'done').length + ' images'"></p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-black text-emerald-600" x-text="' - ' + totalReduction + ' % '"></div>
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-text-muted" x-text="' Saved ' + formatSize(totalSaved) + ' total '"></div>
+                        </div>
+                    </div>
+
+                    <button @click="downloadZip()" x-show="files.length > 1" class="flex items-center justify-center gap-3 w-full py-4 border-2 border-emerald-600 text-emerald-600 bg-white rounded-2xl font-bold text-lg hover:bg-emerald-50 transition-all duration-300 active:scale-[0.98]">
+                        Download All as ZIP
+                        <span class="material-symbols-outlined">inventory_2</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Info Sections #}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-emerald-50/50 rounded-3xl p-8 border border-emerald-100 flex gap-4">
+            <span class="material-symbols-outlined text-emerald-600 text-3xl">privacy_tip</span>
+            <div>
+                <h4 class="font-bold text-text-main mb-2">Privacy First</h4>
+                <p class="text-sm text-text-muted leading-relaxed">
+                    All images are processed locally on your machine. We never upload your sensitive media to any server.
+                </p>
+            </div>
+        </div>
+        <div class="bg-emerald-50/50 rounded-3xl p-8 border border-emerald-100 flex gap-4">
+            <span class="material-symbols-outlined text-emerald-600 text-3xl">shutter_speed</span>
+            <div>
+                <h4 class="font-bold text-text-main mb-2">Smart Optimization</h4>
+                <p class="text-sm text-text-muted leading-relaxed">
+                    Leveraging modern browser capabilities to reduce file size while preserving as much visual quality as possible.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function imageCompressor() {
+        return {
+            files: [],
+            dragOver: false,
+            processing: false,
+            quality: 0.8,
+            maxSize: 0, // 0 means origin
+            
+            get isAnyQueued() {
+                return this.files.some(f => f.status === 'queued');
+            },
+
+            get isAllDone() {
+                return this.files.length > 0 && this.files.every(f => f.status === 'done' || f.status === 'error');
+            },
+
+            get totalSaved() {
+                const doneFiles = this.files.filter(f => f.status === 'done');
+                const totalOrig = doneFiles.reduce((acc, f) => acc + f.size, 0);
+                const totalNew = doneFiles.reduce((acc, f) => acc + (f.blob?.size || 0), 0);
+                return Math.max(0, totalOrig - totalNew);
+            },
+
+            get totalReduction() {
+                const doneFiles = this.files.filter(f => f.status === 'done');
+                const totalOrig = doneFiles.reduce((acc, f) => acc + f.size, 0);
+                const totalNew = doneFiles.reduce((acc, f) => acc + (f.blob?.size || 0), 0);
+                if (totalOrig === 0) return 0;
+                return ((totalOrig - totalNew) / totalOrig * 100).toFixed(1);
+            },
+
+            handleFileSelect(e) {
+                const selectedFiles = Array.from(e.target.files);
+                this.addFiles(selectedFiles);
+                e.target.value = '';
+            },
+
+            handleDrop(e) {
+                this.dragOver = false;
+                const droppedFiles = Array.from(e.dataTransfer.files);
+                this.addFiles(droppedFiles);
+            },
+
+            async addFiles(fileList) {
+                for (const file of fileList) {
+                    const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
+                    if (validTypes.includes(file.type)) {
+                        if (this.files.length < 20) {
+                            const f = {
+                                id: Math.random().toString(36).substr(2, 9),
+                                name: file.name,
+                                size: file.size,
+                                file: file,
+                                status: 'queued',
+                                reduction: 0,
+                                preview: null,
+                                downloadUrl: null,
+                                resultName: null,
+                                blob: null
+                            };
+                            
+                            // Generate preview
+                            if (file.type !== 'image/svg+xml') {
+                                f.preview = await imageCompression.getDataUrlFromFile(file);
+                            } else {
+                                // For SVG, just read as text but show icon for now
+                                f.preview = null;
+                            }
+                            
+                            this.files.push(f);
+                        }
+                    }
+                }
+            },
+
+            removeFile(index) {
+                const file = this.files[index];
+                if (file.downloadUrl) URL.revokeObjectURL(file.downloadUrl);
+                this.files.splice(index, 1);
+            },
+
+            clearAll() {
+                this.files.forEach(f => {
+                    if (f.downloadUrl) URL.revokeObjectURL(f.downloadUrl);
+                });
+                this.files = [];
+                this.processing = false;
+            },
+
+            async processAll() {
+                if (this.processing) return;
+                this.processing = true;
+
+                for (let i = 0; i < this.files.length; i++) {
+                    if (this.files[i].status === 'queued') {
+                        await this.compressFile(i);
+                    }
+                }
+
+                this.processing = false;
+            },
+
+            async compressFile(index) {
+                const f = this.files[index];
+                f.status = 'processing';
+
+                try {
+                    if (f.file.type === 'image/svg+xml') {
+                        await this.compressSVG(index);
+                    } else {
+                        await this.compressRaster(index);
+                    }
+                    
+                    const reductionVal = ((f.size - f.blob.size) / f.size) * 100;
+                    f.reduction = reductionVal > 0 ? reductionVal.toFixed(1) : 0;
+                    f.status = 'done';
+                } catch (error) {
+                    console.error(`Compression failed for ${f.name}:`, error);
+                    f.status = 'error';
+                }
+            },
+
+            async compressRaster(index) {
+                const f = this.files[index];
+                const options = {
+                    maxSizeMB: 10, // Just a limit
+                    maxWidthOrHeight: this.maxSize === 0 ? undefined : this.maxSize,
+                    useWebWorker: true,
+                    initialQuality: parseFloat(this.quality)
+                };
+
+                const compressedFile = await imageCompression(f.file, options);
+                f.blob = compressedFile;
+                f.downloadUrl = URL.createObjectURL(compressedFile);
+                f.resultName = `optimized_${f.name}`;
+            },
+
+            async compressSVG(index) {
+                const f = this.files[index];
+                const text = await f.file.text();
+                
+                // Simple SVG Optimization: Strip comments, whitespaces between tags, and metadata
+                // This is a basic version, real SVGO is logic heavy
+                let optimized = text
+                    .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
+                    .replace(/>\s+</g, '><') // Remove whitespace between tags
+                    .trim();
+
+                const blob = new Blob([optimized], { type: 'image/svg+xml' });
+                f.blob = blob;
+                f.downloadUrl = URL.createObjectURL(blob);
+                f.resultName = `optimized_${f.name}`;
+            },
+
+            async downloadZip() {
+                const zip = new JSZip();
+                const processedFiles = this.files.filter(f => f.status === 'done');
+                
+                processedFiles.forEach(f => {
+                    zip.file(f.resultName, f.blob);
+                });
+
+                const content = await zip.generateAsync({ type: 'blob' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = `optimized_images_${Date.now()}.zip`;
+                link.click();
+            },
+
+            formatSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+    }
+</script>

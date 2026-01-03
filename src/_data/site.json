@@ -131,7 +131,7 @@
                     "description": "Beautify, minify, and validate JSON data instantly.",
                     "url": "/tools/json/",
                     "icon": "sync",
-                    "tag": "Converter"
+                    "tag": "Utilities"
                 },
                 {
                     "title": "Regex Checker",
@@ -172,6 +172,13 @@
                     "title": "PDF Compressor",
                     "description": "Compress PDF files directly in your browser without uploading them to any server.",
                     "url": "/tools/pdf-compress/",
+                    "icon": "sync",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "Image Compressor",
+                    "description": "Optimize and compress PNG, JPG, and SVG images entirely in your browser.",
+                    "url": "/tools/image-compress/",
                     "icon": "sync",
                     "tag": "Converter"
                 }
