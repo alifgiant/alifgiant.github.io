@@ -21,15 +21,27 @@ permalink: /tools/snippet/
 
 <div class="w-full max-w-6xl flex flex-col gap-12" x-data="snippetTool()">
     {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/snippet/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+    
     <div class="flex flex-col gap-4 text-center items-center">
-        <div class="p-4 rounded-full bg-teal-50 text-teal-600 mb-2">
-            <span class="material-symbols-outlined text-4xl">build</span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
         </div>
         <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
-            Snippet Sharer
+            {{ tool.title }}
         </h1>
         <p class="text-lg text-text-muted max-w-xl leading-relaxed">
-            Beautifully format and share your code. Customize window styles, padding, and shadows for that perfect look.
+            {{ tool.description }}
         </p>
     </div>
 

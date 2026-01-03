@@ -97,6 +97,23 @@
         "tools": {
             "title": "Online Dev Tools",
             "subtitle": "Useful utilities for developers and power users",
+            "categories": {
+                "Security": {
+                    "icon": "shield_lock",
+                    "color": "bg-rose-100 text-rose-700 border-rose-200",
+                    "lightColor": "bg-rose-50 text-rose-600"
+                },
+                "Converter": {
+                    "icon": "transform",
+                    "color": "bg-indigo-100 text-indigo-700 border-indigo-200",
+                    "lightColor": "bg-indigo-50 text-indigo-600"
+                },
+                "Utilities": {
+                    "icon": "handyman",
+                    "color": "bg-teal-100 text-teal-700 border-teal-200",
+                    "lightColor": "bg-teal-50 text-teal-600"
+                }
+            },
             "list": [
                 {
                     "title": "Math Notes",
@@ -109,98 +126,98 @@
                     "title": "Deeplink Tester",
                     "description": "Test mobile app deeplinks and universal links easily.",
                     "url": "/tools/deeplink/",
-                    "icon": "build",
+                    "icon": "link",
                     "tag": "Utilities"
                 },
                 {
                     "title": "Bcrypt Hash",
                     "description": "Securely hash and verify strings using the bcrypt algorithm.",
                     "url": "/tools/bcrypt/",
-                    "icon": "lock",
+                    "icon": "enhanced_encryption",
                     "tag": "Security"
                 },
                 {
                     "title": "Text Diff",
                     "description": "Compare two strings or code snippets to find differences.",
                     "url": "/tools/diff/",
-                    "icon": "build",
+                    "icon": "difference",
                     "tag": "Utilities"
                 },
                 {
                     "title": "Hash & Encode",
                     "description": "Quickly generate MD5, SHA-256, and Base64 hashes/encodings.",
                     "url": "/tools/hash/",
-                    "icon": "lock",
+                    "icon": "vpn_key",
                     "tag": "Security"
                 },
                 {
                     "title": "JSON Formatter",
                     "description": "Beautify, minify, and validate JSON data instantly.",
                     "url": "/tools/json/",
-                    "icon": "sync",
+                    "icon": "data_object",
                     "tag": "Utilities"
                 },
                 {
                     "title": "Regex Checker",
                     "description": "Test and debug regular expressions with real-time matching.",
                     "url": "/tools/regex/",
-                    "icon": "build",
+                    "icon": "regular_expression",
                     "tag": "Utilities"
                 },
                 {
                     "title": "Timestamp Converter",
                     "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
                     "url": "/tools/timestamp/",
-                    "icon": "sync",
+                    "icon": "schedule",
                     "tag": "Converter"
                 },
                 {
                     "title": "Case Converter",
                     "description": "Convert text between camelCase, PascalCase, snake_case, and other formats.",
                     "url": "/tools/case/",
-                    "icon": "sync",
+                    "icon": "match_case",
                     "tag": "Converter"
                 },
                 {
                     "title": "Color Converter",
                     "description": "Convert colors between HEX, RGB, HSL, and HSV formats with live preview.",
                     "url": "/tools/color/",
-                    "icon": "sync",
+                    "icon": "palette",
                     "tag": "Converter"
                 },
                 {
                     "title": "Snippet Sharer",
                     "description": "Create and export beautiful code snippets with custom styles and syntax highlighting.",
                     "url": "/tools/snippet/",
-                    "icon": "build",
+                    "icon": "code_blocks",
                     "tag": "Utilities"
                 },
                 {
                     "title": "PDF Compressor",
                     "description": "Compress PDF files directly in your browser without uploading them to any server.",
                     "url": "/tools/pdf-compress/",
-                    "icon": "sync",
+                    "icon": "picture_as_pdf",
                     "tag": "Converter"
                 },
                 {
                     "title": "Image Compressor",
                     "description": "Optimize and compress PNG, JPG, and SVG images entirely in your browser.",
                     "url": "/tools/image-compress/",
-                    "icon": "sync",
+                    "icon": "image",
                     "tag": "Converter"
                 },
                 {
                     "title": "Image Converter",
                     "description": "Convert images between formats like PNG, JPG, WebP, and SVG to Raster.",
                     "url": "/tools/image-convert/",
-                    "icon": "sync",
+                    "icon": "transform",
                     "tag": "Converter"
                 },
                 {
                     "title": "Geo Tool",
                     "description": "Digitize buildings, measure polygon areas, and manage KML/Shapefile data with high-res satellite views.",
                     "url": "/tools/kml-viewer/",
-                    "icon": "map",
+                    "icon": "map_search",
                     "tag": "Utilities"
                 }
             ]

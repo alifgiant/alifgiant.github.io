@@ -4,9 +4,12 @@ title: Tools
 permalink: /tools/
 ---
 
-{# Tools Data JSON #}
+{# Tools & Categories Data JSON #}
 <script id="tools-data" type="application/json">
 {{ site.pages.tools.list | dump | safe }}
+</script>
+<script id="categories-data" type="application/json">
+{{ site.pages.tools.categories | dump | safe }}
 </script>
 
 <div class="w-full max-w-[1400px] flex flex-col gap-12" 
@@ -15,11 +18,7 @@ permalink: /tools/
         activeTag: 'all',
         viewMode: 'grid',
         tools: JSON.parse(document.getElementById('tools-data').textContent),
-        tagColors: {
-            'Security': 'bg-rose-100 text-rose-700 border-rose-200',
-            'Converter': 'bg-indigo-100 text-indigo-700 border-indigo-200',
-            'Utilities': 'bg-teal-100 text-teal-700 border-teal-200'
-        },
+        categories: JSON.parse(document.getElementById('categories-data').textContent),
         get filteredTools() {
             return this.tools.filter(tool => {
                 const matchesSearch = tool.title.toLowerCase().includes(this.search.toLowerCase()) || 
@@ -100,16 +99,18 @@ permalink: /tools/
         <template x-for="tool in filteredTools" :key="tool.url">
             <a :href="tool.url" class="group flex items-center gap-6 bg-white p-5 rounded-3xl border border-white shadow-lg hover:shadow-xl hover:border-primary/20 transition-all duration-300">
                 <div class="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300"
-                     :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600'">
+                     :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600'">
                     <span class="material-symbols-outlined text-2xl" x-text="tool.icon"></span>
                 </div>
                 
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-3 mb-1">
                         <h2 class="text-xl font-bold text-text-main group-hover:text-primary transition-colors truncate" x-text="tool.title"></h2>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
-                              :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600 border-stone-200'"
-                              x-text="tool.tag"></span>
+                        <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
+                                :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
+                            <span class="material-symbols-outlined text-[10px]" x-text="categories[tool.tag]?.icon || 'build'"></span>
+                            <span x-text="tool.tag"></span>
+                        </div>
                     </div>
                     <p class="text-text-muted text-sm line-clamp-1" x-text="tool.description"></p>
                 </div>
@@ -131,8 +132,8 @@ permalink: /tools/
                 
                 <div class="relative z-10">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border"
-                         :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600 border-stone-200'">
-                        <span class="material-symbols-outlined text-sm" x-text="tool.icon"></span>
+                         :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
+                        <span class="material-symbols-outlined text-sm" x-text="categories[tool.tag]?.icon || 'build'"></span>
                         <span x-text="tool.tag"></span>
                     </div>
                     <h2 class="text-3xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors font-display"

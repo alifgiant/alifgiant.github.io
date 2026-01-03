@@ -8,15 +8,27 @@ permalink: /tools/hash/
 
 <div class="w-full max-w-4xl flex flex-col gap-12" x-data="hashTool()">
     {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/hash/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+    
     <div class="flex flex-col gap-4 text-center items-center">
-        <div class="p-4 rounded-full bg-rose-50 text-rose-600 mb-2">
-            <span class="material-symbols-outlined text-4xl">lock</span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
         </div>
         <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
-            Hash & Encode
+            {{ tool.title }}
         </h1>
         <p class="text-lg text-text-muted max-w-xl leading-relaxed">
-            Quickly generate hashes (MD5, SHA-256) or encode/decode strings (Base64, URL).
+            {{ tool.description }}
         </p>
     </div>
 
