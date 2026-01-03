@@ -13,6 +13,7 @@ permalink: /tools/
      x-data="{ 
         search: '', 
         activeTag: 'all',
+        viewMode: 'grid',
         tools: JSON.parse(document.getElementById('tools-data').textContent),
         tagColors: {
             'Security': 'bg-rose-100 text-rose-700 border-rose-200',
@@ -58,6 +59,20 @@ permalink: /tools/
                 </div>
 
                 <div class="flex items-center gap-3 whitespace-nowrap self-end md:self-auto">
+                    {# Layout Toggle #}
+                    <div class="flex bg-stone-100 p-1 rounded-xl border border-stone-200 mr-2">
+                        <button @click="viewMode = 'grid'" 
+                                :class="viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-stone-400 hover:text-stone-600'"
+                                class="p-2 rounded-lg transition-all flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm">grid_view</span>
+                        </button>
+                        <button @click="viewMode = 'list'" 
+                                :class="viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-stone-400 hover:text-stone-600'"
+                                class="p-2 rounded-lg transition-all flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm">view_list</span>
+                        </button>
+                    </div>
+                    
                     <div class="text-sm text-stone-400">Total</div>
                     <div class="px-3 py-2 bg-white border border-stone-200 rounded-full text-text-main font-bold">
                         <span x-text="filteredTools.length"></span>
@@ -80,8 +95,34 @@ permalink: /tools/
         </div>
     </div>
 
-    {# Tools Grid #}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {# Tools List View #}
+    <div x-show="viewMode === 'list'" class="flex flex-col gap-4">
+        <template x-for="tool in filteredTools" :key="tool.url">
+            <a :href="tool.url" class="group flex items-center gap-6 bg-white p-5 rounded-3xl border border-white shadow-lg hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+                <div class="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300"
+                     :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600'">
+                    <span class="material-symbols-outlined text-2xl" x-text="tool.icon"></span>
+                </div>
+                
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-3 mb-1">
+                        <h2 class="text-xl font-bold text-text-main group-hover:text-primary transition-colors truncate" x-text="tool.title"></h2>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
+                              :class="tagColors[tool.tag] || 'bg-stone-100 text-stone-600 border-stone-200'"
+                              x-text="tool.tag"></span>
+                    </div>
+                    <p class="text-text-muted text-sm line-clamp-1" x-text="tool.description"></p>
+                </div>
+                
+                <div class="flex-shrink-0 text-stone-300 group-hover:text-primary transition-all duration-300 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+                    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                </div>
+            </a>
+        </template>
+    </div>
+
+    {# Tools Grid View #}
+    <div x-show="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <template x-for="tool in filteredTools" :key="tool.url">
             <a :href="tool.url" class="group relative flex flex-col min-h-[320px] bg-white rounded-[2.5rem] p-8 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2">
                 <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
