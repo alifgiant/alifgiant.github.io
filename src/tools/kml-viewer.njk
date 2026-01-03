@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.njk
-title: KML Viewer & Converter
+title: Geo Tool
 permalink: /tools/kml-viewer/
 ---
 
@@ -8,56 +8,81 @@ permalink: /tools/kml-viewer/
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 {# Leaflet JS #}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{# Turf.js for area calculation #}
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+{# Geoman JS & CSS #}
+<link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.js"></script>
 {# togeojson JS #}
 <script src="https://unpkg.com/@tmcw/togeojson@5.0.0/dist/togeojson.umd.js"></script>
 {# shp-write JS #}
 <script src="https://unpkg.com/shp-write@0.4.0/shpwrite.js"></script>
+{# JSZip for KMZ support #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <div class="w-full max-w-5xl flex flex-col gap-12" x-data="kmlViewer()">
     {# Header #}
     <div class="flex flex-col gap-4 text-center items-center">
-        <div class="p-4 rounded-full bg-indigo-50 text-indigo-600 mb-2">
-            <span class="material-symbols-outlined text-4xl">map</span>
+        <div class="p-4 rounded-full bg-emerald-50 text-emerald-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">home_work</span>
         </div>
         <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
-            KML Viewer & Converter
+            Geo Tool
         </h1>
-        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
-            View KML files on an interactive map and convert them to Shapefile or GeoJSON instantly. Secure and client-side.
+        <p class="text-lg text-text-muted max-w-2xl leading-relaxed">
+            Digitize building footprints with high-res imagery, measure areas in real-time, and manage geospatial data with ease.
         </p>
     </div>
 
-    {# Main Tool Content #}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {# Sidebar: Upload & Actions #}
+    {# Onboarding Selection (Initial State) #}
+    <div x-show="onboarding" class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in" x-cloak>
+        <button @click="startDrawing()" class="group bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] p-12 hover:border-indigo-400 hover:bg-indigo-50/30 transition-all duration-500 flex flex-col items-center gap-6 text-center">
+            <div class="w-20 h-20 rounded-3xl bg-indigo-50 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-5xl">edit_square</span>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-text-main mb-2">Draw Building</h3>
+                <p class="text-sm text-text-muted">Start marking structures directly on high-resolution satellite maps.</p>
+            </div>
+        </button>
+        
+        <div @dragover.prevent="dragOver = true" 
+             @dragleave.prevent="dragOver = false" 
+             @drop.prevent="handleDrop($event)"
+             :class="dragOver ? 'border-emerald-400 bg-emerald-50/50 scale-[1.02]' : 'border-stone-200 bg-white'"
+             class="group relative border-2 border-dashed rounded-[2.5rem] p-12 hover:border-emerald-400 hover:bg-emerald-50/30 transition-all duration-500 flex flex-col items-center gap-6 text-center cursor-pointer">
+            <input type="file" accept=".kml,.kmz,.xml" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
+            <div class="w-20 h-20 rounded-3xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-5xl">upload_file</span>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-text-main mb-2">Upload KML / KMZ</h3>
+                <p class="text-sm text-text-muted">Import existing KML or KMZ files to view, measure, and edit on the map.</p>
+            </div>
+        </div>
+    </div>
+
+    {# Main Tool Content (Map & Sidebar) #}
+    <div x-show="!onboarding" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fade-in" x-cloak>
+        {# Sidebar #}
         <div class="lg:col-span-4 flex flex-col gap-6">
             <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2rem] p-8 shadow-xl shadow-primary/5">
-                <h3 class="text-sm font-bold text-text-main mb-6 flex items-center gap-2 uppercase tracking-widest">
-                    <span class="material-symbols-outlined text-indigo-500 text-lg">upload_file</span>
-                    Upload KML
-                </h3>
-                
-                <div @dragover.prevent="dragOver = true" 
-                     @dragleave.prevent="dragOver = false" 
-                     @drop.prevent="handleDrop($event)"
-                     :class="dragOver ? 'border-indigo-400 bg-indigo-50/50 scale-[1.02]' : 'border-stone-200 bg-stone-50/30'"
-                     class="relative group border-2 border-dashed rounded-3xl p-8 transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer">
-                    
-                    <input type="file" accept=".kml" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
-                    
-                    <div class="p-4 rounded-xl bg-white shadow-sm border border-stone-100 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl text-indigo-500">upload</span>
-                    </div>
-                    
-                    <div class="text-center">
-                        <p class="text-xs font-bold text-text-main">Click or drop KML</p>
-                        <p class="text-[10px] text-text-muted mt-1">Single or multiple files</p>
-                    </div>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-sm font-bold text-text-main flex items-center gap-2 uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-indigo-500 text-lg">layers</span>
+                        Project Data
+                    </h3>
+                </div>
+
+                {# Empty State if no data but drawing #}
+                <div x-show="!fileName && featuresCount === 0" class="p-4 bg-stone-50 border border-stone-100 rounded-2xl text-center">
+                    <p class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Drawing mode active</p>
+                    <p class="text-[9px] text-text-muted mt-1 leading-relaxed">Start drawing on the map to see your features here.</p>
                 </div>
 
                 {# File Info / Status #}
                 <template x-if="fileName">
-                    <div class="mt-6 p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl animate-fade-in">
+                    <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-emerald-500">check_circle</span>
                             <div class="min-w-0">
@@ -69,7 +94,7 @@ permalink: /tools/kml-viewer/
                 </template>
 
                 {# Actions #}
-                <div class="mt-8 flex flex-col gap-3" x-show="geoJsonData" x-cloak>
+                <div class="mt-8 flex flex-col gap-3">
                     <button @click="downloadSHP()" class="flex items-center justify-center gap-2 w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 active:scale-[0.98]">
                         Download SHP (ZIP)
                         <span class="material-symbols-outlined text-lg">download</span>
@@ -79,37 +104,36 @@ permalink: /tools/kml-viewer/
                         <span class="material-symbols-outlined text-lg">code</span>
                     </button>
                     <button @click="reset()" class="flex items-center justify-center gap-2 w-full py-2 text-rose-500 text-[10px] font-bold uppercase tracking-widest hover:text-rose-600 transition-colors">
-                        Clear Map
+                        New Project (Reset)
                         <span class="material-symbols-outlined text-sm">delete</span>
                     </button>
                 </div>
             </div>
 
-            {# Tips #}
+            <div class="bg-indigo-50/30 rounded-3xl p-6 border border-indigo-100/50 flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-lg">square_foot</span>
+                    Area Measurement
+                </div>
+                <p class="text-[11px] text-text-muted leading-relaxed italic">
+                    Any polygon you draw will show its calculated area in real-time. Use the **Satellite (Hybrid)** layer for the most up-to-date building footprints.
+                </p>
+            </div>
+            
             <div class="bg-indigo-50/30 rounded-3xl p-6 border border-indigo-100/50 flex flex-col gap-3">
                 <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-widest">
                     <span class="material-symbols-outlined text-lg">info</span>
-                    Good to know
+                    Privacy Note
                 </div>
                 <p class="text-[11px] text-text-muted leading-relaxed italic">
-                    All processing is local. Your geospatial data never leaves your device. Large KML files might take a few seconds to render.
+                    All processing is local. Your location and data never leave your browser. Large datasets remain private on your device.
                 </p>
             </div>
         </div>
 
         {# Map Container #}
-        <div class="lg:col-span-8 h-[600px] bg-stone-100 rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-2xl relative z-0">
+        <div class="lg:col-span-8 h-[650px] bg-stone-100 rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-2xl relative z-0">
             <div id="map" class="w-full h-full"></div>
-            
-            {# Map Overlay Info #}
-            <template x-if="!geoJsonData">
-                <div class="absolute inset-0 bg-stone-50/90 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-[1000]">
-                    <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-indigo-400 text-3xl animate-bounce">location_on</span>
-                    </div>
-                    <p class="text-sm font-bold text-text-muted">Upload a KML file to view on map</p>
-                </div>
-            </template>
         </div>
     </div>
 
@@ -131,6 +155,7 @@ permalink: /tools/kml-viewer/
             fileName: '',
             featuresCount: 0,
             dragOver: false,
+            onboarding: true,
 
             init() {
                 this.$nextTick(() => {
@@ -141,51 +166,179 @@ permalink: /tools/kml-viewer/
             initMap() {
                 if (this.map) return;
                 
-                // Initialize map with OSM tiles
-                this.map = L.map('map').setView([0, 0], 2);
-                
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                // Base Layers
+                const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(this.map);
+                });
 
-                // Add scale bar
+                const satelliteEsri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EBP, and the GIS User Community'
+                });
+
+                // Google Satellite (Hybrid)
+                const googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                    attribution: '&copy; Google'
+                });
+
+                // Initialize map
+                this.map = L.map('map', {
+                    layers: [osm]
+                }).setView([-3.3199, 114.5908], 17); // Initial view: Banjarmasin city center
+                
+                // Layer controls
+                const baseMaps = {
+                    "Street Map": osm,
+                    "Satellite (ESRI)": satelliteEsri,
+                    "Satellite (Hybrid)": googleHybrid
+                };
+                
+                L.control.layers(baseMaps).addTo(this.map);
                 L.control.scale().addTo(this.map);
+
+                // Initialize Geoman
+                this.map.pm.addControls({
+                    position: 'topleft',
+                    drawMarker: true,
+                    drawPolyline: true,
+                    drawRectangle: true,
+                    drawPolygon: true,
+                    drawCircle: false,
+                    drawCircleMarker: false,
+                    editMode: true,
+                    dragMode: true,
+                    cutPolygon: true,
+                    removalMode: true,
+                });
+
+                // Customize Geoman style
+                this.map.pm.setGlobalOptions({ 
+                    pathOptions: {
+                        color: '#4f46e5',
+                        weight: 4,
+                        fillColor: '#4f46e5',
+                        fillOpacity: 0.25,
+                        opacity: 0.9
+                    },
+                    templineStyle: {
+                        color: '#4f46e5',
+                    },
+                    hintlineStyle: {
+                        color: '#4f46e5',
+                        dashArray: [5, 5],
+                    }
+                });
+
+                // Area Measurement Binding
+                this.map.on('pm:create', (e) => {
+                    if (e.shape === 'Polygon' || e.shape === 'Rectangle') {
+                        this.updateArea(e.layer);
+                        e.layer.on('pm:edit', () => this.updateArea(e.layer));
+                    }
+                    this.featuresCount++;
+                });
+
+                this.map.on('pm:remove', () => {
+                    this.featuresCount--;
+                });
+            },
+
+            updateArea(layer) {
+                const geojson = layer.toGeoJSON();
+                const area = turf.area(geojson);
+                let displayText = '';
+                
+                if (area < 10000) {
+                    displayText = `${area.toFixed(2)} m²`;
+                } else {
+                    displayText = `${(area / 1000000).toFixed(4)} km²`;
+                }
+
+                layer.bindTooltip(`Area: ${displayText}`, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -10],
+                    className: 'area-tooltip',
+                    interactive: false
+                }).openTooltip();
+            },
+
+            startDrawing() {
+                this.onboarding = false;
+                // Ensure map is properly sized after showing
+                this.$nextTick(() => {
+                    this.map.invalidateSize();
+                    this.map.pm.enableDraw('Polygon');
+                });
             },
 
             handleFileSelect(e) {
                 const file = e.target.files[0];
-                if (file) this.processFile(file);
+                if (file) {
+                    this.onboarding = false;
+                    this.processFile(file);
+                }
                 e.target.value = '';
             },
 
             handleDrop(e) {
                 this.dragOver = false;
                 const file = e.dataTransfer.files[0];
-                if (file) this.processFile(file);
+                if (file) {
+                    this.onboarding = false;
+                    this.processFile(file);
+                }
             },
 
             async processFile(file) {
-                if (!file.name.toLowerCase().endsWith('.kml')) {
-                    alert('Please upload a valid .kml file');
+                const name = file.name.toLowerCase();
+                const isKml = name.endsWith('.kml');
+                const isKmz = name.endsWith('.kmz');
+                const isXml = name.endsWith('.xml');
+
+                if (!isKml && !isKmz && !isXml) {
+                    alert('Please upload a valid .kml, .kmz, or .xml file');
                     return;
                 }
 
+                this.onboarding = false;
                 this.fileName = file.name;
-                const text = await file.text();
                 
+                // Ensure map is visible before starting heavy processing
+                await this.$nextTick();
+                this.map.invalidateSize();
+
                 try {
+                    let text;
+                    if (isKmz) {
+                        const zip = await JSZip.loadAsync(file);
+                        const kmlFile = Object.values(zip.files).find(f => f.name.toLowerCase().endsWith('.kml'));
+                        if (!kmlFile) throw new Error('No KML file found inside KMZ');
+                        text = await kmlFile.async('string');
+                    } else {
+                        text = await file.text();
+                    }
+
                     const parser = new DOMParser();
-                    const kmlDoc = parser.parseFromString(text, 'text/xml');
+                    const doc = parser.parseFromString(text, 'text/xml');
                     
-                    // togeojson is exposed as toGeoJSON global
-                    const geojson = toGeoJSON.kml(kmlDoc);
+                    const parserError = doc.querySelector('parsererror');
+                    if (parserError) throw new Error('Invalid XML structure in KML/XML file');
+
+                    const geojson = toGeoJSON.kml(doc);
+                    if (!geojson || !geojson.features || geojson.features.length === 0) {
+                        throw new Error('This file contains no valid geographic features');
+                    }
+
                     this.geoJsonData = geojson;
                     this.featuresCount = geojson.features.length;
 
+                    // Final check for map size before rendering
+                    this.map.invalidateSize();
                     this.renderGeoJSON(geojson);
                 } catch (error) {
-                    console.error('Error parsing KML:', error);
-                    alert('Error parsing KML file. Please ensure it is a valid KML.');
+                    console.error('Mapper Error:', error);
+                    alert(`Error parsing file: ${error.message}. Please ensure it is a valid KML/KMZ.`);
+                    this.onboarding = true;
                 }
             },
 
@@ -195,16 +348,20 @@ permalink: /tools/kml-viewer/
                 }
 
                 this.layer = L.geoJSON(geojson, {
-                    style: function (feature) {
+                    style: (feature) => {
                         return {
                             color: '#4f46e5',
-                            weight: 3,
-                            opacity: 0.6,
+                            weight: 4,
+                            opacity: 0.9,
                             fillColor: '#4f46e5',
-                            fillOpacity: 0.2
+                            fillOpacity: 0.25
                         };
                     },
-                    onEachFeature: function (feature, layer) {
+                    onEachFeature: (feature, layer) => {
+                        if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                            this.updateArea(layer);
+                        }
+
                         if (feature.properties) {
                             let popupContent = '<div class="p-2 space-y-1">';
                             for (let key in feature.properties) {
@@ -215,34 +372,83 @@ permalink: /tools/kml-viewer/
                             popupContent += '</div>';
                             layer.bindPopup(popupContent);
                         }
+                        
+                        // Ensure layer is actually visible/stylable
+                        if (layer.setStyle) {
+                            layer.setStyle({
+                                color: '#4f46e5',
+                                weight: 4,
+                                opacity: 0.9,
+                                fillColor: '#4f46e5',
+                                fillOpacity: 0.25
+                            });
+                        }
                     }
                 }).addTo(this.map);
 
-                // Zoom to bounds
-                const bounds = this.layer.getBounds();
-                if (bounds.isValid()) {
-                    this.map.fitBounds(bounds, { padding: [50, 50] });
+                // Ensure the map container is ready for bounds fitting
+                this.$nextTick(() => {
+                    this.map.invalidateSize();
+                    const bounds = this.layer.getBounds();
+                    if (bounds.isValid()) {
+                        this.map.fitBounds(bounds, { padding: [50, 50], animate: true });
+                    }
+                });
+            },
+
+            getAllFeaturesAsGeoJSON() {
+                const features = [];
+                
+                // 1. From uploaded KML layer
+                if (this.layer) {
+                    this.layer.eachLayer(l => {
+                        if (typeof l.toGeoJSON === 'function') {
+                            features.push(l.toGeoJSON());
+                        }
+                    });
                 }
+
+                // 2. From Geoman drawn layers
+                this.map.eachLayer(l => {
+                    if (l instanceof L.Path || l instanceof L.Marker) {
+                        if (l.pm && !this.layer?.hasLayer(l)) {
+                             features.push(l.toGeoJSON());
+                        }
+                    }
+                });
+
+                return {
+                    type: "FeatureCollection",
+                    features: features
+                };
             },
 
             downloadGeoJSON() {
-                if (!this.geoJsonData) return;
-                const blob = new Blob([JSON.stringify(this.geoJsonData, null, 2)], { type: 'application/json' });
+                const combinedData = this.getAllFeaturesAsGeoJSON();
+                if (combinedData.features.length === 0) {
+                    alert('No features to export. Upload a KML or draw on the map.');
+                    return;
+                }
+
+                const blob = new Blob([JSON.stringify(combinedData, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = this.fileName.replace('.kml', '.geojson');
+                link.download = (this.fileName || 'export').replace('.kml', '') + '_mapper.geojson';
                 link.click();
                 URL.revokeObjectURL(url);
             },
 
             downloadSHP() {
-                if (!this.geoJsonData) return;
+                const combinedData = this.getAllFeaturesAsGeoJSON();
+                if (combinedData.features.length === 0) {
+                    alert('No features to export. Upload a KML or draw on the map.');
+                    return;
+                }
                 
-                // shpwrite is the global from shp-write
                 try {
-                    shpwrite.download(this.geoJsonData, {
-                        folder: this.fileName.replace('.kml', ''),
+                    shpwrite.download(combinedData, {
+                        folder: (this.fileName || 'export').replace('.kml', '') + '_shp',
                         types: {
                             point: 'points',
                             polygon: 'polygons',
@@ -251,7 +457,7 @@ permalink: /tools/kml-viewer/
                     });
                 } catch (error) {
                     console.error('Error generating Shapefile:', error);
-                    alert('Error generating Shapefile. Some complex geometries might not be supported by the current converter.');
+                    alert('Error generating Shapefile. Note: Complex geometries might require GeoJSON export instead.');
                 }
             },
 
@@ -260,10 +466,18 @@ permalink: /tools/kml-viewer/
                     this.map.removeLayer(this.layer);
                     this.layer = null;
                 }
+                
+                this.map.eachLayer(l => {
+                    if (l.pm && !l._url) {
+                        this.map.removeLayer(l);
+                    }
+                });
+
                 this.geoJsonData = null;
                 this.fileName = '';
                 this.featuresCount = 0;
-                this.map.setView([0, 0], 2);
+                this.onboarding = true;
+                this.map.setView([-3.3199, 114.5908], 17);
             }
         }
     }
@@ -280,5 +494,20 @@ permalink: /tools/kml-viewer/
     }
     .leaflet-popup-content {
         margin: 12px 16px !important;
+    }
+    /* Tooltip styling */
+    .area-tooltip {
+        background: rgba(79, 70, 229, 0.9) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        color: white !important;
+        font-weight: 800 !important;
+        font-size: 10px !important;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+        padding: 4px 8px !important;
+        backdrop-filter: blur(4px) !important;
+    }
+    .area-tooltip::before {
+        border-top-color: rgba(79, 70, 229, 0.9) !important;
     }
 </style>
