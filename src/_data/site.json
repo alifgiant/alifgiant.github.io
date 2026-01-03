@@ -181,6 +181,13 @@
                     "url": "/tools/image-compress/",
                     "icon": "sync",
                     "tag": "Converter"
+                },
+                {
+                    "title": "Image Converter",
+                    "description": "Convert images between formats like PNG, JPG, WebP, and SVG to Raster.",
+                    "url": "/tools/image-convert/",
+                    "icon": "sync",
+                    "tag": "Converter"
                 }
             ]
         }

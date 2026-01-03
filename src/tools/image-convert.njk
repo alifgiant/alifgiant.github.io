@@ -1,0 +1,405 @@
+---
+layout: layouts/base.njk
+title: Image Converter
+permalink: /tools/image-convert/
+---
+
+{# JSZip #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+{# HEIC support #}
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="imageConverter()">
+    {# Header #}
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="p-4 rounded-full bg-indigo-50 text-indigo-600 mb-2">
+            <span class="material-symbols-outlined text-4xl">transform</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            Image Converter
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            Convert images between PNG, JPG, WebP, HEIC/HEIF, and SVG formats instantly. All processing happens in your browser.
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+            {# ... (rest of tool card starts here) #}
+        
+        {# Drop Zone & Global Settings #}
+        <div class="flex flex-col gap-8">
+            {# Multiple Drop Zone #}
+            <div @dragover.prevent="dragOver = true" 
+                 @dragleave.prevent="dragOver = false" 
+                 @drop.prevent="handleDrop($event)"
+                 :class="dragOver ? 'border-indigo-400 bg-indigo-50/50 scale-[1.01]' : 'border-stone-200 bg-stone-50/30'"
+                 class="relative group border-2 border-dashed rounded-3xl p-10 transition-all duration-300 flex flex-col items-center justify-center gap-6 cursor-pointer overflow-hidden">
+                
+                <input type="file" multiple accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
+                
+                <div class="p-5 rounded-2xl bg-white shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <span class="material-symbols-outlined text-4xl text-indigo-500">image</span>
+                </div>
+                
+                <div class="text-center">
+                    <h3 class="text-lg font-bold text-text-main mb-1">Click or drag images here</h3>
+                    <p class="text-xs text-text-muted">Batch convert multiple images at once</p>
+                </div>
+            </div>
+
+            {# Global Output Format #}
+            <div class="flex flex-col gap-4">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Target Format (Global)</label>
+                <div class="grid grid-cols-4 gap-3">
+                    <button @click="globalFormat = 'image/png'" :class="globalFormat === 'image/png' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">PNG</button>
+                    <button @click="globalFormat = 'image/jpeg'" :class="globalFormat === 'image/jpeg' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">JPG</button>
+                    <button @click="globalFormat = 'image/webp'" :class="globalFormat === 'image/webp' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">WEBP</button>
+                    <button @click="globalFormat = 'image/svg+xml'" :class="globalFormat === 'image/svg+xml' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">SVG</button>
+                </div>
+            </div>
+        </div>
+
+        {# File List #}
+        <div x-show="files.length > 0" class="mt-12 flex flex-col gap-4 animate-fade-in" x-cloak>
+            <div class="flex justify-between items-center mb-2">
+                <h4 class="text-sm font-bold text-text-main" x-text="`Queue (${files.length} files)`"></h4>
+                <button @click="clearAll()" class="text-[10px] font-bold text-rose-500 hover:text-rose-600 uppercase tracking-widest">Clear All</button>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <template x-for="(f, index) in files" :key="f.id">
+                    <div class="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100 transition-all" :class="f.status === 'done' ? 'bg-emerald-50/30 border-emerald-100' : ''">
+                        {# Preview/Icon #}
+                        <div class="w-12 h-12 rounded-lg bg-white shadow-sm border border-stone-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <template x-if="f.preview">
+                                <img :src="f.preview" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!f.preview">
+                                <span class="material-symbols-outlined text-xl text-indigo-400">image</span>
+                            </template>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start">
+                                <span class="text-sm font-bold text-text-main truncate pr-4" x-text="f.name"></span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" 
+                                      :class="{
+                                          'bg-stone-200 text-stone-600': f.status === 'queued',
+                                          'bg-indigo-100 text-indigo-600 animate-pulse': f.status === 'processing',
+                                          'bg-emerald-100 text-emerald-600': f.status === 'done',
+                                          'bg-rose-100 text-rose-600': f.status === 'error'
+                                      }" x-text="f.status.toUpperCase()"></span>
+                            </div>
+                            <div class="flex gap-4 mt-1 items-center">
+                                <span class="text-[10px] text-text-muted" x-text="formatSize(f.size)"></span>
+                                <template x-if="f.status === 'done'">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-xs text-stone-400">arrow_forward</span>
+                                        <span class="text-[10px] font-bold text-indigo-600 truncate" x-text="f.resultName"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <template x-if="f.status === 'done'">
+                                <a :href="f.downloadUrl" :download="f.resultName" class="p-2 text-indigo-500 hover:bg-indigo-100 rounded-lg transition-all">
+                                    <span class="material-symbols-outlined">download</span>
+                                </a>
+                            </template>
+                            <button @click="removeFile(index)" class="p-2 text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            {# Actions #}
+            <div class="mt-8 flex flex-col gap-4">
+                <button @click="processAll()" :disabled="!isAnyQueued || processing" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-indigo-600 text-white rounded-2xl font-bold text-xl hover:bg-indigo-700 transition-all duration-300 shadow-xl shadow-indigo-200/50 active:scale-[0.98] disabled:opacity-50 overflow-hidden">
+                    <span x-show="!processing">Convert All</span>
+                    <span x-show="processing" class="flex items-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Converting...
+                    </span>
+                    <span x-show="!processing" class="material-symbols-outlined group-hover:translate-x-1 transition-transform">sync</span>
+                </button>
+
+                <div x-show="isAllDone && files.length > 1" class="animate-fade-in">
+                    <button @click="downloadZip()" class="flex items-center justify-center gap-3 w-full py-4 border-2 border-indigo-600 text-indigo-600 bg-white rounded-2xl font-bold text-lg hover:bg-indigo-50 transition-all duration-300 active:scale-[0.98]">
+                        Download All as ZIP
+                        <span class="material-symbols-outlined">inventory_2</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Info Sections #}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-12 xl:col-span-4 bg-indigo-50/50 backdrop-blur-sm rounded-3xl p-8 border border-indigo-100 flex flex-col gap-4 hover:shadow-lg hover:shadow-indigo-100/50 transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-indigo-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-indigo-500">offline_bolt</span>
+            </div>
+            <div>
+                <h4 class="font-bold text-text-main mb-2">Instant Conversion</h4>
+                <p class="text-xs text-text-muted leading-relaxed">
+                    Convert between popular formats without waiting for uploads. WebP support included for smaller web-ready files.
+                </p>
+            </div>
+        </div>
+
+        <div class="lg:col-span-12 xl:col-span-8 bg-white/80 backdrop-blur-md border border-stone-200 rounded-3xl p-6 shadow-xl shadow-primary/5 flex flex-col h-full hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300">
+            <h3 class="text-xs font-black text-text-main mb-4 flex items-center gap-2 uppercase tracking-widest">
+                <span class="material-symbols-outlined text-indigo-500 text-lg">check_circle</span>
+                Detailed Support Matrix
+            </h3>
+            <div class="overflow-hidden rounded-xl border border-stone-100 flex-1">
+                <table class="w-full text-[10px] text-left">
+                    <thead class="bg-stone-50 border-b border-stone-100 text-text-muted uppercase tracking-widest font-black">
+                        <tr>
+                            <th class="px-3 py-2">Format</th>
+                            <th class="px-10 py-2 text-center">In</th>
+                            <th class="px-10 py-2 text-center">Out</th>
+                            <th class="px-3 py-2">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-100 font-medium whitespace-nowrap">
+                        <tr>
+                            <td class="px-3 py-2 text-text-main font-bold">PNG / JPG / WebP</td>
+                            <td class="px-3 py-2 text-center text-emerald-600 font-bold">YES</td>
+                            <td class="px-3 py-2 text-center text-emerald-600 font-bold">YES</td>
+                            <td class="px-3 py-2 text-[9px] text-text-muted italic">Full transparency & quality support.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 text-text-main font-bold">HEIC / HEIF</td>
+                            <td class="px-3 py-2 text-center text-emerald-600 font-bold">YES</td>
+                            <td class="px-3 py-2 text-center text-rose-400 font-bold">NO</td>
+                            <td class="px-3 py-2 text-[9px] text-text-muted italic">Direct iPhone/Camera photo conversion.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 text-text-main font-bold">SVG (Vector)</td>
+                            <td class="px-3 py-2 text-center text-emerald-600 font-bold">YES</td>
+                            <td class="px-3 py-2 text-center text-indigo-400 font-bold">LIMIT*</td>
+                            <td class="px-3 py-2 text-[9px] text-text-muted italic">In: High-res rasterization. Out: Raster wrap.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 text-text-main font-bold">GIF / BMP</td>
+                            <td class="px-3 py-2 text-center text-emerald-600 font-bold">YES</td>
+                            <td class="px-3 py-2 text-center text-rose-400 font-bold">NO</td>
+                            <td class="px-3 py-2 text-[9px] text-text-muted italic">Legacy formats supported for modern export.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-3 text-[9px] text-text-muted italic leading-tight">
+                * SVG Target: Wraps the rasterized image in a vector container (no auto-tracing).
+            </p>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function imageConverter() {
+        return {
+            files: [],
+            dragOver: false,
+            processing: false,
+            globalFormat: 'image/png',
+            
+            get isAnyQueued() {
+                return this.files.some(f => f.status === 'queued');
+            },
+
+            get isAllDone() {
+                return this.files.length > 0 && this.files.every(f => f.status === 'done' || f.status === 'error');
+            },
+
+            handleFileSelect(e) {
+                const selectedFiles = Array.from(e.target.files);
+                this.addFiles(selectedFiles);
+                e.target.value = ''; // Reset input
+            },
+
+            handleDrop(e) {
+                this.dragOver = false;
+                const droppedFiles = Array.from(e.dataTransfer.files);
+                this.addFiles(droppedFiles);
+            },
+
+            addFiles(fileList) {
+                fileList.forEach(async (file) => {
+                    const isHEIC = file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif');
+                    if (file.type.startsWith('image/') || isHEIC) {
+                        const id = Math.random().toString(36).substring(2, 9);
+                        const f = {
+                            id: id,
+                            name: file.name,
+                            size: file.size,
+                            file: file,
+                            status: 'queued',
+                            preview: null,
+                            downloadUrl: null,
+                            resultName: null,
+                            blob: null
+                        };
+
+                        // Create preview
+                        if (isHEIC) {
+                            // Previews for HEIC will be generated during conversion for simplicity, 
+                            // or we can generate a small one now. Let's show an icon for now.
+                            f.preview = null;
+                        } else {
+                            const reader = new FileReader();
+                            reader.onload = (e) => f.preview = e.target.result;
+                            reader.readAsDataURL(file);
+                        }
+
+                        this.files.push(f);
+                    }
+                });
+            },
+
+            removeFile(index) {
+                const file = this.files[index];
+                if (file.downloadUrl) URL.revokeObjectURL(file.downloadUrl);
+                this.files.splice(index, 1);
+            },
+
+            clearAll() {
+                this.files.forEach(f => {
+                    if (f.downloadUrl) URL.revokeObjectURL(f.downloadUrl);
+                });
+                this.files = [];
+            },
+
+            async processAll() {
+                if (this.processing) return;
+                this.processing = true;
+
+                for (let i = 0; i < this.files.length; i++) {
+                    if (this.files[i].status === 'queued') {
+                        await this.convertFile(i);
+                    }
+                }
+
+                this.processing = false;
+            },
+
+            async convertFile(index) {
+                const f = this.files[index];
+                f.status = 'processing';
+
+                try {
+                    let sourceBlob = f.file;
+                    const isHEIC = f.name.toLowerCase().endsWith('.heic') || f.name.toLowerCase().endsWith('.heif');
+
+                    if (isHEIC) {
+                        // Use heic2any to convert HEIC to JPEG blob first
+                        const jpegBlob = await heic2any({
+                            blob: f.file,
+                            toType: 'image/jpeg',
+                            quality: 0.8
+                        });
+                        // heic2any might return an array if it's a multi-image HEIC
+                        sourceBlob = Array.isArray(jpegBlob) ? jpegBlob[0] : jpegBlob;
+                    }
+
+                    const img = new Image();
+                    img.src = await this.fileToDataURL(sourceBlob);
+                    
+                    // Update preview if it was missing
+                    if (!f.preview) f.preview = img.src;
+
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                    });
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Handle transparency check for JPG
+                    if (this.globalFormat === 'image/jpeg') {
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+                    
+                    ctx.drawImage(img, 0, 0);
+
+                    const extMap = {
+                        'image/png': '.png',
+                        'image/jpeg': '.jpg',
+                        'image/webp': '.webp',
+                        'image/svg+xml': '.svg'
+                    };
+
+                    const targetExt = extMap[this.globalFormat];
+                    const baseName = f.name.substring(0, f.name.lastIndexOf('.')) || f.name;
+                    f.resultName = `${baseName}${targetExt}`;
+
+                    if (this.globalFormat === 'image/svg+xml') {
+                         const svgText = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="${img.width}" height="${img.height}"><image href="${img.src}" width="${img.width}" height="${img.height}"/></svg>`;
+                         f.blob = new Blob([svgText], { type: 'image/svg+xml' });
+                    } else {
+                        f.blob = await new Promise(resolve => canvas.toBlob(resolve, this.globalFormat, 0.9));
+                    }
+
+                    f.downloadUrl = URL.createObjectURL(f.blob);
+                    f.status = 'done';
+
+                } catch (error) {
+                    console.error(`Conversion failed for ${f.name}:`, error);
+                    f.status = 'error';
+                }
+            },
+
+            fileToDataURL(fileOrBlob) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(fileOrBlob);
+                });
+            },
+
+            async downloadZip() {
+                const zip = new JSZip();
+                const processedFiles = this.files.filter(f => f.status === 'done');
+                
+                processedFiles.forEach(f => {
+                    zip.file(f.resultName, f.blob);
+                });
+
+                const content = await zip.generateAsync({ type: 'blob' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = `converted_images_${Date.now()}.zip`;
+                link.click();
+            },
+
+            formatSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+    }
+</script>
