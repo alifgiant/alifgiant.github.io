@@ -9,7 +9,7 @@ permalink: /tools/math-notes/
 {# html2canvas for image export #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<div class="w-full max-w-5xl flex flex-col gap-12" x-data="mathNotes()">
+<div class="w-full max-w-5xl flex flex-col gap-12" x-data="mathNotes()" @keydown.window.escape="exitFullscreen()">
     {# Header #}
     {% set tool = {} %}
     {% for item in site.pages.tools.list %}
@@ -37,7 +37,7 @@ permalink: /tools/math-notes/
 
     {# Toolbar #}
     <div class="flex flex-wrap gap-4 items-center justify-between bg-stone-50 p-4 rounded-3xl border border-stone-100">
-        <div class="flex gap-2">
+        <div class="flex flex-wrap gap-2">
             <button @click="clearAll()" class="px-6 py-2.5 rounded-full bg-white border border-stone-200 text-text-main font-medium hover:bg-stone-50 transition-all flex items-center gap-2">
                 <span class="material-symbols-outlined text-xl">delete</span>
                 Clear All
@@ -67,14 +67,36 @@ permalink: /tools/math-notes/
                     </button>
                 </div>
             </div>
+            <button
+                @click="toggleFullscreen()"
+                class="px-6 py-2.5 rounded-full border font-medium transition-all flex items-center gap-2 shadow-sm whitespace-nowrap"
+                :class="isFullscreen ? 'bg-stone-900 text-white border-stone-900 hover:bg-stone-800' : 'bg-white border-stone-200 text-text-main hover:bg-stone-50'">
+                <span class="material-symbols-outlined text-xl" x-text="isFullscreen ? 'fullscreen_exit' : 'fullscreen'"></span>
+                <span x-text="isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Mode'"></span>
+            </button>
         </div>
         <div class="text-sm text-text-muted italic px-4">
             Supports variables, percentages, and units.
         </div>
     </div>
 
+    <div
+        x-show="isFullscreen"
+        x-transition.opacity
+        class="fixed inset-0 bg-[#020617]/80 backdrop-blur-sm z-40"
+        @click="exitFullscreen()"
+        aria-hidden="true"></div>
+
     {# Editor Container #}
-    <div x-ref="editor" class="relative bg-[#1e1e1e] rounded-[2.5rem] border border-stone-800 shadow-2xl overflow-hidden min-h-[500px] flex">
+    <div x-ref="editor" class="relative bg-[#1e1e1e] rounded-[2.5rem] border border-stone-800 shadow-2xl overflow-hidden min-h-[500px] flex" :class="isFullscreen ? 'fullscreen-editor' : ''">
+        <button
+            x-show="isFullscreen"
+            x-transition
+            @click.stop="exitFullscreen()"
+            class="absolute top-6 right-6 z-50 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white border border-white/20 backdrop-blur hover:bg-white/20 transition-all">
+            <span class="material-symbols-outlined text-lg">close</span>
+            Exit Fullscreen
+        </button>
         {# Input Area #}
         <div class="flex-1 relative">
             {# Syntax Highlighting Layer / Image Export Mirror #}
@@ -105,7 +127,8 @@ total tax = salary * tax"></textarea>
         {# Results Area #}
         <div 
             x-ref="results"
-            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono overflow-auto select-none custom-scrollbar">
+            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono overflow-auto select-none custom-scrollbar relative"
+            :style="isFullscreen ? resultsPaneStyles : ''">
             <template x-for="(res, index) in results" :key="index">
                 <div class="math-line result-line" 
                      :class="{ 
@@ -322,6 +345,27 @@ total tax = salary * tax"></textarea>
     .syntax-operator { color: #f43f5e; }
     .syntax-unit { color: #22d3ee; }
     .syntax-keyword { color: #c084fc; font-weight: 500; }
+
+    .fullscreen-editor {
+        --fullscreen-gap: clamp(16px, 3vw, 40px);
+        position: fixed;
+        inset: var(--fullscreen-gap);
+        z-index: 50;
+        width: calc(100vw - (var(--fullscreen-gap) * 2));
+        height: calc(100vh - (var(--fullscreen-gap) * 2));
+        border-radius: 40px;
+        background-color: #0f0f0f;
+        box-shadow: 0 30px 120px rgba(0, 0, 0, 0.65);
+    }
+    .fullscreen-editor textarea,
+    .fullscreen-editor .math-input,
+    .fullscreen-editor .math-results {
+        min-height: 0 !important;
+        height: 100% !important;
+    }
+    .fullscreen-editor textarea {
+        padding-bottom: 32px;
+    }
 </style>
 
 <script>
@@ -332,6 +376,8 @@ total tax = salary * tax"></textarea>
             scope: {},
             history: [],
             exporting: false,
+            isFullscreen: false,
+            resultsRatio: 0,
 
             get highlightedInput() {
                 if (!this.input) return '';
@@ -339,6 +385,13 @@ total tax = salary * tax"></textarea>
                     const highlighted = this.highlightLine(line);
                     return `<div class="math-line">${highlighted}</div>`;
                 }).join('');
+            },
+
+            get resultsPaneStyles() {
+                const ratio = this.resultsRatio || 0.22;
+                const clamped = Math.min(Math.max(ratio, 0.15), 0.45);
+                const percent = (clamped * 100).toFixed(2) + '%';
+                return `flex: 0 0 ${percent}; width: ${percent}; max-width: ${percent};`;
             },
 
             init() {
@@ -355,6 +408,38 @@ total tax = salary * tax"></textarea>
 
             saveToStorage() {
                 localStorage.setItem('math-notes-input', this.input);
+            },
+
+            toggleFullscreen() {
+                if (!this.isFullscreen) {
+                    this.resultsRatio = this.calculateResultsRatio();
+                }
+                this.isFullscreen = !this.isFullscreen;
+                this.handleFullscreenSideEffects();
+                if (this.isFullscreen && this.$refs.input) {
+                    this.$nextTick(() => {
+                        this.$refs.input.focus();
+                    });
+                }
+            },
+
+            exitFullscreen() {
+                if (!this.isFullscreen) return;
+                this.isFullscreen = false;
+                this.handleFullscreenSideEffects();
+            },
+
+            handleFullscreenSideEffects() {
+                document.body.classList.toggle('overflow-hidden', this.isFullscreen);
+            },
+
+            calculateResultsRatio() {
+                if (!this.$refs.editor || !this.$refs.results) return 0.22;
+                const editorRect = this.$refs.editor.getBoundingClientRect();
+                const resultsRect = this.$refs.results.getBoundingClientRect();
+                if (!editorRect.width) return 0.22;
+                const ratio = resultsRect.width / editorRect.width;
+                return Math.min(Math.max(ratio, 0.15), 0.45);
             },
 
             calculate() {
