@@ -105,9 +105,9 @@ total tax = salary * tax"></textarea>
         {# Results Area #}
         <div 
             x-ref="results"
-            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono text-right overflow-auto select-none custom-scrollbar">
+            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono overflow-auto select-none custom-scrollbar">
             <template x-for="(res, index) in results" :key="index">
-                <div class="math-line" 
+                <div class="math-line result-line" 
                      :class="{ 
                         'text-[#84cc16]': !res.isHeader, 
                         'text-indigo-400 font-bold': res.isHeader
@@ -282,6 +282,15 @@ total tax = salary * tax"></textarea>
         height: 28px;
         white-space: nowrap;
         display: block;
+    }
+    .math-results {
+        direction: rtl;
+    }
+    .result-line {
+        direction: ltr;
+        text-align: right;
+        width: max-content;
+        min-width: 100%;
     }
     @media (min-width: 768px) {
         .math-line {
@@ -494,8 +503,7 @@ total tax = salary * tax"></textarea>
 
             formatResult(res) {
                 if (typeof res === 'number') {
-                    if (Number.isInteger(res)) return res.toString();
-                    return res.toLocaleString(undefined, { maximumFractionDigits: 4 });
+                    return res.toLocaleString(undefined, { maximumFractionDigits: 10 });
                 }
                 if (res && res.toString) return res.toString();
                 return '';
