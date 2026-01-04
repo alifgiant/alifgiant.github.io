@@ -41,7 +41,7 @@ layout: layouts/base.njk
 {# Featured Image #}
 {% if image %}
     <div class="w-full max-w-6xl h-[400px] md:h-[600px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-stone-900/10 mb-20 relative">
-        <img alt="{{ title }}" class="w-full h-full object-cover" src="{{ image }}" />
+        <img alt="{{ title }}" loading="lazy" decoding="async" class="w-full h-full object-cover" src="{{ image }}" />
         <div class="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent"></div>
     </div>
 {% endif %}
@@ -99,7 +99,7 @@ layout: layouts/base.njk
                        href="{{ nextPost.url }}">
                         <div class="aspect-video w-full rounded-xl bg-stone-100 mb-4 overflow-hidden relative">
                             {% if nextPost.data.image %}
-                                <img alt="{{ nextPost.data.title }}" class="w-full h-full object-cover" src="{{ nextPost.data.image }}" />
+                                <img alt="{{ nextPost.data.title }}" loading="lazy" decoding="async" class="w-full h-full object-cover" src="{{ nextPost.data.image }}" />
                             {% endif %}
                             <div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors"></div>
                         </div>

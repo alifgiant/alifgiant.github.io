@@ -85,7 +85,7 @@ permalink: /tools/image-convert/
                         {# Preview/Icon #}
                         <div class="w-12 h-12 rounded-lg bg-white shadow-sm border border-stone-50 flex items-center justify-center overflow-hidden flex-shrink-0">
                             <template x-if="f.preview">
-                                <img :src="f.preview" class="w-full h-full object-cover">
+                                <img :src="f.preview" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             </template>
                             <template x-if="!f.preview">
                                 <span class="material-symbols-outlined text-xl text-indigo-400">image</span>

@@ -43,10 +43,10 @@ permalink: /tools/math-notes/
                 Clear All
             </button>
             <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                <button @click="open = !open" class="px-6 py-2.5 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm">
+                    <button @click="open = !open" class="px-6 py-2.5 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm">
                     <span class="material-symbols-outlined text-xl">download</span>
                     Export
-                    <span class="material-symbols-outlined transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                    <span class="material-symbols-outlined transition-transform duration-75" :class="open ? 'rotate-180' : ''" style="will-change: transform; backface-visibility: hidden;">expand_more</span>
                 </button>
                 <div x-show="open" 
                      x-transition:enter="transition ease-out duration-100"
