@@ -87,6 +87,7 @@ permalink: /tools/math-notes/
                 x-ref="input"
                 x-model="input" 
                 @input="calculate()"
+                @input.debounce.1000ms="saveToStorage()"
                 @scroll="syncScroll()"
                 spellcheck="false"
                 class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-y-auto custom-scrollbar"
@@ -329,9 +330,19 @@ total tax = salary * tax"></textarea>
             },
 
             init() {
-                // Initialize with a simple working example using "=" for variables
-                this.input = '# Budget Example\n\nRent = 1500\nFood = 300\nUtilities = 150\nTotal = sum\n\n# Calculations\n100 + 15%\n5 km to meters';
+                // Load from localStorage if available
+                const saved = localStorage.getItem('math-notes-input');
+                if (saved) {
+                    this.input = saved;
+                } else {
+                    // Default example
+                    this.input = '# Budget Example\n\nRent = 1500\nFood = 300\nUtilities = 150\nTotal = sum\n\n# Calculations\n100 + 15%\n5 km to meters';
+                }
                 this.calculate();
+            },
+
+            saveToStorage() {
+                localStorage.setItem('math-notes-input', this.input);
             },
 
             calculate() {
@@ -551,6 +562,7 @@ total tax = salary * tax"></textarea>
 
             clearAll() {
                 this.input = '';
+                this.saveToStorage();
                 this.results = [];
                 this.history = [];
                 this.scope = {};
