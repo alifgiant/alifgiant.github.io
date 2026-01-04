@@ -90,7 +90,8 @@ permalink: /tools/math-notes/
                 @input.debounce.1000ms="saveToStorage()"
                 @scroll="syncScroll()"
                 spellcheck="false"
-                class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-y-auto custom-scrollbar"
+                wrap="off"
+                class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-auto custom-scrollbar whitespace-nowrap"
                 placeholder="Type your calculations here...
 e.g. 100 + 20%
 salary = 5000
@@ -104,14 +105,15 @@ total tax = salary * tax"></textarea>
         {# Results Area #}
         <div 
             x-ref="results"
-            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono text-right pointer-events-none overflow-hidden select-none">
+            class="math-results w-32 md:w-64 bg-[#1a1a1a] font-mono text-right overflow-auto select-none custom-scrollbar">
             <template x-for="(res, index) in results" :key="index">
                 <div class="math-line" 
                      :class="{ 
                         'text-[#84cc16]': !res.isHeader, 
                         'text-indigo-400 font-bold': res.isHeader
-                     }" 
-                     x-text="res.text"></div>
+                     }">
+                     <span x-text="res.text"></span>
+                </div>
             </template>
         </div>
     </div>
@@ -260,9 +262,9 @@ total tax = salary * tax"></textarea>
     /* Math Notes line alignment */
     .math-input,
     .math-results {
-        font-size: 18px;
-        line-height: 32px;
-        padding: 24px;
+        font-size: 15px;
+        line-height: 28px;
+        padding: 16px;
     }
     @media (min-width: 768px) {
         .math-input,
@@ -277,9 +279,9 @@ total tax = salary * tax"></textarea>
         padding-right: 16px;
     }
     .math-line {
-        height: 32px;
-        overflow: hidden;
+        height: 28px;
         white-space: nowrap;
+        display: block;
     }
     @media (min-width: 768px) {
         .math-line {
@@ -288,14 +290,15 @@ total tax = salary * tax"></textarea>
     }
 
     .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
+        height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-        background: #1e1e1e;
+        background: transparent;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #333;
-        border-radius: 4px;
+        border-radius: 10px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #444;
@@ -501,6 +504,7 @@ total tax = salary * tax"></textarea>
             syncScroll() {
                 this.$refs.results.scrollTop = this.$refs.input.scrollTop;
                 this.$refs.highlightLayer.scrollTop = this.$refs.input.scrollTop;
+                this.$refs.highlightLayer.scrollLeft = this.$refs.input.scrollLeft;
             },
 
             highlightLine(line) {
