@@ -107,7 +107,7 @@ permalink: /tools/image-convert/
                                 <span class="text-[10px] text-text-muted" x-text="formatSize(f.size)"></span>
                                 <template x-if="f.status === 'done'">
                                     <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-xs text-stone-400">arrow_forward</span>
+                                        <span class="material-symbols-outlined text-xs text-stone-400 inline-flex items-center justify-center">arrow_forward</span>
                                         <span class="text-[10px] font-bold text-indigo-600 truncate" x-text="f.resultName"></span>
                                     </div>
                                 </template>
@@ -121,7 +121,7 @@ permalink: /tools/image-convert/
                                 </a>
                             </template>
                             <button @click="removeFile(index)" class="p-2 text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
-                                <span class="material-symbols-outlined">close</span>
+                                <span class="material-symbols-outlined inline-flex items-center justify-center">close</span>
                             </button>
                         </div>
                     </div>

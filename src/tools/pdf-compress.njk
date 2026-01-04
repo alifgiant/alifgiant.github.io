@@ -98,7 +98,7 @@ permalink: /tools/pdf-compress/
                                 <template x-if="f.status === 'done'">
                                     <div class="flex items-center gap-2">
                                         <span class="text-[10px] text-rose-500 line-through decoration-rose-500 font-medium" x-text="formatSize(f.size)"></span>
-                                        <span class="material-symbols-outlined text-[10px] text-stone-400">arrow_forward</span>
+                                        <span class="material-symbols-outlined text-[10px] text-stone-400 inline-flex items-center justify-center">arrow_forward</span>
                                         <span class="text-[10px] font-bold text-emerald-600" x-text="formatSize(f.blob?.size || 0)"></span>
                                         <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded ml-1" x-text="' - ' + f.reduction + ' % '"></span>
                                     </div>
@@ -115,7 +115,7 @@ permalink: /tools/pdf-compress/
                                 </a>
                             </template>
                             <button @click="removeFile(index)" class="p-2 text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
-                                <span class="material-symbols-outlined">close</span>
+                                <span class="material-symbols-outlined inline-flex items-center justify-center">close</span>
                             </button>
                         </div>
                     </div>

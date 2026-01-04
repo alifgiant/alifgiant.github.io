@@ -7,6 +7,23 @@ module.exports = {
         './src/**/*.{njk,html,js}',
         './contents/**/*.md'
     ],
+    safelist: [
+        'bg-rose-100',
+        'text-rose-700',
+        'border-rose-200',
+        'bg-rose-50',
+        'text-rose-600',
+        'bg-indigo-100',
+        'text-indigo-700',
+        'border-indigo-200',
+        'bg-indigo-50',
+        'text-indigo-600',
+        'bg-teal-100',
+        'text-teal-700',
+        'border-teal-200',
+        'bg-teal-50',
+        'text-teal-600'
+    ],
     theme: {
         extend: {
             colors: {

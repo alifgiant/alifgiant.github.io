@@ -71,7 +71,7 @@ permalink: /blog/
         <div class="flex flex-col gap-6 mt-8 w-full">
             <div class="flex items-center gap-4 w-full">
                 <div class="relative group flex-1">
-                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors">search</span>
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors inline-flex items-center justify-center">search</span>
                     <input type="text" 
                            x-model="search"
                            placeholder="Search articles..." 
@@ -129,7 +129,7 @@ permalink: /blog/
                        x-text="visiblePosts.featured.description"></p>
                     <div class="flex items-center gap-2 mt-2">
                         <span class="text-sm font-bold text-text-main border-b-2 border-primary/30 group-hover:border-primary transition-all">{{ site.pages.blog.read_more }}</span>
-                        <span class="material-symbols-outlined text-lg text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        <span class="material-symbols-outlined text-lg text-primary group-hover:translate-x-1 transition-transform inline-flex items-center justify-center">arrow_forward</span>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@ permalink: /blog/
                 <div class="p-8 flex flex-col flex-grow">
                     <div class="flex items-center justify-between mb-6">
                         <span class="text-xs font-bold text-stone-400" x-text="post.date"></span>
-                        <span class="material-symbols-outlined text-stone-300 group-hover:text-primary transition-colors">north_east</span>
+                        <span class="material-symbols-outlined text-stone-300 group-hover:text-primary transition-colors inline-flex items-center justify-center">north_east</span>
                     </div>
                     <h3 class="text-2xl font-display font-bold text-text-main mb-4 group-hover:text-primary transition-colors"
                         x-text="post.title"></h3>

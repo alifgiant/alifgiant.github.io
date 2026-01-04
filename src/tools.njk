@@ -50,7 +50,7 @@ permalink: /tools/
         <div class="flex flex-col gap-6 w-full">
             <div class="flex flex-col md:flex-row items-center gap-4 w-full">
                 <div class="relative group flex-1 w-full">
-                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors">search</span>
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-primary transition-colors inline-flex items-center justify-center">search</span>
                     <input type="text" 
                            x-model="search"
                            placeholder="Search tools..." 
@@ -115,8 +115,8 @@ permalink: /tools/
                     <p class="text-text-muted text-sm line-clamp-1" x-text="tool.description"></p>
                 </div>
                 
-                <div class="flex-shrink-0 text-stone-300 group-hover:text-primary transition-all duration-300 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-                    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                <div class="flex-shrink-0 text-stone-300 group-hover:text-primary transition-all duration-300 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 inline-flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl inline-flex items-center justify-center">arrow_forward</span>
                 </div>
             </a>
         </template>
@@ -126,8 +126,8 @@ permalink: /tools/
     <div x-show="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <template x-for="tool in filteredTools" :key="tool.url">
             <a :href="tool.url" class="group relative flex flex-col min-h-[320px] bg-white rounded-[2.5rem] p-8 overflow-hidden border border-white shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-500 hover:-translate-y-2">
-                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
-                    <span class="material-symbols-outlined text-text-main">north_east</span>
+                <div class="absolute top-8 right-8 bg-[#F5EFEB] rounded-full p-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20 inline-flex items-center justify-center">
+                    <span class="material-symbols-outlined text-text-main inline-flex items-center justify-center">north_east</span>
                 </div>
                 
                 <div class="relative z-10">
