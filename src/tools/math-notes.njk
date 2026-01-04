@@ -378,6 +378,8 @@ total tax = salary * tax"></textarea>
             exporting: false,
             isFullscreen: false,
             resultsRatio: 0,
+            thousandSeparator: '',
+            decimalSeparator: '.',
 
             get highlightedInput() {
                 if (!this.input) return '';
@@ -395,6 +397,11 @@ total tax = salary * tax"></textarea>
             },
 
             init() {
+                // Detect locale-aware separators
+                const parts = new Intl.NumberFormat(undefined).formatToParts(1111.1);
+                this.thousandSeparator = parts.find(p => p.type === 'group')?.value || '';
+                this.decimalSeparator = parts.find(p => p.type === 'decimal')?.value || '.';
+
                 // Load from localStorage if available
                 const saved = localStorage.getItem('math-notes-input');
                 if (saved) {
@@ -447,6 +454,9 @@ total tax = salary * tax"></textarea>
                 this.results = [];
                 this.history = [];
                 this.scope = {};
+
+                const thousandSep = this.thousandSeparator;
+                const decimalSep = this.decimalSeparator;
 
                 // Basic static currency symbols for mapping (simple regex replacement)
                 const currencyMap = {
@@ -539,7 +549,19 @@ total tax = salary * tax"></textarea>
                         return;
                     }
 
-                    // 5. Apply Natural Language Replacements
+                    // 5. Apply Locale-Aware Number Normalization
+                    if (thousandSep) {
+                        const escaped = thousandSep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        evalPart = evalPart.replace(new RegExp(`(\\d)${escaped}(\\d{3})(?=(?:\\D|$))`, 'g'), '$1$2');
+                        // Simple fallback for multiple separators like 1.000.000
+                        evalPart = evalPart.replace(new RegExp(`(\\d)${escaped}(\\d)`, 'g'), '$1$2');
+                    }
+                    if (decimalSep && decimalSep !== '.') {
+                        const escaped = decimalSep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        evalPart = evalPart.replace(new RegExp(`(\\d)${escaped}(\\d)`, 'g'), '$1.$2');
+                    }
+
+                    // 6. Apply Natural Language Replacements
                     replacements.forEach(r => {
                         evalPart = evalPart.replace(r.reg, r.sub);
                     });
@@ -644,8 +666,13 @@ total tax = salary * tax"></textarea>
                     const reg = new RegExp(`\\b${kw}\\b`, 'gi');
                     expr = expr.replace(reg, '<span class="syntax-keyword">$&</span>');
                 });
-                // Numbers (including percentages)
-                expr = expr.replace(/(\b\d+(\.\d+)?%?)\b/g, '<span class="syntax-number">$1</span>');
+                // Numbers (including percentages and locale separators)
+                const escapedT = (this.thousandSeparator || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const escapedD = (this.decimalSeparator || '.').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                
+                // Optimized regex: Matches numbers with optional thousand separators and fractional part
+                const numPattern = `\\b\\d+(?:${escapedT}\\d{3})*(?:${escapedD}\\d+)?%?\\b`;
+                expr = expr.replace(new RegExp(numPattern, 'g'), '<span class="syntax-number">$&</span>');
                 // Operators - only highlight + and *
                 expr = expr.replace(/([+*])/g, '<span class="syntax-operator">$1</span>');
                 // Units
