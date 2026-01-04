@@ -79,7 +79,7 @@ permalink: /tools/math-notes/
         <div class="flex-1 relative">
             {# Syntax Highlighting Layer / Image Export Mirror #}
             <div x-ref="highlightLayer" 
-                 class="math-input absolute inset-0 w-full h-full bg-transparent text-white font-mono overflow-hidden pointer-events-none"
+                 class="math-input absolute inset-0 w-full h-full bg-transparent text-white font-mono overflow-hidden pointer-events-none whitespace-pre"
                  x-html="highlightedInput">
             </div>
             
@@ -91,7 +91,7 @@ permalink: /tools/math-notes/
                 @scroll="syncScroll()"
                 spellcheck="false"
                 wrap="off"
-                class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-auto custom-scrollbar whitespace-nowrap"
+                class="math-input relative z-10 w-full h-full min-h-[500px] bg-transparent text-white/10 caret-white font-mono resize-none focus:outline-none border-none overflow-auto custom-scrollbar whitespace-pre"
                 placeholder="Type your calculations here...
 e.g. 100 + 20%
 salary = 5000
