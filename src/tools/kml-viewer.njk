@@ -17,7 +17,7 @@ permalink: /tools/kml-viewer/
 {# togeojson JS #}
 <script src="https://unpkg.com/@tmcw/togeojson@5.0.0/dist/togeojson.umd.js"></script>
 {# shp-write JS #}
-<script src="https://unpkg.com/shp-write@0.4.0/shpwrite.js"></script>
+<script src="https://unpkg.com/@mapbox/shp-write@0.4.3/shpwrite.js"></script>
 {# JSZip for KMZ support #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
@@ -430,10 +430,127 @@ permalink: /tools/kml-viewer/
                     }
                 });
 
+                return this.normalizeFeatureCollection({
+                    type: "FeatureCollection",
+                    features
+                });
+            },
+
+            // Normalize features so shp-write gets only supported geometry types and DBF-compliant properties
+            normalizeFeatureCollection(collection) {
+                const normalized = [];
+                const seenKeys = new Map(); // For resolving key collisions
+
+                // Function to sanitize keys for DBF (10 char limit)
+                const sanitizeKey = (key) => {
+                    let cleanKey = key.toString().replace(/[^a-zA-Z0-9_]/g, '').substring(0, 10);
+                    if (!cleanKey) cleanKey = 'ATTR';
+                    
+                    let finalKey = cleanKey;
+                    let counter = 1;
+                    while (seenKeys.has(finalKey) && seenKeys.get(finalKey) !== key) {
+                        const suffix = counter.toString();
+                        finalKey = cleanKey.substring(0, 10 - suffix.length) + suffix;
+                        counter++;
+                    }
+                    seenKeys.set(finalKey, key);
+                    return finalKey;
+                };
+
+                // 1. Pass: Normalize and sanitize all features, recording all unique keys
+                const tempNormalized = [];
+                const allKeys = new Set();
+                const masterKeyMap = new Map(); // Original Key -> Sanitized Key
+
+                collection.features.forEach(feature => {
+                    const normalizedFeatures = this.normalizeFeature(feature);
+                    normalizedFeatures.forEach(f => {
+                        if (f && f.properties) {
+                            const newProps = {};
+                            Object.entries(f.properties).forEach(([k, v]) => {
+                                if (k === 'styleUrl' || k === 'styleHash' || k === 'styleMapHash') return;
+                                
+                                const cleanKey = sanitizeKey(k);
+                                masterKeyMap.set(k, cleanKey);
+                                allKeys.add(cleanKey);
+
+                                let cleanValue = v;
+                                if (v === null || v === undefined) {
+                                    cleanValue = "";
+                                } else if (typeof v === 'object') {
+                                    cleanValue = JSON.stringify(v);
+                                } else if (typeof v === 'boolean') {
+                                    cleanValue = v ? 1 : 0;
+                                }
+                                newProps[cleanKey] = cleanValue;
+                            });
+                            f.properties = newProps;
+                        }
+                        tempNormalized.push(f);
+                    });
+                });
+
+                // 2. Pass: Ensure every feature has EVERY key in the schema (required for DBF)
+                const finalNormalized = tempNormalized.map(f => {
+                    if (f && f.properties) {
+                        const schemaProps = {};
+                        allKeys.forEach(k => {
+                            schemaProps[k] = f.properties.hasOwnProperty(k) ? f.properties[k] : "";
+                        });
+                        f.properties = schemaProps;
+                    } else if (f) {
+                        // Features without properties also need the schema
+                        f.properties = Array.from(allKeys).reduce((acc, k) => ({ ...acc, [k]: "" }), {});
+                    }
+                    return f;
+                });
+
                 return {
                     type: "FeatureCollection",
-                    features: features
+                    features: finalNormalized.filter(f => f && f.geometry && f.geometry.coordinates && f.geometry.coordinates.length > 0)
                 };
+            },
+
+            normalizeFeature(feature) {
+                if (!feature || !feature.geometry) return [];
+                const props = { ...(feature.properties || {}) };
+                const { type, coordinates, geometries } = feature.geometry;
+
+                const buildFeature = (geometryType, coords) => {
+                    if (!coords || (Array.isArray(coords) && coords.length === 0)) {
+                        return null;
+                    }
+                    return {
+                        type: "Feature",
+                        properties: { ...props },
+                        geometry: {
+                            type: geometryType,
+                            coordinates: coords
+                        }
+                    };
+                };
+
+                switch (type) {
+                    case "MultiPolygon":
+                        if (!Array.isArray(coordinates)) return [];
+                        return coordinates.map(coords => buildFeature("Polygon", coords)).filter(Boolean);
+                    case "MultiLineString":
+                        if (!Array.isArray(coordinates)) return [];
+                        return coordinates.map(coords => buildFeature("LineString", coords)).filter(Boolean);
+                    case "MultiPoint":
+                        if (!Array.isArray(coordinates)) return [];
+                        return coordinates.map(coords => buildFeature("Point", coords)).filter(Boolean);
+                    case "GeometryCollection":
+                        if (!Array.isArray(geometries)) return [];
+                        return geometries.flatMap(geom => this.normalizeFeature({
+                            type: "Feature",
+                            properties: props,
+                            geometry: geom
+                        }));
+                    default:
+                        const baseFeature = buildFeature(type, coordinates);
+                        return baseFeature ? [baseFeature] : [];
+                }
             },
 
             downloadGeoJSON() {
@@ -459,6 +576,12 @@ permalink: /tools/kml-viewer/
                     return;
                 }
                 
+                if (typeof shpwrite === 'undefined') {
+                    alert('Shapefile library (shp-write) failed to load. Please refresh the page and try again.');
+                    console.error('shpwrite is undefined');
+                    return;
+                }
+
                 try {
                     shpwrite.download(combinedData, {
                         folder: (this.fileName || 'export').replace('.kml', '') + '_shp',
