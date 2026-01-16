@@ -70,11 +70,30 @@ permalink: /tools/diff/
                 </div>
             </div>
 
-            <div class="p-8 bg-stone-50 border-2 border-stone-100 rounded-2xl min-h-[200px] font-mono text-sm whitespace-pre-wrap leading-relaxed shadow-inner overflow-x-auto">
-                <template x-for="part in diffResults">
-                    <span :class="part.added ? 'bg-emerald-100 text-emerald-800' : (part.removed ? 'bg-rose-100 text-rose-800 line-through' : 'text-text-main')" x-text="part.value"></span>
-                </template>
-                <div x-show="diffResults.length === 0" class="text-text-muted italic">Both texts are identical.</div>
+            <div class="bg-stone-50 border-2 border-stone-100 rounded-2xl min-h-[200px] overflow-hidden shadow-inner">
+                <div class="overflow-x-auto">
+                    <table class="w-full font-mono text-sm border-collapse">
+                        <template x-for="line in diffResults">
+                            <tr :class="{
+                                'bg-rose-100/50 text-rose-900': line.type === 'removed',
+                                'bg-emerald-100/50 text-emerald-900': line.type === 'added',
+                                'hover:bg-stone-100/50 transition-colors': line.type === 'unchanged'
+                            }">
+                                <td class="w-12 px-3 py-1 text-right border-r border-stone-200 text-stone-400 select-none bg-stone-100/30 whitespace-nowrap" x-text="line.oldLine"></td>
+                                <td class="w-12 px-3 py-1 text-right border-r border-stone-200 text-stone-400 select-none bg-stone-100/30 whitespace-nowrap" x-text="line.newLine"></td>
+                                <td class="w-8 px-2 py-1 text-center select-none font-bold" :class="line.type === 'added' ? 'text-emerald-600' : (line.type === 'removed' ? 'text-rose-600' : 'text-stone-300')" x-text="line.type === 'added' ? '+' : (line.type === 'removed' ? '-' : ' ')"></td>
+                                <td class="px-4 py-1 whitespace-pre break-all md:break-normal" x-text="line.content"></td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+                <div x-show="textA && textB && diffResults.length > 0 && diffResults.every(l => l.type === 'unchanged')" class="p-12 text-center text-text-muted italic bg-white/50">
+                    Both texts are identical.
+                </div>
+                <div x-show="!textA && !textB" class="p-12 text-center text-stone-300 italic flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-4xl">compare_arrows</span>
+                    Enter text above to see differences
+                </div>
             </div>
         </div>
     </div>
@@ -97,8 +116,49 @@ permalink: /tools/diff/
 
             compare() {
                 if (!window.Diff) return;
-                // Use character-based diff for better granularity in string comparison
-                this.diffResults = Diff.diffChars(this.textA, this.textB);
+                
+                // Use line-based diff for Git-like comparison
+                const diff = Diff.diffLines(this.textA, this.textB);
+                const results = [];
+                let oldLineNum = 1;
+                let newLineNum = 1;
+
+                diff.forEach(part => {
+                    const lines = part.value.split('\n');
+                    
+                    // The last element of split is often empty if the value ends with \n
+                    // We remove it unless it's the only element (empty file case)
+                    if (lines.length > 1 && lines[lines.length - 1] === '') {
+                        lines.pop();
+                    }
+
+                    lines.forEach(lineContent => {
+                        if (part.added) {
+                            results.push({
+                                type: 'added',
+                                oldLine: ' ',
+                                newLine: newLineNum++,
+                                content: lineContent
+                            });
+                        } else if (part.removed) {
+                            results.push({
+                                type: 'removed',
+                                oldLine: oldLineNum++,
+                                newLine: ' ',
+                                content: lineContent
+                            });
+                        } else {
+                            results.push({
+                                type: 'unchanged',
+                                oldLine: oldLineNum++,
+                                newLine: newLineNum++,
+                                content: lineContent
+                            });
+                        }
+                    });
+                });
+
+                this.diffResults = results;
             }
         }
     }
