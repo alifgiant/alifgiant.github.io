@@ -1,0 +1,293 @@
+---
+layout: layouts/base.njk
+title: KPR Calculator
+description: Calculate KPR monthly payments and view full amortization table (principal, interest, remaining balance).
+permalink: /tools/kpr/
+---
+
+<div class="w-full max-w-6xl flex flex-col gap-12" x-data="kprTool()" x-init="recalculate()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/kpr/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Property Price (IDR)</label>
+                    <input type="text" :value="format(basePrice)" @input="onCurrencyInput($event,'basePrice')" placeholder="0" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Down Payment (amount)</label>
+                    <input type="text" :value="format(dpAmount)" @input="onCurrencyInput($event,'dpAmount'); syncDpPercent()" placeholder="0" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Down Payment (%)</label>
+                    <input type="number" step="0.01" x-model.number="dpPercent" @input="syncDpAmount(); recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Fixed Interest Rate (annual %)</label>
+                    <input type="number" step="0.01" x-model.number="fixedRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Fixed Rate Duration (years)</label>
+                    <input type="number" min="0" x-model.number="fixedYears" @input="onFixedYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Interest Rate (annual %)</label>
+                    <input type="number" step="0.01" x-model.number="floatingRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Rate Duration (years)</label>
+                    <input type="number" min="0" x-model.number="floatingYears" @input="onFloatingYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Total Loan Term (years)</label>
+                    <input type="number" min="1" x-model.number="totalYears" @input="onTotalYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex items-center justify-center gap-4 h-full">
+                    <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
+                    <button @click="exportCSV()" class="px-6 py-3 rounded-2xl bg-primary text-white">Export CSV</button>
+                </div>
+            </div>
+
+            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Loan Summary</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Loan Amount</span><span x-text="format(summary.loanAmount)"></span></div>
+                            <div class="flex justify-between"><span>Estimated First Monthly Payment</span><span x-text="format(summary.firstPayment)"></span></div>
+                            <div class="flex justify-between"><span>Total Months</span><span x-text="summary.totalMonths"></span></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Totals</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Total Paid</span><span x-text="format(summary.totalPaid)"></span></div>
+                            <div class="flex justify-between"><span>Total Interest</span><span x-text="format(summary.totalInterest)"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Amortization Table</div>
+                <div class="overflow-x-auto rounded-2xl border border-stone-100">
+                    <table class="w-full text-sm">
+                        <thead class="bg-stone-100 text-left text-xs uppercase text-text-muted">
+                            <tr>
+                                <th class="px-4 py-3">#</th>
+                                <th class="px-4 py-3">Payment</th>
+                                <th class="px-4 py-3">Interest</th>
+                                <th class="px-4 py-3">Principal</th>
+                                <th class="px-4 py-3">Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="row in schedule" :key="row.month">
+                                <tr class="border-t">
+                                    <td class="px-4 py-2"> <span x-text="row.month"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.payment)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.interest)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.principal)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.remaining)"></span> </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function kprTool() {
+        return {
+            basePrice: 0,
+            dpAmount: 0,
+            dpPercent: 20,
+            fixedRate: 7.0,
+            fixedYears: 5,
+            floatingRate: 10.0,
+            floatingYears: 1,
+            totalYears: 20,
+            schedule: [],
+            summary: { loanAmount:0, firstPayment:0, totalMonths:0, totalPaid:0, totalInterest:0 },
+
+            format(v) {
+                return new Intl.NumberFormat('id-ID').format(Math.round(v || 0));
+            },
+
+            onCurrencyInput(e, field) {
+                const raw = String(e.target.value).replace(/[^0-9]/g, '');
+                const value = raw ? Number(raw) : 0;
+                this[field] = value;
+                e.target.value = this.format(value);
+                this.recalculate();
+            },
+
+            syncDpPercent() {
+                if (this.basePrice > 0) {
+                    this.dpPercent = Math.round((this.dpAmount / this.basePrice) * 10000) / 100;
+                }
+                this.recalculate();
+            },
+
+            syncDpAmount() {
+                this.dpAmount = Math.round((this.dpPercent/100) * (this.basePrice || 0));
+                this.recalculate();
+            },
+
+            reset() {
+                this.basePrice = 0;
+                this.dpAmount = 0;
+                this.dpPercent = 20;
+                this.fixedRate = 7.0;
+                this.fixedYears = 5;
+                this.floatingRate = 10.0;
+                this.floatingYears = 1;
+                this.totalYears = 20;
+                this.schedule = [];
+                this.summary = { loanAmount:0, firstPayment:0, totalMonths:0, totalPaid:0, totalInterest:0 };
+                this.recalculate();
+            },
+
+            onFixedYearsInput() {
+                this.fixedYears = Math.max(0, Math.min(this.totalYears, Number(this.fixedYears) || 0));
+                this.floatingYears = Math.max(0, this.totalYears - this.fixedYears);
+                this.recalculate();
+            },
+
+            onFloatingYearsInput() {
+                this.floatingYears = Math.max(0, Math.min(this.totalYears, Number(this.floatingYears) || 0));
+                this.fixedYears = Math.max(0, this.totalYears - this.floatingYears);
+                this.recalculate();
+            },
+
+            onTotalYearsInput() {
+                this.totalYears = Math.max(1, Number(this.totalYears) || 1);
+                if (this.fixedYears > this.totalYears) this.fixedYears = this.totalYears;
+                this.floatingYears = Math.max(0, this.totalYears - this.fixedYears);
+                this.recalculate();
+            },
+
+            exportCSV() {
+                if (!this.schedule || this.schedule.length === 0) return;
+                const header = ['month','payment','interest','principal','remaining'];
+                const rows = this.schedule.map(r => [r.month, Math.round(r.payment), Math.round(r.interest), Math.round(r.principal), Math.round(r.remaining)].join(','));
+                const csv = [header.join(',')].concat(rows).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'kpr-amortization.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            },
+
+            recalculate() {
+                const bp = Number(this.basePrice || 0);
+                this.dpAmount = Number(this.dpAmount || 0);
+                // ensure dpAmount consistent with percent
+                if (this.dpPercent) {
+                    this.dpAmount = Math.round((this.dpPercent/100) * bp);
+                }
+
+                const loanAmount = Math.max(0, bp - this.dpAmount);
+                const totalMonths = Math.max(1, Math.round(this.totalYears * 12));
+                const fixedMonths = Math.max(0, Math.min(totalMonths, Math.round(this.fixedYears*12)));
+                const floatingMonths = Math.max(0, Math.min(totalMonths - fixedMonths, Math.round(this.floatingYears*12)));
+                const remainingMonths = totalMonths - fixedMonths - floatingMonths;
+
+                const phases = [];
+                if (fixedMonths > 0) phases.push({ months: fixedMonths, rate: Number(this.fixedRate || 0) });
+                if (floatingMonths > 0) phases.push({ months: floatingMonths, rate: Number(this.floatingRate || 0) });
+                if (remainingMonths > 0) phases.push({ months: remainingMonths, rate: Number(this.floatingRate || 0) });
+
+                let balance = loanAmount;
+                let monthCounter = 0;
+                const schedule = [];
+                let firstPayment = 0;
+
+                for (let p=0; p<phases.length; p++) {
+                    const phase = phases[p];
+                    const monthsLeft = totalMonths - monthCounter;
+                    const r = (phase.rate/100)/12;
+                    let payment = 0;
+                    if (r === 0) {
+                        payment = balance / monthsLeft;
+                    } else {
+                        payment = r * balance / (1 - Math.pow(1 + r, -monthsLeft));
+                    }
+                    if (p === 0) firstPayment = payment;
+
+                    for (let i=0;i<phase.months;i++) {
+                        monthCounter++;
+                        const interest = balance * r;
+                        let principal = payment - interest;
+                        // last payment adjustments
+                        if (principal > balance) {
+                            principal = balance;
+                            payment = interest + principal;
+                        }
+                        balance = Math.max(0, balance - principal);
+                        schedule.push({ month: monthCounter, payment: payment, interest: interest, principal: principal, remaining: balance });
+                    }
+                }
+
+                // totals
+                let totalPaid = 0, totalInterest = 0;
+                for (const row of schedule) { totalPaid += row.payment; totalInterest += row.interest; }
+
+                this.schedule = schedule;
+                this.summary = {
+                    loanAmount: loanAmount,
+                    firstPayment: firstPayment,
+                    totalMonths: totalMonths,
+                    totalPaid: totalPaid,
+                    totalInterest: totalInterest
+                };
+            }
+        }
+    }
+</script>
