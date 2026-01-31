@@ -220,6 +220,14 @@
                     "icon": "map_search",
                     "tag": "Utilities"
                 }
+                ,
+                {
+                    "title": "Take-home Pay (IDR)",
+                    "description": "Estimate monthly take-home salary in Indonesia (PPh21, BPJS, JHT, pension).",
+                    "url": "/tools/salary/",
+                    "icon": "payments",
+                    "tag": "Utilities"
+                }
             ]
         }
     }

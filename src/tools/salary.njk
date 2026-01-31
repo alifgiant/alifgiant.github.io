@@ -1,0 +1,234 @@
+---
+layout: layouts/base.njk
+title: Take-home Pay (IDR)
+description: Calculate monthly take-home pay in Indonesia (PPh21, BPJS, JHT, pension).
+permalink: /tools/salary/
+---
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="salaryTool()" x-init="recalculate()">
+    {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/salary/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Gross Salary (IDR)</label>
+                    <input type="text" :value="format(monthlyGross)" @input="onCurrencyInput($event,'monthlyGross')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Monthly Allowances (optional)</label>
+                    <input type="text" :value="format(monthlyAllowance)" @input="onCurrencyInput($event,'monthlyAllowance')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Marital Status</label>
+                    <div class="flex items-center gap-3">
+                        <div class="inline-flex rounded-full border-2 p-1 bg-stone-50" role="tablist" aria-label="Marital status">
+                            <button :class="status.married ? 'text-text-muted' : 'bg-primary text-white shadow'" @click="status.married=false; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Single</button>
+                            <button :class="status.married ? 'bg-primary text-white shadow' : 'text-text-muted'" @click="status.married=true; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Married</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 md:col-span-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Number of Dependents (children, max 3)</label>
+                    <input type="number" min="0" max="3" x-model.number="status.dependents" @input="recalculate()" class="w-24 px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan (employee %)</label>
+                    <input type="number" step="0.01" x-model.number="rates.bpjs" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JHT (employee %)</label>
+                    <input type="number" step="0.01" x-model.number="rates.jht" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Pension (employee %)</label>
+                    <input type="number" step="0.01" x-model.number="rates.pension" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
+            </div>
+
+            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Monthly Breakdown</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Gross</span><span x-text="format(m.monthlyGross)"></span></div>
+                            <div class="flex justify-between"><span>BPJS Kesehatan</span><span x-text="format(m.monthlyBPJS)"></span></div>
+                            <div class="flex justify-between"><span>JHT</span><span x-text="format(m.monthlyJHT)"></span></div>
+                            <div class="flex justify-between"><span>Pension</span><span x-text="format(m.monthlyPension)"></span></div>
+                            <div class="flex justify-between"><span>PPh21 (monthly)</span><span x-text="format(m.monthlyTax)"></span></div>
+                            <hr class="my-2" />
+                            <div class="flex justify-between font-bold"><span>Take-home</span><span x-text="format(m.takeHome)"></span></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Annual Summary</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Annual Gross</span><span x-text="format(m.annualGross)"></span></div>
+                            <div class="flex justify-between"><span>Total BPJS/JHT/Pension</span><span x-text="format(m.annualContributions)"></span></div>
+                            <div class="flex justify-between"><span>Taxable Income</span><span x-text="format(m.taxableAnnual)"></span></div>
+                            <div class="flex justify-between"><span>Annual Tax</span><span x-text="format(m.annualTax)"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function salaryTool() {
+        return {
+            monthlyGross: 0,
+            monthlyAllowance: 0,
+            rates: {
+                bpjs: 1.00, // percent
+                jht: 2.00,
+                pension: 1.00
+            },
+            rules: {
+                taxBrackets: [
+                    { cap: 60000000, rate: 0.05 },
+                    { cap: 250000000, rate: 0.15 },
+                    { cap: 500000000, rate: 0.25 },
+                    { cap: Infinity, rate: 0.30 }
+                ]
+            },
+            status: {
+                married: false,
+                dependents: 0
+            },
+            m: {
+                monthlyGross: 0,
+                monthlyBPJS: 0,
+                monthlyJHT: 0,
+                monthlyPension: 0,
+                monthlyTax: 0,
+                takeHome: 0,
+                annualGross: 0,
+                annualContributions: 0,
+                taxableAnnual: 0,
+                annualTax: 0
+            },
+
+            format(v) {
+                return new Intl.NumberFormat('id-ID').format(Math.round(v || 0));
+            },
+
+            onCurrencyInput(e, field) {
+                // keep only digits
+                const raw = String(e.target.value).replace(/[^0-9]/g, '');
+                const value = raw ? Number(raw) : 0;
+                this[field] = value;
+                e.target.value = this.format(value);
+                this.recalculate();
+            },
+
+            reset() {
+                this.monthlyGross = 0;
+                this.monthlyAllowance = 0;
+                this.rates = { bpjs:1.00, jht:2.00, pension:1.00 };
+                this.recalculate();
+            },
+
+            computePTKP() {
+                const base = 54000000;
+                const spouse = this.status.married ? 4500000 : 0;
+                const dependents = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3) * 4500000;
+                return base + spouse + dependents;
+            },
+
+            recalculate() {
+                const gross = Number(this.monthlyGross || 0);
+                const allowance = Number(this.monthlyAllowance || 0);
+                const monthlyGrossTotal = gross + allowance;
+
+                const bpjsMonthly = monthlyGrossTotal * (this.rates.bpjs/100);
+                const jhtMonthly = monthlyGrossTotal * (this.rates.jht/100);
+                const pensionMonthly = monthlyGrossTotal * (this.rates.pension/100);
+
+                const annualGross = monthlyGrossTotal * 12;
+                const annualBPJS = bpjsMonthly * 12;
+                const annualJHT = jhtMonthly * 12;
+                const annualPension = pensionMonthly * 12;
+
+                const deductions = annualBPJS + annualJHT + annualPension;
+                const ptkp = this.computePTKP();
+                let taxable = annualGross - deductions - ptkp;
+                if (taxable < 0) taxable = 0;
+
+                let remaining = taxable;
+                let tax = 0;
+                let lower = 0;
+                for (let i=0;i<this.rules.taxBrackets.length;i++) {
+                    const b = this.rules.taxBrackets[i];
+                    const cap = b.cap === Infinity ? Infinity : b.cap - lower;
+                    const portion = Math.min(remaining, cap === Infinity ? remaining : cap);
+                    if (portion > 0) {
+                        tax += portion * b.rate;
+                        remaining -= portion;
+                    }
+                    lower = b.cap === Infinity ? lower : b.cap;
+                    if (remaining <= 0) break;
+                }
+
+                const monthlyTax = tax / 12;
+                const takeHome = monthlyGrossTotal - bpjsMonthly - jhtMonthly - pensionMonthly - monthlyTax;
+
+                this.m = {
+                    monthlyGross: monthlyGrossTotal,
+                    monthlyBPJS: bpjsMonthly,
+                    monthlyJHT: jhtMonthly,
+                    monthlyPension: pensionMonthly,
+                    monthlyTax: monthlyTax,
+                    takeHome: takeHome,
+                    annualGross: annualGross,
+                    annualContributions: deductions,
+                    taxableAnnual: taxable,
+                    annualTax: tax
+                };
+            }
+        }
+    }
+</script>
