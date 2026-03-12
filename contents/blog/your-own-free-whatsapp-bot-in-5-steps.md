@@ -15,7 +15,7 @@ What if I told you that you can build your very own AI assistant on WhatsApp, ho
 
 Interested? Let's get started 😎.
 
-# Step 1: Install Coolify and Deploy n8n ����️
+# Step 1: Install Coolify and Deploy n8n 🗓️
 
 First things first, let's get your server (VPS) ready. Coolify is the control panel that makes managing everything easy. Then, we'll use it to deploy n8n, the architect of our bot's conversation flow.
 
