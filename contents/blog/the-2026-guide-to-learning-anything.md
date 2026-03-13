@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Hey everyone, and welcome Before we get started, a quick heads-up: what you're about to read is a highly opinionated take on learning. This is my personal ph..."
 readTime: "5 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/blog/cover-261835c2-e62f-80f9-a33c-f927b356e5e7.jpg"
 ---
 
 Hey everyone, and welcome!
