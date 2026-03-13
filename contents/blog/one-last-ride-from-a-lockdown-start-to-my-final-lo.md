@@ -25,7 +25,7 @@ Building for that kind of scale means that reliability is not an afterthought, i
 
 ## The Bridge to the Core
 
-For the first part of my journey, my world was entirely feature-driven. I moved through multiple teams within the Merchant app, solving specific problems for our users. But as I spent more time navigating the codebase, I began to see the connective tissue,or sometimes, the lack thereof,between the different domains. I found myself less interested in building a single room, and more obsessed with the plumbing and architecture of the entire building.
+For the first part of my journey, my world was entirely feature-driven. I moved through multiple teams within the Merchant app, solving specific problems for our users. But as I spent more time navigating the codebase, I began to see the connective tissue, or sometimes, the lack thereof, between the different domains. I found myself less interested in building a single room, and more obsessed with the plumbing and architecture of the entire building.
 
 That curiosity led me to my final destination: the **Merchant Core Platform team**.
 
@@ -43,7 +43,7 @@ It was within this cross-team focus that I accomplished the work I am most proud
 
 ## Surviving the Storms and Chasing the Future
 
-But the ride wasn't always a straight line up. When the pandemic boom settled, the tech industry fractured. I watched major reorgs sweep through the company. Seeing some of my most brilliant colleagues leave was a bitter pill,a reality I had faced in a previous job, but one that never loses its sting.
+But the ride wasn't always a straight line up. When the pandemic boom settled, the tech industry fractured. I watched major reorgs sweep through the company. Seeing some of my most brilliant colleagues leave was a bitter pill, a reality I had faced in a previous job, but one that never loses its sting.
 
 In the wake of those layoffs, the company’s core values, Heart, Hunger, Honour, and Humility (the 4Hs), were the only things keeping us grounded. Our leadership leaned in, using countless All-Hands meetings to define our path forward with a closeness and transparency I deeply respected. We had to maintain the *Honour* to keep the engine running for our merchants, even when our own house felt shaken.
 
@@ -76,3 +76,5 @@ I could not have made this journey alone. Thank you to **Budi**, my very first m
 The off-boarding emails always end with the same phrase: *Once a Grabber, always a Grabber.* Today, as I look at this screen one last time, I know it's true. I am walking away, but I am taking the hunger, the lessons, and the honour with me.
 
 **The ride is over. Time to Log out. **📱
+
+
