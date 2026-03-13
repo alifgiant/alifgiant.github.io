@@ -50,12 +50,6 @@ layout: layouts/base.njk
 <div class="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
     {# Main content #}
     <article class="col-span-1 lg:col-span-9 blog-content">
-        {% if description %}
-            <p class="lead text-xl md:text-2xl font-display font-medium text-text-main mb-10 leading-relaxed">
-                {{ description }}
-            </p>
-        {% endif %}
-        
         {{ content | safe }}
     </article>
     
