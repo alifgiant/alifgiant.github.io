@@ -228,8 +228,16 @@ total tax = salary * tax"></textarea>
                         <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">1.2 million</code>
                     </div>
                     <div class="flex items-center justify-between text-[11px]">
-                        <span class="text-cyan-800/60 font-medium">Shorthand</span>
-                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">50k plus 10 thousand</code>
+                        <span class="text-cyan-800/60 font-medium">Shorthand K</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">2.5k → 2,500</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Shorthand M</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">1.5M → 1,500,000</code>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                        <span class="text-cyan-800/60 font-medium">Shorthand B</span>
+                        <code class="bg-cyan-100 px-1.5 py-0.5 rounded text-cyan-900 font-mono">3B → 3,000,000,000</code>
                     </div>
                 </div>
             </div>
@@ -477,9 +485,13 @@ total tax = salary * tax"></textarea>
                     { reg: /\bin decimal\b|\bto decimal\b/gi, sub: '' }, // mathjs handles 0x, 0b natively
                     { reg: /\bin hex\b|\bto hex\b/gi, sub: 'in hex' },
                     { reg: /\bin bin\b|\bto bin\b/gi, sub: 'in bin' },
-                    // Scales
-                    { reg: /\bthousand\b|\bk\b/gi, sub: '* 1000' },
-                    { reg: /\bmillion\b|\bM\b/gi, sub: '* 1000000' },
+                    // Shorthand suffixes attached to numbers: 2.5k, 10K, 1m, 3B (case-insensitive, decimals supported)
+                    { reg: /(\d+(?:\.\d+)?)\s*k\b/gi, sub: '$1 * 1000' },
+                    { reg: /(\d+(?:\.\d+)?)\s*m\b/gi, sub: '$1 * 1000000' },
+                    { reg: /(\d+(?:\.\d+)?)\s*b\b/gi, sub: '$1 * 1000000000' },
+                    // Scales (word form)
+                    { reg: /\bthousand\b/gi, sub: '* 1000' },
+                    { reg: /\bmillion\b/gi, sub: '* 1000000' },
                     { reg: /\bbillion\b/gi, sub: '* 1000000000' },
                 ];
 
