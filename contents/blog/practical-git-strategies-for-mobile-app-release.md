@@ -5,14 +5,12 @@ tags: ["Tech"]
 featured: false
 description: "Choosing a Git branching strategy often feels like picking a philosophy. It dictates your daily rhythm, how often you face the \"merge conflict\" beast, and ho..."
 readTime: "11 min"
-image: "/assets/images/blog/cover-345835c2-e62f-80c3-8703-cb90929c719f.jpg"
+image: "/assets/images/blog/cover-345835c2-e62f-80c3-8703-cb90929c719f.png"
 ---
 
 Choosing a Git branching strategy often feels like picking a philosophy. It dictates your daily rhythm, how often you face the "merge conflict" beast, and how much you sweat on your mobile app release day.
 
 The goal of this article is to explain the three most common strategies step-by-step through a real-world lens, where a mobile app release is never as simple as clicking a "deploy" button.
-
-![Image](/assets/images/blog/345835c2-e62f-80c3-8703-cb90929c719f-1.png)
 
 Imagine you are working on a payroll app. Currently, the app applies a simple 10% flat tax to all salaries:
 
@@ -43,7 +41,7 @@ double calculateTax(Employee employee) {
 
 We will follow this task through **Gitflow, Release-Centric** and the **Trunk-Based Development (TBD)** to see which one fits your team best.
 
-# **1. Branching Out and Do The Work**
+# 1. Branching Out and Do The Work
 
 The first step is creating a working branch from a shared integration branch then makes changes.
 
@@ -146,7 +144,7 @@ gitGraph
     merge feature/tax id: "new-main-head"
 ```
 
-### **The TBD Safety Guard: Feature Flags**
+### The TBD Safety Guard: Feature Flags
 
 TBD mandates that new code be placed behind a **Feature Flag**. Even when the code is physically in the `main` branch, it is dormant until the business decides to flip the switch.
 
