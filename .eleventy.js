@@ -24,7 +24,15 @@ module.exports = function (eleventyConfig) {
         const langName = info ? info.split(/\s+/g)[0].toLowerCase() : '';
 
         if (langName === 'mermaid' || langName === 'gitgraph') {
-            return `<div class="mermaid">${md.utils.escapeHtml(token.content)}</div>`;
+            // Normalize copied markdown content so Mermaid parser receives stable input.
+            let mermaidSource = token.content
+                .replace(/\r\n?/g, '\n')
+                .replace(/\u00a0/g, ' ')
+                .replace(/\t/g, '    ')
+                .replace(/[ \t]+$/gm, '')
+                .trimEnd();
+
+            return `<div class="mermaid">${md.utils.escapeHtml(mermaidSource)}</div>`;
         }
 
         if (defaultFenceRenderer) {
