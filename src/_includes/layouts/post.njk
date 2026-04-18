@@ -112,37 +112,35 @@ layout: layouts/base.njk
 {# Mermaid Support #}
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
-    mermaid.initialize({
-        startOnLoad: true,
-        theme: 'base',
-        themeVariables: {
-            primaryColor: '#3b82f6',
-            primaryTextColor: '#fff',
-            primaryBorderColor: '#2563eb',
-            lineColor: '#94a3b8',
-            secondaryColor: '#f8fafc',
-            tertiaryColor: '#f1f5f9',
-            fontFamily: 'Inter, sans-serif'
-        }
-    });
-
-    // Handle mermaid blocks rendered by Markdown-it
     document.addEventListener('DOMContentLoaded', () => {
-        // Find all mermaid blocks
-        document.querySelectorAll('pre.language-mermaid').forEach(pre => {
-            const code = pre.querySelector('code');
-            if (code) {
-                const div = document.createElement('div');
-                div.className = 'mermaid my-12 flex justify-center bg-white p-8 rounded-3xl border border-stone-100 shadow-sm overflow-x-auto';
-                div.textContent = code.textContent;
-                pre.replaceWith(div);
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#2563eb',
+                lineColor: '#94a3b8',
+                secondaryColor: '#f8fafc',
+                tertiaryColor: '#f1f5f9',
+                fontFamily: 'Space Grotesk, sans-serif'
             }
         });
-        mermaid.init();
+
+        mermaid.run({ querySelector: '.mermaid' });
     });
 </script>
 
 <style>
+    .blog-content .mermaid {
+        margin: 2.5rem 0;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        border: 1px solid #e7e5e4;
+        background: #ffffff;
+        overflow-x: auto;
+    }
+
     .mermaid svg {
         max-width: 100%;
         height: auto;

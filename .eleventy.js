@@ -16,6 +16,25 @@ module.exports = function (eleventyConfig) {
     // Enable multi-markdown table support (GFM-style tables)
     md.use(multimdTable);
 
+    // Render ```mermaid fences as Mermaid containers that Mermaid.js can parse directly.
+    const defaultFenceRenderer = md.renderer.rules.fence;
+    md.renderer.rules.fence = function (tokens, idx, options, env, self) {
+        const token = tokens[idx];
+        const info = (token.info || '').trim();
+        const langName = info ? info.split(/\s+/g)[0].toLowerCase() : '';
+
+        if (langName === 'mermaid' || langName === 'gitgraph') {
+            return `<div class="mermaid">${md.utils.escapeHtml(token.content)}</div>`;
+        }
+
+        if (defaultFenceRenderer) {
+            return defaultFenceRenderer(tokens, idx, options, env, self);
+        }
+
+        const langClass = langName ? ` class="${options.langPrefix}${md.utils.escapeHtml(langName)}"` : '';
+        return `<pre><code${langClass}>${md.utils.escapeHtml(token.content)}</code></pre>\n`;
+    };
+
     eleventyConfig.setLibrary('md', md);
 
     // Pass through static assets

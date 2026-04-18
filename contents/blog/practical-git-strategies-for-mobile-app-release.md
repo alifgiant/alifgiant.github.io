@@ -246,7 +246,7 @@ Only once a new release branch created, the unmerged feature branch can be merge
 
 ```mermaid
 %%{init: { 'theme': 'default' } }%%
-gitGraph:
+gitGraph
 		commit id: "1.1.0"
     commit id: "1.2.0"
     branch release/1.3.0
