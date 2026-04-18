@@ -215,7 +215,7 @@ gitGraph
     merge release/1.2.0 id: "1.2.0"
     branch release/1.3.0
     checkout release/1.3.0
-    commit id: "feat/next-big-thing"
+    commit id: "feat/Y"
 
 ```
 
@@ -323,9 +323,6 @@ gitGraph
     merge hotfix/1.2.1 id: "1.2.1"
     checkout develop
     merge hotfix/1.2.1 id: "stable-1.2.1"
-
-
-    
 ```
 
 **The Pain Point:** Merge conflicts are frequent here because `develop` has often moved far ahead of `main`. You have to manually resolve conflicts between the production fix and the new code on `develop`.
