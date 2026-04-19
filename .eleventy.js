@@ -47,6 +47,7 @@ module.exports = function (eleventyConfig) {
 
     // Pass through static assets
     eleventyConfig.addPassthroughCopy('assets');
+    eleventyConfig.addPassthroughCopy('favicon.ico');
     eleventyConfig.addPassthroughCopy({ 'src/css': 'css' });
     eleventyConfig.addPassthroughCopy({ 'src/js': 'js' });
 

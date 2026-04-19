@@ -242,6 +242,13 @@
                     "url": "/tools/salary/",
                     "icon": "payments",
                     "tag": "Utilities"
+                },
+                {
+                    "title": "Mermaid Diagram Generator",
+                    "description": "Generate Mermaid diagrams from code with zoom, pan, cheatsheet, and image export.",
+                    "url": "/tools/mermaid/",
+                    "icon": "schema",
+                    "tag": "Utilities"
                 }
             ]
         }

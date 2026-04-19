@@ -1,0 +1,607 @@
+---
+layout: layouts/base.njk
+title: Mermaid Diagram Generator
+description: Generate Mermaid diagrams from code with zoom, pan, cheatsheet, and image export.
+permalink: /tools/mermaid/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+
+<div class="w-full max-w-7xl flex flex-col gap-12" x-data="mermaidTool()">
+    {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/mermaid/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-3xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        {# Main Canvas + Editor #}
+        <div class="xl:col-span-8 flex flex-col gap-6">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 md:p-8 shadow-xl shadow-primary/10 flex flex-col gap-6">
+                <div class="flex flex-wrap gap-3 items-center justify-between">
+                    <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Mermaid Code</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button @click="renderDiagram()" class="px-4 py-2 rounded-xl bg-text-main text-white font-bold text-xs uppercase tracking-wider hover:bg-primary transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">play_arrow</span>
+                            Render
+                        </button>
+                        <button @click="resetSample()" class="px-4 py-2 rounded-xl bg-white border border-stone-200 text-text-muted font-bold text-xs uppercase tracking-wider hover:border-primary hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">restart_alt</span>
+                            Reset
+                        </button>
+                        <button @click="clearCode()" class="px-4 py-2 rounded-xl bg-white border border-stone-200 text-text-muted font-bold text-xs uppercase tracking-wider hover:border-rose-300 hover:text-rose-600 transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <textarea x-model="diagramCode" rows="14" placeholder="flowchart TD\nA[Start] --> B{Condition}\nB -->|Yes| C[Do Something]\nB -->|No| D[Do Something Else]"
+                    class="block w-full px-5 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all font-mono text-sm shadow-inner resize-y"></textarea>
+
+                <div x-show="error" class="p-4 bg-rose-50 text-rose-700 border border-rose-100 rounded-2xl text-xs flex items-start gap-3" x-cloak>
+                    <span class="material-symbols-outlined text-lg">error</span>
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold uppercase tracking-wider">Render Error</span>
+                        <span x-text="error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 md:p-8 shadow-xl shadow-primary/10 flex flex-col gap-5">
+                <div class="flex flex-wrap gap-3 items-center justify-between">
+                    <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Diagram Canvas</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button @click="zoomOut()" class="px-3 py-2 rounded-xl bg-white border border-stone-200 text-text-muted font-bold text-xs hover:border-primary hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">zoom_out</span>
+                            Zoom Out
+                        </button>
+                        <button @click="zoomIn()" class="px-3 py-2 rounded-xl bg-white border border-stone-200 text-text-muted font-bold text-xs hover:border-primary hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">zoom_in</span>
+                            Zoom In
+                        </button>
+                        <button @click="resetView()" class="px-3 py-2 rounded-xl bg-white border border-stone-200 text-text-muted font-bold text-xs hover:border-primary hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">center_focus_strong</span>
+                            Reset View
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative bg-stone-50 border-2 border-stone-100 rounded-2xl overflow-hidden" style="resize: vertical; min-height: 420px; height: 420px;">
+                    <div class="absolute top-3 left-3 z-10 px-3 py-1.5 rounded-full bg-white/90 border border-stone-200 text-[10px] uppercase tracking-wider font-bold text-text-muted">
+                        Drag to pan • Scroll to zoom
+                    </div>
+                    <div x-ref="diagramViewport" class="w-full h-full p-4 overflow-hidden"></div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 justify-end">
+                    <button @click="downloadSvg()" :disabled="!hasDiagram" :class="hasDiagram ? 'opacity-100' : 'opacity-40 cursor-not-allowed'" class="px-4 py-2 rounded-xl bg-white border border-stone-200 text-text-main font-bold text-xs uppercase tracking-wider hover:border-primary hover:text-primary transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">description</span>
+                        Download SVG
+                    </button>
+                    <button @click="downloadPng()" :disabled="!hasDiagram" :class="hasDiagram ? 'opacity-100' : 'opacity-40 cursor-not-allowed'" class="px-4 py-2 rounded-xl bg-text-main text-white font-bold text-xs uppercase tracking-wider hover:bg-primary transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        Download PNG
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {# Cheatsheet #}
+        <aside class="xl:col-span-4 flex flex-col gap-6">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 shadow-xl shadow-primary/10" x-data="{ open: {} }">
+                <div class="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-text-main">
+                    <span class="material-symbols-outlined text-primary">menu_book</span>
+                    Mermaid Cheatsheet
+                </div>
+
+                <div class="space-y-2 text-xs">
+
+                    {# Flowchart #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.flowchart = !open.flowchart">
+                            <span class="font-bold text-text-main text-xs">Flowchart</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('flowchart')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'flowchart' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'flowchart' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.flowchart ? 'rotate-180' : ''" @click="open.flowchart = !open.flowchart">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.flowchart" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">flowchart TD
+A[Start] --> B{Decision}
+B -->|Yes| C[OK]
+B -->|No| D[Retry]
+C --> E([End])
+D --> A</pre>
+                        </div>
+                    </div>
+
+                    {# Sequence #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.sequence = !open.sequence">
+                            <span class="font-bold text-text-main text-xs">Sequence Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('sequence')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'sequence' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'sequence' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.sequence ? 'rotate-180' : ''" @click="open.sequence = !open.sequence">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.sequence" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">sequenceDiagram
+  actor User
+  participant App
+  participant API
+  participant DB
+  User->>App: Submit form
+  App->>API: POST /data
+  API->>DB: INSERT row
+  DB-->>API: OK
+  API-->>App: 201 Created
+  App-->>User: Success message
+  Note over API,DB: Runs in transaction</pre>
+                        </div>
+                    </div>
+
+                    {# Class Diagram #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.classDiagram = !open.classDiagram">
+                            <span class="font-bold text-text-main text-xs">Class Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('class')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'class' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'class' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.classDiagram ? 'rotate-180' : ''" @click="open.classDiagram = !open.classDiagram">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.classDiagram" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">classDiagram
+  class Animal {
+    +String name
+    +int age
+    +eat() void
+    +sleep() void
+  }
+  class Flyable {
+    &lt;&lt;interface&gt;&gt;
+    +fly() void
+  }
+  class Dog {
+    +String breed
+    +bark() void
+  }
+  class Bird {
+    +String species
+    +fly() void
+  }
+  Animal <|-- Dog : extends
+  Animal <|-- Bird : extends
+  Flyable <|.. Bird : implements
+  Dog "1" --> "*" Owner : belongsTo</pre>
+                        </div>
+                    </div>
+
+                    {# State Diagram #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.state = !open.state">
+                            <span class="font-bold text-text-main text-xs">State Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('state')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'state' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'state' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.state ? 'rotate-180' : ''" @click="open.state = !open.state">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.state" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">stateDiagram-v2
+  [*] --> Idle
+  Idle --> Loading : fetch()
+  Loading --> Success : 200 OK
+  Loading --> Error : timeout/4xx
+  Error --> Idle : retry()
+  Success --> Idle : reset()
+  Success --> [*] : done</pre>
+                        </div>
+                    </div>
+
+                    {# Git Graph #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.gitgraph = !open.gitgraph">
+                            <span class="font-bold text-text-main text-xs">Git Graph</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('gitgraph')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'gitgraph' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'gitgraph' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.gitgraph ? 'rotate-180' : ''" @click="open.gitgraph = !open.gitgraph">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.gitgraph" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">gitGraph
+  commit id: "init"
+  branch develop
+  checkout develop
+  branch feature/login
+  checkout feature/login
+  commit id: "add login"
+  checkout develop
+  merge feature/login
+  branch release/1.0
+  checkout release/1.0
+  commit id: "bump v1.0"
+  checkout main
+  merge release/1.0 tag: "v1.0.0"
+  checkout develop
+  merge release/1.0
+  checkout main
+  branch hotfix/crash
+  checkout hotfix/crash
+  commit id: "fix crash"
+  checkout main
+  merge hotfix/crash tag: "v1.0.1"
+  checkout develop
+  merge hotfix/crash</pre>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bg-primary/5 rounded-3xl p-6 border border-primary/10 text-xs text-text-muted leading-relaxed">
+                <p class="font-bold text-text-main uppercase tracking-widest mb-2">Tip</p>
+                <p>Press Render after changing code. You can drag the diagram area to move it, use mouse wheel to zoom, or use the zoom buttons for precise control.</p>
+            </div>
+        </aside>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function mermaidTool() {
+        return {
+            diagramCode: `flowchart TD
+    A[Idea] --> B{Pick Pattern}
+    B -->|Simple| C[Flowchart]
+    B -->|Timeline| D[Sequence Diagram]
+    C --> E[Export Image]
+    D --> E[Export Image]`,
+            error: null,
+            hasDiagram: false,
+            panZoom: null,
+            rawSvg: '',
+            usedCheat: '',
+
+            cheatsheetCode: {
+                flowchart: `flowchart TD
+A[Start] --> B{Decision}
+B -->|Yes| C[OK]
+B -->|No| D[Retry]
+C --> E([End])
+D --> A`,
+                sequence: `sequenceDiagram
+  actor User
+  participant App
+  participant API
+  participant DB
+  User->>App: Submit form
+  App->>API: POST /data
+  API->>DB: INSERT row
+  DB-->>API: OK
+  API-->>App: 201 Created
+  App-->>User: Success message
+  Note over API,DB: Runs in transaction`,
+                class: `classDiagram
+  class Animal {
+    +String name
+    +int age
+    +eat() void
+    +sleep() void
+  }
+  class Flyable {
+    <<interface>>
+    +fly() void
+  }
+  class Dog {
+    +String breed
+    +bark() void
+  }
+  class Bird {
+    +String species
+    +fly() void
+  }
+  Animal <|-- Dog : extends
+  Animal <|-- Bird : extends
+  Flyable <|.. Bird : implements
+  Dog "1" --> "*" Owner : belongsTo`,
+                state: `stateDiagram-v2
+  [*] --> Idle
+  Idle --> Loading : fetch()
+  Loading --> Success : 200 OK
+  Loading --> Error : timeout/4xx
+  Error --> Idle : retry()
+  Success --> Idle : reset()
+  Success --> [*] : done`,
+                gitgraph: `gitGraph
+  commit id: "init"
+  branch develop
+  checkout develop
+  branch feature/login
+  checkout feature/login
+  commit id: "add login"
+  checkout develop
+  merge feature/login
+  branch release/1.0
+  checkout release/1.0
+  commit id: "bump v1.0"
+  checkout main
+  merge release/1.0 tag: "v1.0.0"
+  checkout develop
+  merge release/1.0
+  checkout main
+  branch hotfix/crash
+  checkout hotfix/crash
+  commit id: "fix crash"
+  checkout main
+  merge hotfix/crash tag: "v1.0.1"
+  checkout develop
+  merge hotfix/crash`
+            },
+
+            init() {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    securityLevel: 'loose',
+                    theme: 'default'
+                });
+
+                this.$nextTick(() => {
+                    this.renderDiagram();
+                });
+            },
+
+            clearCode() {
+                this.diagramCode = '';
+                this.error = null;
+                this.hasDiagram = false;
+                this.rawSvg = '';
+                if (this.panZoom) {
+                    this.panZoom.destroy();
+                    this.panZoom = null;
+                }
+                this.$refs.diagramViewport.innerHTML = '';
+            },
+
+            resetSample() {
+                this.diagramCode = `flowchart TD
+    A[Idea] --> B{Pick Pattern}
+    B -->|Simple| C[Flowchart]
+    B -->|Timeline| D[Sequence Diagram]
+    C --> E[Export Image]
+    D --> E[Export Image]`;
+                this.renderDiagram();
+            },
+
+            async renderDiagram() {
+                this.error = null;
+
+                if (!this.diagramCode.trim()) {
+                    this.clearCode();
+                    return;
+                }
+
+                try {
+                    const diagramId = `mermaid-${Date.now()}`;
+                    const rendered = await mermaid.render(diagramId, this.diagramCode);
+
+                    if (this.panZoom) {
+                        this.panZoom.destroy();
+                        this.panZoom = null;
+                    }
+
+                    this.rawSvg = rendered.svg;
+                    this.$refs.diagramViewport.innerHTML = rendered.svg;
+                    this.hasDiagram = true;
+
+                    this.$nextTick(() => {
+                        this.initPanZoom();
+                    });
+                } catch (e) {
+                    this.hasDiagram = false;
+                    this.error = e && e.message ? e.message : 'Failed to render diagram.';
+                    this.$refs.diagramViewport.innerHTML = '';
+                }
+            },
+
+            initPanZoom() {
+                const svg = this.$refs.diagramViewport.querySelector('svg');
+                if (!svg) return;
+
+                this.normalizeSvgBounds(svg);
+                svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                svg.style.width = '100%';
+                svg.style.height = '100%';
+                svg.style.display = 'block';
+                svg.style.maxWidth = 'none';
+                svg.style.overflow = 'visible';
+
+                this.panZoom = svgPanZoom(svg, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.3,
+                    maxZoom: 8,
+                    mouseWheelZoomEnabled: true,
+                    dblClickZoomEnabled: true,
+                    panEnabled: true
+                });
+
+                this.panZoom.resize();
+                this.panZoom.updateBBox();
+                this.panZoom.fit();
+                this.panZoom.center();
+
+                // Re-fit when user drags the canvas container to a new height.
+                if (this._canvasObserver) this._canvasObserver.disconnect();
+                this._canvasObserver = new ResizeObserver(() => {
+                    if (this.panZoom) {
+                        this.panZoom.resize();
+                        this.panZoom.fit();
+                        this.panZoom.center();
+                    }
+                });
+                this._canvasObserver.observe(this.$refs.diagramViewport.parentElement);
+            },
+
+            normalizeSvgBounds(svg) {
+                // Mermaid can place labels/strokes near edges; pad the viewBox to avoid clipping while zooming.
+                const viewportNode = svg.querySelector('.svg-pan-zoom_viewport') || svg.querySelector('g');
+                if (!viewportNode || typeof viewportNode.getBBox !== 'function') return;
+
+                try {
+                    const bbox = viewportNode.getBBox();
+                    if (!bbox || bbox.width <= 0 || bbox.height <= 0) return;
+
+                    const padding = 24;
+                    const minX = bbox.x - padding;
+                    const minY = bbox.y - padding;
+                    const width = bbox.width + (padding * 2);
+                    const height = bbox.height + (padding * 2);
+
+                    svg.setAttribute('viewBox', `${minX} ${minY} ${width} ${height}`);
+                    svg.setAttribute('width', String(width));
+                    svg.setAttribute('height', String(height));
+                } catch (_) {
+                    // Ignore bbox errors for unsupported diagram nodes.
+                }
+            },
+
+            zoomIn() {
+                if (!this.panZoom) return;
+                this.panZoom.zoomIn();
+            },
+
+            zoomOut() {
+                if (!this.panZoom) return;
+                this.panZoom.zoomOut();
+            },
+
+            resetView() {
+                if (!this.panZoom) return;
+                this.panZoom.resetZoom();
+                this.panZoom.fit();
+                this.panZoom.center();
+            },
+
+            downloadSvg() {
+                if (!this.rawSvg) return;
+
+                const blob = new Blob([this.rawSvg], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'mermaid-diagram.svg';
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 300);
+            },
+
+            downloadPng() {
+                if (!this.rawSvg) return;
+
+                // Parse viewBox from the clean raw SVG to get true diagram dimensions.
+                const parser = new DOMParser();
+                const svgDoc = parser.parseFromString(this.rawSvg, 'image/svg+xml');
+                const exportSvg = svgDoc.querySelector('svg');
+                const viewBox = exportSvg && exportSvg.viewBox && exportSvg.viewBox.baseVal ? exportSvg.viewBox.baseVal : null;
+                const width = Math.max(1, Math.round(viewBox && viewBox.width > 0 ? viewBox.width : 1200));
+                const height = Math.max(1, Math.round(viewBox && viewBox.height > 0 ? viewBox.height : 800));
+                const scale = 2;
+
+                // Use a data URI instead of a Blob URL to avoid tainted-canvas SecurityError.
+                const dataUri = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(this.rawSvg)));
+
+                const image = new Image();
+                image.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width * scale;
+                    canvas.height = height * scale;
+
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) return;
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.scale(scale, scale);
+                    ctx.drawImage(image, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) return;
+                        const pngUrl = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = pngUrl;
+                        link.download = 'mermaid-diagram.png';
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(pngUrl); }, 300);
+                    }, 'image/png');
+                };
+
+                image.onerror = () => {
+                    this.error = 'Failed to export PNG. Try downloading SVG instead.';
+                };
+
+                image.src = dataUri;
+            },
+
+            useCheat(key) {
+                const content = this.cheatsheetCode[key];
+                if (!content) return;
+
+                this.diagramCode = content;
+                this.renderDiagram();
+                this.usedCheat = key;
+                setTimeout(() => {
+                    if (this.usedCheat === key) this.usedCheat = '';
+                }, 1500);
+            },
+
+            // getExportSvgSource removed — export now uses this.rawSvg directly.
+        }
+    }
+</script>
