@@ -182,9 +182,9 @@ permalink: /tools/salary/
                 </button>
             </div>
 
-            <div class="mt-4 bg-stone-50 border border-stone-200 text-text-main p-6 md:p-8 rounded-[2rem] shadow-lg relative overflow-hidden">
+            <div class="mt-4 bg-stone-50 border border-stone-200 text-text-main p-6 md:p-8 rounded-[2rem] shadow-lg relative overflow-hidden w-full max-w-4xl mx-auto">
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-blue-500"></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
+                <div class="flex flex-col gap-10 md:gap-12 relative z-10">
                     
                     <!-- Left: Payslip -->
                     <div>
@@ -232,6 +232,14 @@ permalink: /tools/salary/
 
                             <!-- Take Home -->
                             <div class="mt-5 bg-primary/5 border border-primary/20 rounded-2xl p-5">
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-3 pb-3 border-b border-primary/20">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-primary pr-2">PTKP Status (<span x-text="getPTKPCode()"></span>)</span>
+                                    <span class="font-semibold text-right tabular-nums text-primary" x-text="format(m.ptkpValue)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-4 pb-3 border-b border-primary/20">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-primary">TER Tax Category <span x-text="m.terCategory"></span></span>
+                                    <span class="font-bold text-white bg-primary px-2 py-0.5 rounded text-xs" x-text="m.terRate + '% rate'"></span>
+                                </div>
                                 <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4">
                                     <span class="text-xs font-bold uppercase tracking-widest text-primary">Take-Home Pay</span>
                                     <span class="text-xl font-bold text-primary" x-text="format(m.takeHome)"></span>
@@ -243,63 +251,88 @@ permalink: /tools/salary/
                     <!-- Right: Annual Summary -->
                     <div>
                         <div class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">calendar_month</span>
-                            Annual Summary & Stats
+                            <span class="material-symbols-outlined text-sm">inventory</span>
+                            Dec. Annual Reconciliation
                         </div>
                         
                         <div class="font-mono text-[14px]">
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5">
-                                <span class="text-stone-500 pr-2">Annual Gross</span><span class="font-semibold text-right tabular-nums whitespace-nowrap text-stone-900" x-text="format(m.annualGross)"></span>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                <span class="text-stone-500 pr-2">Gross Setup (Inc. Tunjangan)</span>
+                                <span class="font-semibold text-right tabular-nums text-stone-900" x-text="format(m.annualGrossIncome)"></span>
                             </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5">
-                                <span class="text-stone-500 pr-2">Total Deductions</span><span class="font-semibold text-right tabular-nums whitespace-nowrap text-stone-900" x-text="format(m.annualContributions)"></span>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                <span class="text-stone-500 pr-2">Biaya Jabatan (5% max)</span>
+                                <span class="font-semibold text-right text-red-500 tabular-nums whitespace-nowrap" x-text="'-' + format(m.annualBiayaJabatan)"></span>
                             </div>
-                            
-                            <div class="mt-4 bg-white rounded-xl p-4 border border-stone-200">
-                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">Tax-Free Income (PTKP)</div>
-                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mt-2 mb-3 pb-3 border-b border-stone-100">
-                                    <span class="text-stone-700">Status <span x-text="getPTKPCode()"></span></span>
-                                    <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.ptkpValue)"></span>
-                                </div>
-                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">TER Tax Bracket (PMK 168/2023)</div>
-                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mt-2">
-                                    <span class="text-stone-700">Category <span x-text="m.terCategory"></span></span>
-                                    <span class="font-bold text-primary bg-primary/10 px-2 py-0.5 rounded" x-text="m.terRate + '% rate'"></span>
-                                </div>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                <span class="text-stone-500 pr-2">Tunjangan Pensiun/JHT</span><span class="font-semibold text-right text-red-500 tabular-nums whitespace-nowrap" x-text="'-' + format(m.annualContributions)"></span>
+                            </div>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                <span class="text-stone-500 pr-2">Tax-Free Income (PTKP)</span>
+                                <span class="font-semibold text-right tabular-nums text-stone-900" x-text="'-' + format(m.ptkpValue)"></span>
                             </div>
 
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-3 mt-4 border-t border-stone-200">
-                                <span class="text-xs font-bold uppercase tracking-widest text-text-muted pr-2">Est. Annual Tax</span>
-                                <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.annualTax)"></span>
+                            <div class="mt-4 bg-white rounded-xl p-4 border border-stone-200">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-3">Tarif Pasal 17 Progressif</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-2 pb-2 border-b border-stone-100">
+                                    <span class="text-stone-600 font-semibold text-xs">A. Total 1-Year True Tax</span>
+                                    <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.exactAnnualTax)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-3 pb-3 border-b border-stone-100">
+                                    <span class="text-stone-500 text-xs">B. Withheld Jan-Nov (TER)</span>
+                                    <span class="font-semibold text-stone-700 tabular-nums whitespace-nowrap" x-text="'-' + format(m.taxPaidJanNov)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4">
+                                    <span class="font-bold text-stone-900 text-sm">Dec Final Tax (A - B)</span>
+                                    <span class="font-bold tabular-nums whitespace-nowrap px-2 py-1 rounded" :class="m.decemberTax < 0 ? 'text-green-600 bg-green-50' : 'text-red-500 bg-red-50'" x-text="format(m.decemberTax)"></span>
+                                </div>
                             </div>
                         </div>
-                        <p class="mt-4 text-[11px] leading-5 text-stone-500">Tax uses TER method (flat monthly rate). December may differ slightly due to annual reconciliation.</p>
+                        <p class="mt-4 text-[10px] leading-5 text-stone-500">TER monthly deductions are an estimate. Exact liability calculated at year end using standard Pasal 17 rates. December tax reconciles any difference.</p>
                     </div>
                 </div>
 
-                <div class="mt-8 pt-6 border-t border-stone-200 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex gap-3">
-                        <div class="flex-shrink-0 w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-blue-600 text-lg">gavel</span>
+                <div class="mt-8 pt-8 border-t border-stone-200">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-stone-800 mb-5 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">policy</span>
+                        Regulations & Rules
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><span class="material-symbols-outlined text-sm">receipt_long</span></div>
+                                <h4 class="font-bold text-stone-800 text-sm">TER Tax Method (PMK 168/2023)</h4>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-relaxed">Berlaku Jan 2024. PPh 21 bulanan dihitung: <strong>Penghasilan Bruto × Tarif Kategori (A/B/C)</strong>. Desember menggunakan tarif progresif tahunan (Pasal 17).</p>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-text-main mb-1">Legal Reference</h3>
-                            <p class="text-sm text-text-muted leading-relaxed">PPh 21 menggunakan metode TER (Tarif Efektif Rata-rata) per PMK 168/2023, berlaku sejak Januari 2024. Tarif ditentukan dari penghasilan bruto bulanan dan status PTKP (Kategori A/B/C).</p>
-                            <p class="text-xs text-text-muted mt-1">Default employee rates: BPJS 1%, JHT 2%, JP 1%. Default employer rates: BPJS 4%, JHT 3.7%, JP 2%, JKK 0.24% (Kel. I), JKM 0.30%.</p>
-                            <p class="text-xs text-text-muted mt-1">Wage caps: BPJS Kesehatan Rp 12.000.000 (Perpres 64/2020); JP batas atas Rp 10.547.400 (2026, Permenaker). JHT has no cap.</p>
-                            <!-- Maintenance note: keep this date static and update it manually only after re-checking the latest PPh21/PTKP/BPJS regulations. Also update JP batas atas cap if Permenaker changes. -->
-                            <p class="text-xs text-text-muted mt-1">Last checked: 20 Apr 2026.</p>
+                        
+                        <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-6 h-6 rounded-full bg-amber-50 flex items-center justify-center text-amber-600"><span class="material-symbols-outlined text-sm">group</span></div>
+                                <h4 class="font-bold text-stone-800 text-sm">PTKP (PMK 101/2016)</h4>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-relaxed">Batas penghasilan bebas pajak. <strong>TK/0:</strong> Rp54 juta/thn. Tanggungan/Kawin masing-masing menambah Rp4,5 juta/thn (maks 3 tanggungan).</p>
+                        </div>
+
+                        <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><span class="material-symbols-outlined text-sm">health_and_safety</span></div>
+                                <h4 class="font-bold text-stone-800 text-sm">BPJS Kesehatan (Perpres 64/2020)</h4>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-relaxed">Total 5% (1% Karyawan, 4% Perusahaan). Memiliki batas atas dasar perhitungan (wage cap) <strong>Rp 12.000.000</strong> per bulan.</p>
+                        </div>
+
+                        <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600"><span class="material-symbols-outlined text-sm">savings</span></div>
+                                <h4 class="font-bold text-stone-800 text-sm">BPJS TK (JHT & JP)</h4>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-relaxed"><strong>JHT (PP 46/2015):</strong> 2% Karyawan, 3.7% Perusahaan (tanpa cap).<br><strong>JP (PP 45/2015):</strong> 1% Karyawan, 2% Perusahaan. Wage cap JP 2026: <strong>Rp 10.547.400</strong>.</p>
                         </div>
                     </div>
-                    <div class="flex gap-3">
-                        <div class="flex-shrink-0 w-9 h-9 rounded-full bg-amber-50 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-amber-600 text-lg">info</span>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-text-main mb-1">PTKP Rule</h3>
-                            <p class="text-sm text-text-muted leading-relaxed">PTKP mengacu PMK No. 101/PMK.010/2016: TK/0 Rp54.000.000, tambahan kawin Rp4.500.000, tanggungan maksimal 3 orang x Rp4.500.000.</p>
-                        </div>
-                    </div>
+                    
+                    <p class="text-[10px] text-stone-400 mt-5 text-center">Data and wage caps verified: 20 Apr 2026.</p>
                 </div>
 
             </div>
@@ -638,9 +671,47 @@ permalink: /tools/salary/
                 // PMK 168/2023: monthly PPh21 = taxable gross × TER rate.
                 const ter = this.lookupTER(taxableGross);
                 const monthlyTax = taxableGross * ter.rate / 100;
-                const annualTax = monthlyTax * 12;
                 // Take-home: basic gross minus employee deductions and tax (employer items net to zero)
                 const takeHome = monthlyGrossTotal - bpjsMonthly - jhtMonthly - pensionMonthly - monthlyTax;
+
+                // Exact Annual Calculation (Pasal 17) for December Reconciliation
+                const annualGrossIncome = taxableGross * 12;
+                // Biaya Jabatan max 500,000 / month = 6,000,000 / year
+                const annualBiayaJabatan = Math.min(annualGrossIncome * 0.05, 6000000);
+                const netAnnualIncome = annualGrossIncome - annualBiayaJabatan - annualJHT - annualPension;
+                // Round PKP down to nearest 1000
+                const pkp = Math.max(0, Math.floor((netAnnualIncome - ptkpValue) / 1000) * 1000);
+                
+                let exactAnnualTax = 0;
+                let remainingPkp = pkp;
+                
+                if (remainingPkp > 0) {
+                    const tier1 = Math.min(remainingPkp, 60000000);
+                    exactAnnualTax += tier1 * 0.05;
+                    remainingPkp -= tier1;
+                }
+                if (remainingPkp > 0) {
+                    const tier2 = Math.min(remainingPkp, 190000000); // 250m - 60m
+                    exactAnnualTax += tier2 * 0.15;
+                    remainingPkp -= tier2;
+                }
+                if (remainingPkp > 0) {
+                    const tier3 = Math.min(remainingPkp, 250000000); // 500m - 250m
+                    exactAnnualTax += tier3 * 0.25;
+                    remainingPkp -= tier3;
+                }
+                if (remainingPkp > 0) {
+                    const tier4 = Math.min(remainingPkp, 4500000000); // 5b - 500m
+                    exactAnnualTax += tier4 * 0.30;
+                    remainingPkp -= tier4;
+                }
+                if (remainingPkp > 0) {
+                    exactAnnualTax += remainingPkp * 0.35;
+                }
+
+                const taxPaidJanNov = monthlyTax * 11;
+                // Dec tax can be higher or negative (refund)
+                const decemberTax = exactAnnualTax - taxPaidJanNov;
 
                 this.m = {
                     monthlyGross: monthlyGrossTotal,
@@ -651,9 +722,12 @@ permalink: /tools/salary/
                     monthlyPension: pensionMonthly,
                     monthlyTax: monthlyTax,
                     takeHome: takeHome,
-                    annualGross: annualGross,
-                    annualContributions: annualBPJS + annualJHT + annualPension,
-                    annualTax: annualTax,
+                    annualGrossIncome: annualGrossIncome,
+                    annualBiayaJabatan: annualBiayaJabatan,
+                    annualContributions: annualJHT + annualPension,
+                    exactAnnualTax: exactAnnualTax,
+                    taxPaidJanNov: taxPaidJanNov,
+                    decemberTax: decemberTax,
                     terCategory: ter.category,
                     terRate: ter.rate,
                     monthlyBPJSEmployer: bpjsEmployerMonthly,
