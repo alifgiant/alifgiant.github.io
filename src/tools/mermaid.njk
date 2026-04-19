@@ -5,7 +5,7 @@ description: Generate Mermaid diagrams from code with zoom, pan, cheatsheet, and
 permalink: /tools/mermaid/
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
 
 <div class="w-full max-w-7xl flex flex-col gap-12" x-data="mermaidTool()">
@@ -115,7 +115,11 @@ permalink: /tools/mermaid/
                     Mermaid Cheatsheet
                 </div>
 
-                <div class="space-y-2 text-xs">
+                <div class="space-y-4 text-xs">
+
+                    <div class="px-1">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Common Diagrams</p>
+                    </div>
 
                     {# Flowchart #}
                     <div class="rounded-2xl border border-stone-100 overflow-hidden">
@@ -139,31 +143,152 @@ D --> A</pre>
                         </div>
                     </div>
 
-                    {# Sequence #}
+                    {# Line/Bar Chart #}
                     <div class="rounded-2xl border border-stone-100 overflow-hidden">
-                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.sequence = !open.sequence">
-                            <span class="font-bold text-text-main text-xs">Sequence Diagram</span>
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.comboChart = !open.comboChart">
+                            <span class="font-bold text-text-main text-xs">Line/Bar Chart</span>
                             <div class="flex items-center gap-2" @click.stop>
-                                <button @click="useCheat('sequence')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'sequence' ? 'check' : 'arrow_upward'"></span>
-                                    <span x-text="usedCheat === 'sequence' ? 'Applied' : 'Use'"></span>
+                                <button @click="useCheat('comboChart')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'comboChart' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'comboChart' ? 'Applied' : 'Use'"></span>
                                 </button>
-                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.sequence ? 'rotate-180' : ''" @click="open.sequence = !open.sequence">expand_more</span>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.comboChart ? 'rotate-180' : ''" @click="open.comboChart = !open.comboChart">expand_more</span>
                             </div>
                         </div>
-                        <div x-show="open.sequence" style="display:none">
-                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">sequenceDiagram
-  actor User
-  participant App
-  participant API
-  participant DB
-  User->>App: Submit form
-  App->>API: POST /data
-  API->>DB: INSERT row
-  DB-->>API: OK
-  API-->>App: 201 Created
-  App-->>User: Success message
-  Note over API,DB: Runs in transaction</pre>
+                        <div x-show="open.comboChart" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">xychart-beta
+  title "Traffic vs Conversion"
+  x-axis [Jan, Feb, Mar, Apr, May, Jun]
+  y-axis "Volume" 0 --> 220
+  bar [120, 140, 165, 172, 185, 210]
+  line [18, 21, 26, 29, 33, 38]</pre>
+                        </div>
+                    </div>
+
+                    {# Mindmap #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.mindmap = !open.mindmap">
+                            <span class="font-bold text-text-main text-xs">Mindmap</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('mindmap')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'mindmap' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'mindmap' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.mindmap ? 'rotate-180' : ''" @click="open.mindmap = !open.mindmap">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.mindmap" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">mindmap
+    root((Product Platform))
+    User Experience
+        Web
+        Mobile
+        Accessibility
+    Engineering
+        Frontend
+        Backend
+        Platform
+    Growth
+        SEO
+        Partnerships
+        Community
+    Observability
+        Logs
+        Metrics
+        Traces</pre>
+                        </div>
+                    </div>
+
+                    {# Pie Chart #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.pie = !open.pie">
+                            <span class="font-bold text-text-main text-xs">Pie Chart</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('pie')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'pie' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'pie' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.pie ? 'rotate-180' : ''" @click="open.pie = !open.pie">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.pie" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">pie title Engineering Time Allocation
+    "Feature Delivery" : 45
+    "Bug Fixing" : 20
+    "Tech Debt" : 15
+    "Code Review" : 10
+    "Meetings" : 10</pre>
+                        </div>
+                    </div>
+
+                    <div class="px-1 pt-1">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Engineer Diagrams</p>
+                    </div>
+
+                    {# Architecture #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.architectureSimple = !open.architectureSimple">
+                            <span class="font-bold text-text-main text-xs">Architecture</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('architectureSimple')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'architectureSimple' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'architectureSimple' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.architectureSimple ? 'rotate-180' : ''" @click="open.architectureSimple = !open.architectureSimple">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.architectureSimple" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">architecture-beta
+  group devops(cloud)[GitHub]
+  service repo(server)[Repository] in devops
+  service cicd(server)[Actions CICD] in devops
+
+  group cloudflare(cloud)[Cloudflare Stack]
+  service proxy(cloud)[Proxy DNS] in cloudflare
+  service worker(server)[Workers] in cloudflare
+  service d1(database)[D1 Database] in cloudflare
+  service r2(disk)[R2 Storage] in cloudflare
+  service kv(disk)[KV] in cloudflare
+  service logs(disk)[Logs Analytics] in cloudflare
+
+  service client(internet)[Client]
+
+  client:R --> L:proxy
+  repo:R --> L:cicd
+  cicd:B --> T:worker
+  proxy:R --> L:worker
+  worker:R --> L:d1
+  worker:R --> L:r2
+  worker:R --> L:kv
+  worker:B --> T:logs</pre>
+                        </div>
+                    </div>
+
+                    {# Block Diagram #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.flutterBlock = !open.flutterBlock">
+                            <span class="font-bold text-text-main text-xs">Block Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('flutterBlock')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'flutterBlock' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'flutterBlock' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.flutterBlock ? 'rotate-180' : ''" @click="open.flutterBlock = !open.flutterBlock">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.flutterBlock" style="display:none">
+                                                                                                                <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">block
+    columns 3
+    a:3
+    block:group1:2
+        columns 2
+        h i
+        j k
+    end
+    g
+    block:group2:3
+        l m n o p q r
+    end</pre>
                         </div>
                     </div>
 
@@ -206,27 +331,77 @@ D --> A</pre>
                         </div>
                     </div>
 
-                    {# State Diagram #}
+                    {# DB Diagram #}
                     <div class="rounded-2xl border border-stone-100 overflow-hidden">
-                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.state = !open.state">
-                            <span class="font-bold text-text-main text-xs">State Diagram</span>
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.dbDiagram = !open.dbDiagram">
+                            <span class="font-bold text-text-main text-xs">DB Diagram (ER)</span>
                             <div class="flex items-center gap-2" @click.stop>
-                                <button @click="useCheat('state')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'state' ? 'check' : 'arrow_upward'"></span>
-                                    <span x-text="usedCheat === 'state' ? 'Applied' : 'Use'"></span>
+                                <button @click="useCheat('dbDiagram')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'dbDiagram' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'dbDiagram' ? 'Applied' : 'Use'"></span>
                                 </button>
-                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.state ? 'rotate-180' : ''" @click="open.state = !open.state">expand_more</span>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.dbDiagram ? 'rotate-180' : ''" @click="open.dbDiagram = !open.dbDiagram">expand_more</span>
                             </div>
                         </div>
-                        <div x-show="open.state" style="display:none">
-                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">stateDiagram-v2
-  [*] --> Idle
-  Idle --> Loading : fetch()
-  Loading --> Success : 200 OK
-  Loading --> Error : timeout/4xx
-  Error --> Idle : retry()
-  Success --> Idle : reset()
-  Success --> [*] : done</pre>
+                        <div x-show="open.dbDiagram" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">erDiagram
+    USERS ||--o{ SESSIONS : has
+    USERS ||--o{ ORDERS : places
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    PRODUCTS ||--o{ ORDER_ITEMS : referenced_by
+    ORDERS }o--|| ADDRESSES : ships_to
+    USERS ||--o{ ADDRESSES : owns
+
+    USERS {
+        uuid id PK
+        string email
+        string full_name
+        datetime created_at
+    }
+
+    ORDERS {
+        uuid id PK
+        uuid user_id FK
+        string status
+        decimal total_amount
+        datetime created_at
+    }
+
+    PRODUCTS {
+        uuid id PK
+        string name
+        decimal price
+        int stock
+    }</pre>
+                        </div>
+                    </div>
+
+                    {# Folder Structure #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.treeview = !open.treeview">
+                            <span class="font-bold text-text-main text-xs">Folder Structure</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('treeview')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'treeview' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'treeview' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.treeview ? 'rotate-180' : ''" @click="open.treeview = !open.treeview">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.treeview" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">treeView-beta
+    "Company"
+        "Engineering"
+            "Backend Team"
+                "Platform Squad"
+                "Payments Squad"
+            "Frontend Team"
+                "Web App Squad"
+            "Mobile Team"
+        "Product"
+        "Operations"
+            "SRE"
+            "Customer Support"</pre>
                         </div>
                     </div>
 
@@ -270,6 +445,65 @@ D --> A</pre>
                         </div>
                     </div>
 
+                    {# Sequence #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.sequence = !open.sequence">
+                            <span class="font-bold text-text-main text-xs">Sequence Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('sequence')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'sequence' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'sequence' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.sequence ? 'rotate-180' : ''" @click="open.sequence = !open.sequence">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.sequence" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">sequenceDiagram
+  actor User
+  participant App
+  participant API
+  participant Worker
+  User->>App: Place order
+  App->>API: POST /orders
+  loop Retry up to 3x
+    API->>Worker: Publish event
+    Worker-->>API: Ack
+  end
+  alt Payment approved
+    API-->>App: 201 Created
+    App-->>User: Show success
+  else Payment rejected
+    API-->>App: 402 Payment Required
+    App-->>User: Ask for another method
+    end
+    Note over App,API: Loop + alt for robust request handling</pre>
+                        </div>
+                    </div>
+
+                    {# State Diagram #}
+                    <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                        <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open.state = !open.state">
+                            <span class="font-bold text-text-main text-xs">State Diagram</span>
+                            <div class="flex items-center gap-2" @click.stop>
+                                <button @click="useCheat('state')" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs" x-text="usedCheat === 'state' ? 'check' : 'arrow_upward'"></span>
+                                    <span x-text="usedCheat === 'state' ? 'Applied' : 'Use'"></span>
+                                </button>
+                                <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open.state ? 'rotate-180' : ''" @click="open.state = !open.state">expand_more</span>
+                            </div>
+                        </div>
+                        <div x-show="open.state" style="display:none">
+                            <pre class="font-mono text-[11px] text-text-muted overflow-x-auto px-4 py-3 bg-white border-t border-stone-100">stateDiagram-v2
+  [*] --> Idle
+  Idle --> Loading : fetch()
+  Loading --> Success : 200 OK
+  Loading --> Error : timeout/4xx
+  Error --> Idle : retry()
+  Success --> Idle : reset()
+  Success --> [*] : done</pre>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -303,6 +537,7 @@ D --> A</pre>
             panZoom: null,
             rawSvg: '',
             usedCheat: '',
+            storageKey: 'mermaid-diagram-code',
 
             cheatsheetCode: {
                 flowchart: `flowchart TD
@@ -315,14 +550,21 @@ D --> A`,
   actor User
   participant App
   participant API
-  participant DB
-  User->>App: Submit form
-  App->>API: POST /data
-  API->>DB: INSERT row
-  DB-->>API: OK
-  API-->>App: 201 Created
-  App-->>User: Success message
-  Note over API,DB: Runs in transaction`,
+    participant Worker
+    User->>App: Place order
+    App->>API: POST /orders
+    loop Retry up to 3x
+        API->>Worker: Publish event
+        Worker-->>API: Ack
+    end
+    alt Payment approved
+        API-->>App: 201 Created
+        App-->>User: Show success
+    else Payment rejected
+        API-->>App: 402 Payment Required
+        App-->>User: Ask for another method
+    end
+    Note over App,API: Loop + alt for robust request handling`,
                 class: `classDiagram
   class Animal {
     +String name
@@ -377,7 +619,115 @@ D --> A`,
   checkout main
   merge hotfix/crash tag: "v1.0.1"
   checkout develop
-  merge hotfix/crash`
+    merge hotfix/crash`,
+                                pie: `pie title Engineering Time Allocation
+    "Feature Delivery" : 45
+    "Bug Fixing" : 20
+    "Tech Debt" : 15
+    "Code Review" : 10
+    "Meetings" : 10`,
+                                mindmap: `mindmap
+    root((Product Platform))
+        User Experience
+            Web
+            Mobile
+            Accessibility
+        Engineering
+            Frontend
+            Backend
+            Platform
+        Growth
+            SEO
+            Partnerships
+            Community
+        Observability
+            Logs
+            Metrics
+            Traces`,
+                                comboChart: `xychart-beta
+  title "Traffic vs Conversion"
+  x-axis [Jan, Feb, Mar, Apr, May, Jun]
+  y-axis "Volume" 0 --> 220
+  bar [120, 140, 165, 172, 185, 210]
+  line [18, 21, 26, 29, 33, 38]`,
+                                architectureSimple: `architecture-beta
+  group devops(cloud)[GitHub]
+  service repo(server)[Repository] in devops
+  service cicd(server)[Actions CICD] in devops
+
+  group cloudflare(cloud)[Cloudflare Stack]
+  service proxy(cloud)[Proxy DNS] in cloudflare
+  service worker(server)[Workers] in cloudflare
+  service d1(database)[D1 Database] in cloudflare
+  service r2(disk)[R2 Storage] in cloudflare
+  service kv(disk)[KV] in cloudflare
+  service logs(disk)[Logs Analytics] in cloudflare
+
+  service client(internet)[Client]
+
+  client:R --> L:proxy
+  repo:R --> L:cicd
+  cicd:B --> T:worker
+  proxy:R --> L:worker
+  worker:R --> L:d1
+  worker:R --> L:r2
+  worker:R --> L:kv
+    worker:B --> T:logs`,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                flutterBlock: `block
+    columns 3
+    a:3
+    block:group1:2
+        columns 2
+        h i
+        j k
+    end
+    g
+    block:group2:3
+        l m n o p q r
+    end`,
+
+                                                                dbDiagram: `erDiagram
+    USERS ||--o{ SESSIONS : has
+    USERS ||--o{ ORDERS : places
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    PRODUCTS ||--o{ ORDER_ITEMS : referenced_by
+    ORDERS }o--|| ADDRESSES : ships_to
+    USERS ||--o{ ADDRESSES : owns
+
+    USERS {
+        uuid id PK
+        string email
+        string full_name
+        datetime created_at
+    }
+
+    ORDERS {
+        uuid id PK
+        uuid user_id FK
+        string status
+        decimal total_amount
+        datetime created_at
+    }
+
+    PRODUCTS {
+        uuid id PK
+        string name
+        decimal price
+        int stock
+    }`,
+                                treeview: `treeView-beta
+    "Company"
+        "Engineering"
+            "Backend Team"
+                "Platform Squad"
+                "Payments Squad"
+            "Frontend Team"
+                "Web App Squad"
+            "Mobile Team"
+        "Product"
+        "Operations"
+            "SRE"
+            "Customer Support"`
             },
 
             init() {
@@ -387,9 +737,30 @@ D --> A`,
                     theme: 'default'
                 });
 
+                try {
+                    const savedCode = localStorage.getItem(this.storageKey);
+                    if (savedCode !== null) {
+                        this.diagramCode = savedCode;
+                    }
+
+                    this.$watch('diagramCode', () => {
+                        this.saveToStorage();
+                    });
+                } catch (_) {
+                    // Ignore storage errors in restricted contexts.
+                }
+
                 this.$nextTick(() => {
                     this.renderDiagram();
                 });
+            },
+
+            saveToStorage() {
+                try {
+                    localStorage.setItem(this.storageKey, this.diagramCode);
+                } catch (_) {
+                    // Ignore storage errors in restricted contexts.
+                }
             },
 
             clearCode() {
