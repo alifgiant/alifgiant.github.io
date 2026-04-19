@@ -41,150 +41,239 @@ permalink: /tools/salary/
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Gross Salary (IDR)</label>
-                    <input type="text" x-model="inputs.monthlyGross" @input="onCurrencyInput('monthlyGross')" @blur="onCurrencyBlur('monthlyGross')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
-                </div>
+            <div class="space-y-4">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">person</span>
+                    1. Income & Tax Profile
+                </h3>
+                <div class="bg-stone-50 border border-stone-100 p-5 md:p-6 rounded-3xl space-y-6 md:space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-3">
+                            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Basic Gross (IDR)</label>
+                            <input type="text" x-model="inputs.monthlyGross" @input="onCurrencyInput('monthlyGross')" @blur="onCurrencyBlur('monthlyGross')" placeholder="0" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                        </div>
 
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Monthly Allowances (optional)</label>
-                    <input type="text" x-model="inputs.monthlyAllowance" @input="onCurrencyInput('monthlyAllowance')" @blur="onCurrencyBlur('monthlyAllowance')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Marital Status</label>
-                    <div class="flex items-center gap-3">
-                        <div class="inline-flex rounded-full border-2 p-1 bg-stone-50" role="tablist" aria-label="Marital status">
-                            <button :class="status.married ? 'text-text-muted' : 'bg-primary text-white shadow'" @click="status.married=false; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Single</button>
-                            <button :class="status.married ? 'bg-primary text-white shadow' : 'text-text-muted'" @click="status.married=true; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Married</button>
+                        <div class="flex flex-col gap-3">
+                            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Allowances (optional)</label>
+                            <input type="text" x-model="inputs.monthlyAllowance" @input="onCurrencyInput('monthlyAllowance')" @blur="onCurrencyBlur('monthlyAllowance')" placeholder="0" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        <div class="flex flex-col gap-3">
+                            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Marital Status</label>
+                            <div class="flex items-center gap-3">
+                                <div class="inline-flex items-center rounded-2xl border border-stone-200 p-1 bg-white" role="tablist">
+                                    <button :class="status.married ? 'text-text-muted hover:bg-stone-50' : 'bg-stone-900 border-transparent text-white shadow-sm'" @click="status.married=false; recalculate()" class="px-6 py-3 rounded-xl text-sm font-bold transition-all">Single (TK)</button>
+                                    <button :class="status.married ? 'bg-stone-900 border-transparent text-white shadow-sm' : 'text-text-muted hover:bg-stone-50'" @click="status.married=true; recalculate()" class="px-6 py-3 rounded-xl text-sm font-bold transition-all">Married (K)</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 md:items-start items-stretch">
+                            <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Dependents (max 3)</label>
+                            <input type="number" min="0" max="3" x-model.number="status.dependents" @input="recalculate()" class="block w-full md:w-32 px-5 py-3.5 bg-white border border-stone-200 rounded-2xl text-text-main focus:border-primary focus:ring-1 focus:ring-primary transition-all text-center" />
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-row items-center justify-between mt-2">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-blue-500">policy</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-800">TER Tax Category (PMK 168/2023)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-blue-600/70" x-text="getPTKPCode()"></span>
+                            <span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-xl shadow-sm" x-text="'Category ' + getTERCategory()"></span>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 md:col-span-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Number of Dependents (children, max 3)</label>
-                    <input type="number" min="0" max="3" x-model.number="status.dependents" @input="recalculate()" class="w-24 px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span>
+                    2. Employee Deductions (Potongan)
+                </h3>
+                <div class="bg-stone-50 border border-stone-100 p-5 md:p-6 rounded-3xl space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan %</label>
+                            <input type="text" x-model="rateInputs.bpjs" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Perpres 64/2020</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JHT (Hari Tua) %</label>
+                            <input type="text" x-model="rateInputs.jht" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">PP 46/2015</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JP (Pensiun) %</label>
+                            <input type="text" x-model="rateInputs.pension" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">PP 45/2015</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-5 border-t border-stone-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kes Wage Cap (IDR)</label>
+                            <input type="text" x-model="capInputs.bpjs" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Max base for calc (Perpres 64/2020)</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JP/Pension Wage Cap (IDR)</label>
+                            <input type="text" x-model="capInputs.pension" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Max base for calc (updated yearly)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan (employee %)</label>
-                        <input type="text" x-model="rateInputs.bpjs" @input="onRateInput('bpjs')" @blur="onRateBlur('bpjs')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JHT (employee %)</label>
-                        <input type="text" x-model="rateInputs.jht" @input="onRateInput('jht')" @blur="onRateBlur('jht')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Pension (employee %)</label>
-                        <input type="text" x-model="rateInputs.pension" @input="onRateInput('pension')" @blur="onRateBlur('pension')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+            <div class="space-y-4">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">corporate_fare</span>
+                    3. Employer Contributions (Tunjangan)
+                </h3>
+                <div class="bg-stone-50 border border-stone-100 p-5 md:p-6 rounded-3xl space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan %</label>
+                            <input type="text" x-model="rateInputs.bpjsEmployer" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Perpres 64/2020</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JHT (Hari Tua) %</label>
+                            <input type="text" x-model="rateInputs.jhtEmployer" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">PP 46/2015</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JP (Pensiun) %</label>
+                            <input type="text" x-model="rateInputs.pensionEmployer" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">PP 45/2015</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-5 border-t border-stone-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JKK (Kecelakaan) Tier</label>
+                            <div class="relative">
+                                <select x-model="jkkTier" @change="recalculate()" class="block w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl text-text-main appearance-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+                                    <template x-for="tier in jkkTiers" :key="tier.tier">
+                                        <option :value="tier.tier" x-text="tier.label"></option>
+                                    </template>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-400">
+                                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Fixed by company's industry risk</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JKM (Kematian) %</label>
+                            <input type="text" x-model="rateInputs.jkm" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center md:text-left" />
+                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Fixed at 0.30% (PP 44/2015)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan (employer %)</label>
-                    <input type="text" x-model="rateInputs.bpjsEmployer" @input="onRateInput('bpjsEmployer')" @blur="onRateBlur('bpjsEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JHT (employer %)</label>
-                    <input type="text" x-model="rateInputs.jhtEmployer" @input="onRateInput('jhtEmployer')" @blur="onRateBlur('jhtEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JP/Pension (employer %)</label>
-                    <input type="text" x-model="rateInputs.pensionEmployer" @input="onRateInput('pensionEmployer')" @blur="onRateBlur('pensionEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
+            <div class="flex justify-end pt-2">
+                <button @click="reset()" class="px-5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-sm font-bold text-text-muted transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">refresh</span>
+                    Reset Values
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JKK Risk Classification (employer)</label>
-                    <select x-model="jkkTier" @change="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main">
-                        <template x-for="tier in jkkTiers" :key="tier.tier">
-                            <option :value="tier.tier" x-text="tier.label"></option>
-                        </template>
-                    </select>
-                    <p class="text-xs text-text-muted ml-1">PP 44/2015 — rate fixed by company's industry risk group</p>
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JKM / Death Insurance (employer %)</label>
-                    <input type="text" x-model="rateInputs.jkm" @input="onRateInput('jkm')" @blur="onRateBlur('jkm')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                    <p class="text-xs text-text-muted ml-1">PP 44/2015 — fixed at 0.30% for all companies</p>
-                </div>
-            </div>
+            <div class="mt-4 bg-stone-50 border border-stone-200 text-text-main p-6 md:p-8 rounded-[2rem] shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-blue-500"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
+                    
+                    <!-- Left: Payslip -->
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">receipt</span>
+                            Monthly Payslip Simulation
+                        </div>
+                        
+                        <div class="font-mono text-[14px]">
+                            <!-- Basic Income -->
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5">
+                                <span class="text-stone-500">Gross Income (Basic + Allowance)</span><span class="font-semibold text-right text-stone-900" x-text="format(m.monthlyGross)"></span>
+                            </div>
+                            
+                            <!-- The 'Hidden' Additions -->
+                            <div class="mt-3 bg-white rounded-xl p-3 border border-stone-200">
+                                <div class="text-[10px] uppercase tracking-wider text-stone-400 mb-2">Plus: Mandatory Benefit Additions (TER Base)</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-500">
+                                    <span>BPJS Kes (Employer)</span><span class="text-right" x-text="format(m.monthlyBPJSEmployer)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-500">
+                                    <span>JKK & JKM (Employer)</span><span class="text-right" x-text="format(m.jkkJkmEmployerMonthly)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 pt-2 mt-2 border-t border-stone-200 font-bold text-stone-800">
+                                    <span>Taxable TER Base</span><span class="text-right" x-text="format(m.taxableGross)"></span>
+                                </div>
+                            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan wage cap (IDR)</label>
-                    <input type="text" x-model="capInputs.bpjs" @input="onCapInput('bpjs')" @blur="onCapBlur('bpjs')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                    <p class="text-xs text-text-muted ml-1">Perpres 64/2020 — employee contribution capped at the salary limit above</p>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JP/Pension wage cap (IDR)</label>
-                    <input type="text" x-model="capInputs.pension" @input="onCapInput('pension')" @blur="onCapBlur('pension')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                    <p class="text-xs text-text-muted ml-1">PP 45/2015 — batas atas upah, updated yearly by Permenaker</p>
-                </div>
-            </div>
+                            <!-- Deductions -->
+                            <div class="mt-4">
+                                <div class="text-[10px] uppercase tracking-wider text-text-muted mb-2 mt-4 border-b border-stone-200 pb-2">Minus: Employee Deductions</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-600">
+                                    <span>PPh21 Tax</span><span class="text-right text-red-500" x-text="'-' + format(m.monthlyTax)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-600">
+                                    <span>BPJS Kes</span><span class="text-right text-red-500" x-text="'-' + format(m.monthlyBPJS)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-600">
+                                    <span>BPJS JHT</span><span class="text-right text-red-500" x-text="'-' + format(m.monthlyJHT)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-600">
+                                    <span>BPJS JP (Pension)</span><span class="text-right text-red-500" x-text="'-' + format(m.monthlyPension)"></span>
+                                </div>
+                            </div>
 
-            <div class="flex items-center gap-3">
-                <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
-            </div>
-
-            <div class="bg-stone-50 p-5 md:p-6 rounded-2xl border border-stone-100">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white/80 border border-stone-200 rounded-2xl p-5">
-                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Monthly Breakdown</div>
-                        <div class="mt-4 font-mono">
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600">Gross</span><span class="font-semibold text-right" x-text="format(m.monthlyGross)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-500 text-sm">+ Employer contribs (BPJS/JHT/JP/JKK/JKM)</span><span class="font-semibold text-right text-sm" x-text="format(m.taxableGross - m.monthlyGross)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-[13px] leading-5 border-b border-stone-200 mb-1.5">
-                                <span class="text-stone-500 italic">Taxable Gross (TER base)</span><span class="font-semibold text-right italic" x-text="format(m.taxableGross)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600">BPJS Kesehatan</span><span class="font-semibold text-right" x-text="format(m.monthlyBPJS)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600">JHT</span><span class="font-semibold text-right" x-text="format(m.monthlyJHT)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600">Pension</span><span class="font-semibold text-right" x-text="format(m.monthlyPension)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600">PPh21 (monthly)</span><span class="font-semibold text-right" x-text="format(m.monthlyTax)"></span>
-                            </div>
-                            <hr class="my-3 border-stone-200" />
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="font-bold text-text-main">Take-home</span><span class="font-bold text-right text-text-main" x-text="format(m.takeHome)"></span>
+                            <!-- Take Home -->
+                            <div class="mt-5 bg-primary/5 border border-primary/20 rounded-2xl p-5">
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-primary">Take-Home Pay</span>
+                                    <span class="text-xl font-bold text-primary" x-text="format(m.takeHome)"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white/80 border border-stone-200 rounded-2xl p-5">
-                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Annual Summary</div>
-                        <div class="mt-4 font-mono">
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600 pr-2">Annual Gross</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.annualGross)"></span>
+                    <!-- Right: Annual Summary -->
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">calendar_month</span>
+                            Annual Summary & Stats
+                        </div>
+                        
+                        <div class="font-mono text-[14px]">
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5">
+                                <span class="text-stone-500 pr-2">Annual Gross</span><span class="font-semibold text-right tabular-nums whitespace-nowrap text-stone-900" x-text="format(m.annualGross)"></span>
                             </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600 pr-2">Total BPJS/JHT/Pension</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.annualContributions)"></span>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5">
+                                <span class="text-stone-500 pr-2">Total Deductions</span><span class="font-semibold text-right tabular-nums whitespace-nowrap text-stone-900" x-text="format(m.annualContributions)"></span>
                             </div>
-                            <div class="mt-1 rounded-xl bg-stone-50 border border-stone-200 px-3 py-2">
-                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted">TER Category &amp; Rate (PMK 168/2023)</div>
-                                <div class="mt-1 text-xs md:text-sm leading-5 font-semibold text-text-main" x-text="'Category ' + m.terCategory + ' — ' + m.terRate + '%'"></div>
+                            
+                            <div class="mt-4 bg-white rounded-xl p-4 border border-stone-200">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">Tax-Free Income (PTKP)</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mt-2 mb-3 pb-3 border-b border-stone-100">
+                                    <span class="text-stone-700">Status <span x-text="getPTKPCode()"></span></span>
+                                    <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.ptkpValue)"></span>
+                                </div>
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">TER Tax Bracket (PMK 168/2023)</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mt-2">
+                                    <span class="text-stone-700">Category <span x-text="m.terCategory"></span></span>
+                                    <span class="font-bold text-primary bg-primary/10 px-2 py-0.5 rounded" x-text="m.terRate + '% rate'"></span>
+                                </div>
                             </div>
-                            <hr class="my-3 border-stone-200" />
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="font-bold text-text-main pr-2">Est. Annual Tax</span><span class="font-bold text-right text-text-main tabular-nums whitespace-nowrap" x-text="format(m.annualTax)"></span>
+
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-3 mt-4 border-t border-stone-200">
+                                <span class="text-xs font-bold uppercase tracking-widest text-text-muted pr-2">Est. Annual Tax</span>
+                                <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.annualTax)"></span>
                             </div>
                         </div>
-                        <p class="mt-3 text-xs leading-5 text-text-muted">Tax uses TER method (flat monthly rate). December may differ slightly due to annual reconciliation.</p>
+                        <p class="mt-4 text-[11px] leading-5 text-stone-500">Tax uses TER method (flat monthly rate). December may differ slightly due to annual reconciliation.</p>
                     </div>
                 </div>
 
@@ -473,6 +562,7 @@ permalink: /tools/salary/
                 this.inputs.monthlyGross = '0';
                 this.inputs.monthlyAllowance = '0';
                 this.jkkTier = 1;
+                this.status = { married: false, dependents: 0 };
                 this.rates = { bpjs:1.00, jht:2.00, pension:1.00, jkk:0.24, jkm:0.30, bpjsEmployer:4.00, jhtEmployer:3.70, pensionEmployer:2.00 };
                 this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
                 this.rateInputs.jht = this.formatPercent(this.rates.jht);
@@ -487,18 +577,17 @@ permalink: /tools/salary/
                 this.recalculate();
             },
 
-            computePTKP() {
-                const base = 54000000;
-                const spouse = this.status.married ? 4500000 : 0;
-                const dependents = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3) * 4500000;
-                return base + spouse + dependents;
-            },
-
             getTERCategory() {
                 const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
                 if (this.status.married && deps === 3) return 'C';
                 if ((!this.status.married && deps >= 2) || (this.status.married && deps >= 1)) return 'B';
                 return 'A'; // TK/0, TK/1, K/0
+            },
+
+            getPTKPCode() {
+                const prefix = this.status.married ? 'K' : 'TK';
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                return `${prefix}/${deps}`;
             },
 
             lookupTER(gross) {
@@ -543,6 +632,9 @@ permalink: /tools/salary/
                 const annualJHT = jhtMonthly * 12;
                 const annualPension = pensionMonthly * 12;
 
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                const ptkpValue = 54000000 + (this.status.married ? 4500000 : 0) + (deps * 4500000);
+
                 // PMK 168/2023: monthly PPh21 = taxable gross × TER rate.
                 const ter = this.lookupTER(taxableGross);
                 const monthlyTax = taxableGross * ter.rate / 100;
@@ -553,6 +645,7 @@ permalink: /tools/salary/
                 this.m = {
                     monthlyGross: monthlyGrossTotal,
                     taxableGross: taxableGross,
+                    ptkpValue: ptkpValue,
                     monthlyBPJS: bpjsMonthly,
                     monthlyJHT: jhtMonthly,
                     monthlyPension: pensionMonthly,
@@ -562,7 +655,9 @@ permalink: /tools/salary/
                     annualContributions: annualBPJS + annualJHT + annualPension,
                     annualTax: annualTax,
                     terCategory: ter.category,
-                    terRate: ter.rate
+                    terRate: ter.rate,
+                    monthlyBPJSEmployer: bpjsEmployerMonthly,
+                    jkkJkmEmployerMonthly: jkkMonthly + jkmMonthly
                 };
             }
         }
