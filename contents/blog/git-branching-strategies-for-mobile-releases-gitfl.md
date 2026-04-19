@@ -429,11 +429,11 @@ This can still create painful conflicts when the release branch diverged from `m
 
 TBD follows an **upstream-first** rule:
 
+1. Create new release/hotfix branch from current release `release/1.2.0`
 1. Fix on `main`
-1. Create new release/hotfix branch from current release
 1. Cherry-pick into the release/hotfix branch that needs the patch
 
-> 💡 Some teams use `release/1.2.1` for hotfix where it simply increment the patch version on the semantic versioning.
+> 💡 Some teams prefer to name the hotfix branch `release/1.2.1` instead of `hotfix/1.2.1` where it simply increment the patch version on the semantic versioning.
 
 ```mermaid
 %%{init: { 'theme': 'default' } }%%
@@ -449,15 +449,13 @@ gitGraph
     commit id: "feat/y"
     commit id: "fix-1.2.1"
 		checkout release/1.2.0
-    branch hotfix/1.2.1
+    branch release/1.2.1
     commit id: "cherry-pick: fix-1.2.1"
 
 ```
 
 **Why it tends to be easier:** cherry-picking usually moves a small, specific change instead of merging long-lived branches.
----
-
-# 5) The trade-off: TBD relies on strong feature flag discipline
+### The trade-off: TBD relies on strong feature flag discipline
 
 TBD is great for velocity, but it requires mature operational practices especially around flags.
 
@@ -466,6 +464,7 @@ Common pitfalls:
 - Forgetting to wrap a change in a flag
 - Inconsistent flag configuration across environments
 - Low-level changes (like build settings or app manifests) that can’t be gated by a flag
+- Insufficient CI to capture broken logic before merge
 
 ---
 
@@ -477,4 +476,4 @@ No single branching strategy wins in every environment.
 - Release-centric branching can feel safer, but freezes can slow integration and feedback.
 - Trunk-based development is fast and resilient, but it depends on high-quality CI and feature flag infrastructure.
 
-The best strategy is the one that lets your team ship predictably without fear.
+The best strategy is the one that lets your team ship without fear.
