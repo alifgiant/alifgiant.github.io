@@ -477,10 +477,6 @@ total tax = salary * tax"></textarea>
                     { reg: /\bin decimal\b|\bto decimal\b/gi, sub: '' }, // mathjs handles 0x, 0b natively
                     { reg: /\bin hex\b|\bto hex\b/gi, sub: 'in hex' },
                     { reg: /\bin bin\b|\bto bin\b/gi, sub: 'in bin' },
-                    // Scales
-                    { reg: /\bthousand\b|\bk\b/gi, sub: '* 1000' },
-                    { reg: /\bmillion\b|\bM\b/gi, sub: '* 1000000' },
-                    { reg: /\bbillion\b/gi, sub: '* 1000000000' },
                 ];
 
                 lines.forEach((line, index) => {
@@ -562,12 +558,24 @@ total tax = salary * tax"></textarea>
                         evalPart = evalPart.replace(new RegExp(`(\\d)${escaped}(\\d)`, 'g'), '$1.$2');
                     }
 
-                    // 6. Apply Natural Language Replacements
+                    // 6. Apply shorthand and word scales (works with and without spaces): 10k, 10 m, 1.2b, 5 million.
+                    evalPart = evalPart
+                        .replace(/(\d+(?:\.\d+)?)\s*([kKmMbB])\b/g, (_, n, s) => {
+                            const scale = s.toLowerCase() === 'k' ? 1000 : s.toLowerCase() === 'm' ? 1000000 : 1000000000;
+                            return `(${n} * ${scale})`;
+                        })
+                        .replace(/(\d+(?:\.\d+)?)\s*(thousand|million|billion)\b/gi, (_, n, word) => {
+                            const key = word.toLowerCase();
+                            const scale = key === 'thousand' ? 1000 : key === 'million' ? 1000000 : 1000000000;
+                            return `(${n} * ${scale})`;
+                        });
+
+                    // 7. Apply Natural Language Replacements
                     replacements.forEach(r => {
                         evalPart = evalPart.replace(r.reg, r.sub);
                     });
 
-                    // 6. Handle Currencies (Simple Mock)
+                    // 8. Handle Currencies (Simple Mock)
                     Object.keys(currencyMap).forEach(key => {
                         evalPart = evalPart.replace(new RegExp(key, 'gi'), currencyMap[key]);
                     });
