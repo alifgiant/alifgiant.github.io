@@ -151,25 +151,37 @@ permalink: /tools/salary/
                         </div>
                     </div>
                     
-                    <div class="pt-5 border-t border-stone-200 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JKK (Kecelakaan) Tier</label>
-                            <div class="relative">
-                                <select x-model="jkkTier" @change="recalculate()" class="block w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl text-text-main appearance-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
-                                    <template x-for="tier in jkkTiers" :key="tier.tier">
-                                        <option :value="tier.tier" x-text="tier.label"></option>
-                                    </template>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-400">
-                                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                    <div class="pt-5 border-t border-stone-200">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">Company Industry Risk (JKK)</label>
+                                <div class="relative">
+                                    <select x-model="jkkTier" @change="recalculate()" class="block w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl text-text-main appearance-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm">
+                                        <template x-for="tier in jkkTiers" :key="tier.tier">
+                                            <option :value="tier.tier" x-text="tier.name"></option>
+                                        </template>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-400">
+                                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                                    </div>
                                 </div>
                             </div>
-                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Fixed by company's industry risk</p>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JKM (Kematian) %</label>
+                                <input type="text" x-model="rateInputs.jkm" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center md:text-left" />
+                                <p class="text-[10px] text-text-muted ml-1 mt-0.5">Fixed at 0.30% (PP 44/2015)</p>
+                            </div>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">JKM (Kematian) %</label>
-                            <input type="text" x-model="rateInputs.jkm" disabled class="block w-full px-4 py-3 bg-stone-100 border border-stone-200 rounded-2xl text-text-muted cursor-not-allowed text-center md:text-left" />
-                            <p class="text-[10px] text-text-muted ml-1 mt-0.5">Fixed at 0.30% (PP 44/2015)</p>
+
+                        <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-row items-center justify-between mt-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-blue-500">health_and_safety</span>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-800">JKK Tier Rules (PP 44/2015)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold text-blue-600/70" x-text="m.jkkTierData?.label"></span>
+                                <span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-xl shadow-sm" x-text="m.jkkTierData?.rate + '%'"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,7 +218,10 @@ permalink: /tools/salary/
                                     <span>BPJS Kes (Employer)</span><span class="text-right" x-text="format(m.monthlyBPJSEmployer)"></span>
                                 </div>
                                 <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-500">
-                                    <span>JKK & JKM (Employer)</span><span class="text-right" x-text="format(m.jkkJkmEmployerMonthly)"></span>
+                                    <span>BPJS JKK (Employer: <span x-text="m.jkkTierData?.rate + '%'"></span>)</span><span class="text-right" x-text="format(m.jkkMonthly)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-stone-500">
+                                    <span>BPJS JKM (Employer: 0.30%)</span><span class="text-right" x-text="format(m.jkmMonthly)"></span>
                                 </div>
                                 <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 pt-2 mt-2 border-t border-stone-200 font-bold text-stone-800">
                                     <span>Taxable TER Base</span><span class="text-right" x-text="format(m.taxableGross)"></span>
@@ -379,11 +394,11 @@ permalink: /tools/salary/
             // JKK risk classification tiers per PP 44/2015 Lampiran I
             jkkTier: 1,
             jkkTiers: [
-                { tier: 1, label: 'Kelompok I — 0.24% (Perkantoran / Office)', rate: 0.24 },
-                { tier: 2, label: 'Kelompok II — 0.54% (Perdagangan / Trade)', rate: 0.54 },
-                { tier: 3, label: 'Kelompok III — 0.89% (Industri ringan / Light industry)', rate: 0.89 },
-                { tier: 4, label: 'Kelompok IV — 1.27% (Industri sedang / Medium industry)', rate: 1.27 },
-                { tier: 5, label: 'Kelompok V — 1.74% (Industri berat / Heavy industry)', rate: 1.74 }
+                { tier: 1, name: 'Sangat Rendah (Perkantoran / Office)', label: 'Kel. I', rate: 0.24 },
+                { tier: 2, name: 'Rendah (Perdagangan / Trade)', label: 'Kel. II', rate: 0.54 },
+                { tier: 3, name: 'Sedang (Industri Ringan)', label: 'Kel. III', rate: 0.89 },
+                { tier: 4, name: 'Tinggi (Industri Sedang)', label: 'Kel. IV', rate: 1.27 },
+                { tier: 5, name: 'Sangat Tinggi (Industri Berat)', label: 'Kel. V', rate: 1.74 }
             ],
             // Wage caps: contribution base is capped at these amounts regardless of actual salary.
             // BPJS Kesehatan: Perpres 64/2020 Ps.32 — cap fixed at Rp 12,000,000.
@@ -731,7 +746,9 @@ permalink: /tools/salary/
                     terCategory: ter.category,
                     terRate: ter.rate,
                     monthlyBPJSEmployer: bpjsEmployerMonthly,
-                    jkkJkmEmployerMonthly: jkkMonthly + jkmMonthly
+                    jkkMonthly: jkkMonthly,
+                    jkmMonthly: jkmMonthly,
+                    jkkTierData: selectedTier
                 };
             }
         }
