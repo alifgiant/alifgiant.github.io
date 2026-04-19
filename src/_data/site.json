@@ -214,6 +214,13 @@
                     "tag": "Converter"
                 },
                 {
+                    "title": "PDF Merge & Remove",
+                    "description": "Merge multiple PDFs or remove specific pages directly in your browser.",
+                    "url": "/tools/pdf-merge-remove/",
+                    "icon": "content_cut",
+                    "tag": "Converter"
+                },
+                {
                     "title": "Geo Tool",
                     "description": "Digitize buildings, measure polygon areas, and manage KML/Shapefile data with high-res satellite views.",
                     "url": "/tools/kml-viewer/",
