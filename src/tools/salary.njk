@@ -84,6 +84,51 @@ permalink: /tools/salary/
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan (employer %)</label>
+                    <input type="text" x-model="rateInputs.bpjsEmployer" @input="onRateInput('bpjsEmployer')" @blur="onRateBlur('bpjsEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JHT (employer %)</label>
+                    <input type="text" x-model="rateInputs.jhtEmployer" @input="onRateInput('jhtEmployer')" @blur="onRateBlur('jhtEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JP/Pension (employer %)</label>
+                    <input type="text" x-model="rateInputs.pensionEmployer" @input="onRateInput('pensionEmployer')" @blur="onRateBlur('pensionEmployer')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JKK Risk Classification (employer)</label>
+                    <select x-model="jkkTier" @change="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main">
+                        <template x-for="tier in jkkTiers" :key="tier.tier">
+                            <option :value="tier.tier" x-text="tier.label"></option>
+                        </template>
+                    </select>
+                    <p class="text-xs text-text-muted ml-1">PP 44/2015 — rate fixed by company's industry risk group</p>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JKM / Death Insurance (employer %)</label>
+                    <input type="text" x-model="rateInputs.jkm" @input="onRateInput('jkm')" @blur="onRateBlur('jkm')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <p class="text-xs text-text-muted ml-1">PP 44/2015 — fixed at 0.30% for all companies</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan wage cap (IDR)</label>
+                    <input type="text" x-model="capInputs.bpjs" @input="onCapInput('bpjs')" @blur="onCapBlur('bpjs')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <p class="text-xs text-text-muted ml-1">Perpres 64/2020 — employee contribution capped at the salary limit above</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JP/Pension wage cap (IDR)</label>
+                    <input type="text" x-model="capInputs.pension" @input="onCapInput('pension')" @blur="onCapBlur('pension')" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <p class="text-xs text-text-muted ml-1">PP 45/2015 — batas atas upah, updated yearly by Permenaker</p>
+                </div>
+            </div>
+
             <div class="flex items-center gap-3">
                 <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
             </div>
@@ -95,6 +140,12 @@ permalink: /tools/salary/
                         <div class="mt-4 font-mono">
                             <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
                                 <span class="text-stone-600">Gross</span><span class="font-semibold text-right" x-text="format(m.monthlyGross)"></span>
+                            </div>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
+                                <span class="text-stone-500 text-sm">+ Employer contribs (BPJS/JHT/JP/JKK/JKM)</span><span class="font-semibold text-right text-sm" x-text="format(m.taxableGross - m.monthlyGross)"></span>
+                            </div>
+                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1 text-[13px] leading-5 border-b border-stone-200 mb-1.5">
+                                <span class="text-stone-500 italic">Taxable Gross (TER base)</span><span class="font-semibold text-right italic" x-text="format(m.taxableGross)"></span>
                             </div>
                             <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
                                 <span class="text-stone-600">BPJS Kesehatan</span><span class="font-semibold text-right" x-text="format(m.monthlyBPJS)"></span>
@@ -124,25 +175,16 @@ permalink: /tools/salary/
                             <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
                                 <span class="text-stone-600 pr-2">Total BPJS/JHT/Pension</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.annualContributions)"></span>
                             </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600 pr-2">Tax Deductions</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.taxDeductions)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600 pr-2">PTKP</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.ptkpAnnual)"></span>
-                            </div>
-                            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="text-stone-600 pr-2">Taxable Income (PKP)</span><span class="font-semibold text-right tabular-nums whitespace-nowrap" x-text="format(m.taxableAnnual)"></span>
-                            </div>
                             <div class="mt-1 rounded-xl bg-stone-50 border border-stone-200 px-3 py-2">
-                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted">Marginal Tax Bracket</div>
-                                <div class="mt-1 text-xs md:text-sm leading-5 font-semibold text-text-main break-words" x-text="m.taxBracketLabel"></div>
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted">TER Category &amp; Rate (PMK 168/2023)</div>
+                                <div class="mt-1 text-xs md:text-sm leading-5 font-semibold text-text-main" x-text="'Category ' + m.terCategory + ' — ' + m.terRate + '%'"></div>
                             </div>
                             <hr class="my-3 border-stone-200" />
                             <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 text-[15px] leading-6">
-                                <span class="font-bold text-text-main pr-2">Annual Tax</span><span class="font-bold text-right text-text-main tabular-nums whitespace-nowrap" x-text="format(m.annualTax)"></span>
+                                <span class="font-bold text-text-main pr-2">Est. Annual Tax</span><span class="font-bold text-right text-text-main tabular-nums whitespace-nowrap" x-text="format(m.annualTax)"></span>
                             </div>
                         </div>
-                        <p class="mt-3 text-xs leading-5 text-text-muted">Tax deductions = Biaya Jabatan + JHT/JP (employee contribution).</p>
+                        <p class="mt-3 text-xs leading-5 text-text-muted">Tax uses TER method (flat monthly rate). December may differ slightly due to annual reconciliation.</p>
                     </div>
                 </div>
 
@@ -153,10 +195,11 @@ permalink: /tools/salary/
                         </div>
                         <div>
                             <h3 class="font-bold text-text-main mb-1">Legal Reference</h3>
-                            <p class="text-sm text-text-muted leading-relaxed">Tarif PPh 21 menggunakan UU No. 7 Tahun 2021 (HPP), perubahan Pasal 17 UU PPh.</p>
-                            <p class="text-xs text-text-muted mt-1">Default employee rates used: BPJS Kesehatan 1%, JHT 2%, JP 1%.</p>
-                            <!-- Maintenance note: keep this date static and update it manually only after re-checking the latest PPh21/PTKP regulations. -->
-                            <p class="text-xs text-text-muted mt-1">Last checked: 19 Apr 2026.</p>
+                            <p class="text-sm text-text-muted leading-relaxed">PPh 21 menggunakan metode TER (Tarif Efektif Rata-rata) per PMK 168/2023, berlaku sejak Januari 2024. Tarif ditentukan dari penghasilan bruto bulanan dan status PTKP (Kategori A/B/C).</p>
+                            <p class="text-xs text-text-muted mt-1">Default employee rates: BPJS 1%, JHT 2%, JP 1%. Default employer rates: BPJS 4%, JHT 3.7%, JP 2%, JKK 0.24% (Kel. I), JKM 0.30%.</p>
+                            <p class="text-xs text-text-muted mt-1">Wage caps: BPJS Kesehatan Rp 12.000.000 (Perpres 64/2020); JP batas atas Rp 10.547.400 (2026, Permenaker). JHT has no cap.</p>
+                            <!-- Maintenance note: keep this date static and update it manually only after re-checking the latest PPh21/PTKP/BPJS regulations. Also update JP batas atas cap if Permenaker changes. -->
+                            <p class="text-xs text-text-muted mt-1">Last checked: 20 Apr 2026.</p>
                         </div>
                     </div>
                     <div class="flex gap-3">
@@ -192,22 +235,86 @@ permalink: /tools/salary/
                 monthlyAllowance: '0'
             },
             rates: {
-                bpjs: 1.00, // percent
+                bpjs: 1.00, // percent, employee
                 jht: 2.00,
-                pension: 1.00
+                pension: 1.00,
+                // Employer contributions — included in taxable gross for TER (PMK 168/2023 / UU HPP)
+                jkk: 0.24,        // JKK/Accident Insurance, employer (PP 44/2015, tier-based, see jkkTier)
+                jkm: 0.30,        // JKM/Death Insurance, employer (PP 44/2015, fixed)
+                bpjsEmployer: 4.00, // BPJS Kesehatan employer (Perpres 64/2020, capped)
+                jhtEmployer: 3.70,  // JHT employer (PP 46/2015)
+                pensionEmployer: 2.00 // JP/Pension employer (PP 45/2015, capped)
             },
             rateInputs: {
                 bpjs: '1.00',
                 jht: '2.00',
-                pension: '1.00'
+                pension: '1.00',
+                jkm: '0.30',
+                bpjsEmployer: '4.00',
+                jhtEmployer: '3.70',
+                pensionEmployer: '2.00'
             },
-            rules: {
-                taxBrackets: [
-                    { cap: 60000000, rate: 0.05, label: '5% (up to Rp60,000,000)' },
-                    { cap: 250000000, rate: 0.15, label: '15% (Rp60,000,001 - Rp250,000,000)' },
-                    { cap: 500000000, rate: 0.25, label: '25% (Rp250,000,001 - Rp500,000,000)' },
-                    { cap: 5000000000, rate: 0.30, label: '30% (Rp500,000,001 - Rp5,000,000,000)' },
-                    { cap: Infinity, rate: 0.35, label: '35% (above Rp5,000,000,000)' }
+            // JKK risk classification tiers per PP 44/2015 Lampiran I
+            jkkTier: 1,
+            jkkTiers: [
+                { tier: 1, label: 'Kelompok I — 0.24% (Perkantoran / Office)', rate: 0.24 },
+                { tier: 2, label: 'Kelompok II — 0.54% (Perdagangan / Trade)', rate: 0.54 },
+                { tier: 3, label: 'Kelompok III — 0.89% (Industri ringan / Light industry)', rate: 0.89 },
+                { tier: 4, label: 'Kelompok IV — 1.27% (Industri sedang / Medium industry)', rate: 1.27 },
+                { tier: 5, label: 'Kelompok V — 1.74% (Industri berat / Heavy industry)', rate: 1.74 }
+            ],
+            // Wage caps: contribution base is capped at these amounts regardless of actual salary.
+            // BPJS Kesehatan: Perpres 64/2020 Ps.32 — cap fixed at Rp 12,000,000.
+            // JP (Jaminan Pensiun): PP 45/2015 — batas atas upah, updated each year via Permenaker.
+            //   2024: Rp 9,559,600 | 2025: Rp 10,042,300 | 2026: Rp 10,547,400
+            // JHT: no upper cap.
+            caps: {
+                bpjs: 12000000,
+                pension: 10547400
+            },
+            capInputs: {
+                bpjs: '12.000.000',
+                pension: '10.547.400'
+            },
+            // TER (Tarif Efektif Rata-rata) tables per PMK 168/2023, effective Jan 2024.
+            // Each entry: [upperBoundInclusive, ratePercent]. Income <= upper → that rate.
+            // Category A: TK/0, TK/1, K/0  — verified vs payslip: 43.6M→16%, 44.315M→17%
+            // Category B: TK/2, TK/3, K/1, K/2
+            // Category C: K/3
+            terTables: {
+                A: [
+                    [5400000,0],[5650000,0.25],[5950000,0.5],[6300000,0.75],
+                    [6750000,1],[7500000,1.25],[8550000,1.5],[9650000,2],
+                    [10050000,2.5],[10350000,3],[10700000,3.5],[11050000,4],
+                    [11600000,4.5],[12500000,5],[13750000,5.5],[15100000,6],
+                    [16950000,7],[19750000,8],[24150000,9],[26450000,10],
+                    [28000000,11],[30050000,12],[32400000,13],[35400000,14],
+                    [38900000,15],[44000000,16],[50000000,17],[56300000,18],
+                    [62500000,19],[68600000,20],[77500000,21],[89000000,22],
+                    [103000000,23],[125000000,24],[157000000,25],[206000000,26],
+                    [337000000,28],[454000000,30],[550000000,32],[Infinity,34]
+                ],
+                B: [
+                    [6200000,0],[6500000,0.25],[6850000,0.5],[7300000,0.75],
+                    [9200000,1],[10750000,1.5],[11250000,2],[11600000,2.5],
+                    [12600000,3],[13600000,4],[14950000,5],[16400000,6],
+                    [18450000,7],[21850000,8],[26000000,9],[27700000,10],
+                    [29350000,11],[31450000,12],[33950000,13],[37100000,14],
+                    [41100000,15],[45800000,16],[51400000,17],[58500000,18],
+                    [64000000,19],[71000000,20],[80000000,21],[93000000,22],
+                    [109000000,23],[129000000,24],[163000000,25],[211000000,26],
+                    [374000000,28],[459000000,30],[555000000,32],[Infinity,34]
+                ],
+                C: [
+                    [6600000,0],[6950000,0.25],[7350000,0.5],[7800000,0.75],
+                    [8850000,1],[9800000,1.25],[10950000,1.5],[11200000,2],
+                    [12050000,3],[12950000,4],[14150000,5],[15550000,6],
+                    [17050000,7],[19500000,8],[22700000,9],[29500000,10],
+                    [30250000,11],[32550000,12],[35100000,13],[38600000,14],
+                    [43350000,15],[47800000,16],[51400000,17],[56300000,18],
+                    [62500000,19],[68600000,20],[77500000,21],[89000000,22],
+                    [103000000,23],[125000000,24],[157000000,25],[206000000,26],
+                    [337000000,28],[454000000,30],[550000000,32],[Infinity,34]
                 ]
             },
             status: {
@@ -216,6 +323,7 @@ permalink: /tools/salary/
             },
             m: {
                 monthlyGross: 0,
+                taxableGross: 0,
                 monthlyBPJS: 0,
                 monthlyJHT: 0,
                 monthlyPension: 0,
@@ -223,11 +331,9 @@ permalink: /tools/salary/
                 takeHome: 0,
                 annualGross: 0,
                 annualContributions: 0,
-                taxDeductions: 0,
-                ptkpAnnual: 0,
-                taxableAnnual: 0,
                 annualTax: 0,
-                taxBracketLabel: '-'
+                terCategory: '-',
+                terRate: 0
             },
 
             format(v) {
@@ -240,6 +346,12 @@ permalink: /tools/salary/
                 this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
                 this.rateInputs.jht = this.formatPercent(this.rates.jht);
                 this.rateInputs.pension = this.formatPercent(this.rates.pension);
+                this.rateInputs.jkm = this.formatPercent(this.rates.jkm);
+                this.rateInputs.bpjsEmployer = this.formatPercent(this.rates.bpjsEmployer);
+                this.rateInputs.jhtEmployer = this.formatPercent(this.rates.jhtEmployer);
+                this.rateInputs.pensionEmployer = this.formatPercent(this.rates.pensionEmployer);
+                this.capInputs.bpjs = this.format(this.caps.bpjs);
+                this.capInputs.pension = this.format(this.caps.pension);
                 this.recalculate();
             },
 
@@ -274,6 +386,22 @@ permalink: /tools/salary/
                 const value = this.parseRateValue(this.rateInputs[field]);
                 this.rates[field] = Number.isNaN(value) ? 0 : value;
                 this.rateInputs[field] = this.formatPercent(this.rates[field]);
+                this.recalculate();
+            },
+
+            onCapInput(field) {
+                const value = this.parseCurrencyValue(this.capInputs[field]);
+                if (!Number.isNaN(value) && value > 0) {
+                    this.caps[field] = value;
+                    this.recalculate();
+                }
+            },
+
+            onCapBlur(field) {
+                const defaults = { bpjs: 12000000, pension: 10547400 };
+                const value = this.parseCurrencyValue(this.capInputs[field]);
+                this.caps[field] = (!Number.isNaN(value) && value > 0) ? value : defaults[field];
+                this.capInputs[field] = this.format(this.caps[field]);
                 this.recalculate();
             },
 
@@ -344,10 +472,18 @@ permalink: /tools/salary/
                 this.monthlyAllowance = 0;
                 this.inputs.monthlyGross = '0';
                 this.inputs.monthlyAllowance = '0';
-                this.rates = { bpjs:1.00, jht:2.00, pension:1.00 };
+                this.jkkTier = 1;
+                this.rates = { bpjs:1.00, jht:2.00, pension:1.00, jkk:0.24, jkm:0.30, bpjsEmployer:4.00, jhtEmployer:3.70, pensionEmployer:2.00 };
                 this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
                 this.rateInputs.jht = this.formatPercent(this.rates.jht);
                 this.rateInputs.pension = this.formatPercent(this.rates.pension);
+                this.rateInputs.jkm = this.formatPercent(this.rates.jkm);
+                this.rateInputs.bpjsEmployer = this.formatPercent(this.rates.bpjsEmployer);
+                this.rateInputs.jhtEmployer = this.formatPercent(this.rates.jhtEmployer);
+                this.rateInputs.pensionEmployer = this.formatPercent(this.rates.pensionEmployer);
+                this.caps = { bpjs: 12000000, pension: 10547400 };
+                this.capInputs.bpjs = this.format(this.caps.bpjs);
+                this.capInputs.pension = this.format(this.caps.pension);
                 this.recalculate();
             },
 
@@ -358,9 +494,20 @@ permalink: /tools/salary/
                 return base + spouse + dependents;
             },
 
-            computeBiayaJabatan(annualGross) {
-                // 5% of annual gross, capped at Rp6,000,000 per year.
-                return Math.min(annualGross * 0.05, 6000000);
+            getTERCategory() {
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                if (this.status.married && deps === 3) return 'C';
+                if ((!this.status.married && deps >= 2) || (this.status.married && deps >= 1)) return 'B';
+                return 'A'; // TK/0, TK/1, K/0
+            },
+
+            lookupTER(gross) {
+                const cat = this.getTERCategory();
+                const table = this.terTables[cat];
+                for (let i = 0; i < table.length; i++) {
+                    if (gross <= table[i][0]) return { rate: table[i][1], category: cat };
+                }
+                return { rate: 34, category: cat };
             },
 
             recalculate() {
@@ -368,44 +515,44 @@ permalink: /tools/salary/
                 const allowance = Number(this.monthlyAllowance || 0);
                 const monthlyGrossTotal = gross + allowance;
 
-                const bpjsMonthly = monthlyGrossTotal * (this.rates.bpjs/100);
+                // Apply wage caps: BPJS Kesehatan capped at Rp 12,000,000 (Perpres 64/2020),
+                // JP (pension) capped at batas atas upah set by Permenaker each year.
+                // JHT has no upper cap.
+                const bpjsBase = Math.min(monthlyGrossTotal, this.caps.bpjs);
+                const pensionBase = Math.min(monthlyGrossTotal, this.caps.pension);
+
+                // Employee deductions (subtracted from pay)
+                const bpjsMonthly = bpjsBase * (this.rates.bpjs/100);
                 const jhtMonthly = monthlyGrossTotal * (this.rates.jht/100);
-                const pensionMonthly = monthlyGrossTotal * (this.rates.pension/100);
+                const pensionMonthly = pensionBase * (this.rates.pension/100);
+
+                // Employer contributions included in taxable gross per PMK 168/2023:
+                // BPJS Kesehatan employer, JKK, JKM.
+                // JHT employer and JP employer are NOT included per common payroll practice.
+                const selectedTier = this.jkkTiers.find(t => t.tier === Number(this.jkkTier)) || this.jkkTiers[0];
+                const jkkRate = selectedTier.rate;
+                const jkkMonthly = monthlyGrossTotal * (jkkRate/100);
+                const jkmMonthly = monthlyGrossTotal * (this.rates.jkm/100);
+                const bpjsEmployerMonthly = bpjsBase * (this.rates.bpjsEmployer/100);
+                const jhtEmployerMonthly = monthlyGrossTotal * (this.rates.jhtEmployer/100);
+                const pensionEmployerMonthly = pensionBase * (this.rates.pensionEmployer/100);
+                const taxableGross = monthlyGrossTotal + jkkMonthly + jkmMonthly + bpjsEmployerMonthly;
 
                 const annualGross = monthlyGrossTotal * 12;
                 const annualBPJS = bpjsMonthly * 12;
                 const annualJHT = jhtMonthly * 12;
                 const annualPension = pensionMonthly * 12;
 
-                const annualEmploymentCost = this.computeBiayaJabatan(annualGross);
-                const annualTaxRetirementContrib = annualJHT + annualPension;
-                const taxDeductions = annualEmploymentCost + annualTaxRetirementContrib;
-                const ptkp = this.computePTKP();
-                let taxable = annualGross - taxDeductions - ptkp;
-                taxable = Math.max(0, Math.floor(taxable / 1000) * 1000);
-
-                let remaining = taxable;
-                let tax = 0;
-                let lower = 0;
-                let taxBracketLabel = '0% (PKP is zero)';
-                for (let i=0;i<this.rules.taxBrackets.length;i++) {
-                    const b = this.rules.taxBrackets[i];
-                    const cap = b.cap === Infinity ? Infinity : b.cap - lower;
-                    const portion = Math.min(remaining, cap === Infinity ? remaining : cap);
-                    if (portion > 0) {
-                        tax += portion * b.rate;
-                        taxBracketLabel = b.label;
-                        remaining -= portion;
-                    }
-                    lower = b.cap === Infinity ? lower : b.cap;
-                    if (remaining <= 0) break;
-                }
-
-                const monthlyTax = tax / 12;
+                // PMK 168/2023: monthly PPh21 = taxable gross × TER rate.
+                const ter = this.lookupTER(taxableGross);
+                const monthlyTax = taxableGross * ter.rate / 100;
+                const annualTax = monthlyTax * 12;
+                // Take-home: basic gross minus employee deductions and tax (employer items net to zero)
                 const takeHome = monthlyGrossTotal - bpjsMonthly - jhtMonthly - pensionMonthly - monthlyTax;
 
                 this.m = {
                     monthlyGross: monthlyGrossTotal,
+                    taxableGross: taxableGross,
                     monthlyBPJS: bpjsMonthly,
                     monthlyJHT: jhtMonthly,
                     monthlyPension: pensionMonthly,
@@ -413,11 +560,9 @@ permalink: /tools/salary/
                     takeHome: takeHome,
                     annualGross: annualGross,
                     annualContributions: annualBPJS + annualJHT + annualPension,
-                    taxDeductions: taxDeductions,
-                    ptkpAnnual: ptkp,
-                    taxableAnnual: taxable,
-                    annualTax: tax,
-                    taxBracketLabel: taxBracketLabel
+                    annualTax: annualTax,
+                    terCategory: ter.category,
+                    terRate: ter.rate
                 };
             }
         }
