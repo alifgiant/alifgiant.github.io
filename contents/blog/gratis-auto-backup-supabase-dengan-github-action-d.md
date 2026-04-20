@@ -3,7 +3,7 @@ title: "Gratis! Auto Backup Supabase dengan Github Action dan Cloudflare R2"
 date: "2024-07-28"
 tags: ["Tech"]
 featured: false
-description: "Image/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.webp TLDR; Saya asumsikan kalian yang membuka artikel ini sudah memahami Supabase dan GithubAc..."
+description: "Image/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.webp TLDR; Saya asumsikan kalian yang membuka artikel ini sudah memahami Supabase dan GithubA..."
 readTime: "5 min"
 image: "/assets/images/blog/cover-12c9e962-c621-4b29-b775-d381954e94bd.webp"
 ---

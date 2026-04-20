@@ -10,7 +10,7 @@ image: "/assets/images/blog/cover-321835c2-e62f-80fb-9e85-c14e3204a365.webp"
 
 My cursor is hovering over the "Log Out" button, and for a moment, I just sit here listening to the silence of my room.
 
-![Mandatory Last Day Picture At Office](/assets/images/blog/321835c2-e62f-80fb-9e85-c14e3204a365-1.jpeg)
+![Mandatory Last Day Picture At Office](/assets/images/blog/321835c2-e62f-80fb-9e85-c14e3204a365-1.webp)
 <figcaption class="notion-caption">Mandatory Last Day Picture At Office</figcaption>
 
 It is March 2026. The silence in this home office is exactly the same as it was nearly five years ago, back in August 2021. But everything else has changed.

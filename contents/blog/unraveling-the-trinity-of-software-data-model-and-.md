@@ -3,7 +3,7 @@ title: "Unraveling the Trinity of Software: Data, Model, and State - More Comple
 date: "2024-10-19"
 tags: ["Tech"]
 featured: false
-description: "https://imgflip.com/i/977ves/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.webp https://imgflip.com/i/977ves In the world of software development,..."
+description: "https://imgflip.com/i/977ves/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.webp https://imgflip.com/i/977ves In the world of software development..."
 readTime: "4 min"
 image: "/assets/images/blog/cover-124835c2-e62f-804b-b1ef-c16fe5c91f55.webp"
 ---

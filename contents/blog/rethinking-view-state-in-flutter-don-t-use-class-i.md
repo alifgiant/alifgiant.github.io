@@ -12,7 +12,7 @@ In the ever-evolving world of software development, efficiency is king. But some
 
 
 
-![Simple App with view state](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-1.gif)
+![Simple App with view state](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-1.webp)
 <figcaption class="notion-caption">Simple App with view state</figcaption>
 
 
