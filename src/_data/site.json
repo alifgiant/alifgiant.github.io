@@ -143,6 +143,13 @@
                     ]
                 },
                 {
+                    "title": "Animation Player",
+                    "description": "Preview local animation assets like GIF, Lottie JSON, animated SVG, video, and browser-playable formats.",
+                    "url": "/tools/animation-player/",
+                    "icon": "animation",
+                    "tag": "Utilities"
+                },
+                {
                     "title": "Bcrypt Hash",
                     "description": "Securely hash and verify strings using the bcrypt algorithm.",
                     "url": "/tools/bcrypt/",

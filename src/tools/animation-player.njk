@@ -1,0 +1,315 @@
+---
+layout: layouts/base.njk
+title: Animation Player
+description: Preview local animation assets like GIF, Lottie JSON, animated SVG, video, and browser-playable formats.
+permalink: /tools/animation-player/
+---
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+<div class="w-full max-w-5xl flex flex-col gap-12" x-data="animationPlayer()" x-init="init()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/animation-player/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-2xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            <div @dragover.prevent="dragOver = true"
+                 @dragleave.prevent="dragOver = false"
+                 @drop.prevent="handleDrop($event)"
+                 :class="dragOver ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-stone-200 bg-stone-50/30'"
+                 class="relative border-2 border-dashed rounded-3xl p-10 transition-all duration-300 flex flex-col items-center justify-center gap-6 overflow-hidden">
+                <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleFileSelect($event)">
+
+                <div class="p-5 rounded-2xl bg-white shadow-sm border border-stone-100">
+                    <span class="material-symbols-outlined text-4xl text-primary">animation</span>
+                </div>
+
+                <div class="text-center">
+                    <h3 class="text-lg font-bold text-text-main mb-1">Drop an animation asset here</h3>
+                    <p class="text-xs text-text-muted">Supports GIF, Lottie JSON, animated SVG, animated WebP, WebM, and other browser-playable video files.</p>
+                </div>
+            </div>
+
+            <template x-if="asset">
+                <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-stone-50 border border-stone-200 px-4 py-3">
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-sm font-semibold text-text-main truncate" x-text="asset.name"></span>
+                        <span class="text-xs text-text-muted" x-text="asset.meta"></span>
+                    </div>
+                    <button @click="clearAsset()" class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-rose-500 hover:text-rose-600 transition-colors">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                        Clear
+                    </button>
+                </div>
+            </template>
+
+            <template x-if="error">
+                <div class="rounded-2xl border border-rose-200 bg-rose-50 text-rose-700 px-4 py-3 text-sm" x-text="error"></div>
+            </template>
+
+            <div class="rounded-3xl border border-stone-200 bg-white p-4 md:p-6 min-h-[360px] flex items-center justify-center overflow-hidden">
+                <template x-if="!asset">
+                    <div class="text-center text-stone-400 flex flex-col items-center gap-3">
+                        <span class="material-symbols-outlined text-5xl">play_circle</span>
+                        <p class="text-sm">No asset selected yet.</p>
+                    </div>
+                </template>
+
+                <template x-if="asset && asset.type === 'lottie'">
+                    <div class="w-full h-[420px] rounded-2xl bg-stone-50 border border-stone-100 relative overflow-hidden">
+                        <div x-ref="lottie" class="w-full h-full"></div>
+                        <div class="absolute right-3 top-3 inline-flex items-center gap-1 bg-white/90 backdrop-blur border border-stone-200 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-stone-600">
+                            <span class="material-symbols-outlined text-xs">deployed_code</span>
+                            Lottie
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="asset && asset.type === 'image'">
+                    <img :src="asset.url" :alt="asset.name" class="max-h-[500px] w-auto max-w-full object-contain rounded-xl" />
+                </template>
+
+                <template x-if="asset && asset.type === 'svg'">
+                    <object :data="asset.url" type="image/svg+xml" class="w-full h-[460px] rounded-xl border border-stone-100 bg-stone-50"></object>
+                </template>
+
+                <template x-if="asset && asset.type === 'video'">
+                    <video :src="asset.url" autoplay loop muted controls playsinline class="max-h-[500px] w-auto max-w-full rounded-xl border border-stone-200"></video>
+                </template>
+
+                <template x-if="asset && asset.type === 'embed'">
+                    <embed :src="asset.url" :type="asset.mime || ''" class="w-full h-[460px] rounded-xl border border-stone-100 bg-stone-50" />
+                </template>
+            </div>
+
+            <template x-if="asset && controlsVisible">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <button @click="play()" class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-text-main text-white font-semibold hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-base">play_arrow</span>
+                        Play
+                    </button>
+                    <button @click="pause()" class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border border-stone-200 bg-white text-text-main font-semibold hover:bg-stone-50 transition-colors">
+                        <span class="material-symbols-outlined text-base">pause</span>
+                        Pause
+                    </button>
+                    <button @click="restart()" class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border border-stone-200 bg-white text-text-main font-semibold hover:bg-stone-50 transition-colors">
+                        <span class="material-symbols-outlined text-base">replay</span>
+                        Restart
+                    </button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-3xl bg-emerald-50 border border-emerald-100 p-6">
+            <h3 class="text-sm font-bold text-emerald-800 mb-2">Animated Images</h3>
+            <p class="text-xs text-emerald-700/80">GIF, APNG, and animated WebP are rendered with the browser image engine.</p>
+        </div>
+        <div class="rounded-3xl bg-blue-50 border border-blue-100 p-6">
+            <h3 class="text-sm font-bold text-blue-800 mb-2">Lottie JSON</h3>
+            <p class="text-xs text-blue-700/80">Lottie files are parsed and played with lottie-web, including loop and restart support.</p>
+        </div>
+        <div class="rounded-3xl bg-amber-50 border border-amber-100 p-6">
+            <h3 class="text-sm font-bold text-amber-800 mb-2">Browser-Playable Formats</h3>
+            <p class="text-xs text-amber-700/80">Video and other supported media are opened using native browser elements.</p>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function animationPlayer() {
+        return {
+            dragOver: false,
+            asset: null,
+            error: '',
+            lottieInstance: null,
+
+            init() {
+                this.clearAsset();
+            },
+
+            get controlsVisible() {
+                return this.asset && (this.asset.type === 'lottie' || this.asset.type === 'video');
+            },
+
+            handleFileSelect(e) {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                this.loadAsset(file);
+                e.target.value = '';
+            },
+
+            handleDrop(e) {
+                this.dragOver = false;
+                const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                if (!file) return;
+                this.loadAsset(file);
+            },
+
+            async loadAsset(file) {
+                this.error = '';
+                this.destroyLottie();
+
+                if (this.asset && this.asset.url) {
+                    URL.revokeObjectURL(this.asset.url);
+                }
+
+                const ext = (file.name.split('.').pop() || '').toLowerCase();
+                const mime = (file.type || '').toLowerCase();
+                const url = URL.createObjectURL(file);
+                const kind = this.detectKind(ext, mime);
+
+                try {
+                    if (kind === 'lottie') {
+                        const raw = await file.text();
+                        const data = JSON.parse(raw);
+                        if (!data || typeof data !== 'object' || !data.layers) {
+                            throw new Error('This JSON does not look like a valid Lottie animation.');
+                        }
+
+                        this.asset = {
+                            name: file.name,
+                            size: file.size,
+                            mime: mime || 'application/json',
+                            url: url,
+                            type: 'lottie',
+                            data: data,
+                            meta: this.formatMeta(file.size, 'Lottie JSON')
+                        };
+
+                        this.$nextTick(() => {
+                            this.lottieInstance = lottie.loadAnimation({
+                                container: this.$refs.lottie,
+                                renderer: 'svg',
+                                loop: true,
+                                autoplay: true,
+                                animationData: data
+                            });
+                        });
+                        return;
+                    }
+
+                    this.asset = {
+                        name: file.name,
+                        size: file.size,
+                        mime: mime,
+                        url: url,
+                        type: kind,
+                        meta: this.formatMeta(file.size, this.kindLabel(kind, mime || ext.toUpperCase()))
+                    };
+                } catch (err) {
+                    URL.revokeObjectURL(url);
+                    this.asset = null;
+                    this.error = err?.message || 'Failed to read asset.';
+                }
+            },
+
+            detectKind(ext, mime) {
+                if (ext === 'json' || mime.includes('json')) return 'lottie';
+                if (ext === 'svg' || mime.includes('svg')) return 'svg';
+                if (mime.startsWith('video/') || ['mp4', 'webm', 'mov', 'ogv', 'm4v'].includes(ext)) return 'video';
+                if (mime.startsWith('image/') || ['gif', 'png', 'apng', 'webp', 'jpg', 'jpeg', 'bmp', 'avif'].includes(ext)) return 'image';
+                return 'embed';
+            },
+
+            kindLabel(kind, fallback) {
+                if (kind === 'lottie') return 'Lottie JSON';
+                if (kind === 'svg') return 'SVG';
+                if (kind === 'video') return 'Video';
+                if (kind === 'image') return 'Image';
+                return fallback || 'Generic';
+            },
+
+            formatMeta(bytes, typeLabel) {
+                const kb = bytes / 1024;
+                const mb = kb / 1024;
+                const size = mb >= 1 ? `${mb.toFixed(2)} MB` : `${kb.toFixed(1)} KB`;
+                return `${typeLabel} • ${size}`;
+            },
+
+            play() {
+                if (!this.asset) return;
+                if (this.asset.type === 'lottie' && this.lottieInstance) {
+                    this.lottieInstance.play();
+                    return;
+                }
+                if (this.asset.type === 'video') {
+                    const video = this.$root.querySelector('video');
+                    if (video) video.play();
+                }
+            },
+
+            pause() {
+                if (!this.asset) return;
+                if (this.asset.type === 'lottie' && this.lottieInstance) {
+                    this.lottieInstance.pause();
+                    return;
+                }
+                if (this.asset.type === 'video') {
+                    const video = this.$root.querySelector('video');
+                    if (video) video.pause();
+                }
+            },
+
+            restart() {
+                if (!this.asset) return;
+                if (this.asset.type === 'lottie' && this.lottieInstance) {
+                    this.lottieInstance.goToAndPlay(0, true);
+                    return;
+                }
+                if (this.asset.type === 'video') {
+                    const video = this.$root.querySelector('video');
+                    if (video) {
+                        video.currentTime = 0;
+                        video.play();
+                    }
+                }
+            },
+
+            clearAsset() {
+                this.error = '';
+                this.destroyLottie();
+                if (this.asset && this.asset.url) {
+                    URL.revokeObjectURL(this.asset.url);
+                }
+                this.asset = null;
+            },
+
+            destroyLottie() {
+                if (this.lottieInstance) {
+                    this.lottieInstance.destroy();
+                    this.lottieInstance = null;
+                }
+            }
+        };
+    }
+</script>
