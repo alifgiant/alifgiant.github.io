@@ -52,5 +52,14 @@ npm run build
 - `assets/`: Static assets like images and fonts.
 - `.eleventy.js`: Configuration for the static site generator.
 
+## 🧭 Tools List Maintenance
+
+When adding or editing tools in `src/_data/site.json` (`pages.tools.list`), keep these rules:
+
+1. Favorite tools must stay at the top of the list.
+2. Non-favorite tools must be sorted alphabetically by `title` (A to Z).
+3. For multi-tag tools, keep the primary visual category in `tag` (e.g. `Utilities` or `Converter`) and put extra tags (like `Favorite`) in `tags`.
+4. Keep filter categories in sync with any new tag under `pages.tools.categories`.
+
 ---
 © 2025 Muhammad Alif Akbar.
