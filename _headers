@@ -1,0 +1,50 @@
+# Static asset caching - long-lived immutable cache for versioned assets
+/assets/main.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/font.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - shorter cache, require revalidation
+/
+  Cache-Control: public, max-age=3600, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/blog/
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/blog/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/work/
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/tools/
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/tools/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# Third-party CDN content - medium cache
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts from Google Fonts are immutable
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

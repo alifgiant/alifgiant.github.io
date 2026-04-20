@@ -5,7 +5,7 @@ tags: ["Rants","Tech"]
 featured: false
 description: "Siapakah saya? Walaupun saya yakin pengunjung blog ini adalah teman-teman yang mengenal saya secara pribadi, izinkan saya sedikit mengenalkan diri untuk yang..."
 readTime: "6 min"
-image: "/assets/images/blog/cover-c88503c4-a246-4b2f-ac39-194243c01b1d.jpg"
+image: "/assets/images/blog/cover-c88503c4-a246-4b2f-ac39-194243c01b1d.webp"
 ---
 
 ## Siapakah saya?

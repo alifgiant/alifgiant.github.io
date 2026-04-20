@@ -3,12 +3,12 @@ title: "Unraveling the Trinity of Software: Data, Model, and State - More Comple
 date: "2024-10-19"
 tags: ["Tech"]
 featured: false
-description: "https://imgflip.com/i/977ves/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.png https://imgflip.com/i/977ves In the world of software development,..."
+description: "https://imgflip.com/i/977ves/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.webp https://imgflip.com/i/977ves In the world of software development,..."
 readTime: "4 min"
-image: "/assets/images/blog/cover-124835c2-e62f-804b-b1ef-c16fe5c91f55.jpg"
+image: "/assets/images/blog/cover-124835c2-e62f-804b-b1ef-c16fe5c91f55.webp"
 ---
 
-![https://imgflip.com/i/977ves](/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.png)
+![https://imgflip.com/i/977ves](/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-1.webp)
 <figcaption class="notion-caption">https://imgflip.com/i/977ves</figcaption>
 
 In the world of software development, three terms often pop up in discussions, code comments, and documentation: **Data**, **Model**, and **State**. At first glance, these concepts might seem interchangeable or straightforward. However, as you delve deeper into software architecture and design, you'll find that understanding the nuances between these terms is crucial for effective development and clear communication within your team.
@@ -112,7 +112,7 @@ So the next time you're discussing your project, take a moment to consider: are 
 
 As promised earlier, i’ll explain a bit why nowadays we trend toward immutable data classes. It’s in accordance to relatively new concept called **Unidirectional Data Flow** (UDF). It’s a design pattern where state flows down and events flow up.
 
-![https://developer.android.com/develop/ui/compose/architecture](/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-2.png)
+![https://developer.android.com/develop/ui/compose/architecture](/assets/images/blog/124835c2-e62f-804b-b1ef-c16fe5c91f55-2.webp)
 <figcaption class="notion-caption">https://developer.android.com/develop/ui/compose/architecture</figcaption>
 
 UDF mandates that state change should only happen in one place while UI should only reflect it and not modify it. This require state to be an immutable object where UI can’t modify it. Therefore we nowadays mainly implement immutable state and data, to prevent any unintended change to the state.

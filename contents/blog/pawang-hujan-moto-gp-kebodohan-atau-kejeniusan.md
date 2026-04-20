@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Sebuah event besar berlangsung pada Minggu 20 Maret 2022 di pulau Lombok, Indonesia. Event yang ditunggu-tunggu kehadirannya, sejak terakhir kali berlangsung..."
 readTime: "5 min"
-image: "/assets/images/blog/cover-cbe211b5-fd83-4ff7-90d3-6574043d6cc0.jpg"
+image: "/assets/images/blog/cover-cbe211b5-fd83-4ff7-90d3-6574043d6cc0.webp"
 ---
 
 Sebuah event besar berlangsung pada Minggu 20 Maret 2022 di pulau Lombok, Indonesia. Event yang ditunggu-tunggu kehadirannya, sejak terakhir kali berlangsung pada 25 tahun yang lalu, di negara ini. Event itu ialah sebuah balapan MotoGP di sirkuit mandalika.

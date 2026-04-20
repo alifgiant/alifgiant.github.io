@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Sekarang aku ngerti, mengapa aku suka takut dengan psikologi. Karena aku mengerti sistem, membuat sistem, dan berada di dalam sistem. Sistem yang menerapkan ..."
 readTime: "2 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Sekarang aku ngerti, mengapa aku suka takut dengan psikologi. Karena aku mengerti sistem, membuat sistem, dan berada di dalam sistem. Sistem yang menerapkan psikologi untuk mempengaruhi manusia melalui level yang lebih dalam. Aku melihat orang berubah, termasuk diri sendiri. Which most of the time, not in a good way.

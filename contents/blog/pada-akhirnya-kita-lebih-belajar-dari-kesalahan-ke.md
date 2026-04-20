@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Dengan belajar kita bertumbuh. Namun tak banyak yang ingin. Karena memperbaiki kesalahan, mencoba kembali dan bangkit dari keterpurukan adalah sebuah kisah k..."
 readTime: "1 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Dengan belajar kita bertumbuh. Namun tak banyak yang ingin. Karena memperbaiki kesalahan, mencoba kembali dan bangkit dari keterpurukan adalah sebuah kisah klasik, mimpi buruk menjadi dewasa. Sehingga banyak yang menolak untuk bermimpi.

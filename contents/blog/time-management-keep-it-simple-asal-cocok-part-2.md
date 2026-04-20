@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Apa yang berhasil buat saya? Untuk menjawab hal ini sebenarnya sangat simpel, yaitu yang cocok. Apa itu yang cocok? Yaitu yang memenuhi kebutuhan. Memangnya ..."
 readTime: "9 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 **Apa yang berhasil buat saya?**

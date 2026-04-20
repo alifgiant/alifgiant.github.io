@@ -5,7 +5,7 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "Background I am going to build a new flutter app. The app is aimed to be quite big. I'm going to need a state management tools. So, I think it’s a good idea ..."
 readTime: "13 min"
-image: "/assets/images/blog/cover-1039c2f2-09d1-4c78-8f5a-8a03e46fb708.jpg"
+image: "/assets/images/blog/cover-1039c2f2-09d1-4c78-8f5a-8a03e46fb708.webp"
 ---
 
 ## Background
@@ -16,7 +16,7 @@ I am going to build a new flutter app. The app is aimed to be quite big. I'm goi
 
 Flutter official [website](https://flutter.dev/docs/development/data-and-backend/state-mgmt/options) has a listing of all current available state management options. As on 1 Aug 2021, the following list are those that listed on the website.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-1.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-1.webp)
 
 I marked GetIt since it’s actually not a state management by it’s own. It’s a dependency injection library, but the community behind it develop a set of tools to make it a state management (get_it_mixin (45,130,81%) and get_it_hooks (6,100,33%)). There’s also two additional lib that not mentioned on the official page (Stacked and flutter_hooks). Those two are relatively new compared to others (since pretty much everything about flutter is new) but has high popularity.
 
@@ -24,7 +24,7 @@ I marked GetIt since it’s actually not a state management by it’s own. It’
 
 Pub point is a curation point given by flutter package manager (pub.dev). Basically this point indicate how far a given library adhere to dart/flutter best practices.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-2.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-2.webp)
 
 Provider Package Meta Scores
 
@@ -51,7 +51,7 @@ This first filter can give us a quick glance over the easiness of usage and the 
 
 Luckily, we have a definitive data to rank our list. [Pub.dev](http://pub.dev/) give us popularity score and number of likes. So, let’s drop those that has less than 90% popularity and has less than 100 likes.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-3.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-3.webp)
 
 As you can see, we drop 6 package from the list. We also drop setState and InheritedWidget from the list, since it’s the default implementation of state management in flutter. It’s very simple but easily increase complexity in building a bigger app. Most of the other packages try to fix the problem and build on top of it.
 
@@ -69,21 +69,21 @@ The second filter is a bit hard to implement. After all, parameter to define “
 
 The current list doesn’t have 2 parameter defined above, so we need to find it out.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-4.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-4.webp)
 
 So let’s see which state management fulfill our threshold.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-5.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-5.webp)
 
 As you can see, “flutter_redux” is dropped. It’s not satisfied the criteria of “major version”. Not on major version can be inferred as, the creator of the package marked it is as **not stable**. There could be potentially breaking API changes in near future or an implementation change. When it happens we got no option but to refactor our code base, which lead to unnecessary work load.
 
 But, it’s actually seems unfair. Since flutter_redux is only a set of tool on top [redux](https://pub.dev/packages/redux) . The base package is actually satisfy our threshold so far. It’s on v5.0.0, has pub point ≥ 100, has likes ≥ 100 and has popularity ≥ 90%.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-6.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-6.webp)
 
 So, if we use the base package it should be safe. But, let’s go a little deeper. The base package is a Dart package, so it means this lib can be used outside flutter (which is a plus). Redux package also claims it’s a rich ecosystem, in which it has several child packages:
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-7.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-7.webp)
 
 As i inspect each of those packages, i found none of them are stables. In fact, none of them are even popular. Which i can assume it’s pretty hard to find “best practices” around it. Redux might be super popular on Javascript community. We could easily find help about redux for web development issue, but i don’t think it stays true for flutter’s issue (you can see the total resource count, it barely pass 500, it’s 517).
 
@@ -113,15 +113,15 @@ Inter Component Communication
 
 Let’s say we have component tree like the following diagram,
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-8.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-8.webp)
 
 In basic composition pattern, when component A needs something from component D it needs to follow a chain of command through E→G→F→D
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-9.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-9.webp)
 
 This approach is easily get very complex when we scale up the system, like a tree with 10 layers deep. So, to solve this problem, state management’s tools introduce a separate class that hold an object which exposed to all components.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-10.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-10.webp)
 
 Basically, all state management listed above allows this to happen. The differences located on how big is the “root state” allowed and how to reduce unnecessary “render”.
 
@@ -145,9 +145,9 @@ Just like in the previous criteria, all state management also has their own leve
 
 Provider, Mobx and Getx are similar to MVVM. BLoC and Redux are similar to MVI.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-11.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-11.webp)
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-12.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-12.webp)
 
 In this criteria, i think **there’s no winner** since it boils down to preference again.
 
@@ -157,7 +157,7 @@ Easy to learn
 
 Finally, the easiest criteria in **easiness of usage**, easy to learn. I think there’s only one parameter for it. To be easy to learn, it have to introduced least new things. Both, MVVM and MVI is already pretty common but the latter is a bit new. MVI’s style packages like redux and bloc, introduce new concepts like an action and reducer. Even though Mobx also has actions but it already simplified by using code generator so it looks like any other view model.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-13.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-13.webp)
 
 So, for this criteria, i think **the winner are those with MVVM’s style** (+2 Point), Provider, Mobx and Getx. Actually, google themself also promote Provider (Google I/O 2019) over BLoC (Google I/O 2018) because of the simplicity, you can watch the show [here](https://www.youtube.com/watch?v=d_m5csmrf7I).
 
@@ -177,7 +177,7 @@ Big ecosystem means that a given package has many default tools baked or integra
 
 So, these are the final verdict
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-14.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-14.webp)
 
 Suddenly, Redux has comeback to the race.
 
@@ -191,7 +191,7 @@ No matter how good a package currently is, we can’t use something that got no 
 
 Just like previous filter, we will implement ranking system. A winner on a criteria will get 2 point, second place will get 1, and the rest get 0 point.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-15.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-15.webp)
 
 So, with above data, here are the verdicts
 
@@ -211,11 +211,11 @@ Lets add with the previous filter point,
 
 By now we can see that the winner state management, that allowed to claim the best possible right now, is **Getx.** But, it’s a bit concerning when I look at the code coverage, it’s the lowest by far from the others. It makes me wonder, what happen to Getx. So i tried to see the result more closely.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-16.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-16.webp)
 
 After seeing the image above, i can see that the problem is the get_connect module has 0 coverage also several other modules has low coverage. But, let’s pick the coverage of the core modules like, get_core (100%), get_instance(77%), get_state_manager(51%,33%). The coverage get over 50%, not too bad.
 
-![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-17.png)
+![Image](/assets/images/blog/1039c2f2-09d1-4c78-8f5a-8a03e46fb708-17.webp)
 
 Basically, this result means we need to cancel a winner status from Getx. It’s the win on big ecosystem criteria. So, lets subtract 2 point from the end result (10-2). It got 8 points left, it still won the race. We can safely say it has more pros than cons.
 

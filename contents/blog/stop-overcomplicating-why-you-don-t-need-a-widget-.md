@@ -5,7 +5,7 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "Introduction While Flutter documentation often recommends creating Widget classes, this isn't always the best approach for all use cases. Especially when han..."
 readTime: "4 min"
-image: "/assets/images/blog/cover-115835c2-e62f-80ae-b81e-c4df1342e7fb.jpg"
+image: "/assets/images/blog/cover-115835c2-e62f-80ae-b81e-c4df1342e7fb.webp"
 ---
 
 ## Introduction

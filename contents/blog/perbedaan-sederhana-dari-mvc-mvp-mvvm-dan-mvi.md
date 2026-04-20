@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Kita pasti sudah tidak asing dengan architecture design pattern yang saya sebutkan di judul MVC, MVP, MVVM dan MVI. Semuanya mengajarkan mengenai bagaimana s..."
 readTime: "10 min"
-image: "/assets/images/blog/cover-712d06d1-02ce-46f3-8704-1cb444ba87e2.jpg"
+image: "/assets/images/blog/cover-712d06d1-02ce-46f3-8704-1cb444ba87e2.webp"
 ---
 
 Kita pasti sudah tidak asing dengan architecture design pattern yang saya sebutkan di judul (MVC, MVP, MVVM dan MVI). Semuanya mengajarkan mengenai bagaimana sebaiknya kita memisahkan code base kita agar mencapai konsep `single responsibility` (S) dari `SOLID principle`. Tentu saja penggunaan pattern tidak hanya terbatas disitu, tapi hal tersebut adalah yang paling jelas terlihat. Karena yang semulanya semua fungsionalitas berada dalam 1 objek, kini harus dipisahkan menjadi setidaknya 3 objek lain `Model`, `View`, dan `Controller` / `Presenter` / `ViewModel` / `Intent`.

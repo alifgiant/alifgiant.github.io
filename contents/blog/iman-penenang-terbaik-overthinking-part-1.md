@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Sedikit Latar duluu... Nyapa - nyapa dikit.. Halo pembaca yang lagi gabut 😘, Iya.. kamu, kamu yang lagi membaca blog ini. Mau minta maaf kalau kamu salah sa..."
 readTime: "6 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## Sedikit Latar duluu... Nyapa - nyapa dikit..
@@ -27,7 +27,7 @@ So, lets begin..
 
 Sebenarnya banyak banget hal yang bisa menjadi penyebab munculnya overthinking. Mulai dari masalah karir, keluarga, pertemanan, percintaan, dll. Tapi *common ground* nya ialah, semuanya tentang adanya suatu masalah yang ingin di selesaikan. Karena emang kebanyakan orang ga akan mikir kalau ga dihadapkan dengan masalah, ya ga?
 
-![Image](/assets/images/blog/75002f48-964c-44b1-91a0-e7d80c7ad8e2-1.png)
+![Image](/assets/images/blog/75002f48-964c-44b1-91a0-e7d80c7ad8e2-1.webp)
 
 Terkait tentang islam-islaman (khususnya buat kamu yang muslim, *notice* ga hal keren banget?) Di Islam dijelaskan tentang diberikannya suatu ujian kepada hamba untuk menaikan derajat seseorang. Kamu yang dihadapkan dengan kondisi overthinking bisa jadi sedang disayang-sayangnya sama Allah. Kamu lagi mau dinaikin derajatnya.
 
@@ -47,7 +47,7 @@ Bukan begitu *ferguso*, semua yang **over** atau berlebih tidak pernah bagus. Te
 
 ***“Tapi, kenapa ya kita rentan overthinking? Apa lagi jaman now”***
 
-![Image](/assets/images/blog/75002f48-964c-44b1-91a0-e7d80c7ad8e2-2.png)
+![Image](/assets/images/blog/75002f48-964c-44b1-91a0-e7d80c7ad8e2-2.webp)
 
 Hemm, untuk menjawab ini aku coba bahas sedikit *scientific* tentang *“how our brain works”*. Otak kita memiliki sebuah bagian yang disebut **amigdala** di pusat otak kita (*which mean* secara evolusi dia termasuk bagian paling awal muncul). Bagian ini merupakan pusat kendali utama ketika kita mendapati sebuah masalah, amigdala akan memutuskan apakah kita harus. ***“fight”*** or ***“flee”***. Dalam sepersekian detik amigdala harus memutuskan apa yang harus kita lakukan. Misal ketika ketemu ular, apakah orang ini harus lari aja atau coba lawan. Kan ga bisa tuh berleha-leha *selfie* dulu sama ular.
 

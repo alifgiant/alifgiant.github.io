@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Akhir akhir ini dunia sedang berputar sangat cepat. Berbagai bidang terjadi perubahan baik perkembangan maupun penurunan. Sebagai salah seorang yang menikmat..."
 readTime: "11 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Akhir akhir ini dunia sedang berputar sangat cepat. Berbagai bidang terjadi perubahan baik perkembangan maupun penurunan. Sebagai salah seorang yang menikmati berita, saya ingin menyuarakan beberapa pendapat saya terkait "Future" atau masa depan. Pada blog kali ini, saya akan memulai dari bahasan di keahlian saya yaitu Teknologi.

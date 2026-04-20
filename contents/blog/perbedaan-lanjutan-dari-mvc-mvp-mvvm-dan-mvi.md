@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Artikel kali ini ingin melajutkan tulisan saya sebelumnya Perbedaan Sederhana dari MVC, MVP, MVVM dan MVIhttps://www.notion.so/712d06d102ce46f387041cb444ba87..."
 readTime: "8 min"
-image: "/assets/images/blog/cover-d2022170-cd56-41ac-9b04-e01025f2a9f6.jpg"
+image: "/assets/images/blog/cover-d2022170-cd56-41ac-9b04-e01025f2a9f6.webp"
 ---
 
 Artikel kali ini ingin melajutkan tulisan saya sebelumnya [Perbedaan Sederhana dari MVC, MVP, MVVM dan MVI](https://www.notion.so/712d06d102ce46f387041cb444ba87e2) . Pada artikel itu, saya memberikan gambaran dengan bahasa sehari hari agar mudah dipahami. Namun tentu saja hanya sebatas kulitnya. Pada kesempatan kali ini saya ingin menjawab beberapa pertanyaan lanjutan yang diberikan oleh teman yang memiliki pengalaman lebih jauh dalam dunia pemograman. Jika kamu belum pernah membaca artikel sebelumnya, sebaiknya lowongkan waktu membaca artikel itu sebelum melanjukan membaca.
@@ -118,7 +118,7 @@ Itulah alasan kenapa MVP masih exist di pemograman modern. Selain alasan tersebu
 
 Namun muncul lagi sebuah perdebatan bahwa view belum cukup terpisah. Bisa dilihat pada contoh sebelumnya, ada proses di view yang mengubah field `coffeRefilloading` (sebuah model atau state milik view). Bagi sebagian orang ini adalah business logic. Karena business logic seharusnya berada di presenter maka sering kali terjadi “lupa” atau “miss” mengubah state ataupun menjalankann fungsi di view ketika melakukan perubahan. Sebagai programmer yang baik jika sebuah masalah kerap terjadi, kita perlu mencari solusi untuk mencegahnya kembali terulang.
 
-![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-1.png)
+![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-1.webp)
 
 Pada pattern yang baru, View dirancang agar otomatis react terhadap perubahan view-state dan me-reflect hasil perubahannya. Untuk sementara mari kita namakan “objek” baru yang mengendalikan semua state sebagai **NeoController**. Karena semua state dikendalikan oleh NeoController bisa kita katakan hanya ada satu sumber kebenaran (`Single Source of Truth`, SSoT), yaitu state milik NeoController.  Selain itu, karena kini state hanya dapat diubah oleh NeoController maka alur data dari view hanya ada satu arah (`Unidirectional Data Flow`, UDF). Bisa dilihat di diagram diatas, pada MVP terdapat 2 panah keluar namun di new pattern hanya 1. Kedua konsep baru yaitu "Single Source of Truth" dan "Unidirectional Data Flow" dapat ditemukan baik pada MVVM maupun MVI. NeoController kemudian dinamakan sebagai `ViewModel` pada MVVM dan `Intent-Reducer` pada MVI.
 
@@ -128,7 +128,7 @@ Perbedaan utama dari MVP dan MVVM ataupun MVI terletak pada kedua konsep baru in
 
 Sebenarnya di contoh pada artikel sebelumnya saya menyederhanakan MVI sehingga terlihat sama dengan MVVM jika MVVM hanya memiliki 1 state. Ada konsep User dan Reducer yang sengaja saya hilangkan. Secara singkat perbedaan MVVM dengan MVI terletak pada seberapa ketat konsep SSoT dan UDF diterapkan dimana MVI lebih ketat. Perhatikan diagram berikut.
 
-![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-2.png)
+![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-2.webp)
 
 Bisa dilihat MVVM bisa memiliki beberapa state, yaitu view state dan business state. View pada MVVM hanya otomatis reflect kepada view state. Hal inilah yang sempat saya sebutkan diartikel sebelumnya. Bisa saja ada sebuah `view state` yang sebenarnya `depend ke business state` tapi miss ketika business state diubah.
 
@@ -142,7 +142,7 @@ Untuk “mengakali” proses yang tiba-tiba ada ini, kita harus membayangkan “
 
 Lalu, apa output dari user? tentu saja, As you can guess, Intent.
 
-![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-3.png)
+![Image](/assets/images/blog/d2022170-cd56-41ac-9b04-e01025f2a9f6-3.webp)
 
 Jadi, pada MVI action tidak mengetahui juga apa kondisi terkini dari state, dan tidak bisa tiba melakukan modifikasi tanpa adanya Intent. Imaginary ~~Friend~~ User menghasilkan Intent. Action menerima data yang dia butuhkan dari Intent. Lalu, melakukan aksi dan memberikan hasilnya kepada Reducer. Reducer sendiri adalah objek yang berupa pure function yang menerima input current state, dan new data. Kurang lebih untuk kasus kopi diatas bisa kita tulis menjadi kode berikut.
 

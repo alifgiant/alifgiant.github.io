@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "GatsbyJS, Netlify, Netlify CMS, dan Github ❤️ Beberapa bulan berjalan dengan Wordpress, tapi saya tidak merasa puas. Jiwa jiwa geek meronta untuk mempelajari..."
 readTime: "3 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## GatsbyJS, Netlify, Netlify CMS, dan Github ❤️

@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Tadi siang tiba-tiba kepikiran hal yang bener-bener random. Pas lagi bengong di depan layar monitor, kepikiran: \"Sebenarnya berapa sih total pendapatan yang ..."
 readTime: "8 min"
-image: "/assets/images/blog/cover-2d6835c2-e62f-8096-939e-d5cceed3f7b8.png"
+image: "/assets/images/blog/cover-2d6835c2-e62f-8096-939e-d5cceed3f7b8.webp"
 ---
 
 Tadi siang tiba-tiba kepikiran hal yang bener-bener random. Pas lagi bengong di depan layar monitor, kepikiran: "Sebenarnya berapa sih total pendapatan yang dikumpulkan orang kalau kerja jadi PNS sampai pensiun?"
@@ -14,7 +14,7 @@ Jujur, pertanyaan ini muncul karena, kita semua tahu lah ya... bagi sebagian bes
 
 Sedangkan, kerja di **BUMN** bisa dianggap sebagai **Silver Standard**-nya. Disebut "Silver" karena meski bergengsi dan secara materi seringkali jauh lebih mengilap (gaji dan bonusnya lebih besar), tingkat kepastiannya dianggap satu level di bawah PNS. Masih ada risiko restrukturisasi atau efisiensi perusahaan, meskipun tetap jauh lebih stabil dibanding sektor swasta biasa atau dunia startup.
 
-![Image](/assets/images/blog/2d6835c2-e62f-8096-939e-d5cceed3f7b8-1.png)
+![Image](/assets/images/blog/2d6835c2-e62f-8096-939e-d5cceed3f7b8-1.webp)
 
 
 

@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Hey everyone, and welcome Before we get started, a quick heads-up: what you're about to read is a highly opinionated take on learning. This is my personal ph..."
 readTime: "5 min"
-image: "/assets/images/blog/cover-261835c2-e62f-80f9-a33c-f927b356e5e7.jpg"
+image: "/assets/images/blog/cover-261835c2-e62f-80f9-a33c-f927b356e5e7.webp"
 ---
 
 Hey everyone, and welcome!
@@ -20,7 +20,7 @@ Here's my five-step approach to learning something new and actually making it st
 
 ### Step 1: Find Your New Tree
 
-![Image](/assets/images/blog/261835c2-e62f-80f9-a33c-f927b356e5e7-1.png)
+![Image](/assets/images/blog/261835c2-e62f-80f9-a33c-f927b356e5e7-1.webp)
 
 Let's say you're a mobile app developer, like me, comfortable and deep-rooted in the world of iOS or Android. You've spent years building your expertise, and you know that tree inside and out. Now, you've decided you want to expand into a new domain—web development, maybe.
 

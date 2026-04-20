@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Tanggal 30 Juli 2021, saya secara resmi menjalani hari terakhir berstatus sebagai karyawan Bukalapak. Terhitung telah berlalu 3 tahun 4 bulan semenjak saya b..."
 readTime: "23 min"
-image: "/assets/images/blog/cover-3521a492-a5e8-4db0-9bcd-7bfed292c67c.jpg"
+image: "/assets/images/blog/cover-3521a492-a5e8-4db0-9bcd-7bfed292c67c.webp"
 ---
 
 Tanggal 30 Juli 2021, saya secara resmi menjalani hari terakhir berstatus sebagai karyawan Bukalapak. Terhitung telah berlalu 3 tahun 4 bulan semenjak saya bergabung. Mengingat kembali ke awal mula perjalanan ini, banyak sekali cerita, pengalaman yang sepertinya menarik untuk dibagikan. Termasuk, kenapa akhirnya saya memilih untuk mengundurkan diri dan kemana saya akan melanjutkan perjalanan karir.

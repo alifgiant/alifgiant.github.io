@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Siapa yang sering kali mendengar kalimat di judul di atas? Atau “Orang tua aku tidak mengerti aku”, “Adik/kaka ku lebih disayang”, dll. Semua kalimat senada ..."
 readTime: "3 min"
-image: "/assets/images/blog/cover-440107a4-ddfe-4085-a55b-65772e486bd9.jpg"
+image: "/assets/images/blog/cover-440107a4-ddfe-4085-a55b-65772e486bd9.webp"
 ---
 
 Siapa yang sering kali mendengar kalimat di judul di atas? Atau *“Orang tua aku tidak mengerti aku”*, *“Adik/kaka ku lebih disayang”*, dll. Semua kalimat senada yang pada intinya menyalahkan kondisi mu atas ketidak-pedulian orang tua mu. Yang menganggap bahwa orang tua mu tidak sayang kepadamu. Banyak anak anak jaman sekarang menuntut diberi kebebasan oleh orang tuanya yang “terlalu” mengekang. Berkata “aku bukanlah kalian, jangan paksa aku memenuhi mimpi kalian yang tidak tercapai, *aku punya mimpi sendiri, aku punya kehidupan sendiri. Aku bukan barang yang kalian miliki*”.

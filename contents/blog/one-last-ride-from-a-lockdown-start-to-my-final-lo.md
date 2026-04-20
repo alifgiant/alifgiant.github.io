@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "My cursor is hovering over the \"Log Out\" button, and for a moment, I just sit here listening to the silence of my room. Mandatory Last Day Picture At Office/..."
 readTime: "8 min"
-image: "/assets/images/blog/cover-321835c2-e62f-80fb-9e85-c14e3204a365.jpg"
+image: "/assets/images/blog/cover-321835c2-e62f-80fb-9e85-c14e3204a365.webp"
 ---
 
 My cursor is hovering over the "Log Out" button, and for a moment, I just sit here listening to the silence of my room.

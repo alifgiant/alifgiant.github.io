@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Unsplash - Paul Esch-Laurent/assets/images/blog/233835c2-e62f-805e-ad87-cedc75c3323f-1.jpg Unsplash - Paul Esch-Laurent Live coding interviews can be stressf..."
 readTime: "7 min"
-image: "/assets/images/blog/cover-233835c2-e62f-805e-ad87-cedc75c3323f.jpg"
+image: "/assets/images/blog/cover-233835c2-e62f-805e-ad87-cedc75c3323f.webp"
 ---
 
 ![Unsplash - Paul Esch-Laurent](/assets/images/blog/233835c2-e62f-805e-ad87-cedc75c3323f-1.jpg)

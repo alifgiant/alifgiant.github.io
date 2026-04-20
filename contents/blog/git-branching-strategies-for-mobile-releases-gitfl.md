@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Choosing a Git branching strategy can feel like picking a philosophy. It shapes your day-to-day workflow, how often you hit merge conflicts, and most importa..."
 readTime: "10 min"
-image: "/assets/images/blog/cover-345835c2-e62f-80c3-8703-cb90929c719f.png"
+image: "/assets/images/blog/cover-345835c2-e62f-80c3-8703-cb90929c719f.webp"
 ---
 
 Choosing a Git branching strategy can feel like picking a philosophy. It shapes your day-to-day workflow, how often you hit merge conflicts, and most importantly, how stressful release day is for a mobile app team.

@@ -2,6 +2,16 @@
 layout: layouts/base.njk
 ---
 
+{# Prism.js Syntax Highlighting for blog posts #}
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-shell-session.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-dart.min.js"></script>
+
 {# Article Header #}
 <section class="w-full max-w-4xl flex flex-col gap-8 mb-12 animate-fade-in">
     <div class="flex items-center gap-3 text-sm font-medium text-primary uppercase tracking-wider">
@@ -41,7 +51,7 @@ layout: layouts/base.njk
 {# Featured Image #}
 {% if image %}
     <div class="w-full max-w-6xl h-[400px] md:h-[600px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-stone-900/10 mb-20 relative">
-        <img alt="{{ title }}" loading="lazy" decoding="async" class="w-full h-full object-cover" src="{{ image }}" />
+        <img alt="{{ title }}" decoding="async" fetchpriority="high" class="w-full h-full object-cover" src="{{ image }}" />
         <div class="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent"></div>
     </div>
 {% endif %}
@@ -109,26 +119,39 @@ layout: layouts/base.njk
 
 
 
-{# Mermaid Support #}
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+{# Mermaid Support - Only load if diagram exists #}
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'base',
-            themeVariables: {
-                primaryColor: '#3b82f6',
-                primaryTextColor: '#fff',
-                primaryBorderColor: '#2563eb',
-                lineColor: '#94a3b8',
-                secondaryColor: '#f8fafc',
-                tertiaryColor: '#f1f5f9',
-                fontFamily: 'Space Grotesk, sans-serif'
-            }
-        });
-
-        mermaid.run({ querySelector: '.mermaid' });
-    });
+    // Check if page has Mermaid diagrams before loading library
+    const hasMermaidDiagram = document.body.innerHTML.includes('class="mermaid"');
+    if (hasMermaidDiagram) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+        script.async = true;
+        script.onload = () => {
+            document.addEventListener('DOMContentLoaded', () => {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'base',
+                    themeVariables: {
+                        primaryColor: '#3b82f6',
+                        primaryTextColor: '#fff',
+                        primaryBorderColor: '#2563eb',
+                        lineColor: '#94a3b8',
+                        secondaryColor: '#f8fafc',
+                        tertiaryColor: '#f1f5f9',
+                        fontFamily: 'Space Grotesk, sans-serif'
+                    }
+                });
+                // Render on idle or after a short delay
+                if (window.requestIdleCallback) {
+                    requestIdleCallback(() => mermaid.run({ querySelector: '.mermaid' }));
+                } else {
+                    setTimeout(() => mermaid.run({ querySelector: '.mermaid' }), 1000);
+                }
+            });
+        };
+        document.head.appendChild(script);
+    }
 </script>
 
 <style>
@@ -139,6 +162,11 @@ layout: layouts/base.njk
         border: 1px solid #e7e5e4;
         background: #ffffff;
         overflow-x: auto;
+        /* Reserve space to prevent layout shift during render */
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .mermaid svg {

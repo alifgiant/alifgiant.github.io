@@ -20,7 +20,7 @@ Let's get this out of the way right upfront: I am *not* telling you to go rewrit
 
 But here's the kicker, the actual *reason* I'm even writing this post: that "baby" status is exactly what makes it such a goldmine for mobile devs like us who want to learn backend stuff.
 
-![Image](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-1.png)
+![Image](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-1.webp)
 
 ### Learning the Hard Way (Which is the Best Way, Kinda) 🫣
 

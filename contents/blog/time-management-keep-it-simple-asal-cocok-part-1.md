@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Siapa yang pernah bertanya kepada idolanya atau tokoh yang ia jadikan model sebagai orang sukses, > Bagaimana anda mengatur waktu dalam kesibukan anda? > Pak..."
 readTime: "7 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Siapa yang pernah bertanya kepada idolanya atau tokoh yang ia jadikan model sebagai orang sukses,
@@ -18,7 +18,7 @@ Saya pun demikan, pernah bertanya, pernah membaca, *pernah ditanya* terkait hal 
 
 Mungkin sudah banyak yang tau, kunci dari semua kegiatan produktif ialah munculnya sebuah habbit (kebiasaan). Namun, muncul pertanyaan berikutnya, “bagaimana membentuk habbit?”. Sebuah [riset](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.695.830&rep=rep1&type=pdf) dari Universitas College London pada tahun 2009, mencoba menjawab hal ini. Riset tersebut menyimpulkan bahwa diperlukan 18 hingga 254 hari untuk mencapai kondisi sebuah kegiatan berjalan secara otomatis, simpelnya *habbit level dewa*.
 
-![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-1.png)
+![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-1.webp)
 
 Jika riset tersebut dibaca lebih detail, sebenarnya nilai ini sangatlah variatif. Tergantung pada apa kegiatannya dan bagaimana kondisi orangnya. Secara tidak langsung, saya dapat mengambil kesimpulan tambahan bahwa kegagalan saya dalam mengikuti metode time management belum tentu salah metodenya ataupun salah saya. Simply karena pada dasarnya semua orang membutuhkan waktu atau metode yang berbeda-beda.
 
@@ -30,7 +30,7 @@ Eisenhower, merupakan nama presiden Amerika Serikat ke 34. Ia terkenal dalam kea
 
 Matriks ini cukup simpel dan mudah dimengerti. Kita diajarkan bahwa suatu tugas bisa dikategorikan menjadi 4 tipe, berdasarkan pada apakah suatu tugas mendesak dan/atau penting. Lalu, kita diberi tau mana saja yang perlu kita lakukan sendiri, yaitu item yang masuk kategori Q1 dan Q2. Ketika menerapkannya saya dibantu aplikasi android [Ike](https://t.umblr.com/redirect?z=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.pocketuniverse.ike&t=YTIzYWQwNTQ4ZDdjNWJkM2MxNjZjMjhjZGZhYTE4NjQ1N2M5N2QyOSxkMTIyOTg4OGJhYjQ2MTE1NjZhMzY0YmMyMjY3MjZiYWZiNDM0M2Q3&ts=1707210864), untuk dapat melakukan pencatatan kapan saja dan dimana saja. Sehingga, tidak ada tugas yang lupa dicatat.
 
-![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-2.png)
+![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-2.webp)
 
 ## 2. Personal - Kanban Board
 
@@ -46,7 +46,7 @@ Selain 3 hal diatas ada 1 metode lain yang pernah saya coba. Namun, secara tidak
 
 Saya tanpa sengaja menjalankannya karena [Github.com](https://github.com/alifgiant) membuatnya sebagai sebuah fitur. Saya sering kali terpancing untuk melakukan coding hanya karena saya ingin melihat ada “ijo ijo” di halaman profil github saya.
 
-![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-3.png)
+![Image](/assets/images/blog/6499bea5-b18e-4a23-b363-665878ac6891-3.webp)
 
 Kalau kamu mau tertarik membaca berbagai teknik lain yang populer bisa mengujungi situs [ini](https://clockify.me/time-management-techniques) atau [ini](https://www.brightpod.com/boost/10-popular-time-management-techniques).
 

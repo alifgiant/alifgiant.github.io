@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "\"Kak, Bagaimana cara membuat aplikasi mobile?\" \"Kak, Bagaimana cara kamu membuat aplikasi mobile?\" Untuk menjawab pertanyaan ini saya akan menulisnya menjadi..."
 readTime: "5 min"
-image: "/assets/images/blog/cover-188aa21c-edd6-4715-a8dd-78553f6aaadb.jpg"
+image: "/assets/images/blog/cover-188aa21c-edd6-4715-a8dd-78553f6aaadb.webp"
 ---
 
 "Kak, Bagaimana cara membuat aplikasi mobile?"
@@ -30,7 +30,7 @@ Berikut adalah daftar topik yang akan saya bahas di rangkaian artikel:
 
 Software Development Lifecycle adalah rangkaian langkah yang mendefinisikan status pengembangan sebuah software. SDLC seringkali dimanfaatkan untuk mempermudah kita mengelola suatu projek pengembangan aplikasi. Dengan pengelolanan yang baik, diharapkan produk yang dihasilkan memiliki kualitas yang tinggi. SDLC umumnya terdiri dari 6 fase yaitu Analysis, Planning, Design, Development, Testing dan Deployment.
 
-![Image from: https://codecoda.com/en/blog/entry/software-development-lifecycle-management](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-1.png)
+![Image from: https://codecoda.com/en/blog/entry/software-development-lifecycle-management](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-1.webp)
 <figcaption class="notion-caption">Image from: https://codecoda.com/en/blog/entry/software-development-lifecycle-management</figcaption>
 
 Jadi seperti yang bisa kamu lihat, koding atau development merupakan fase ke-empat. Jika 3 langkah sebelumnya dilakukan dengan buruk, maka besar kemungkinan kita akan menghabiskan banyak waktu dan mungkin uang pada fase development. Beberapa hal buruk yang sering ditemui seperti fitur berganti atau bertambah ditengah masa koding, refactor yang berulang kali, dll.
@@ -51,18 +51,18 @@ Saya pribadi seringkali hanya mencari 3 hal berikut didalam sebuah SRS pengemban
 
 Ya, benar, ketiga hal diatas bisa diwakili hanya dari sebuah file mock up yang *well designed* (lengkap dengan panah navigasi, diurutkan berdasarkan prioritas, dll). Oleh karena itu untuk pengembangan aplikasi yang belum terlalu kompleks dan dikerjakan oleh tim yg kecil dokumen SRS ini seringkali tidak dibuat. *Source of truth* yang dirujuk bersama adalah file *mock up*.
 
-![Mockup Aplikasi Pikobar (Source)](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-2.png)
+![Mockup Aplikasi Pikobar (Source)](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-2.webp)
 <figcaption class="notion-caption">Mockup Aplikasi Pikobar (Source)</figcaption>
 
 ## Tahap 2: Planning
 
 Langkah kedua adalah perencanaan. Output dari fase ini juga bisa sangat beragam sesuai kebutuhan. Beberapa hal yang sering ditemukan antara lain dokumen terkait Risk & Conflict Management, Budget Management, Time Management, Test and Release Management, dll. Pada tahap kedua ini perlu dibahas beberapa hal terkait bisnis dan hal terkait teknikal. Oleh karena itu di fase ini terjadi kolaborasi oleh keseluruhan anggota yang ada di tim. Untuk tim kecil, disinilah terjadi diskusi antara orang product dan developer.
 
-![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-3.png)
+![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-3.webp)
 
 Menurut saya, sebagai developer, output yang paling penting dari tahap ini ialah Task list dan Gantt Chart. Task list (daftar tugas) sangat penting dibuat dengan baik, ia perlu dibuat dengan spesifik dan telah dilengkapi AC. Task list yang baik akan sangat membantu untuk memantau status pekerjaan dan mempermudah bekerja secara tim. Gantt Chart ialah tabel yang berisi time scheduling terkait keseluruhan proses. Tabel ini menemukan ekspektasi durasi kerja dari semua stakeholder, sehingga bisa membantu **memastikan** apakah suatu task feasible atau tidak.  [https://clickup.com/blog/scrum-board/](https://t.umblr.com/redirect?z=https%3A%2F%2Fclickup.com%2Fblog%2Fscrum-board%2F&t=NDk2YjM0OGY4Mzc2Zjg3Y2Y2ZTU3MDM4NDZhODJiMDc2MzJhNjExMyxhYTEzMzU2NTM3YWVlNzk0YWQ1ODNiMWM3NWY4MGZlNThlOTE3NjIw&ts=1707209379)
 
-![Sumber instagantt.com](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-4.png)
+![Sumber instagantt.com](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-4.webp)
 <figcaption class="notion-caption">Sumber instagantt.com</figcaption>
 
 ## Tahap 3: Design
@@ -78,13 +78,13 @@ Output yang diharapkan pada fase ini adalah sebuah Software Design Document(SDD)
 
 Pada dasarnya tahap design ini adalah proses pendetailan hal teknikal yang sudah dibahas di tahap sebelumnya. Misal, jika aplikasi yang ingin dibuat perlu menggunakan sebuah back end dan terhubung ke sistem Google Map maka pada tahap ini perlu diperjelas bagaimana cara kita ingin melakukannya.
 
-![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-5.png)
+![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-5.webp)
 
 Sesungguhnya semakin detail output dari tahap ini maka akan semakin mempermudah ketika kita akan melakukan koding. Walaupun demikian, perlu diingat, tahap design ini adalah bagian dari perencanaan. Sehingga bisa saja ketika sudah melakukan implementasi diperlukan ada penyesuaian rancangan. Jika saya harus memilih output apa yang paling penting maka jawaban saya adalah Interface Design, yang **bisa berupa** sebuah API Documentation.
 
 ## Design Thinking
 
-![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-6.png)
+![Image](/assets/images/blog/188aa21c-edd6-4715-a8dd-78553f6aaadb-6.webp)
 
 Sedikit trivia tambahan, sejauh yang saya tau, product designer menerapkan lifecycle sendiri yang disebut Design Thinking Process. Saya tidak mengetahui prosesnya secara detail namun, bisa kita lihat di diagram dibawah, tahap terakhir disebut **Implement**. Menurut saya, inilah fase dimulai SDLC yang telah kita bahas diatas.
 

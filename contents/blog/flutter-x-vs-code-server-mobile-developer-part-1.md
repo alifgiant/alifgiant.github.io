@@ -5,7 +5,7 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "Cerita dulu dikit, Santai.. Jangan buru buru, awas nabrak.. Sebagai seorang developer, ada satu benda yang hampir selalu dibawa setiap kali berpergian. Ya be..."
 readTime: "3 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## Cerita dulu dikit, Santai.. Jangan buru buru, awas nabrak..
