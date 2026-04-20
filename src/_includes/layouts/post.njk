@@ -122,13 +122,13 @@ layout: layouts/base.njk
 {# Mermaid Support - Only load if diagram exists #}
 <script>
     // Check if page has Mermaid diagrams before loading library
-    const hasMermaidDiagram = document.body.innerHTML.includes('class="mermaid"');
+    const hasMermaidDiagram = document.querySelector('.mermaid') !== null;
     if (hasMermaidDiagram) {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
         script.async = true;
         script.onload = () => {
-            document.addEventListener('DOMContentLoaded', () => {
+            const initMermaid = () => {
                 mermaid.initialize({
                     startOnLoad: false,
                     theme: 'base',
@@ -148,7 +148,13 @@ layout: layouts/base.njk
                 } else {
                     setTimeout(() => mermaid.run({ querySelector: '.mermaid' }), 1000);
                 }
-            });
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMermaid, { once: true });
+            } else {
+                initMermaid();
+            }
         };
         document.head.appendChild(script);
     }
