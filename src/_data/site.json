@@ -229,6 +229,14 @@
                 }
                 ,
                 {
+                    "title": "KUR Calculator",
+                    "description": "Calculate KUR (Kredit Usaha Rakyat) monthly payments with fixed tenure 12-60 months and max 500M IDR.",
+                    "url": "/tools/kur/",
+                    "icon": "business",
+                    "tag": "Utilities"
+                }
+                ,
+                {
                     "title": "KPR Calculator",
                     "description": "Calculate KPR monthly payments and view full amortization table (principal, interest, remaining balance).",
                     "url": "/tools/kpr/",

@@ -32,15 +32,18 @@ permalink: /tools/kpr/
 
     <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
         <div class="flex flex-col gap-8">
+            {% set shortcutHint = 'You can type shorthand values: <span class="font-semibold text-text-main">500m</span>, <span class="font-semibold text-text-main">1.5b</span>, or decimals like <span class="font-semibold text-text-main">150,5m</span> (case-insensitive).' %}
+            {% include "partials/input-shortcut.njk" %}
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Property Price (IDR)</label>
-                    <input type="text" :value="format(basePrice)" @input="onCurrencyInput($event,'basePrice')" placeholder="0" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                    <input type="text" x-model="inputs.basePrice" @input="onCurrencyInput('basePrice')" @blur="onCurrencyBlur('basePrice')" placeholder="Enter amount (e.g. 500m)" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
                 </div>
 
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Down Payment (amount)</label>
-                    <input type="text" :value="format(dpAmount)" @input="onCurrencyInput($event,'dpAmount'); syncDpPercent()" placeholder="0" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                    <input type="text" x-model="inputs.dpAmount" @input="onCurrencyInput('dpAmount', true)" @blur="onCurrencyBlur('dpAmount', true)" placeholder="Enter amount (e.g. 100m)" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
                 </div>
 
                 <div class="flex flex-col gap-4">
@@ -143,6 +146,7 @@ permalink: /tools/kpr/
         return {
             basePrice: 0,
             dpAmount: 0,
+            inputs: { basePrice: '', dpAmount: '' },
             dpPercent: 20,
             fixedRate: 7.0,
             fixedYears: 5,
@@ -156,12 +160,87 @@ permalink: /tools/kpr/
                 return new Intl.NumberFormat('id-ID').format(Math.round(v || 0));
             },
 
-            onCurrencyInput(e, field) {
-                const raw = String(e.target.value).replace(/[^0-9]/g, '');
-                const value = raw ? Number(raw) : 0;
-                this[field] = value;
-                e.target.value = this.format(value);
-                this.recalculate();
+            onCurrencyInput(field, updatePercent = false) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    if (updatePercent) this.syncDpPercent();
+                    else this.recalculate();
+                    return;
+                }
+
+                const value = this.parseCurrencyValue(raw);
+                this[field] = Number.isNaN(value) ? 0 : value;
+                if (updatePercent) this.syncDpPercent();
+                else this.recalculate();
+            },
+
+            onCurrencyBlur(field, updatePercent = false) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    if (updatePercent) this.syncDpPercent();
+                    else this.recalculate();
+                    return;
+                }
+
+                const value = this.parseCurrencyValue(raw);
+                this[field] = Number.isNaN(value) ? 0 : value;
+                this.inputs[field] = this[field] > 0 ? this.format(this[field]) : '';
+                if (updatePercent) this.syncDpPercent();
+                else this.recalculate();
+            },
+
+            parseCurrencyValue(input) {
+                const raw = String(input || '').trim();
+                if (!raw) return 0;
+
+                const shorthandMatch = raw.match(/^([\d.,]+)\s*([kKmMbB])$/);
+                if (shorthandMatch) {
+                    const base = this.parseLocalizedNumber(shorthandMatch[1]);
+                    if (!Number.isNaN(base)) {
+                        const suffix = shorthandMatch[2].toLowerCase();
+                        const scale = suffix === 'k' ? 1000 : suffix === 'm' ? 1000000 : 1000000000;
+                        return base * scale;
+                    }
+                }
+
+                const normalized = this.parseLocalizedNumber(raw);
+                if (!Number.isNaN(normalized)) return normalized;
+
+                const digitsOnly = raw.replace(/[^0-9]/g, '');
+                return digitsOnly ? Number(digitsOnly) : 0;
+            },
+
+            parseLocalizedNumber(value) {
+                const cleaned = String(value || '').trim().replace(/\s+/g, '');
+                if (!cleaned || !/^\d[\d.,]*$/.test(cleaned)) return NaN;
+
+                const hasDot = cleaned.includes('.');
+                const hasComma = cleaned.includes(',');
+
+                if (hasDot && hasComma) {
+                    const decimalSep = cleaned.lastIndexOf('.') > cleaned.lastIndexOf(',') ? '.' : ',';
+                    const thousandSep = decimalSep === '.' ? ',' : '.';
+                    const normalized = cleaned.replace(new RegExp(`\\${thousandSep}`, 'g'), '').replace(decimalSep, '.');
+                    return Number(normalized);
+                }
+
+                if (hasComma) {
+                    const parts = cleaned.split(',');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned.replace(',', '.') : cleaned.replace(/,/g, ''));
+                }
+
+                if (hasDot) {
+                    const parts = cleaned.split('.');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned : cleaned.replace(/\./g, ''));
+                }
+
+                return Number(cleaned);
             },
 
             syncDpPercent() {
@@ -173,12 +252,15 @@ permalink: /tools/kpr/
 
             syncDpAmount() {
                 this.dpAmount = Math.round((this.dpPercent/100) * (this.basePrice || 0));
+                this.inputs.dpAmount = this.dpAmount > 0 ? this.format(this.dpAmount) : '';
                 this.recalculate();
             },
 
             reset() {
                 this.basePrice = 0;
                 this.dpAmount = 0;
+                this.inputs.basePrice = '';
+                this.inputs.dpAmount = '';
                 this.dpPercent = 20;
                 this.fixedRate = 7.0;
                 this.fixedYears = 5;
@@ -228,10 +310,7 @@ permalink: /tools/kpr/
             recalculate() {
                 const bp = Number(this.basePrice || 0);
                 this.dpAmount = Number(this.dpAmount || 0);
-                // ensure dpAmount consistent with percent
-                if (this.dpPercent) {
-                    this.dpAmount = Math.round((this.dpPercent/100) * bp);
-                }
+                this.dpAmount = Math.max(0, Math.min(this.dpAmount, bp));
 
                 const loanAmount = Math.max(0, bp - this.dpAmount);
                 const totalMonths = Math.max(1, Math.round(this.totalYears * 12));

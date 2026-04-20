@@ -33,13 +33,8 @@ permalink: /tools/salary/
 
     <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
         <div class="flex flex-col gap-8">
-            <div class="rounded-2xl border border-primary/20 bg-primary/[0.06] p-4 md:p-5 flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary text-xl mt-0.5">tips_and_updates</span>
-                <div>
-                    <div class="text-xs font-bold uppercase tracking-wider text-text-main">Input Shortcut</div>
-                    <p class="mt-1 text-sm text-text-muted leading-relaxed">You can type shorthand values in salary fields: <span class="font-semibold text-text-main">250k</span>, <span class="font-semibold text-text-main">1.5m</span>, or <span class="font-semibold text-text-main">1.2b</span> (case-insensitive).</p>
-                </div>
-            </div>
+            {% set shortcutHint = 'You can type shorthand values in salary fields: <span class="font-semibold text-text-main">250k</span>, <span class="font-semibold text-text-main">1.5m</span>, <span class="font-semibold text-text-main">1.2b</span>, or decimals like <span class="font-semibold text-text-main">1,5m</span> (case-insensitive).' %}
+            {% include "partials/input-shortcut.njk" %}
 
             <div class="space-y-4">
                 <h3 class="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
@@ -50,12 +45,12 @@ permalink: /tools/salary/
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col gap-3">
                             <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Basic Gross (IDR)</label>
-                            <input type="text" x-model="inputs.monthlyGross" @input="onCurrencyInput('monthlyGross')" @blur="onCurrencyBlur('monthlyGross')" placeholder="0" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                            <input type="text" x-model="inputs.monthlyGross" @input="onCurrencyInput('monthlyGross')" @blur="onCurrencyBlur('monthlyGross')" placeholder="Enter amount (e.g. 10m)" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
                         </div>
 
                         <div class="flex flex-col gap-3">
                             <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Allowances (optional)</label>
-                            <input type="text" x-model="inputs.monthlyAllowance" @input="onCurrencyInput('monthlyAllowance')" @blur="onCurrencyBlur('monthlyAllowance')" placeholder="0" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                            <input type="text" x-model="inputs.monthlyAllowance" @input="onCurrencyInput('monthlyAllowance')" @blur="onCurrencyBlur('monthlyAllowance')" placeholder="Optional (e.g. 2m)" class="block w-full px-5 py-4 bg-white border border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
                         </div>
                     </div>
                     
@@ -368,8 +363,8 @@ permalink: /tools/salary/
             monthlyGross: 0,
             monthlyAllowance: 0,
             inputs: {
-                monthlyGross: '0',
-                monthlyAllowance: '0'
+                monthlyGross: '',
+                monthlyAllowance: ''
             },
             rates: {
                 bpjs: 1.00, // percent, employee
@@ -478,8 +473,8 @@ permalink: /tools/salary/
             },
 
             init() {
-                this.inputs.monthlyGross = this.format(this.monthlyGross);
-                this.inputs.monthlyAllowance = this.format(this.monthlyAllowance);
+                this.inputs.monthlyGross = this.monthlyGross > 0 ? this.format(this.monthlyGross) : '';
+                this.inputs.monthlyAllowance = this.monthlyAllowance > 0 ? this.format(this.monthlyAllowance) : '';
                 this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
                 this.rateInputs.jht = this.formatPercent(this.rates.jht);
                 this.rateInputs.pension = this.formatPercent(this.rates.pension);
@@ -499,15 +494,30 @@ permalink: /tools/salary/
             },
 
             onCurrencyInput(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
                 const value = this.parseCurrencyValue(this.inputs[field]);
                 this[field] = value;
+                this.inputs[field] = raw;
                 this.recalculate();
             },
 
             onCurrencyBlur(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
                 const value = this.parseCurrencyValue(this.inputs[field]);
                 this[field] = value;
-                this.inputs[field] = this.format(value);
+                this.inputs[field] = value > 0 ? this.format(value) : '';
                 this.recalculate();
             },
 
@@ -607,8 +617,8 @@ permalink: /tools/salary/
             reset() {
                 this.monthlyGross = 0;
                 this.monthlyAllowance = 0;
-                this.inputs.monthlyGross = '0';
-                this.inputs.monthlyAllowance = '0';
+                this.inputs.monthlyGross = '';
+                this.inputs.monthlyAllowance = '';
                 this.jkkTier = 1;
                 this.status = { married: false, dependents: 0 };
                 this.rates = { bpjs:1.00, jht:2.00, pension:1.00, jkk:0.24, jkm:0.30, bpjsEmployer:4.00, jhtEmployer:3.70, pensionEmployer:2.00 };
