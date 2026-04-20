@@ -56,8 +56,13 @@ permalink: /tools/mermaid/
                     </div>
                 </div>
 
-                <textarea x-model="diagramCode" rows="14" placeholder="flowchart TD\nA[Start] --> B{Condition}\nB -->|Yes| C[Do Something]\nB -->|No| D[Do Something Else]"
-                    class="block w-full px-5 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all font-mono text-sm shadow-inner resize-y"></textarea>
+                <div class="relative w-full bg-stone-50 border-2 border-stone-100 rounded-2xl shadow-inner overflow-hidden" style="min-height: 320px; height: 320px; resize: vertical;">
+                    <div x-ref="highlightLayer" x-html="highlightedDiagramCode"
+                         class="mermaid-editor-code absolute inset-0 px-5 py-4 text-sm pointer-events-none overflow-auto text-text-main"></div>
+
+                    <textarea x-ref="codeInput" x-model="diagramCode" @scroll="syncEditorScroll()" spellcheck="false" placeholder="flowchart TD\nA[Start] --> B{Condition}\nB -->|Yes| C[Do Something]\nB -->|No| D[Do Something Else]"
+                        class="mermaid-editor-code mermaid-editor-input relative z-10 block w-full h-full px-5 py-4 bg-transparent text-transparent caret-text-main placeholder:text-stone-400 focus:outline-none focus:bg-white/20 transition-all resize-none"></textarea>
+                </div>
 
                 <div x-show="error" class="p-4 bg-rose-50 text-rose-700 border border-rose-100 rounded-2xl text-xs flex items-start gap-3" x-cloak>
                     <span class="material-symbols-outlined text-lg">error</span>
@@ -523,6 +528,66 @@ D --> A</pre>
     </div>
 </div>
 
+<style>
+    .mermaid-editor-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0;
+        word-spacing: 0;
+        font-kerning: none;
+        font-variant-ligatures: none;
+        font-feature-settings: "liga" 0, "calt" 0;
+        tab-size: 2;
+    }
+
+    .mermaid-editor-line {
+        white-space: pre;
+        height: 24px;
+    }
+
+    .mermaid-editor-input::selection {
+        color: transparent;
+        background: rgba(59, 130, 246, 0.18);
+    }
+
+    .mermaid-editor-input::-moz-selection {
+        color: transparent;
+        background: rgba(59, 130, 246, 0.18);
+    }
+
+    .mermaid-editor-input {
+        color: transparent !important;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .mermaid-editor-input::placeholder {
+        -webkit-text-fill-color: #a8a29e;
+    }
+
+    .mermaid-editor-code::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .mermaid-editor-code::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .mermaid-editor-code::-webkit-scrollbar-thumb {
+        background: rgba(120, 113, 108, 0.35);
+        border-radius: 9999px;
+    }
+
+    .syntax-mermaid-comment { color: #9ca3af; }
+    .syntax-mermaid-keyword { color: #2563eb; }
+    .syntax-mermaid-arrow { color: #ea580c; }
+    .syntax-mermaid-connector { color: #0f766e; }
+    .syntax-mermaid-label { color: #7c3aed; }
+    .syntax-mermaid-string { color: #be123c; }
+    .syntax-mermaid-number { color: #0d9488; }
+</style>
+
 <script>
     function mermaidTool() {
         return {
@@ -538,6 +603,15 @@ D --> A</pre>
             rawSvg: '',
             usedCheat: '',
             storageKey: 'mermaid-diagram-code',
+
+            get highlightedDiagramCode() {
+                if (!this.diagramCode) return '';
+
+                return this.diagramCode
+                    .split('\n')
+                    .map((line) => `<div class="mermaid-editor-line">${this.highlightMermaidLine(line)}</div>`)
+                    .join('');
+            },
 
             cheatsheetCode: {
                 flowchart: `flowchart TD
@@ -761,6 +835,52 @@ D --> A`,
                 } catch (_) {
                     // Ignore storage errors in restricted contexts.
                 }
+            },
+
+            syncEditorScroll() {
+                if (!this.$refs.codeInput || !this.$refs.highlightLayer) return;
+                this.$refs.highlightLayer.scrollTop = this.$refs.codeInput.scrollTop;
+                this.$refs.highlightLayer.scrollLeft = this.$refs.codeInput.scrollLeft;
+            },
+
+            escapeHtml(text) {
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            },
+
+            highlightMermaidLine(line) {
+                if (!line) return '&nbsp;';
+
+                const raw = line;
+                const trimmed = raw.trim();
+
+                if (trimmed.startsWith('%%')) {
+                    return `<span class="syntax-mermaid-comment">${this.escapeHtml(raw)}</span>`;
+                }
+
+                let escaped = this.escapeHtml(raw);
+
+                // Strings wrapped in quotes.
+                escaped = escaped.replace(/(&quot;[^&]*?&quot;)/g, '<span class="syntax-mermaid-string">$1</span>');
+
+                // Diagram and control keywords.
+                escaped = escaped.replace(/\b(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram-v2|stateDiagram|erDiagram|journey|gantt|pie|mindmap|timeline|gitGraph|xychart-beta|architecture-beta|block|treeView-beta|subgraph|classDef|class|style|linkStyle|click|title|participant|actor|loop|alt|else|opt|par|and|end|note|section|accTitle|accDescr|direction|TB|TD|BT|LR|RL)\b/g, '<span class="syntax-mermaid-keyword">$1</span>');
+
+                // Arrows and relationships.
+                escaped = escaped.replace(/(---|-->|==>|-\.->|\.->|->>|-->>|<->|<-->|<-|->|\|\||\|\{)/g, '<span class="syntax-mermaid-arrow">$1</span>');
+
+                // Node labels and edge labels.
+                escaped = escaped.replace(/(\[[^\]]+\]|\{[^}]+\}|\([^)]*\)|\(\([^)]*\)\)|\|[^|]+\|)/g, '<span class="syntax-mermaid-label">$1</span>');
+
+                // Number values.
+                escaped = escaped.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="syntax-mermaid-number">$1</span>');
+
+                // Punctuation connectors.
+                escaped = escaped.replace(/(:|;|,)/g, '<span class="syntax-mermaid-connector">$1</span>');
+
+                return escaped;
             },
 
             clearCode() {
