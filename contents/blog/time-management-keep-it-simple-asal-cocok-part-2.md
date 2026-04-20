@@ -76,7 +76,7 @@ Bagi saya, oke 1 minggu ini nonton anime terus, tidak masalah, jika baru saja me
 
 ## 5. Keep The Task Simple and Possible
 
-Sebisa mungkin semua task yang masuk ke “to do” list saya bisa ditulis dalam satu kalimat singkat. Misalnya “Ganti pin ATM”, “Beli bohlam”, “Bayar gaji si X”, dst. Sedikit gambaran lebih jauh, apa yang saya tulis pada “to do”, bukanlah “Buat artikel tentang time management” tapi “Buat Artikel dan Post hari Selasa”. Hal ini membuat saya memiliki ruang eksplorasi ketika mengerjakan task tersebut dan tetap memastikan saya bisa menyelesaikan tugasnya. Sesederhana kalau saya tidak bisa menyelesaikan artikel tentang time management, ya sudah saya buat tulisan puisi atau potongan overthinking saya hari itu. Hal ini selaras dengan saya mendorong kuantitas dibanding kualitas.
+Sebisa mungkin semua task yang masuk ke “to do” list saya bisa ditulis dalam satu kalimat singkat. Misalnya ���Ganti pin ATM”, “Beli bohlam”, “Bayar gaji si X”, dst. Sedikit gambaran lebih jauh, apa yang saya tulis pada “to do”, bukanlah “Buat artikel tentang time management” tapi “Buat Artikel dan Post hari Selasa”. Hal ini membuat saya memiliki ruang eksplorasi ketika mengerjakan task tersebut dan tetap memastikan saya bisa menyelesaikan tugasnya. Sesederhana kalau saya tidak bisa menyelesaikan artikel tentang time management, ya sudah saya buat tulisan puisi atau potongan overthinking saya hari itu. Hal ini selaras dengan saya mendorong kuantitas dibanding kualitas.
 
 **Tapi bagaimana dengan task yang memang sudah sangat spesifik?**
 
