@@ -32,18 +32,6 @@ permalink: /tools/world-time/
 
     <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
         <div class="flex flex-col gap-10">
-            <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                <div class="flex flex-col gap-2">
-                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Current Place</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-text-main" x-text="placeLabel(systemTimeZone)"></h2>
-                    <p class="text-sm text-text-muted">Uses your browser or system time zone only. No geolocation lookup.</p>
-                </div>
-                <div class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-text-muted">
-                    <span class="material-symbols-outlined text-base">schedule</span>
-                    <span x-text="zoneSummary(systemTimeZone)"></span>
-                </div>
-            </div>
-
             <div class="flex justify-center p-1 bg-stone-100/80 backdrop-blur rounded-2xl w-fit mx-auto border border-stone-200">
                 <button @click="setMode('live')" :class="mode === 'live' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Live</button>
                 <button @click="setMode('custom')" :class="mode === 'custom' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Custom</button>
@@ -52,25 +40,32 @@ permalink: /tools/world-time/
             <div x-show="mode === 'custom'" x-cloak class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
                 <div class="flex flex-col gap-3">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Custom Date</label>
-                    <input type="date" x-model="customDate" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                    <input type="date" x-model="customDate" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-white border-2 border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary/50 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all text-base md:text-lg shadow-sm appearance-none" style="font-size: 16px;">
                 </div>
                 <div class="flex flex-col gap-3">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Custom Time</label>
-                    <input type="time" step="1" x-model="customTime" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                    <input type="time" step="1" x-model="customTime" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-white border-2 border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary/50 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all text-base md:text-lg shadow-sm appearance-none" style="font-size: 16px;">
                 </div>
             </div>
 
             <div class="rounded-[2rem] bg-stone-950 text-stone-50 p-8 md:p-10 shadow-2xl relative overflow-hidden">
                 <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
-                <div class="relative z-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <div class="relative z-10 flex flex-col gap-6">
                     <div class="flex flex-col gap-3">
-                        <span class="text-xs font-bold uppercase tracking-[0.3em] text-stone-400" x-text="mode === 'live' ? 'Current System Time' : 'Custom Reference Time'"></span>
-                        <span class="text-4xl md:text-6xl font-bold leading-none tabular-nums" x-text="formatTime(systemTimeZone)"></span>
-                        <span class="text-base md:text-lg text-stone-300" x-text="formatDate(systemTimeZone)"></span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs font-bold uppercase tracking-[0.3em] text-stone-400" x-text="mode === 'custom' ? 'Custom Reference Time' : 'Current System Time'">Current System Time</span>
+                            <span class="text-xs text-stone-500 leading-relaxed">Uses your browser or system time zone only. No geolocation lookup.</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1 md:text-right">
-                        <span class="text-sm font-semibold text-stone-200" x-text="systemTimeZone"></span>
-                        <span class="text-sm text-stone-400" x-text="zoneName(systemTimeZone)"></span>
+                    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div class="flex flex-col gap-3">
+                            <span class="text-4xl md:text-6xl font-bold leading-none tabular-nums" x-text="formatTime(referenceTimeZone())"></span>
+                            <span class="text-base md:text-lg text-stone-300" x-text="formatDate(referenceTimeZone())"></span>
+                        </div>
+                        <div class="flex flex-col gap-1 md:text-right">
+                            <span class="text-sm font-semibold text-stone-200" x-text="referenceTimeZone()"></span>
+                            <span class="text-sm text-stone-400" x-text="zoneName(referenceTimeZone())"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,7 +76,7 @@ permalink: /tools/world-time/
                 <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h3 class="text-xl md:text-2xl font-bold text-text-main">Tracked Time Zones</h3>
-                        <p class="text-sm text-text-muted">Default zones are Riyadh, Dubai, India, and Singapore. You can remove any of them and save your own set locally on this device.</p>
+                        <p class="text-sm text-text-muted">Default zones are Riyadh, Dubai, Kolkata and Singapore. You can remove any of them and re-add or save your own set locally on this device.</p>
                     </div>
                     <span class="text-xs font-bold uppercase tracking-widest text-text-muted" x-text="trackedTimezones.length + ' saved zones'"></span>
                 </div>
@@ -90,8 +85,8 @@ permalink: /tools/world-time/
                     <div class="flex flex-col gap-3">
                         <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Add Time Zone</label>
                         <select x-model="selectedTimezone" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
-                            <template x-for="zone in selectableTimezones" :key="zone">
-                                <option :value="zone" x-text="optionLabel(zone)"></option>
+                            <template x-for="tzOption in enrichedSelectableTimezones" :key="tzOption.id">
+                                <option :value="tzOption.id" x-text="tzOption.label"></option>
                             </template>
                         </select>
                     </div>
@@ -103,8 +98,8 @@ permalink: /tools/world-time/
 
                 <template x-if="trackedTimezones.length">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <template x-for="zone in trackedTimezones" :key="zone">
-                            <div draggable="true" @dragstart="startDrag(zone)" @dragover.prevent="dragOver(zone)" @drop.prevent="dropDragged(zone)" @dragend="endDrag()" :class="draggedZone === zone ? 'opacity-60 ring-2 ring-primary/20' : ''" class="rounded-[2rem] border border-stone-200 bg-stone-50/80 p-6 md:p-7 shadow-sm flex flex-col gap-5 cursor-move transition-all duration-200">
+                        <template x-for="(zone, zoneIndex) in trackedTimezones" :key="zone">
+                            <div :id="`zone-card-${zone.replaceAll('/', '-')}`" draggable="true" @dragstart="startDrag(zone)" @dragover.prevent="dragOver(zone)" @drop.prevent="dropDragged(zone)" @dragend="endDrag()" @touchstart="touchStart($event, zone)" @touchmove.prevent="touchMove($event, zone, zoneIndex)" @touchend="touchEnd()" :class="draggedZone === zone || touchedZone === zone ? 'opacity-60 ring-2 ring-primary/20' : ''" class="rounded-[2rem] border border-stone-200 bg-stone-50/80 p-6 md:p-7 shadow-sm flex flex-col gap-5 cursor-move select-none transition-all duration-200 touch-none">
                                 <div class="flex items-start justify-between gap-4">
                                     <div class="flex flex-col gap-1 min-w-0">
                                         <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Tracked Zone</span>
@@ -170,13 +165,21 @@ permalink: /tools/world-time/
             customTime: '',
             customTimestamp: null,
             draggedZone: null,
+            touchedZone: null,
+            touchStartY: 0,
+            touchStartIndex: null,
             systemTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
             trackedTimezones: [],
             selectedTimezone: '',
+            enrichedSelectableTimezones: [],
+            _availableTimezones: null,
+            _timeFormatterCache: {},
+            _dateFormatterCache: {},
+            _zoneMetaCache: {},
             knownLabels: {
                 'Asia/Riyadh': 'Riyadh, KSA',
                 'Asia/Dubai': 'Dubai, UAE',
-                'Asia/Kolkata': 'India',
+                'Asia/Kolkata': 'Kolkata, India',
                 'Asia/Singapore': 'Singapore',
                 'UTC': 'UTC'
             },
@@ -208,7 +211,6 @@ permalink: /tools/world-time/
             init() {
                 this.setCustomFieldsFromNow();
                 this.loadTrackedTimezones();
-                this.selectedTimezone = 'Asia/Singapore';
                 this.timer = window.setInterval(() => {
                     this.now = Date.now();
                 }, 1000);
@@ -222,33 +224,56 @@ permalink: /tools/world-time/
             },
 
             get availableTimezones() {
+                if (this._availableTimezones) {
+                    return this._availableTimezones;
+                }
+
                 const supported = typeof Intl.supportedValuesOf === 'function'
                     ? Intl.supportedValuesOf('timeZone')
                     : [];
 
-                return [...new Set([
+                this._availableTimezones = [...new Set([
                     this.systemTimeZone,
                     ...this.defaultTrackedTimezones,
                     ...this.fallbackTimezones,
                     ...supported
                 ])].filter(Boolean);
+
+                return this._availableTimezones;
             },
 
-            get selectableTimezones() {
-                return this.availableTimezones
-                    .filter(zone => zone !== this.systemTimeZone && !this.trackedTimezones.includes(zone))
-                    .sort((leftZone, rightZone) => {
-                        const offsetDifference = this.zoneOffsetMinutes(leftZone) - this.zoneOffsetMinutes(rightZone);
-                        if (offsetDifference !== 0) {
-                            return offsetDifference;
+            buildSelectableTimezones() {
+                this.enrichedSelectableTimezones = this.availableTimezones
+                    .map(zone => ({
+                        id: zone,
+                        label: this.optionLabel(zone)
+                    }))
+                    .sort((left, right) => {
+                        const offsetDiff = this.zoneOffsetMinutes(left.id) - this.zoneOffsetMinutes(right.id);
+                        if (offsetDiff !== 0) {
+                            return offsetDiff;
                         }
-
-                        return this.optionLabel(leftZone).localeCompare(this.optionLabel(rightZone));
+                        return left.label.localeCompare(right.label);
                     });
+
+                // Always prefer GMT+8 area specifically on component load/init
+                const preferred = ['Asia/Singapore', 'Asia/Kuala_Lumpur', 'Asia/Jakarta', 'Asia/Bangkok', this.systemTimeZone];
+                const preferredOption = preferred
+                    .map(id => this.enrichedSelectableTimezones.find(tz => tz.id === id))
+                    .find(Boolean);
+                    
+                // Use nextTick to forcibly overwrite any browser-cached <select> state
+                this.$nextTick(() => {
+                    this.selectedTimezone = preferredOption?.id || this.enrichedSelectableTimezones[0]?.id || '';
+                });
             },
 
             get activeTimestamp() {
                 return this.mode === 'custom' && this.customTimestamp ? this.customTimestamp : this.now;
+            },
+
+            referenceTimeZone() {
+                return this.mode === 'live' ? this.systemTimeZone : 'Asia/Singapore';
             },
 
             setMode(nextMode) {
@@ -294,9 +319,10 @@ permalink: /tools/world-time/
                 const baseZones = saved ? this.parseStoredTimezones(saved) : this.defaultTrackedTimezones;
 
                 this.trackedTimezones = [...new Set(baseZones)]
-                    .filter(zone => zone && zone !== this.systemTimeZone && this.availableTimezones.includes(zone));
+                    .filter(zone => zone && this.availableTimezones.includes(zone));
 
                 this.saveTrackedTimezones();
+                this.buildSelectableTimezones();
             },
 
             parseStoredTimezones(value) {
@@ -313,12 +339,30 @@ permalink: /tools/world-time/
             },
 
             addTrackedTimezone() {
-                if (!this.selectedTimezone || this.trackedTimezones.includes(this.selectedTimezone) || this.selectedTimezone === this.systemTimeZone) {
+                if (!this.selectedTimezone) {
                     return;
                 }
 
-                this.trackedTimezones = [...this.trackedTimezones, this.selectedTimezone];
-                this.saveTrackedTimezones();
+                if (!this.trackedTimezones.includes(this.selectedTimezone)) {
+                    this.trackedTimezones = [...this.trackedTimezones, this.selectedTimezone];
+                    this.saveTrackedTimezones();
+                }
+                
+                this.scrollToZoneCard(this.selectedTimezone);
+            },
+
+            scrollToZoneCard(zone) {
+                // Ensure DOM has finished updating by waiting a tiny bit longer
+                setTimeout(() => {
+                    const cardId = `zone-card-${zone.replaceAll('/', '-')}`;
+                    const card = document.getElementById(cardId);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Brief highlight effect for better UX
+                        card.classList.add('ring-4', 'ring-primary', 'scale-[1.02]');
+                        setTimeout(() => card.classList.remove('ring-4', 'ring-primary', 'scale-[1.02]'), 500);
+                    }
+                }, 100);
             },
 
             removeTrackedTimezone(zone) {
@@ -352,6 +396,44 @@ permalink: /tools/world-time/
                 this.draggedZone = null;
             },
 
+            touchStart(event, zone) {
+                if (event.touches && event.touches.length > 0) {
+                    this.touchedZone = zone;
+                    this.touchStartY = event.touches[0].clientY;
+                    this.touchStartIndex = this.trackedTimezones.indexOf(zone);
+                }
+            },
+
+            touchMove(event, zone, currentIndex) {
+                if (!this.touchedZone || !event.touches || event.touches.length === 0) {
+                    return;
+                }
+
+                const currentY = event.touches[0].clientY;
+                const deltaY = currentY - this.touchStartY;
+
+                if (Math.abs(deltaY) > 30) {
+                    if (deltaY < 0 && currentIndex > 0) {
+                        const swapZone = this.trackedTimezones[currentIndex - 1];
+                        this.reorderTrackedTimezones(this.touchedZone, swapZone);
+                        this.touchStartY = currentY;
+                    } else if (deltaY > 0 && currentIndex < this.trackedTimezones.length - 1) {
+                        const swapZone = this.trackedTimezones[currentIndex + 1];
+                        this.reorderTrackedTimezones(this.touchedZone, swapZone);
+                        this.touchStartY = currentY;
+                    }
+                }
+            },
+
+            touchEnd() {
+                if (this.touchedZone) {
+                    this.saveTrackedTimezones();
+                }
+                this.touchedZone = null;
+                this.touchStartY = 0;
+                this.touchStartIndex = null;
+            },
+
             reorderTrackedTimezones(sourceZone, targetZone) {
                 const sourceIndex = this.trackedTimezones.indexOf(sourceZone);
                 const targetIndex = this.trackedTimezones.indexOf(targetZone);
@@ -381,58 +463,68 @@ permalink: /tools/world-time/
             },
 
             formatTime(zone) {
-                return new Intl.DateTimeFormat(undefined, {
-                    timeZone: zone,
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                }).format(this.activeTimestamp);
+                if (!this._timeFormatterCache[zone]) {
+                    this._timeFormatterCache[zone] = new Intl.DateTimeFormat(undefined, {
+                        timeZone: zone,
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                }
+                return this._timeFormatterCache[zone].format(this.activeTimestamp);
             },
 
             formatDate(zone) {
-                return new Intl.DateTimeFormat(undefined, {
-                    timeZone: zone,
-                    weekday: 'short',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                }).format(this.activeTimestamp);
+                if (!this._dateFormatterCache[zone]) {
+                    this._dateFormatterCache[zone] = new Intl.DateTimeFormat(undefined, {
+                        timeZone: zone,
+                        weekday: 'short',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
+                return this._dateFormatterCache[zone].format(this.activeTimestamp);
+            },
+
+            _loadZoneMeta(zone) {
+                if (!this._zoneMetaCache[zone]) {
+                    const refTime = Date.now();
+                    const offsetParts = new Intl.DateTimeFormat('en-US', {
+                        timeZone: zone,
+                        timeZoneName: 'shortOffset'
+                    }).formatToParts(refTime);
+                    const nameParts = new Intl.DateTimeFormat(undefined, {
+                        timeZone: zone,
+                        timeZoneName: 'short'
+                    }).formatToParts(refTime);
+
+                    const offset = offsetParts.find(p => p.type === 'timeZoneName')?.value || 'GMT';
+                    const name = nameParts.find(p => p.type === 'timeZoneName')?.value || zone;
+
+                    const match = offset.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+                    let minutes = 0;
+                    if (match) {
+                        const sign = match[1] === '-' ? -1 : 1;
+                        minutes = sign * ((parseInt(match[2], 10) * 60) + parseInt(match[3] || '0', 10));
+                    }
+
+                    this._zoneMetaCache[zone] = { offset, name, minutes };
+                }
+                return this._zoneMetaCache[zone];
             },
 
             zoneName(zone) {
-                const parts = new Intl.DateTimeFormat(undefined, {
-                    timeZone: zone,
-                    timeZoneName: 'short'
-                }).formatToParts(this.activeTimestamp);
-
-                return parts.find(part => part.type === 'timeZoneName')?.value || zone;
+                return this._loadZoneMeta(zone).name;
             },
 
             offsetLabel(zone) {
-                const parts = new Intl.DateTimeFormat('en-US', {
-                    timeZone: zone,
-                    timeZoneName: 'shortOffset'
-                }).formatToParts(this.activeTimestamp);
-
-                return parts.find(part => part.type === 'timeZoneName')?.value || this.zoneName(zone);
+                return this._loadZoneMeta(zone).offset;
             },
 
             zoneOffsetMinutes(zone) {
-                const offset = this.offsetLabel(zone);
-                if (offset === 'GMT' || offset === 'UTC') {
-                    return 0;
-                }
-
-                const match = offset.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
-                if (!match) {
-                    return 0;
-                }
-
-                const sign = match[1] === '-' ? -1 : 1;
-                const hours = Number.parseInt(match[2], 10);
-                const minutes = Number.parseInt(match[3] || '0', 10);
-                return sign * ((hours * 60) + minutes);
+                return this._loadZoneMeta(zone).minutes;
             },
 
             zoneSummary(zone) {
