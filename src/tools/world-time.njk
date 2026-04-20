@@ -1,0 +1,443 @@
+---
+layout: layouts/base.njk
+title: World Time Tracker
+description: Track your current system time and compare it with saved time zones around the world.
+permalink: /tools/world-time/
+---
+
+<div class="w-full max-w-5xl flex flex-col gap-12" x-data="worldTimeTool()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/world-time/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-2xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-10">
+            <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Current Place</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-text-main" x-text="placeLabel(systemTimeZone)"></h2>
+                    <p class="text-sm text-text-muted">Uses your browser or system time zone only. No geolocation lookup.</p>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-text-muted">
+                    <span class="material-symbols-outlined text-base">schedule</span>
+                    <span x-text="zoneSummary(systemTimeZone)"></span>
+                </div>
+            </div>
+
+            <div class="flex justify-center p-1 bg-stone-100/80 backdrop-blur rounded-2xl w-fit mx-auto border border-stone-200">
+                <button @click="setMode('live')" :class="mode === 'live' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Live</button>
+                <button @click="setMode('custom')" :class="mode === 'custom' ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:text-text-main'" class="px-8 py-3 rounded-xl transition-all duration-300">Custom</button>
+            </div>
+
+            <div x-show="mode === 'custom'" x-cloak class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Custom Date</label>
+                    <input type="date" x-model="customDate" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Custom Time</label>
+                    <input type="time" step="1" x-model="customTime" @input="syncCustomTimestamp()" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                </div>
+            </div>
+
+            <div class="rounded-[2rem] bg-stone-950 text-stone-50 p-8 md:p-10 shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div class="flex flex-col gap-3">
+                        <span class="text-xs font-bold uppercase tracking-[0.3em] text-stone-400" x-text="mode === 'live' ? 'Current System Time' : 'Custom Reference Time'"></span>
+                        <span class="text-4xl md:text-6xl font-bold leading-none tabular-nums" x-text="formatTime(systemTimeZone)"></span>
+                        <span class="text-base md:text-lg text-stone-300" x-text="formatDate(systemTimeZone)"></span>
+                    </div>
+                    <div class="flex flex-col gap-1 md:text-right">
+                        <span class="text-sm font-semibold text-stone-200" x-text="systemTimeZone"></span>
+                        <span class="text-sm text-stone-400" x-text="zoneName(systemTimeZone)"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-px bg-stone-100"></div>
+
+            <div class="flex flex-col gap-5">
+                <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-text-main">Tracked Time Zones</h3>
+                        <p class="text-sm text-text-muted">Default zones are Riyadh, Dubai, India, and Singapore. You can remove any of them and save your own set locally on this device.</p>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted" x-text="trackedTimezones.length + ' saved zones'"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-4 md:items-end">
+                    <div class="flex flex-col gap-3">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Add Time Zone</label>
+                        <select x-model="selectedTimezone" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner">
+                            <template x-for="zone in selectableTimezones" :key="zone">
+                                <option :value="zone" x-text="optionLabel(zone)"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button @click="addTrackedTimezone()" :disabled="!selectedTimezone" class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-primary text-white font-bold hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined text-base">add</span>
+                        Add tracked zone
+                    </button>
+                </div>
+
+                <template x-if="trackedTimezones.length">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <template x-for="zone in trackedTimezones" :key="zone">
+                            <div draggable="true" @dragstart="startDrag(zone)" @dragover.prevent="dragOver(zone)" @drop.prevent="dropDragged(zone)" @dragend="endDrag()" :class="draggedZone === zone ? 'opacity-60 ring-2 ring-primary/20' : ''" class="rounded-[2rem] border border-stone-200 bg-stone-50/80 p-6 md:p-7 shadow-sm flex flex-col gap-5 cursor-move transition-all duration-200">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="flex flex-col gap-1 min-w-0">
+                                        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Tracked Zone</span>
+                                        <h4 class="text-2xl font-bold text-text-main leading-tight" x-text="placeLabel(zone)"></h4>
+                                        <span class="text-sm text-text-muted break-all" x-text="zone"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-text-muted border border-stone-200" aria-hidden="true">
+                                            <span class="material-symbols-outlined text-base">drag_indicator</span>
+                                        </div>
+                                        <button @click="removeTrackedTimezone(zone)" class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-text-muted hover:text-rose-600 hover:bg-rose-50 border border-stone-200 transition-colors" aria-label="Remove tracked time zone">
+                                            <span class="material-symbols-outlined text-base">delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-2">
+                                    <span class="text-4xl font-bold text-text-main leading-none tabular-nums" x-text="formatTime(zone)"></span>
+                                    <span class="text-base text-text-muted" x-text="formatDate(zone)"></span>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3 border border-stone-200 text-sm">
+                                    <span class="text-text-main font-semibold" x-text="zoneName(zone)"></span>
+                                    <span class="text-text-muted" x-text="offsetLabel(zone)"></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template x-if="!trackedTimezones.length">
+                    <div class="rounded-[2rem] border border-dashed border-stone-300 bg-stone-50/70 px-6 py-8 text-center text-text-muted">
+                        No tracked time zones yet. Add one from the selector above.
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">info</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            Saved time zones stay in your browser using local storage.
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function worldTimeTool() {
+        return {
+            storageKey: 'world-time-tracked-zones',
+            timer: null,
+            now: Date.now(),
+            mode: 'live',
+            customDate: '',
+            customTime: '',
+            customTimestamp: null,
+            draggedZone: null,
+            systemTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+            trackedTimezones: [],
+            selectedTimezone: '',
+            knownLabels: {
+                'Asia/Riyadh': 'Riyadh, KSA',
+                'Asia/Dubai': 'Dubai, UAE',
+                'Asia/Kolkata': 'India',
+                'Asia/Singapore': 'Singapore',
+                'UTC': 'UTC'
+            },
+            defaultTrackedTimezones: [
+                'Asia/Riyadh',
+                'Asia/Dubai',
+                'Asia/Kolkata',
+                'Asia/Singapore'
+            ],
+            fallbackTimezones: [
+                'UTC',
+                'Europe/London',
+                'Europe/Paris',
+                'Europe/Istanbul',
+                'Asia/Riyadh',
+                'Asia/Dubai',
+                'Asia/Kolkata',
+                'Asia/Bangkok',
+                'Asia/Singapore',
+                'Asia/Jakarta',
+                'Asia/Tokyo',
+                'Australia/Sydney',
+                'America/New_York',
+                'America/Chicago',
+                'America/Denver',
+                'America/Los_Angeles'
+            ],
+
+            init() {
+                this.setCustomFieldsFromNow();
+                this.loadTrackedTimezones();
+                this.selectedTimezone = 'Asia/Singapore';
+                this.timer = window.setInterval(() => {
+                    this.now = Date.now();
+                }, 1000);
+            },
+
+            destroy() {
+                if (this.timer) {
+                    window.clearInterval(this.timer);
+                    this.timer = null;
+                }
+            },
+
+            get availableTimezones() {
+                const supported = typeof Intl.supportedValuesOf === 'function'
+                    ? Intl.supportedValuesOf('timeZone')
+                    : [];
+
+                return [...new Set([
+                    this.systemTimeZone,
+                    ...this.defaultTrackedTimezones,
+                    ...this.fallbackTimezones,
+                    ...supported
+                ])].filter(Boolean);
+            },
+
+            get selectableTimezones() {
+                return this.availableTimezones
+                    .filter(zone => zone !== this.systemTimeZone && !this.trackedTimezones.includes(zone))
+                    .sort((leftZone, rightZone) => {
+                        const offsetDifference = this.zoneOffsetMinutes(leftZone) - this.zoneOffsetMinutes(rightZone);
+                        if (offsetDifference !== 0) {
+                            return offsetDifference;
+                        }
+
+                        return this.optionLabel(leftZone).localeCompare(this.optionLabel(rightZone));
+                    });
+            },
+
+            get activeTimestamp() {
+                return this.mode === 'custom' && this.customTimestamp ? this.customTimestamp : this.now;
+            },
+
+            setMode(nextMode) {
+                this.mode = nextMode;
+                if (nextMode === 'custom' && !this.customTimestamp) {
+                    this.setCustomFieldsFromNow();
+                }
+            },
+
+            setCustomFieldsFromNow() {
+                const now = new Date(this.now);
+                this.customDate = this.formatInputDate(now);
+                this.customTime = this.formatInputTime(now);
+                this.syncCustomTimestamp();
+            },
+
+            formatInputDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            },
+
+            formatInputTime(date) {
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${hours}:${minutes}:${seconds}`;
+            },
+
+            syncCustomTimestamp() {
+                if (!this.customDate || !this.customTime) {
+                    this.customTimestamp = null;
+                    return;
+                }
+
+                const nextDate = new Date(`${this.customDate}T${this.customTime}`);
+                this.customTimestamp = Number.isNaN(nextDate.getTime()) ? null : nextDate.getTime();
+            },
+
+            loadTrackedTimezones() {
+                const saved = localStorage.getItem(this.storageKey);
+                const baseZones = saved ? this.parseStoredTimezones(saved) : this.defaultTrackedTimezones;
+
+                this.trackedTimezones = [...new Set(baseZones)]
+                    .filter(zone => zone && zone !== this.systemTimeZone && this.availableTimezones.includes(zone));
+
+                this.saveTrackedTimezones();
+            },
+
+            parseStoredTimezones(value) {
+                try {
+                    const parsed = JSON.parse(value);
+                    return Array.isArray(parsed) ? parsed : this.defaultTrackedTimezones;
+                } catch (error) {
+                    return this.defaultTrackedTimezones;
+                }
+            },
+
+            saveTrackedTimezones() {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.trackedTimezones));
+            },
+
+            addTrackedTimezone() {
+                if (!this.selectedTimezone || this.trackedTimezones.includes(this.selectedTimezone) || this.selectedTimezone === this.systemTimeZone) {
+                    return;
+                }
+
+                this.trackedTimezones = [...this.trackedTimezones, this.selectedTimezone];
+                this.saveTrackedTimezones();
+            },
+
+            removeTrackedTimezone(zone) {
+                this.trackedTimezones = this.trackedTimezones.filter(item => item !== zone);
+                this.saveTrackedTimezones();
+            },
+
+            startDrag(zone) {
+                this.draggedZone = zone;
+            },
+
+            dragOver(zone) {
+                if (!this.draggedZone || this.draggedZone === zone) {
+                    return;
+                }
+
+                this.reorderTrackedTimezones(this.draggedZone, zone);
+            },
+
+            dropDragged(zone) {
+                if (this.draggedZone && this.draggedZone !== zone) {
+                    this.reorderTrackedTimezones(this.draggedZone, zone);
+                }
+                this.endDrag();
+            },
+
+            endDrag() {
+                if (this.draggedZone) {
+                    this.saveTrackedTimezones();
+                }
+                this.draggedZone = null;
+            },
+
+            reorderTrackedTimezones(sourceZone, targetZone) {
+                const sourceIndex = this.trackedTimezones.indexOf(sourceZone);
+                const targetIndex = this.trackedTimezones.indexOf(targetZone);
+
+                if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex) {
+                    return;
+                }
+
+                const reordered = [...this.trackedTimezones];
+                reordered.splice(sourceIndex, 1);
+                reordered.splice(targetIndex, 0, sourceZone);
+                this.trackedTimezones = reordered;
+            },
+
+            placeLabel(zone) {
+                if (this.knownLabels[zone]) {
+                    return this.knownLabels[zone];
+                }
+
+                const segments = zone.split('/');
+                const rawLabel = segments[segments.length - 1] || zone;
+                return rawLabel.replace(/_/g, ' ');
+            },
+
+            optionLabel(zone) {
+                return `${this.offsetLabel(zone)} · ${this.placeLabel(zone)} (${zone})`;
+            },
+
+            formatTime(zone) {
+                return new Intl.DateTimeFormat(undefined, {
+                    timeZone: zone,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).format(this.activeTimestamp);
+            },
+
+            formatDate(zone) {
+                return new Intl.DateTimeFormat(undefined, {
+                    timeZone: zone,
+                    weekday: 'short',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }).format(this.activeTimestamp);
+            },
+
+            zoneName(zone) {
+                const parts = new Intl.DateTimeFormat(undefined, {
+                    timeZone: zone,
+                    timeZoneName: 'short'
+                }).formatToParts(this.activeTimestamp);
+
+                return parts.find(part => part.type === 'timeZoneName')?.value || zone;
+            },
+
+            offsetLabel(zone) {
+                const parts = new Intl.DateTimeFormat('en-US', {
+                    timeZone: zone,
+                    timeZoneName: 'shortOffset'
+                }).formatToParts(this.activeTimestamp);
+
+                return parts.find(part => part.type === 'timeZoneName')?.value || this.zoneName(zone);
+            },
+
+            zoneOffsetMinutes(zone) {
+                const offset = this.offsetLabel(zone);
+                if (offset === 'GMT' || offset === 'UTC') {
+                    return 0;
+                }
+
+                const match = offset.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+                if (!match) {
+                    return 0;
+                }
+
+                const sign = match[1] === '-' ? -1 : 1;
+                const hours = Number.parseInt(match[2], 10);
+                const minutes = Number.parseInt(match[3] || '0', 10);
+                return sign * ((hours * 60) + minutes);
+            },
+
+            zoneSummary(zone) {
+                return `${zone} · ${this.offsetLabel(zone)}`;
+            }
+        };
+    }
+</script>

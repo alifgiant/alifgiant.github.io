@@ -172,6 +172,13 @@
                     "tag": "Converter"
                 },
                 {
+                    "title": "World Time Tracker",
+                    "description": "Track your current system time and compare it with saved time zones around the world.",
+                    "url": "/tools/world-time/",
+                    "icon": "public",
+                    "tag": "Utilities"
+                },
+                {
                     "title": "Case Converter",
                     "description": "Convert text between camelCase, PascalCase, snake_case, and other formats.",
                     "url": "/tools/case/",
