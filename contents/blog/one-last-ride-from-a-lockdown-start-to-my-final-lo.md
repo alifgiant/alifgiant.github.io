@@ -75,6 +75,6 @@ I could not have made this journey alone. Thank you to **Budi**, my very first m
 
 The off-boarding emails always end with the same phrase: *Once a Grabber, always a Grabber.* Today, as I look at this screen one last time, I know it's true. I am walking away, but I am taking the hunger, the lessons, and the honour with me.
 
-**The ride is over. Time to Log out. **📱
+**The ride is over. Time to Log out.** 📱
 
 
