@@ -66,7 +66,7 @@ Selain masalah dimana Q3 dan Q4 tidak efektif bagi saya, parameter terkait penti
 
 Walaupun sebuah tugas sudah di definisikan dengan baik menggunakan parameter S.M.A.R.T (specific, measurable, action oriented, reasonable, timely), keputusan mengenai kapan menggeser status suatu tugas terkadang tetap tidak jelas. Misal, ketika saya sedang menulis lalu terkena distraksi atau sesederhana saya kehabisan bahan lalu perlu membaca ulang. Maka saya perlu melepas apa yang sedang saya kerjakan. Tidak jarang hal seperti ini membuat banyak tugas yg saya kerjakan tertumpuk di *in progress* sedangkan feel untuk mengembalikan sebuah tugas ke kolom “to do” sangat tidak menyenangkan. It’s a contra-productive things to do.
 
-Selain itu untuk task “sederhana” sering kali perubahan state di kanban ini menjadi tidak relevan. Misal “Membeli kebutuhan kamar mandi, dengan subtask item a, b, c”. Task seperti ini umumnya hanya memiliki detail waktu kapan perlu dilakukan. Sehingga *state* in progress menjadi tidak terpakai, hanya to do dan done. Kelebihan state ini memberikan rasa bahwa metode ini “Overkill”, walaupun sebenarnya simpel.
+Selain itu untuk task ��sederhana” sering kali perubahan state di kanban ini menjadi tidak relevan. Misal “Membeli kebutuhan kamar mandi, dengan subtask item a, b, c”. Task seperti ini umumnya hanya memiliki detail waktu kapan perlu dilakukan. Sehingga *state* in progress menjadi tidak terpakai, hanya to do dan done. Kelebihan state ini memberikan rasa bahwa metode ini “Overkill”, walaupun sebenarnya simpel.
 
 ## 3. Kekurangan Pomodoro
 
