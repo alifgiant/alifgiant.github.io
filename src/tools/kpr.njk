@@ -37,44 +37,43 @@ permalink: /tools/kpr/
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Total Loan Term (years)</label>
+                    <input type="number" min="1" x-model.number="totalYears" @input="onTotalYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                </div>
+                <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Property Price (IDR)</label>
                     <input type="text" x-model="inputs.basePrice" @input="onCurrencyInput('basePrice')" @blur="onCurrencyBlur('basePrice')" placeholder="Enter amount (e.g. 500m)" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
                 </div>
-
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Down Payment (amount)</label>
                     <input type="text" x-model="inputs.dpAmount" @input="onCurrencyInput('dpAmount', true)" @blur="onCurrencyBlur('dpAmount', true)" placeholder="Enter amount (e.g. 100m)" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
                 </div>
+            </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Down Payment (%)</label>
                     <input type="number" step="0.01" x-model.number="dpPercent" @input="syncDpAmount(); recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Fixed Interest Rate (annual %)</label>
                     <input type="number" step="0.01" x-model.number="fixedRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
                 </div>
                 <div class="flex flex-col gap-4">
                     <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Fixed Rate Duration (years)</label>
-                    <input type="number" min="0" x-model.number="fixedYears" @input="onFixedYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-4">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Interest Rate (annual %)</label>
-                    <input type="number" step="0.01" x-model.number="floatingRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <input type="number" min="0" :max="totalYears" x-model.number="fixedYears" @input="onFixedYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div class="flex flex-col gap-4">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Rate Duration (years)</label>
-                    <input type="number" min="0" x-model.number="floatingYears" @input="onFloatingYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Interest Rate (annual %)</label>
+                    <input type="number" step="0.01" x-model.number="floatingRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
                 </div>
                 <div class="flex flex-col gap-4">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Total Loan Term (years)</label>
-                    <input type="number" min="1" x-model.number="totalYears" @input="onTotalYearsInput()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Rate Duration (years)</label>
+                    <input type="text" readonly :value="totalYears - fixedYears" class="block w-full px-6 py-5 bg-stone-100 border-2 border-stone-200 rounded-2xl text-text-muted text-lg cursor-default select-none" tabindex="-1" />
+                    <p class="text-xs text-text-muted ml-1 -mt-2">Auto-calculated: Total − Fixed</p>
                 </div>
                 <div class="flex items-center justify-center gap-4 h-full">
                     <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
@@ -148,11 +147,10 @@ permalink: /tools/kpr/
             dpAmount: 0,
             inputs: { basePrice: '', dpAmount: '' },
             dpPercent: 20,
+            totalYears: 20,
             fixedRate: 7.0,
             fixedYears: 5,
             floatingRate: 10.0,
-            floatingYears: 1,
-            totalYears: 20,
             schedule: [],
             summary: { loanAmount:0, firstPayment:0, totalMonths:0, totalPaid:0, totalInterest:0 },
 
@@ -262,11 +260,10 @@ permalink: /tools/kpr/
                 this.inputs.basePrice = '';
                 this.inputs.dpAmount = '';
                 this.dpPercent = 20;
+                this.totalYears = 20;
                 this.fixedRate = 7.0;
                 this.fixedYears = 5;
                 this.floatingRate = 10.0;
-                this.floatingYears = 1;
-                this.totalYears = 20;
                 this.schedule = [];
                 this.summary = { loanAmount:0, firstPayment:0, totalMonths:0, totalPaid:0, totalInterest:0 };
                 this.recalculate();
@@ -274,20 +271,12 @@ permalink: /tools/kpr/
 
             onFixedYearsInput() {
                 this.fixedYears = Math.max(0, Math.min(this.totalYears, Number(this.fixedYears) || 0));
-                this.floatingYears = Math.max(0, this.totalYears - this.fixedYears);
-                this.recalculate();
-            },
-
-            onFloatingYearsInput() {
-                this.floatingYears = Math.max(0, Math.min(this.totalYears, Number(this.floatingYears) || 0));
-                this.fixedYears = Math.max(0, this.totalYears - this.floatingYears);
                 this.recalculate();
             },
 
             onTotalYearsInput() {
                 this.totalYears = Math.max(1, Number(this.totalYears) || 1);
                 if (this.fixedYears > this.totalYears) this.fixedYears = this.totalYears;
-                this.floatingYears = Math.max(0, this.totalYears - this.fixedYears);
                 this.recalculate();
             },
 
@@ -315,13 +304,11 @@ permalink: /tools/kpr/
                 const loanAmount = Math.max(0, bp - this.dpAmount);
                 const totalMonths = Math.max(1, Math.round(this.totalYears * 12));
                 const fixedMonths = Math.max(0, Math.min(totalMonths, Math.round(this.fixedYears*12)));
-                const floatingMonths = Math.max(0, Math.min(totalMonths - fixedMonths, Math.round(this.floatingYears*12)));
-                const remainingMonths = totalMonths - fixedMonths - floatingMonths;
+                const floatingMonths = Math.max(0, totalMonths - fixedMonths);
 
                 const phases = [];
                 if (fixedMonths > 0) phases.push({ months: fixedMonths, rate: Number(this.fixedRate || 0) });
                 if (floatingMonths > 0) phases.push({ months: floatingMonths, rate: Number(this.floatingRate || 0) });
-                if (remainingMonths > 0) phases.push({ months: remainingMonths, rate: Number(this.floatingRate || 0) });
 
                 let balance = loanAmount;
                 let monthCounter = 0;
