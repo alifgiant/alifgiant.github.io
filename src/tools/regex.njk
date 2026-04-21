@@ -5,7 +5,7 @@ description: Test and debug regular expressions with real-time matching.
 permalink: /tools/regex/
 ---
 
-<div class="w-full max-w-6xl flex flex-col gap-12" x-data="regexTool()">
+<div class="w-full max-w-7xl flex flex-col gap-12" x-data="regexTool()">
     {# Header #}
     {% set tool = {} %}
     {% for item in site.pages.tools.list %}
@@ -31,104 +31,118 @@ permalink: /tools/regex/
         </p>
     </div>
 
-    {# Tool Card #}
-    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
-        <div class="flex flex-col gap-8">
-            
-            {# Regex Input #}
-            <div class="flex flex-col gap-4">
-                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Regular Expression</label>
-                <div class="relative flex items-center">
-                    <span class="absolute left-6 text-stone-400 font-mono text-xl select-none">/</span>
-                    <input type="text" x-model="regexPattern" @input="testRegex()" placeholder="([a-z0-9._%+-]+)@([a-z0-9.-]+\.[a-z]{2,})" class="block w-full pl-10 pr-24 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner font-mono">
-                    <span class="absolute right-6 text-stone-400 font-mono text-xl select-none">/ <span class="text-primary font-bold" x-text="flags"></span></span>
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        {# Main Tester #}
+        <div class="xl:col-span-8">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/10 transition-all duration-500">
+                <div class="flex flex-col gap-8">
+
+                    {# Regex Input #}
+                    <div class="flex flex-col gap-4">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Regular Expression</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-6 text-stone-400 font-mono text-xl select-none">/</span>
+                            <input type="text" x-model="regexPattern" @input="testRegex()" placeholder="([a-z0-9._%+-]+)@([a-z0-9.-]+\.[a-z]{2,})" class="block w-full pl-10 pr-24 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner font-mono">
+                            <span class="absolute right-6 text-stone-400 font-mono text-xl select-none">/ <span class="text-primary font-bold" x-text="flags"></span></span>
+                        </div>
+
+                        {# Flags #}
+                        <div class="flex flex-wrap gap-3 ml-1">
+                            <template x-for="flag in availableFlags">
+                                <button @click="toggleFlag(flag.char)" :class="flags.includes(flag.char) ? 'bg-primary text-white border-primary shadow-md' : 'bg-stone-50 text-text-muted border-stone-100'" class="px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+                                    <span x-text="flag.char"></span>
+                                    <span class="opacity-60 text-[8px]" x-text="flag.name"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    {# Test String #}
+                    <div class="flex flex-col gap-4">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Test String</label>
+                        <div class="relative w-full bg-stone-50 border-2 border-stone-100 rounded-2xl shadow-inner overflow-hidden" style="min-height: 220px; height: 220px; resize: vertical;">
+                            <div x-ref="highlightLayer" class="absolute inset-0 px-6 py-4 font-mono text-sm leading-relaxed whitespace-pre-wrap pointer-events-none break-all overflow-auto" x-html="highlightedText"></div>
+                            <textarea x-ref="testInput" x-model="testString" @input="testRegex()" @scroll="syncTestScroll()" placeholder="Type your test string here..." class="relative z-10 block w-full h-full px-6 py-4 bg-transparent text-transparent caret-text-main placeholder-stone-400 focus:outline-none focus:bg-white/20 transition-all font-mono text-sm resize-none break-all"></textarea>
+                        </div>
+                    </div>
+
+                    {# Results #}
+                    <div x-show="regexPattern && (error || matches.length >= 0)" class="flex flex-col gap-4 animate-fade-in" x-cloak>
+                        <template x-if="error">
+                            <div class="p-4 bg-rose-50 text-rose-700 border border-rose-100 rounded-2xl text-xs flex items-center gap-3">
+                                <span class="material-symbols-outlined text-lg">error</span>
+                                <span x-text="error"></span>
+                            </div>
+                        </template>
+
+                        <template x-if="!error">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex justify-between items-center ml-1">
+                                    <h3 class="text-sm font-bold uppercase tracking-widest text-text-muted">
+                                        Matches (<span x-text="matches.length"></span>)
+                                    </h3>
+                                </div>
+
+                                <div x-show="matches.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    <template x-for="(match, index) in matches">
+                                        <div class="p-4 bg-stone-50 border border-stone-100 rounded-xl flex flex-col gap-1">
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-[10px] font-bold text-primary uppercase">Match #<span x-text="index + 1"></span></span>
+                                                <span class="text-[10px] text-text-muted font-mono" x-text="'Index: ' + match.index"></span>
+                                            </div>
+                                            <span class="font-mono text-sm break-all text-text-main" x-text="match.value"></span>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div x-show="matches.length === 0" class="p-8 border-2 border-dashed border-stone-100 rounded-2xl text-center">
+                                    <span class="text-text-muted italic text-sm">No matches found.</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
-                
-                {# Flags #}
-                <div class="flex flex-wrap gap-3 ml-1">
-                    <template x-for="flag in availableFlags">
-                        <button @click="toggleFlag(flag.char)" :class="flags.includes(flag.char) ? 'bg-primary text-white border-primary shadow-md' : 'bg-stone-50 text-text-muted border-stone-100'" class="px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
-                            <span x-text="flag.char"></span>
-                            <span class="opacity-60 text-[8px]" x-text="flag.name"></span>
-                        </button>
+            </div>
+        </div>
+
+        {# Cheatsheet #}
+        <aside class="xl:col-span-4 flex flex-col gap-6">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-6 shadow-xl shadow-primary/10" x-data="{ open: {} }">
+                <div class="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-text-main">
+                    <span class="material-symbols-outlined text-primary">menu_book</span>
+                    Regex Cheatsheet
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div class="px-1">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Validation Presets</p>
+                    </div>
+
+                    <template x-for="cheat in cheatsheetItems" :key="cheat.key">
+                        <div class="rounded-2xl border border-stone-100 overflow-hidden">
+                            <div class="flex items-center justify-between gap-2 px-4 py-3 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer select-none" @click="open[cheat.key] = !open[cheat.key]">
+                                <span class="font-bold text-text-main text-xs" x-text="cheat.title"></span>
+                                <div class="flex items-center gap-2" @click.stop>
+                                    <button @click="useCheat(cheat.key)" class="px-2 py-0.5 rounded-lg border border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-text-muted hover:text-primary hover:border-primary transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs" x-text="usedCheat === cheat.key ? 'check' : 'arrow_upward'"></span>
+                                        <span x-text="usedCheat === cheat.key ? 'Applied' : 'Use'"></span>
+                                    </button>
+                                    <span class="material-symbols-outlined text-stone-400 text-base transition-transform duration-200" :class="open[cheat.key] ? 'rotate-180' : ''" @click="open[cheat.key] = !open[cheat.key]">expand_more</span>
+                                </div>
+                            </div>
+                            <div x-show="open[cheat.key]" style="display:none">
+                                <div class="px-4 py-3 bg-white border-t border-stone-100 space-y-2">
+                                    <p class="text-[10px] uppercase tracking-wider text-text-muted font-bold">Pattern</p>
+                                    <pre class="font-mono text-[11px] text-text-muted overflow-x-auto" x-text="cheat.pattern"></pre>
+                                    <p class="text-[10px] uppercase tracking-wider text-text-muted font-bold pt-1">Sample Input</p>
+                                    <pre class="font-mono text-[11px] text-text-muted overflow-x-auto" x-text="cheat.sample"></pre>
+                                </div>
+                            </div>
+                        </div>
                     </template>
                 </div>
             </div>
-
-            {# Test String #}
-            <div class="flex flex-col gap-4">
-                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Test String</label>
-                <div class="relative min-h-[200px] flex">
-                    {# Hidden highlighting layer #}
-                    <div class="absolute inset-0 px-6 py-4 font-mono text-sm leading-relaxed whitespace-pre-wrap pointer-events-none break-all" x-html="highlightedText"></div>
-                    
-                    {# Editable layer #}
-                    <textarea x-model="testString" @input="testRegex()" placeholder="Type your test string here..." class="block w-full px-6 py-4 bg-transparent border-2 border-stone-100 rounded-2xl text-transparent caret-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 transition-all font-mono text-sm shadow-inner resize-none min-h-[200px] z-10 break-all"></textarea>
-                </div>
-            </div>
-
-            {# Results #}
-            <div x-show="regexPattern && (error || matches.length >= 0)" class="flex flex-col gap-4 animate-fade-in" x-cloak>
-                {# Error #}
-                <template x-if="error">
-                    <div class="p-4 bg-rose-50 text-rose-700 border border-rose-100 rounded-2xl text-xs flex items-center gap-3">
-                        <span class="material-symbols-outlined text-lg">error</span>
-                        <span x-text="error"></span>
-                    </div>
-                </template>
-
-                {# Matches #}
-                <template x-if="!error">
-                    <div class="flex flex-col gap-4">
-                        <div class="flex justify-between items-center ml-1">
-                            <h3 class="text-sm font-bold uppercase tracking-widest text-text-muted">
-                                Matches (<span x-text="matches.length"></span>)
-                            </h3>
-                        </div>
-                        
-                        <div x-show="matches.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                            <template x-for="(match, index) in matches">
-                                <div class="p-4 bg-stone-50 border border-stone-100 rounded-xl flex flex-col gap-1">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-[10px] font-bold text-primary uppercase">Match #<span x-text="index + 1"></span></span>
-                                        <span class="text-[10px] text-text-muted font-mono" x-text="'Index: ' + match.index"></span>
-                                    </div>
-                                    <span class="font-mono text-sm break-all text-text-main" x-text="match.value"></span>
-                                </div>
-                            </template>
-                        </div>
-                        
-                        <div x-show="matches.length === 0" class="p-8 border-2 border-dashed border-stone-100 rounded-2xl text-center">
-                            <span class="text-text-muted italic text-sm">No matches found.</span>
-                        </div>
-                    </div>
-                </template>
-            </div>
-        </div>
-    </div>
-
-    {# Helpful Tips #}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-primary/5 rounded-3xl p-6 border border-primary/10 flex gap-4">
-            <span class="material-symbols-outlined text-primary">keyboard_command_key</span>
-            <div>
-                <h4 class="font-bold text-sm text-text-main mb-1">Common Patterns</h4>
-                <ul class="text-xs text-text-muted space-y-2">
-                    <li><code>\d+</code> - Matches digits</li>
-                    <li><code>[a-zA-Z]+</code> - Matches only letters</li>
-                    <li><code>^...$</code> - Anchors to start and end</li>
-                </ul>
-            </div>
-        </div>
-        <div class="bg-primary/5 rounded-3xl p-6 border border-primary/10 flex gap-4">
-            <span class="material-symbols-outlined text-primary">visibility</span>
-            <div>
-                <h4 class="font-bold text-sm text-text-main mb-1">Live Highlighting</h4>
-                <p class="text-xs text-text-muted leading-relaxed">
-                    Visual matches are shown directly in the test field. Captured groups are prioritized in matches list.
-                </p>
-            </div>
-        </div>
+        </aside>
     </div>
 
     {# Back Button #}
@@ -163,12 +177,113 @@ permalink: /tools/regex/
             flags: 'g',
             matches: [],
             error: null,
+            usedCheat: '',
             availableFlags: [
                 { char: 'g', name: 'Global' },
                 { char: 'i', name: 'Case Insensitive' },
                 { char: 'm', name: 'Multiline' },
                 { char: 's', name: 'Dot All' },
                 { char: 'u', name: 'Unicode' }
+            ],
+            cheatsheetItems: [
+                {
+                    key: 'idPhone',
+                    title: 'Indonesian Phone Number',
+                    pattern: '^(?:\\+62|62|0)8[1-9][0-9]{6,10}$',
+                    sample: '+628123456789\n081234567890\n628119876543\n0712345678',
+                    flags: 'gm'
+                },
+                {
+                    key: 'ktpNik',
+                    title: 'Indonesian KTP (NIK)',
+                    pattern: '^(?:[1-9]\\d{5})(?:0[1-9]|[12]\\d|3[01]|[4-6]\\d|7[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4}$',
+                    sample: '3175091501010001\n3201066102990002\n123456789012345\n0000000000000000',
+                    flags: 'gm'
+                },
+                {
+                    key: 'idPassport',
+                    title: 'Indonesian Passport Number',
+                    pattern: '^[A-Z]\\d{7}$',
+                    sample: 'A1234567\nC7654321\nAB123456\nA123456',
+                    flags: 'gm'
+                },
+                {
+                    key: 'idrMoney',
+                    title: 'Indonesia Currency (IDR / Rp)',
+                    pattern: '^(?:(?:IDR|Rp)\\s?)?(?:0|[1-9]\\d{0,2}(?:\\.\\d{3})*)(?:,\\d{1,2})?$',
+                    sample: 'Rp 10.000\nIDR 1.250.000,50\n125.000\nRp12,500',
+                    flags: 'gm'
+                },
+                {
+                    key: 'email',
+                    title: 'Email Format',
+                    pattern: '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$',
+                    sample: 'hello@example.com\nname.surname+dev@domain.co.id\nmail@localhost\nwrong@email',
+                    flags: 'gm'
+                },
+                {
+                    key: 'dateIso',
+                    title: 'Date YYYY-MM-DD',
+                    pattern: '^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$',
+                    sample: '2026-04-21\n1999-12-31\n21-04-2026\n2026/04/21',
+                    flags: 'gm'
+                },
+                {
+                    key: 'dateSlash',
+                    title: 'Date DD/MM/YYYY',
+                    pattern: '^(?:0[1-9]|[12]\\d|3[01])\\/(?:0[1-9]|1[0-2])\\/\\d{4}$',
+                    sample: '21/04/2026\n01/01/1990\n2026/04/21\n21-04-2026',
+                    flags: 'gm'
+                },
+                {
+                    key: 'dateDash',
+                    title: 'Date DD-MM-YYYY',
+                    pattern: '^(?:0[1-9]|[12]\\d|3[01])-(?:0[1-9]|1[0-2])-\\d{4}$',
+                    sample: '21-04-2026\n01-01-1990\n2026-04-21\n21/04/2026',
+                    flags: 'gm'
+                },
+                {
+                    key: 'time24',
+                    title: 'Time 24h (HH:mm[:ss])',
+                    pattern: '^(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?$',
+                    sample: '14:30\n23:59:59\n24:00\n7:05',
+                    flags: 'gm'
+                },
+                {
+                    key: 'dateTime',
+                    title: 'DateTime (Date + Time)',
+                    pattern: '^(?:(?:\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01]))|(?:(?:0[1-9]|[12]\\d|3[01])\\/(?:0[1-9]|1[0-2])\\/\\d{4})|(?:(?:0[1-9]|[12]\\d|3[01])-(?:0[1-9]|1[0-2])-\\d{4}))[ T](?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?$',
+                    sample: '2026-04-21 14:30\n21/04/2026 08:15:01\n21-04-2026T23:59\n2026/04/21 10:00',
+                    flags: 'gm'
+                },
+                {
+                    key: 'url',
+                    title: 'URL Format',
+                    pattern: '^(https?:\\/\\/)?(?:www\\.)?[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?:\\/[^\\s?#]*)?(?:\\?[^\\s#]*)?(?:#[^\\s]*)?$',
+                    sample: 'https://alifgiant.com\nhttp://example.co.id/path?x=1#top\nwww.google.com\nhtp://wrong.url',
+                    flags: 'gm'
+                },
+                {
+                    key: 'strongPassword',
+                    title: 'Strong Password',
+                    pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,64}$',
+                    sample: 'P@ssw0rd123\nVery$trongPass9\nweakpass\nNoNumber!Pass',
+                    flags: 'gm'
+                },
+                {
+                    key: 'ipv4',
+                    title: 'IPv4 Address',
+                    pattern: '^(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$',
+                    sample: '192.168.1.1\n8.8.8.8\n256.1.1.1\n192.168.1',
+                    flags: 'gm'
+                },
+                {
+                    key: 'mathExpr',
+                    title: 'Math Expression (Basic)',
+                    pattern: '^\\s*[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+|\\((?:[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:\\s*[+\\-*/^]\\s*[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))*)\\))(?:\\s*[+\\-*/^]\\s*[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+|\\((?:[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:\\s*[+\\-*/^]\\s*[+\\-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+))*)\\)))*\\s*$',
+                    sample: '3 + 4 * 10\n(2.5 + 7) / 3\n-12.4^2 + .8\n3 + * 4',
+                    flags: 'gm'
+                }
             ],
 
             toggleFlag(char) {
@@ -178,6 +293,27 @@ permalink: /tools/regex/
                     this.flags += char;
                 }
                 this.testRegex();
+            },
+
+            useCheat(key) {
+                const cheat = this.cheatsheetItems.find((item) => item.key === key);
+                if (!cheat) return;
+
+                this.regexPattern = cheat.pattern;
+                this.testString = cheat.sample;
+                this.flags = cheat.flags || 'g';
+                this.testRegex();
+
+                this.usedCheat = key;
+                setTimeout(() => {
+                    if (this.usedCheat === key) this.usedCheat = '';
+                }, 1500);
+            },
+
+            syncTestScroll() {
+                if (!this.$refs.testInput || !this.$refs.highlightLayer) return;
+                this.$refs.highlightLayer.scrollTop = this.$refs.testInput.scrollTop;
+                this.$refs.highlightLayer.scrollLeft = this.$refs.testInput.scrollLeft;
             },
 
             testRegex() {
