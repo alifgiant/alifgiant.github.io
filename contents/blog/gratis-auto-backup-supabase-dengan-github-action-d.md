@@ -3,12 +3,12 @@ title: "Gratis! Auto Backup Supabase dengan Github Action dan Cloudflare R2"
 date: "2024-07-28"
 tags: ["Tech"]
 featured: false
-description: "Image/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.png TLDR; Saya asumsikan kalian yang membuka artikel ini sudah memahami Supabase dan GithubAc..."
+description: "Image/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.webp TLDR; Saya asumsikan kalian yang membuka artikel ini sudah memahami Supabase dan GithubA..."
 readTime: "5 min"
-image: "/assets/images/blog/cover-12c9e962-c621-4b29-b775-d381954e94bd.jpg"
+image: "/assets/images/blog/cover-12c9e962-c621-4b29-b775-d381954e94bd.webp"
 ---
 
-![Image](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.png)
+![Image](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-1.webp)
 
 
 
@@ -69,7 +69,7 @@ Nah, buat yang ingin membaca lebih jauh terkait cerita dibaliknya, mari kita mul
 
 Saya membuat sebuah aplikasi manajemen dan POS untuk Apotek. Untuk sekarang masih digunakan sendiri dan dikembangkan seorang diri. Oleh karena, itu saya masih termasuk kaum mendang mending, dimana pengen semuanya gratis.
 
-![Aplikasi Apotek Kula](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-2.png)
+![Aplikasi Apotek Kula](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-2.webp)
 <figcaption class="notion-caption">Aplikasi Apotek Kula</figcaption>
 
 ## Kenapa Supabase
@@ -110,7 +110,7 @@ Sehingga saya mecoba mencari alternatif. Pada akhirnya saya memutuskan menggunak
 
 [Halaman penawaran Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/)
 
-![Pricing dari Cloudflare R2](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-3.png)
+![Pricing dari Cloudflare R2](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-3.webp)
 <figcaption class="notion-caption">Pricing dari Cloudflare R2</figcaption>
 
 | Platform | Storage | Bandwidth | Class A Ops | Class B Ops |
@@ -131,10 +131,10 @@ Dari perhitungan ini, terlihat bahwa jika saya menggunakan git, maka dalam kuran
 
 Berikut adalah hasil akhir dari *setup* saya. Yang tentunya semuanya GRATIS! GE-RA-TIS!!
 
-![Github Action Steps](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-4.png)
+![Github Action Steps](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-4.webp)
 <figcaption class="notion-caption">Github Action Steps</figcaption>
 
-![Cloudflare R2 bucket](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-5.png)
+![Cloudflare R2 bucket](/assets/images/blog/12c9e962-c621-4b29-b775-d381954e94bd-5.webp)
 <figcaption class="notion-caption">Cloudflare R2 bucket</figcaption>
 
 Cukup sekian dan terimakasih, *keep hustling*! 💪🏻

@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Belakangan ini dunia semakin tidak jelas. Terjadi banyak PHK, baik perusahaan kecil maupun besar. Tidak memandang posisi kamu staf ataupun manajer, semua bis..."
 readTime: "2 min"
-image: "/assets/images/blog/cover-c706082e-6e79-4511-a308-f56ed0f1509d.jpg"
+image: "/assets/images/blog/cover-c706082e-6e79-4511-a308-f56ed0f1509d.webp"
 ---
 
 Belakangan ini dunia semakin tidak jelas. Terjadi banyak *PHK*, baik perusahaan kecil maupun besar. Tidak memandang posisi kamu *staf* ataupun *manajer*, semua bisa terkena. Semua bisa terjadi dalam hitungan hari ataupun bulan, **karir kita dalam kondisi yang tidak pasti**.

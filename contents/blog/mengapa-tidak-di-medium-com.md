@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "1. Menulis blog merupakan sebuah kebiasaan baru yang mau saya latih Seperti yang semua orang ketahui, menulis adalah sebuah kebiasaan bagus yang produktif. K..."
 readTime: "3 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## 1. Menulis blog merupakan sebuah kebiasaan baru yang mau saya latih

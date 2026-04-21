@@ -5,14 +5,14 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "In the ever-evolving world of software development, efficiency is king. But sometimes, the quest for a robust codebase leads us down a path of unnecessary co..."
 readTime: "4 min"
-image: "/assets/images/blog/cover-37c21178-634d-4ab1-8851-52fb46abc97c.jpg"
+image: "/assets/images/blog/cover-37c21178-634d-4ab1-8851-52fb46abc97c.webp"
 ---
 
 In the ever-evolving world of software development, efficiency is king. But sometimes, the quest for a robust codebase leads us down a path of unnecessary complexity, especially when it comes to managing view state. Have you ever considered the impact of your view state choices on your app’s performance and maintainability? Let’s dive into why opting for simplicity could be the game-changer your project needs.
 
 
 
-![Simple App with view state](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-1.gif)
+![Simple App with view state](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-1.webp)
 <figcaption class="notion-caption">Simple App with view state</figcaption>
 
 
@@ -128,10 +128,10 @@ The proof is in the pudding—or in this case, the screenshots. When we compare 
 
 
 
-![Size for View State Inheritance](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-2.png)
+![Size for View State Inheritance](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-2.webp)
 <figcaption class="notion-caption">Size for View State Inheritance</figcaption>
 
-![Size for Simple View State](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-3.png)
+![Size for Simple View State](/assets/images/blog/37c21178-634d-4ab1-8851-52fb46abc97c-3.webp)
 <figcaption class="notion-caption">Size for Simple View State</figcaption>
 
 ## Conclusion

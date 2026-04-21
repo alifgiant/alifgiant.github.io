@@ -5,12 +5,12 @@ tags: ["Tech"]
 featured: false
 description: "Siapa yang bosan dengan tampilan hitam putih dari default terminal? Ingin bisa punya terminal asik gini? Colourful, Practical dan pastinya Geeky? Image/asset..."
 readTime: "2 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Siapa yang bosan dengan tampilan hitam putih dari default terminal? Ingin bisa punya terminal asik gini? *Colourful, Practical* dan pastinya *Geeky*?
 
-![Image](/assets/images/blog/e0271416-3597-46a7-82bc-3c98cf2062ca-1.png)
+![Image](/assets/images/blog/e0271416-3597-46a7-82bc-3c98cf2062ca-1.webp)
 
 Kita bisa melakukannya dengan Zsh, Oh My Zsh dan iTerm2. Artikel kali ini akan memberikan step by step untuk mendapatkan tampilan yang sama. Lets, begin..
 
@@ -64,7 +64,7 @@ Open iTerm2 > Default Menu (iTerm) > Make iTerm2 default Term
 
 **12. Have fun and look cool 😎**
 
-![Image](/assets/images/blog/e0271416-3597-46a7-82bc-3c98cf2062ca-2.png)
+![Image](/assets/images/blog/e0271416-3597-46a7-82bc-3c98cf2062ca-2.webp)
 
 source:
 

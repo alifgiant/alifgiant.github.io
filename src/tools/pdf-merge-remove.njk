@@ -1,0 +1,546 @@
+---
+layout: layouts/base.njk
+title: PDF Merge & Remove
+description: Merge multiple PDFs or remove specific pages directly in your browser.
+permalink: /tools/pdf-merge-remove/
+---
+
+{# PDF-LIB for PDF manipulation #}
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="pdfMergeRemoveTool()">
+    {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/pdf-merge-remove/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            {# Mode Switch #}
+            <div class="grid grid-cols-2 gap-3">
+                <button @click="setMode('merge')" :class="mode === 'merge' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">
+                    Merge PDFs
+                </button>
+                <button @click="setMode('remove')" :class="mode === 'remove' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-stone-50 text-text-muted hover:bg-stone-100'" class="px-4 py-3 rounded-xl text-xs font-bold transition-all border border-stone-100">
+                    Remove Pages
+                </button>
+            </div>
+
+            {# Output Page Standardization #}
+            <div class="p-5 bg-stone-50 rounded-2xl border border-stone-100 flex flex-col gap-4">
+                <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" x-model="standardizePages" class="mt-0.5 w-4 h-4 rounded border-stone-300 text-indigo-600 focus:ring-indigo-300">
+                    <div>
+                        <h4 class="text-sm font-bold text-text-main">Standardize Page Size</h4>
+                        <p class="text-xs text-text-muted">Normalize output pages to the same paper size to fix inconsistent widths.</p>
+                    </div>
+                </label>
+
+                <div x-show="standardizePages" class="grid grid-cols-1 md:grid-cols-2 gap-4" x-cloak>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Paper Size</label>
+                        <select x-model="standardPageSize" class="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl text-sm font-semibold text-text-main focus:outline-none focus:border-primary/30">
+                            <option value="a4">A4</option>
+                            <option value="letter">Letter</option>
+                            <option value="legal">Legal</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Orientation</label>
+                        <select x-model="standardOrientation" class="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl text-sm font-semibold text-text-main focus:outline-none focus:border-primary/30">
+                            <option value="auto">Auto (match each page)</option>
+                            <option value="portrait">Portrait</option>
+                            <option value="landscape">Landscape</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {# Merge Mode #}
+            <div x-show="mode === 'merge'" class="flex flex-col gap-6" x-cloak>
+                <div @dragover.prevent="dragOver = true"
+                     @dragleave.prevent="dragOver = false"
+                     @drop.prevent="handleDrop($event)"
+                     :class="dragOver ? 'border-indigo-400 bg-indigo-50/50 scale-[1.01]' : 'border-stone-200 bg-stone-50/30'"
+                     class="relative group border-2 border-dashed rounded-3xl p-10 transition-all duration-300 flex flex-col items-center justify-center gap-6 cursor-pointer overflow-hidden">
+
+                    <input type="file" multiple accept="application/pdf" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleMergeFileSelect($event)">
+
+                    <div class="p-5 rounded-2xl bg-white shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                        <span class="material-symbols-outlined text-4xl text-indigo-500">upload_file</span>
+                    </div>
+
+                    <div class="text-center">
+                        <h3 class="text-lg font-bold text-text-main mb-1">Drop PDFs to merge</h3>
+                        <p class="text-xs text-text-muted">Add at least 2 files, then reorder if needed</p>
+                    </div>
+                </div>
+
+                <div x-show="mergeFiles.length > 0" class="flex flex-col gap-3 animate-fade-in" x-cloak>
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="text-sm font-bold text-text-main" x-text="`Order (${mergeFiles.length} files)`"></h4>
+                        <button @click="clearMergeFiles()" class="text-[10px] font-bold text-rose-500 hover:text-rose-600 uppercase tracking-widest">Clear All</button>
+                    </div>
+
+                    <template x-for="(f, index) in mergeFiles" :key="f.id">
+                        <div class="flex items-center gap-3 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                            <div class="w-8 h-8 rounded-lg bg-white border border-stone-100 flex items-center justify-center text-xs font-bold text-text-main" x-text="index + 1"></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-bold text-text-main truncate" x-text="f.name"></div>
+                                <div class="text-[10px] text-text-muted" x-text="formatSize(f.size)"></div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button @click="moveMergeFile(index, -1)" :disabled="index === 0" class="p-2 text-stone-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-stone-400 transition-all">
+                                    <span class="material-symbols-outlined text-base inline-flex items-center justify-center">arrow_upward</span>
+                                </button>
+                                <button @click="moveMergeFile(index, 1)" :disabled="index === mergeFiles.length - 1" class="p-2 text-stone-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-stone-400 transition-all">
+                                    <span class="material-symbols-outlined text-base inline-flex items-center justify-center">arrow_downward</span>
+                                </button>
+                                <button @click="removeMergeFile(index)" class="p-2 text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
+                                    <span class="material-symbols-outlined text-base inline-flex items-center justify-center">close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <button @click="mergePdfs()" :disabled="mergeFiles.length < 2 || processing" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-indigo-600 text-white rounded-2xl font-bold text-xl hover:bg-indigo-700 transition-all duration-300 shadow-xl shadow-indigo-200/50 active:scale-[0.98] disabled:opacity-50 overflow-hidden">
+                    <span x-show="!processing">Merge PDFs</span>
+                    <span x-show="processing" class="flex items-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                    <span x-show="!processing" class="material-symbols-outlined group-hover:translate-x-1 transition-transform">call_merge</span>
+                </button>
+            </div>
+
+            {# Remove Pages Mode #}
+            <div x-show="mode === 'remove'" class="flex flex-col gap-6" x-cloak>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Upload Single PDF</label>
+                <div class="relative border-2 border-dashed border-stone-200 bg-stone-50/30 rounded-3xl p-8 flex flex-col items-center justify-center gap-4 overflow-hidden">
+                    <input type="file" accept="application/pdf" class="absolute inset-0 opacity-0 cursor-pointer" @change="handleRemoveFileSelect($event)">
+                    <div class="p-4 rounded-2xl bg-white shadow-sm border border-stone-100">
+                        <span class="material-symbols-outlined text-3xl text-indigo-500">picture_as_pdf</span>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-base font-bold text-text-main" x-text="removeFile ? removeFile.name : 'Choose a PDF file'"></h3>
+                        <p class="text-xs text-text-muted" x-text="removeFile ? formatSize(removeFile.size) : 'Only one file for page removal mode'"></p>
+                    </div>
+                </div>
+
+                <div x-show="removeFile" class="grid grid-cols-1 md:grid-cols-2 gap-4" x-cloak>
+                    <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-1">Detected Pages</div>
+                        <div class="text-xl font-black text-text-main" x-text="removeFilePageCount || '-' "></div>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-1">Remaining After Remove</div>
+                        <div class="text-xl font-black" :class="remainingPages > 0 ? 'text-emerald-600' : 'text-rose-500'" x-text="remainingPages >= 0 ? remainingPages : '-' "></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-text-muted ml-1">Pages to Remove</label>
+                    <input type="text" x-model="removePagesInput" placeholder="Example: 2,5-7,10" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner font-mono">
+                    <p class="text-[10px] text-text-muted ml-1">Use comma-separated numbers or ranges. Page numbers start at 1.</p>
+                </div>
+
+                <button @click="removePages()" :disabled="!removeFile || !removePagesInput.trim() || processing || remainingPages <= 0" class="group relative flex items-center justify-center gap-3 w-full py-5 bg-indigo-600 text-white rounded-2xl font-bold text-xl hover:bg-indigo-700 transition-all duration-300 shadow-xl shadow-indigo-200/50 active:scale-[0.98] disabled:opacity-50 overflow-hidden">
+                    <span x-show="!processing">Remove Selected Pages</span>
+                    <span x-show="processing" class="flex items-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                    <span x-show="!processing" class="material-symbols-outlined group-hover:translate-x-1 transition-transform">delete_sweep</span>
+                </button>
+            </div>
+
+            {# Result Area #}
+            <div x-show="resultUrl" class="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100 flex flex-col md:flex-row items-center justify-between gap-4 animate-fade-in" x-cloak>
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-white border border-emerald-100">
+                        <span class="material-symbols-outlined text-emerald-600">task_alt</span>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-text-main">File ready</div>
+                        <div class="text-[10px] text-text-muted" x-text="resultName"></div>
+                    </div>
+                </div>
+                <a :href="resultUrl" :download="resultName" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors">
+                    Download PDF
+                    <span class="material-symbols-outlined text-base">download</span>
+                </a>
+            </div>
+
+            <template x-if="errorMessage">
+                <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-sm font-medium text-rose-700" x-text="errorMessage"></div>
+            </template>
+
+            {# Helpful Tips #}
+            <div class="mt-12 pt-8 border-t border-stone-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-amber-600 text-xl">tips_and_updates</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-text-main mb-1">Quick Hint</h3>
+                        <p class="text-sm text-text-muted">Use Merge mode to combine multiple files. Arrange the order first, then click Merge PDFs.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-600 text-xl">rule</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-text-main mb-1">Remove Syntax</h3>
+                        <p class="text-sm text-text-muted">In Remove mode, enter page input like 2,5-7,10 to delete those pages from the uploaded PDF.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-[10px] text-text-muted italic ml-1">Enable Standardize Page Size if pages that should be A4 still look different in width after merge.</p>
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function pdfMergeRemoveTool() {
+        return {
+            mode: 'merge',
+            dragOver: false,
+            processing: false,
+            mergeFiles: [],
+            removeFile: null,
+            removeFilePageCount: 0,
+            removePagesInput: '',
+            standardizePages: false,
+            standardPageSize: 'a4',
+            standardOrientation: 'auto',
+            resultUrl: null,
+            resultName: '',
+            errorMessage: '',
+
+            get remainingPages() {
+                if (!this.removeFilePageCount) return -1;
+                const pages = this.parsePageSpec(this.removePagesInput, this.removeFilePageCount);
+                if (pages.error) return -1;
+                return this.removeFilePageCount - pages.indexes.length;
+            },
+
+            setMode(nextMode) {
+                this.mode = nextMode;
+                this.errorMessage = '';
+            },
+
+            handleDrop(event) {
+                this.dragOver = false;
+                const files = Array.from(event.dataTransfer.files || []);
+                this.addMergeFiles(files);
+            },
+
+            handleMergeFileSelect(event) {
+                const files = Array.from(event.target.files || []);
+                this.addMergeFiles(files);
+                event.target.value = '';
+            },
+
+            addMergeFiles(files) {
+                files.forEach((file) => {
+                    if (file.type !== 'application/pdf') return;
+                    this.mergeFiles.push({
+                        id: Math.random().toString(36).slice(2, 10),
+                        name: file.name,
+                        size: file.size,
+                        file
+                    });
+                });
+                this.errorMessage = '';
+                this.resetResult();
+            },
+
+            moveMergeFile(index, direction) {
+                const newIndex = index + direction;
+                if (newIndex < 0 || newIndex >= this.mergeFiles.length) return;
+                const current = this.mergeFiles[index];
+                this.mergeFiles.splice(index, 1);
+                this.mergeFiles.splice(newIndex, 0, current);
+                this.resetResult();
+            },
+
+            removeMergeFile(index) {
+                this.mergeFiles.splice(index, 1);
+                this.resetResult();
+            },
+
+            clearMergeFiles() {
+                this.mergeFiles = [];
+                this.resetResult();
+            },
+
+            async handleRemoveFileSelect(event) {
+                const selected = event.target.files && event.target.files[0];
+                event.target.value = '';
+                this.resetResult();
+                this.errorMessage = '';
+
+                if (!selected || selected.type !== 'application/pdf') {
+                    this.removeFile = null;
+                    this.removeFilePageCount = 0;
+                    return;
+                }
+
+                this.removeFile = selected;
+
+                try {
+                    const bytes = await selected.arrayBuffer();
+                    const doc = await PDFLib.PDFDocument.load(bytes);
+                    this.removeFilePageCount = doc.getPageCount();
+                } catch (error) {
+                    this.removeFile = null;
+                    this.removeFilePageCount = 0;
+                    this.errorMessage = 'Failed to read this PDF file. Please try another file.';
+                }
+            },
+
+            async mergePdfs() {
+                if (this.processing || this.mergeFiles.length < 2) return;
+
+                this.processing = true;
+                this.errorMessage = '';
+                this.resetResult();
+
+                try {
+                    const mergedDoc = await PDFLib.PDFDocument.create();
+
+                    for (const item of this.mergeFiles) {
+                        const bytes = await item.file.arrayBuffer();
+                        const sourceDoc = await PDFLib.PDFDocument.load(bytes);
+
+                        if (this.standardizePages) {
+                            const sourcePages = sourceDoc.getPages();
+                            for (const sourcePage of sourcePages) {
+                                await this.appendPageWithStandardSize(mergedDoc, sourcePage);
+                            }
+                        } else {
+                            const pages = await mergedDoc.copyPages(sourceDoc, sourceDoc.getPageIndices());
+                            pages.forEach((page) => mergedDoc.addPage(page));
+                        }
+                    }
+
+                    const resultBytes = await mergedDoc.save({ useObjectStreams: true });
+                    const blob = new Blob([resultBytes], { type: 'application/pdf' });
+                    this.resultName = this.buildResultName('merged');
+                    this.resultUrl = URL.createObjectURL(blob);
+                } catch (error) {
+                    this.errorMessage = 'Failed to merge PDFs. Please verify your files and try again.';
+                }
+
+                this.processing = false;
+            },
+
+            async removePages() {
+                if (this.processing || !this.removeFile || !this.removePagesInput.trim()) return;
+
+                this.processing = true;
+                this.errorMessage = '';
+                this.resetResult();
+
+                try {
+                    const parsed = this.parsePageSpec(this.removePagesInput, this.removeFilePageCount);
+                    if (parsed.error) {
+                        this.errorMessage = parsed.error;
+                        this.processing = false;
+                        return;
+                    }
+
+                    if (parsed.indexes.length === 0) {
+                        this.errorMessage = 'No valid page numbers found. Please update your input.';
+                        this.processing = false;
+                        return;
+                    }
+
+                    if (parsed.indexes.length >= this.removeFilePageCount) {
+                        this.errorMessage = 'Cannot remove all pages. Leave at least one page in the output PDF.';
+                        this.processing = false;
+                        return;
+                    }
+
+                    const bytes = await this.removeFile.arrayBuffer();
+                    const sourceDoc = await PDFLib.PDFDocument.load(bytes);
+                    const outputDoc = await PDFLib.PDFDocument.create();
+
+                    for (let i = 0; i < sourceDoc.getPageCount(); i++) {
+                        if (parsed.indexes.includes(i)) continue;
+
+                        if (this.standardizePages) {
+                            const sourcePage = sourceDoc.getPage(i);
+                            await this.appendPageWithStandardSize(outputDoc, sourcePage);
+                        } else {
+                            const pages = await outputDoc.copyPages(sourceDoc, [i]);
+                            outputDoc.addPage(pages[0]);
+                        }
+                    }
+
+                    const resultBytes = await outputDoc.save({ useObjectStreams: true });
+                    const blob = new Blob([resultBytes], { type: 'application/pdf' });
+                    this.resultName = this.buildResultName('pages-removed');
+                    this.resultUrl = URL.createObjectURL(blob);
+                } catch (error) {
+                    this.errorMessage = 'Failed to remove pages. Please check the PDF and page input.';
+                }
+
+                this.processing = false;
+            },
+
+            parsePageSpec(input, maxPage) {
+                const clean = (input || '').replace(/\s+/g, '');
+                if (!clean) return { indexes: [] };
+
+                const result = new Set();
+                const parts = clean.split(',').filter(Boolean);
+
+                for (const part of parts) {
+                    if (part.includes('-')) {
+                        const bounds = part.split('-');
+                        if (bounds.length !== 2) {
+                            return { error: 'Invalid range format. Use only patterns like 2-5.' };
+                        }
+
+                        const start = Number(bounds[0]);
+                        const end = Number(bounds[1]);
+                        if (!Number.isInteger(start) || !Number.isInteger(end) || start < 1 || end < 1 || start > end) {
+                            return { error: 'Invalid range detected. Use valid page ranges such as 3-6.' };
+                        }
+                        if (end > maxPage) {
+                            return { error: `Page range exceeds total pages (${maxPage}).` };
+                        }
+
+                        for (let page = start; page <= end; page++) {
+                            result.add(page - 1);
+                        }
+                        continue;
+                    }
+
+                    const page = Number(part);
+                    if (!Number.isInteger(page) || page < 1) {
+                        return { error: 'Invalid page number detected. Use positive numbers only.' };
+                    }
+                    if (page > maxPage) {
+                        return { error: `Page ${page} exceeds total pages (${maxPage}).` };
+                    }
+                    result.add(page - 1);
+                }
+
+                return { indexes: Array.from(result).sort((a, b) => a - b) };
+            },
+
+            getPaperSizePoints() {
+                const sizes = {
+                    a4: [595.28, 841.89],
+                    letter: [612, 792],
+                    legal: [612, 1008]
+                };
+                return sizes[this.standardPageSize] || sizes.a4;
+            },
+
+            getStandardPageDimensions(sourceWidth, sourceHeight) {
+                let [width, height] = this.getPaperSizePoints();
+
+                if (this.standardOrientation === 'auto') {
+                    const sourceLandscape = sourceWidth > sourceHeight;
+                    const targetLandscape = width > height;
+                    if (sourceLandscape !== targetLandscape) {
+                        [width, height] = [height, width];
+                    }
+                    return [width, height];
+                }
+
+                if (this.standardOrientation === 'portrait' && width > height) {
+                    [width, height] = [height, width];
+                }
+                if (this.standardOrientation === 'landscape' && width < height) {
+                    [width, height] = [height, width];
+                }
+
+                return [width, height];
+            },
+
+            async appendPageWithStandardSize(targetDoc, sourcePage) {
+                const sourceWidth = sourcePage.getWidth();
+                const sourceHeight = sourcePage.getHeight();
+                const [targetWidth, targetHeight] = this.getStandardPageDimensions(sourceWidth, sourceHeight);
+
+                const embeddedPage = await targetDoc.embedPage(sourcePage);
+                const scale = Math.min(targetWidth / sourceWidth, targetHeight / sourceHeight);
+                const drawWidth = sourceWidth * scale;
+                const drawHeight = sourceHeight * scale;
+                const x = (targetWidth - drawWidth) / 2;
+                const y = (targetHeight - drawHeight) / 2;
+
+                const page = targetDoc.addPage([targetWidth, targetHeight]);
+                page.drawPage(embeddedPage, { x, y, width: drawWidth, height: drawHeight });
+            },
+
+            buildResultName(suffix) {
+                const base = this.mode === 'merge'
+                    ? 'merged-document'
+                    : (this.removeFile?.name || 'document').replace(/\.pdf$/i, '');
+                return `${base}-${suffix}.pdf`;
+            },
+
+            resetResult() {
+                if (this.resultUrl) {
+                    URL.revokeObjectURL(this.resultUrl);
+                }
+                this.resultUrl = null;
+                this.resultName = '';
+            },
+
+            formatSize(bytes) {
+                if (!bytes) return '0 B';
+                const units = ['B', 'KB', 'MB', 'GB'];
+                let value = bytes;
+                let unitIndex = 0;
+                while (value >= 1024 && unitIndex < units.length - 1) {
+                    value /= 1024;
+                    unitIndex++;
+                }
+                return `${value.toFixed(value >= 100 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+            }
+        }
+    }
+</script>

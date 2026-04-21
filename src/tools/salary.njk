@@ -5,7 +5,7 @@ description: Calculate monthly take-home pay in Indonesia (PPh21, BPJS, JHT, pen
 permalink: /tools/salary/
 ---
 
-<div class="w-full max-w-4xl flex flex-col gap-12" x-data="salaryTool()" x-init="recalculate()">
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="salaryTool()" x-init="init()">
     {# Header #}
     {% set tool = {} %}
     {% for item in site.pages.tools.list %}
@@ -33,87 +33,293 @@ permalink: /tools/salary/
 
     <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
         <div class="flex flex-col gap-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Gross Salary (IDR)</label>
-                    <input type="text" :value="format(monthlyGross)" @input="onCurrencyInput($event,'monthlyGross')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
-                </div>
+            {% set shortcutHint = 'You can type shorthand values in salary fields: <span class="font-semibold text-text-main">250k</span>, <span class="font-semibold text-text-main">1.5m</span>, <span class="font-semibold text-text-main">1.2b</span>, or decimals like <span class="font-semibold text-text-main">1,5m</span> (case-insensitive).' %}
+            {% include "partials/input-shortcut.njk" %}
 
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Monthly Allowances (optional)</label>
-                    <input type="text" :value="format(monthlyAllowance)" @input="onCurrencyInput($event,'monthlyAllowance')" placeholder="0" class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
-                </div>
-            </div>
+            <div class="space-y-6 md:space-y-8 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col gap-3">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Monthly Basic Gross (IDR)</label>
+                        <input type="text" x-model="inputs.monthlyGross" @input="onCurrencyInput('monthlyGross')" @blur="onCurrencyBlur('monthlyGross')" placeholder="Enter amount (e.g. 10m)" class="block w-full px-6 py-5 bg-stone-50 border border-stone-200 rounded-2xl text-text-main focus:bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Marital Status</label>
-                    <div class="flex items-center gap-3">
-                        <div class="inline-flex rounded-full border-2 p-1 bg-stone-50" role="tablist" aria-label="Marital status">
-                            <button :class="status.married ? 'text-text-muted' : 'bg-primary text-white shadow'" @click="status.married=false; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Single</button>
-                            <button :class="status.married ? 'bg-primary text-white shadow' : 'text-text-muted'" @click="status.married=true; recalculate()" class="px-3 py-1 rounded-full text-sm font-bold">Married</button>
+                    <div class="flex flex-col gap-3">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Other Allowances (optional)</label>
+                        <input type="text" x-model="inputs.monthlyAllowance" @input="onCurrencyInput('monthlyAllowance')" @blur="onCurrencyBlur('monthlyAllowance')" placeholder="Optional (e.g. 2m)" class="block w-full px-6 py-5 bg-stone-50 border border-stone-200 rounded-2xl text-text-main focus:bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-lg transition-all" />
+                    </div>
+                </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <div class="flex flex-col gap-3">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Marital Status</label>
+                        <div class="flex items-center gap-3">
+                            <div class="inline-flex items-center rounded-2xl border border-stone-200 p-1 bg-stone-50" role="tablist">
+                                <button :class="status.married ? 'text-text-muted hover:bg-stone-50 hover:shadow-sm' : 'bg-white border-stone-200 text-stone-900 shadow-sm'" @click="status.married=false; recalculate()" class="px-6 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap">Single (TK)</button>
+                                <button :class="status.married ? 'bg-white border-stone-200 text-stone-900 shadow-sm' : 'text-text-muted hover:bg-stone-50 hover:shadow-sm'" @click="status.married=true; recalculate()" class="px-6 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap">Married (K)</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3 md:items-start items-stretch">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Dependents (max 3)</label>
+                        <input type="number" min="0" max="3" x-model.number="status.dependents" @input="recalculate()" class="block w-full md:w-32 px-5 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-text-main focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all text-center" />
+                    </div>
+                </div>
+                    
+                <div class="flex flex-col gap-3 pt-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Company Industry Risk (JKK)</label>
+                    <div class="relative w-full">
+                        <select x-model="jkkTier" @change="recalculate()" class="block w-full pl-6 pr-12 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main appearance-none focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm md:text-base">
+                            <template x-for="tier in jkkTiers" :key="tier.tier">
+                                <option :value="tier.tier" x-text="tier.name"></option>
+                            </template>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-400">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 md:col-span-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Number of Dependents (children, max 3)</label>
-                    <input type="number" min="0" max="3" x-model.number="status.dependents" @input="recalculate()" class="w-24 px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-row items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-blue-500">policy</span>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-800">TER Tax Category</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold text-blue-600/70" x-text="getPTKPCode()"></span>
+                                <span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-xl shadow-sm" x-text="'Cat ' + getTERCategory() + ' (' + m.terRate + '%)'"></span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-row items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-blue-500">health_and_safety</span>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-800">JKK Rate Rule</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold text-blue-600/70" x-text="m.jkkTierData?.label"></span>
+                                <span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-xl shadow-sm" x-text="m.jkkTierData?.rate + '%'"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-8 md:pt-12 border-t border-stone-200">
+                    <div class="flex flex-col gap-10">
+                        <div>
+                            <div class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">receipt</span>
+                                Monthly Payslip Simulation
+                            </div>
+                        
+                        <div class="font-mono text-[13px] sm:text-[14px]">
+                            <div class="py-4 border-b border-stone-100/50">
+                                <div class="text-[10px] uppercase tracking-wider text-stone-400 mb-3">1. Gross Income</div>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1">
+                                        <span class="text-stone-500">Basic gross</span>
+                                        <span class="font-semibold text-right text-stone-900" x-text="format(m.monthlyGross - m.monthlyAllowance)"></span>
+                                    </div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1">
+                                        <span class="text-stone-500">Allowance</span>
+                                        <span class="font-semibold text-right text-stone-900" x-text="format(m.monthlyAllowance)"></span>
+                                    </div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 pt-2 mt-2 border-t border-stone-100 font-bold text-stone-800">
+                                        <span>Total cash income</span>
+                                        <span class="text-right" x-text="format(m.monthlyGross)"></span>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-[10px] leading-5 text-stone-500">Cash salary before monthly tax and employee BPJS deductions.</p>
+                            </div>
+
+                            <div class="py-4 border-b border-stone-100/50">
+                                <div class="flex items-center justify-between gap-4 mb-3">
+                                    <div class="text-[10px] uppercase tracking-wider text-stone-400">2. Tax</div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] uppercase tracking-wider text-stone-400">Monthly PPh21</div>
+                                        <div class="text-lg font-bold text-red-500 tabular-nums" x-text="'-' + format(m.monthlyTax)"></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100/50 mb-4">
+                                    <span class="text-stone-500">TER tax = rate × taxable base</span>
+                                    <span class="font-semibold text-right text-stone-900" x-text="m.terRate + '% × ' + format(m.taxableGross)"></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-[10px] uppercase tracking-wider text-stone-400 mb-2">Employer additions included in taxable base</div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1 text-stone-500">
+                                            <div>
+                                                <div>BPJS Kes (Employer: 4%)</div>
+                                                <div class="text-[10px] leading-5 text-stone-400">Cap Rp 12.000.000/month · Perpres 64/2020</div>
+                                            </div>
+                                            <span class="text-right" x-text="format(m.monthlyBPJSEmployer)"></span>
+                                        </div>
+                                        <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1 text-stone-500">
+                                            <div>
+                                                <div>BPJS JKK (Employer: <span x-text="m.jkkTierData?.rate + '%' "></span>)</div>
+                                                <div class="text-[10px] leading-5 text-stone-400">No wage cap · PP 44/2015</div>
+                                            </div>
+                                            <span class="text-right" x-text="format(m.jkkMonthly)"></span>
+                                        </div>
+                                        <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1 text-stone-500">
+                                            <div>
+                                                <div>BPJS JKM (Employer: 0.30%)</div>
+                                                <div class="text-[10px] leading-5 text-stone-400">No wage cap · PP 44/2015</div>
+                                            </div>
+                                            <span class="text-right" x-text="format(m.jkmMonthly)"></span>
+                                        </div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 pt-3 mt-3 border-t border-stone-200 font-semibold text-stone-900">
+                                        <span>Taxable base (Gross Income + Mandatory Benefits)</span>
+                                        <span class="text-right" x-text="format(m.taxableGross)"></span>
+                                    </div>
+                                    <p class="mt-2 text-[10px] leading-5 text-stone-500">PTKP is applied later in the annual reconciliation.</p>
+                                </div>
+                            </div>
+
+                            <div class="py-4 border-b border-stone-100/50">
+                                <div class="flex items-center justify-between gap-4 mb-3">
+                                    <div class="text-[10px] uppercase tracking-wider text-stone-400">3. BPJS</div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] uppercase tracking-wider text-stone-400">Employee deductions</div>
+                                        <div class="text-lg font-bold text-red-500 tabular-nums" x-text="'-' + format(m.monthlyBPJS + m.monthlyJHT + m.monthlyPension)"></div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1">
+                                        <div>
+                                            <div class="text-stone-600">BPJS Kes (Employee: 1%)</div>
+                                            <div class="text-[10px] leading-5 text-stone-400">Cap Rp 12.000.000/month · Perpres 64/2020</div>
+                                        </div>
+                                        <span class="text-right text-red-500 font-semibold whitespace-nowrap" x-text="'-' + format(m.monthlyBPJS)"></span>
+                                    </div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1">
+                                        <div>
+                                            <div class="text-stone-600">BPJS JHT (Employee: 2%)</div>
+                                            <div class="text-[10px] leading-5 text-stone-400">No wage cap · PP 46/2015</div>
+                                        </div>
+                                        <span class="text-right text-red-500 font-semibold whitespace-nowrap" x-text="'-' + format(m.monthlyJHT)"></span>
+                                    </div>
+                                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 py-1">
+                                        <div>
+                                            <div class="text-stone-600">BPJS JP (Employee: 1%)</div>
+                                            <div class="text-[10px] leading-5 text-stone-400">Cap Rp 10.547.400/month · PP 45/2015</div>
+                                        </div>
+                                        <span class="text-right text-red-500 font-semibold whitespace-nowrap" x-text="'-' + format(m.monthlyPension)"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="py-5 border-t border-stone-200 mt-4">
+                                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                    <div>
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-primary/70">Take-home pay</div>
+                                        <p class="mt-1 text-[11px] text-stone-500">Cash after monthly TER tax and employee BPJS deductions.</p>
+                                    </div>
+                                    <span class="self-end md:self-auto text-2xl font-bold text-primary tabular-nums" x-text="format(m.takeHome)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">inventory</span>
+                            Dec. Annual Reconciliation
+                        </div>
+                        <div class="font-mono text-[13px] sm:text-[14px] space-y-5">
+                            <div class="rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-blue-700">Year-End Tax Position</div>
+                                <div class="mt-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                    <div>
+                                        <div class="text-[11px] text-blue-700/80">December final withholding</div>
+                                        <p class="mt-1 text-[10px] leading-5 text-blue-800/70">Positive means extra withholding in December. Negative means estimated over-withholding from Jan-Nov.</p>
+                                    </div>
+                                    <span class="self-end md:self-auto text-xl font-bold tabular-nums whitespace-nowrap px-3 py-2 rounded-2xl" :class="m.decemberTax < 0 ? 'text-green-600 bg-green-50' : 'text-red-500 bg-white'" x-text="format(m.decemberTax)"></span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="text-[10px] uppercase tracking-wider text-stone-400">Annual Tax Base</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                    <span class="text-stone-500 pr-2">Gross setup (incl. tunjangan)</span>
+                                    <span class="font-semibold text-right tabular-nums text-stone-900" x-text="format(m.annualGrossIncome)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                    <span class="text-stone-500 pr-2">Biaya jabatan (5% max)</span>
+                                    <span class="font-semibold text-right text-red-500 tabular-nums whitespace-nowrap" x-text="'-' + format(m.annualBiayaJabatan)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                    <span class="text-stone-500 pr-2">Employee JHT + JP</span>
+                                    <span class="font-semibold text-right text-red-500 tabular-nums whitespace-nowrap" x-text="'-' + format(m.annualContributions)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 py-1.5 border-b border-stone-100">
+                                    <span class="text-stone-500 pr-2">PTKP annual deduction</span>
+                                    <span class="font-semibold text-right tabular-nums text-stone-900" x-text="'-' + format(m.ptkpValue)"></span>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl border border-stone-200 bg-stone-50 p-4 mt-6">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-3">Tarif Pasal 17 Progressif</div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-2 pb-2 border-b border-stone-200">
+                                    <span class="text-stone-600 font-semibold text-xs">A. Total 1-year true tax</span>
+                                    <span class="font-bold text-stone-900 tabular-nums whitespace-nowrap" x-text="format(m.exactAnnualTax)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 mb-3 pb-3 border-b border-stone-200">
+                                    <span class="text-stone-500 text-xs">B. Withheld Jan-Nov (TER)</span>
+                                    <span class="font-semibold text-stone-700 tabular-nums whitespace-nowrap" x-text="'-' + format(m.taxPaidJanNov)"></span>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4">
+                                    <span class="font-bold text-stone-900 text-sm">Dec final tax (A - B)</span>
+                                    <span class="font-bold tabular-nums whitespace-nowrap px-2 py-1 rounded" :class="m.decemberTax < 0 ? 'text-green-600 bg-green-50' : 'text-red-500 bg-red-50'" x-text="format(m.decemberTax)"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-[10px] leading-5 text-stone-500">TER monthly deductions are an estimate. Exact liability calculated at year end using standard Pasal 17 rates. December tax reconciles any difference.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">BPJS Kesehatan (employee %)</label>
-                    <input type="number" step="0.01" x-model.number="rates.bpjs" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">JHT (employee %)</label>
-                    <input type="number" step="0.01" x-model.number="rates.jht" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-                <div class="flex flex-col gap-3">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Pension (employee %)</label>
-                    <input type="number" step="0.01" x-model.number="rates.pension" @input="recalculate()" class="block w-full px-4 py-3 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
-                </div>
-            </div>
+            <div class="pt-4 border-t border-stone-200/80">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-stone-800 mb-5 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">policy</span>
+                    Regulations & Rules
+                </h3>
 
-            <div class="flex items-center gap-3">
-                <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
-            </div>
-
-            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-100">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Monthly Breakdown</div>
-                        <div class="mt-2 text-lg font-mono">
-                            <div class="flex justify-between"><span>Gross</span><span x-text="format(m.monthlyGross)"></span></div>
-                            <div class="flex justify-between"><span>BPJS Kesehatan</span><span x-text="format(m.monthlyBPJS)"></span></div>
-                            <div class="flex justify-between"><span>JHT</span><span x-text="format(m.monthlyJHT)"></span></div>
-                            <div class="flex justify-between"><span>Pension</span><span x-text="format(m.monthlyPension)"></span></div>
-                            <div class="flex justify-between"><span>PPh21 (monthly)</span><span x-text="format(m.monthlyTax)"></span></div>
-                            <hr class="my-2" />
-                            <div class="flex justify-between font-bold"><span>Take-home</span><span x-text="format(m.takeHome)"></span></div>
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><span class="material-symbols-outlined text-sm">receipt_long</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">TER Tax Method (PMK 168/2023)</h4>
                         </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed">Berlaku Jan 2024. PPh 21 bulanan dihitung: <strong>Penghasilan Bruto × Tarif Kategori (A/B/C)</strong>. Desember menggunakan tarif progresif tahunan (Pasal 17).</p>
                     </div>
 
-                    <div>
-                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Annual Summary</div>
-                        <div class="mt-2 text-lg font-mono">
-                            <div class="flex justify-between"><span>Annual Gross</span><span x-text="format(m.annualGross)"></span></div>
-                            <div class="flex justify-between"><span>Total BPJS/JHT/Pension</span><span x-text="format(m.annualContributions)"></span></div>
-                            <div class="flex justify-between"><span>Taxable Income</span><span x-text="format(m.taxableAnnual)"></span></div>
-                            <div class="flex justify-between"><span>Annual Tax</span><span x-text="format(m.annualTax)"></span></div>
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-amber-50 flex items-center justify-center text-amber-600"><span class="material-symbols-outlined text-sm">group</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">PTKP (PMK 101/2016)</h4>
                         </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed">Batas penghasilan bebas pajak. <strong>TK/0:</strong> Rp54 juta/thn. Tanggungan/Kawin masing-masing menambah Rp4,5 juta/thn (maks 3 tanggungan).</p>
+                    </div>
+
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><span class="material-symbols-outlined text-sm">health_and_safety</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">BPJS Kesehatan (Perpres 64/2020)</h4>
+                        </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed">Total 5% (1% karyawan, 4% perusahaan). Memiliki batas atas dasar perhitungan (wage cap) <strong>Rp 12.000.000</strong> per bulan.</p>
+                    </div>
+
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600"><span class="material-symbols-outlined text-sm">savings</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">BPJS TK (JHT & JP)</h4>
+                        </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed"><strong>JHT (PP 46/2015):</strong> 2% karyawan, 3.7% perusahaan (tanpa cap).<br><strong>JP (PP 45/2015):</strong> 1% karyawan, 2% perusahaan. Wage cap JP 2026: <strong>Rp 10.547.400</strong>.</p>
                     </div>
                 </div>
+
+                <p class="text-[10px] text-stone-400 mt-5 text-center">Data and wage caps verified: 20 Apr 2026.</p>
             </div>
         </div>
-    </div>
-
-    <div class="flex justify-center">
-        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
-            <span class="material-symbols-outlined text-sm">arrow_back</span>
-            Back to Tools
-        </a>
     </div>
 </div>
 
@@ -122,17 +328,88 @@ permalink: /tools/salary/
         return {
             monthlyGross: 0,
             monthlyAllowance: 0,
-            rates: {
-                bpjs: 1.00, // percent
-                jht: 2.00,
-                pension: 1.00
+            inputs: {
+                monthlyGross: '',
+                monthlyAllowance: ''
             },
-            rules: {
-                taxBrackets: [
-                    { cap: 60000000, rate: 0.05 },
-                    { cap: 250000000, rate: 0.15 },
-                    { cap: 500000000, rate: 0.25 },
-                    { cap: Infinity, rate: 0.30 }
+            rates: {
+                bpjs: 1.00,
+                jht: 2.00,
+                pension: 1.00,
+                jkm: 0.30,
+                bpjsEmployer: 4.00,
+                jhtEmployer: 3.70,
+                pensionEmployer: 2.00
+            },
+            rateInputs: {
+                bpjs: '1',
+                jht: '2',
+                pension: '1',
+                jkm: '0.3',
+                bpjsEmployer: '4',
+                jhtEmployer: '3.7',
+                pensionEmployer: '2'
+            },
+            // JKK risk classification tiers per PP 44/2015 Lampiran I
+            jkkTier: 1,
+            jkkTiers: [
+                { tier: 1, name: 'Sangat Rendah (Perkantoran / Office)', label: 'Kel. I', rate: 0.24 },
+                { tier: 2, name: 'Rendah (Perdagangan / Trade)', label: 'Kel. II', rate: 0.54 },
+                { tier: 3, name: 'Sedang (Industri Ringan)', label: 'Kel. III', rate: 0.89 },
+                { tier: 4, name: 'Tinggi (Industri Sedang)', label: 'Kel. IV', rate: 1.27 },
+                { tier: 5, name: 'Sangat Tinggi (Industri Berat)', label: 'Kel. V', rate: 1.74 }
+            ],
+            // BPJS Kesehatan: Perpres 64/2020 Ps.32 — cap fixed at Rp 12,000,000.
+            // JP (Jaminan Pensiun): PP 45/2015 — batas atas upah, updated each year via Permenaker.
+            //   2024: Rp 9,559,600 | 2025: Rp 10,042,300 | 2026: Rp 10,547,400
+            // JHT: no upper cap.
+            caps: {
+                bpjs: 12000000,
+                pension: 10547400
+            },
+            capInputs: {
+                bpjs: '12.000.000',
+                pension: '10.547.400'
+            },
+            // TER (Tarif Efektif Rata-rata) tables per PMK 168/2023, effective Jan 2024.
+            // Each entry: [upperBoundInclusive, ratePercent]. Income <= upper → that rate.
+            // Category A: TK/0, TK/1, K/0  — verified vs payslip: 43.6M→16%, 44.315M→17%
+            // Category B: TK/2, TK/3, K/1, K/2
+            // Category C: K/3
+            terTables: {
+                A: [
+                    [5400000,0],[5650000,0.25],[5950000,0.5],[6300000,0.75],
+                    [6750000,1],[7500000,1.25],[8550000,1.5],[9650000,2],
+                    [10050000,2.5],[10350000,3],[10700000,3.5],[11050000,4],
+                    [11600000,4.5],[12500000,5],[13750000,5.5],[15100000,6],
+                    [16950000,7],[19750000,8],[24150000,9],[26450000,10],
+                    [28000000,11],[30050000,12],[32400000,13],[35400000,14],
+                    [38900000,15],[44000000,16],[50000000,17],[56300000,18],
+                    [62500000,19],[68600000,20],[77500000,21],[89000000,22],
+                    [103000000,23],[125000000,24],[157000000,25],[206000000,26],
+                    [337000000,28],[454000000,30],[550000000,32],[Infinity,34]
+                ],
+                B: [
+                    [6200000,0],[6500000,0.25],[6850000,0.5],[7300000,0.75],
+                    [9200000,1],[10750000,1.5],[11250000,2],[11600000,2.5],
+                    [12600000,3],[13600000,4],[14950000,5],[16400000,6],
+                    [18450000,7],[21850000,8],[26000000,9],[27700000,10],
+                    [29350000,11],[31450000,12],[33950000,13],[37100000,14],
+                    [41100000,15],[45800000,16],[51400000,17],[58500000,18],
+                    [64000000,19],[71000000,20],[80000000,21],[93000000,22],
+                    [109000000,23],[129000000,24],[163000000,25],[211000000,26],
+                    [374000000,28],[459000000,30],[555000000,32],[Infinity,34]
+                ],
+                C: [
+                    [6600000,0],[6950000,0.25],[7350000,0.5],[7800000,0.75],
+                    [8850000,1],[9800000,1.25],[10950000,1.5],[11200000,2],
+                    [12050000,3],[12950000,4],[14150000,5],[15550000,6],
+                    [17050000,7],[19500000,8],[22700000,9],[29500000,10],
+                    [30250000,11],[32550000,12],[35100000,13],[38600000,14],
+                    [43350000,15],[47800000,16],[51400000,17],[56300000,18],
+                    [62500000,19],[68600000,20],[77500000,21],[89000000,22],
+                    [103000000,23],[125000000,24],[157000000,25],[206000000,26],
+                    [337000000,28],[454000000,30],[550000000,32],[Infinity,34]
                 ]
             },
             status: {
@@ -141,6 +418,8 @@ permalink: /tools/salary/
             },
             m: {
                 monthlyGross: 0,
+                monthlyAllowance: 0,
+                taxableGross: 0,
                 monthlyBPJS: 0,
                 monthlyJHT: 0,
                 monthlyPension: 0,
@@ -148,35 +427,198 @@ permalink: /tools/salary/
                 takeHome: 0,
                 annualGross: 0,
                 annualContributions: 0,
-                taxableAnnual: 0,
-                annualTax: 0
+                annualTax: 0,
+                terCategory: '-',
+                terRate: 0
             },
 
             format(v) {
                 return new Intl.NumberFormat('id-ID').format(Math.round(v || 0));
             },
 
-            onCurrencyInput(e, field) {
-                // keep only digits
-                const raw = String(e.target.value).replace(/[^0-9]/g, '');
-                const value = raw ? Number(raw) : 0;
-                this[field] = value;
-                e.target.value = this.format(value);
+            init() {
+                this.inputs.monthlyGross = this.monthlyGross > 0 ? this.format(this.monthlyGross) : '';
+                this.inputs.monthlyAllowance = this.monthlyAllowance > 0 ? this.format(this.monthlyAllowance) : '';
+                this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
+                this.rateInputs.jht = this.formatPercent(this.rates.jht);
+                this.rateInputs.pension = this.formatPercent(this.rates.pension);
+                this.rateInputs.jkm = this.formatPercent(this.rates.jkm);
+                this.rateInputs.bpjsEmployer = this.formatPercent(this.rates.bpjsEmployer);
+                this.rateInputs.jhtEmployer = this.formatPercent(this.rates.jhtEmployer);
+                this.rateInputs.pensionEmployer = this.formatPercent(this.rates.pensionEmployer);
+                this.capInputs.bpjs = this.format(this.caps.bpjs);
+                this.capInputs.pension = this.format(this.caps.pension);
                 this.recalculate();
+            },
+
+            formatPercent(v) {
+                const n = Number(v || 0);
+                if (!Number.isFinite(n)) return '0';
+                return n.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+            },
+
+            onCurrencyInput(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
+                const value = this.parseCurrencyValue(this.inputs[field]);
+                this[field] = value;
+                this.inputs[field] = raw;
+                this.recalculate();
+            },
+
+            onCurrencyBlur(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
+                const value = this.parseCurrencyValue(this.inputs[field]);
+                this[field] = value;
+                this.inputs[field] = value > 0 ? this.format(value) : '';
+                this.recalculate();
+            },
+
+            onRateInput(field) {
+                const value = this.parseRateValue(this.rateInputs[field]);
+                if (!Number.isNaN(value)) {
+                    this.rates[field] = value;
+                    this.recalculate();
+                }
+            },
+
+            onRateBlur(field) {
+                const value = this.parseRateValue(this.rateInputs[field]);
+                this.rates[field] = Number.isNaN(value) ? 0 : value;
+                this.rateInputs[field] = this.formatPercent(this.rates[field]);
+                this.recalculate();
+            },
+
+            onCapInput(field) {
+                const value = this.parseCurrencyValue(this.capInputs[field]);
+                if (!Number.isNaN(value) && value > 0) {
+                    this.caps[field] = value;
+                    this.recalculate();
+                }
+            },
+
+            onCapBlur(field) {
+                const defaults = { bpjs: 12000000, pension: 10547400 };
+                const value = this.parseCurrencyValue(this.capInputs[field]);
+                this.caps[field] = (!Number.isNaN(value) && value > 0) ? value : defaults[field];
+                this.capInputs[field] = this.format(this.caps[field]);
+                this.recalculate();
+            },
+
+            parseRateValue(input) {
+                const raw = String(input || '').trim();
+                if (!raw) return 0;
+                const cleaned = raw.replace(/[^0-9.,]/g, '');
+                return this.parseLocalizedNumber(cleaned);
+            },
+
+            parseCurrencyValue(input) {
+                const raw = String(input || '').trim();
+                if (!raw) return 0;
+
+                // Similar to Math Notes scale shortcuts: convert 250k/10m/1.2b to full numeric IDR.
+                const shorthandMatch = raw.match(/^([\d.,]+)\s*([kKmMbB])$/);
+                if (shorthandMatch) {
+                    const base = this.parseLocalizedNumber(shorthandMatch[1]);
+                    if (!Number.isNaN(base)) {
+                        const suffix = shorthandMatch[2].toLowerCase();
+                        const scale = suffix === 'k' ? 1000 : suffix === 'm' ? 1000000 : 1000000000;
+                        return base * scale;
+                    }
+                }
+
+                // Accept localized decimal/grouping input like 1.250.000,50 or 1250000.5.
+                const normalized = this.parseLocalizedNumber(raw);
+                if (!Number.isNaN(normalized)) {
+                    return normalized;
+                }
+
+                // Final fallback: keep only digits for plain IDR input.
+                const digitsOnly = raw.replace(/[^0-9]/g, '');
+                return digitsOnly ? Number(digitsOnly) : 0;
+            },
+
+            parseLocalizedNumber(value) {
+                const cleaned = String(value || '').trim().replace(/\s+/g, '');
+                if (!cleaned || !/^\d[\d.,]*$/.test(cleaned)) return NaN;
+
+                const hasDot = cleaned.includes('.');
+                const hasComma = cleaned.includes(',');
+
+                if (hasDot && hasComma) {
+                    const decimalSep = cleaned.lastIndexOf('.') > cleaned.lastIndexOf(',') ? '.' : ',';
+                    const thousandSep = decimalSep === '.' ? ',' : '.';
+                    const normalized = cleaned.replace(new RegExp(`\\${thousandSep}`, 'g'), '').replace(decimalSep, '.');
+                    return Number(normalized);
+                }
+
+                if (hasComma) {
+                    const parts = cleaned.split(',');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned.replace(',', '.') : cleaned.replace(/,/g, ''));
+                }
+
+                if (hasDot) {
+                    const parts = cleaned.split('.');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned : cleaned.replace(/\./g, ''));
+                }
+
+                return Number(cleaned);
             },
 
             reset() {
                 this.monthlyGross = 0;
                 this.monthlyAllowance = 0;
-                this.rates = { bpjs:1.00, jht:2.00, pension:1.00 };
+                this.inputs.monthlyGross = '';
+                this.inputs.monthlyAllowance = '';
+                this.jkkTier = 1;
+                this.status = { married: false, dependents: 0 };
+                this.rates = { bpjs:1.00, jht:2.00, pension:1.00, jkk:0.24, jkm:0.30, bpjsEmployer:4.00, jhtEmployer:3.70, pensionEmployer:2.00 };
+                this.rateInputs.bpjs = this.formatPercent(this.rates.bpjs);
+                this.rateInputs.jht = this.formatPercent(this.rates.jht);
+                this.rateInputs.pension = this.formatPercent(this.rates.pension);
+                this.rateInputs.jkm = this.formatPercent(this.rates.jkm);
+                this.rateInputs.bpjsEmployer = this.formatPercent(this.rates.bpjsEmployer);
+                this.rateInputs.jhtEmployer = this.formatPercent(this.rates.jhtEmployer);
+                this.rateInputs.pensionEmployer = this.formatPercent(this.rates.pensionEmployer);
+                this.caps = { bpjs: 12000000, pension: 10547400 };
+                this.capInputs.bpjs = this.format(this.caps.bpjs);
+                this.capInputs.pension = this.format(this.caps.pension);
                 this.recalculate();
             },
 
-            computePTKP() {
-                const base = 54000000;
-                const spouse = this.status.married ? 4500000 : 0;
-                const dependents = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3) * 4500000;
-                return base + spouse + dependents;
+            getTERCategory() {
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                if (this.status.married && deps === 3) return 'C';
+                if ((!this.status.married && deps >= 2) || (this.status.married && deps >= 1)) return 'B';
+                return 'A'; // TK/0, TK/1, K/0
+            },
+
+            getPTKPCode() {
+                const prefix = this.status.married ? 'K' : 'TK';
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                return `${prefix}/${deps}`;
+            },
+
+            lookupTER(gross) {
+                const cat = this.getTERCategory();
+                const table = this.terTables[cat];
+                for (let i = 0; i < table.length; i++) {
+                    if (gross <= table[i][0]) return { rate: table[i][1], category: cat };
+                }
+                return { rate: 34, category: cat };
             },
 
             recalculate() {
@@ -184,49 +626,103 @@ permalink: /tools/salary/
                 const allowance = Number(this.monthlyAllowance || 0);
                 const monthlyGrossTotal = gross + allowance;
 
-                const bpjsMonthly = monthlyGrossTotal * (this.rates.bpjs/100);
+                // Apply wage caps: BPJS Kesehatan capped at Rp 12,000,000 (Perpres 64/2020),
+                // JP (pension) capped at batas atas upah set by Permenaker each year.
+                // JHT has no upper cap.
+                const bpjsBase = Math.min(monthlyGrossTotal, this.caps.bpjs);
+                const pensionBase = Math.min(monthlyGrossTotal, this.caps.pension);
+
+                // Employee deductions (subtracted from pay)
+                const bpjsMonthly = bpjsBase * (this.rates.bpjs/100);
                 const jhtMonthly = monthlyGrossTotal * (this.rates.jht/100);
-                const pensionMonthly = monthlyGrossTotal * (this.rates.pension/100);
+                const pensionMonthly = pensionBase * (this.rates.pension/100);
+
+                // Employer contributions included in taxable gross per PMK 168/2023:
+                // BPJS Kesehatan employer, JKK, JKM.
+                // JHT employer and JP employer are NOT included per common payroll practice.
+                const selectedTier = this.jkkTiers.find(t => t.tier === Number(this.jkkTier)) || this.jkkTiers[0];
+                const jkkRate = selectedTier.rate;
+                const jkkMonthly = monthlyGrossTotal * (jkkRate/100);
+                const jkmMonthly = monthlyGrossTotal * (this.rates.jkm/100);
+                const bpjsEmployerMonthly = bpjsBase * (this.rates.bpjsEmployer/100);
+                const jhtEmployerMonthly = monthlyGrossTotal * (this.rates.jhtEmployer/100);
+                const pensionEmployerMonthly = pensionBase * (this.rates.pensionEmployer/100);
+                const taxableGross = monthlyGrossTotal + jkkMonthly + jkmMonthly + bpjsEmployerMonthly;
 
                 const annualGross = monthlyGrossTotal * 12;
-                const annualBPJS = bpjsMonthly * 12;
                 const annualJHT = jhtMonthly * 12;
                 const annualPension = pensionMonthly * 12;
 
-                const deductions = annualBPJS + annualJHT + annualPension;
-                const ptkp = this.computePTKP();
-                let taxable = annualGross - deductions - ptkp;
-                if (taxable < 0) taxable = 0;
+                const deps = Math.min(Math.max(Number(this.status.dependents || 0), 0), 3);
+                const ptkpValue = 54000000 + (this.status.married ? 4500000 : 0) + (deps * 4500000);
 
-                let remaining = taxable;
-                let tax = 0;
-                let lower = 0;
-                for (let i=0;i<this.rules.taxBrackets.length;i++) {
-                    const b = this.rules.taxBrackets[i];
-                    const cap = b.cap === Infinity ? Infinity : b.cap - lower;
-                    const portion = Math.min(remaining, cap === Infinity ? remaining : cap);
-                    if (portion > 0) {
-                        tax += portion * b.rate;
-                        remaining -= portion;
-                    }
-                    lower = b.cap === Infinity ? lower : b.cap;
-                    if (remaining <= 0) break;
+                // PMK 168/2023: monthly PPh21 = taxable gross × TER rate.
+                const ter = this.lookupTER(taxableGross);
+                const monthlyTax = taxableGross * ter.rate / 100;
+                // Take-home: basic gross minus employee deductions and tax (employer items net to zero)
+                const takeHome = monthlyGrossTotal - bpjsMonthly - jhtMonthly - pensionMonthly - monthlyTax;
+
+                // Exact Annual Calculation (Pasal 17) for December Reconciliation
+                const annualGrossIncome = taxableGross * 12;
+                // Biaya Jabatan max 500,000 / month = 6,000,000 / year
+                const annualBiayaJabatan = Math.min(annualGrossIncome * 0.05, 6000000);
+                const netAnnualIncome = annualGrossIncome - annualBiayaJabatan - annualJHT - annualPension;
+                // Round PKP down to nearest 1000
+                const pkp = Math.max(0, Math.floor((netAnnualIncome - ptkpValue) / 1000) * 1000);
+                
+                let exactAnnualTax = 0;
+                let remainingPkp = pkp;
+                
+                if (remainingPkp > 0) {
+                    const tier1 = Math.min(remainingPkp, 60000000);
+                    exactAnnualTax += tier1 * 0.05;
+                    remainingPkp -= tier1;
+                }
+                if (remainingPkp > 0) {
+                    const tier2 = Math.min(remainingPkp, 190000000); // 250m - 60m
+                    exactAnnualTax += tier2 * 0.15;
+                    remainingPkp -= tier2;
+                }
+                if (remainingPkp > 0) {
+                    const tier3 = Math.min(remainingPkp, 250000000); // 500m - 250m
+                    exactAnnualTax += tier3 * 0.25;
+                    remainingPkp -= tier3;
+                }
+                if (remainingPkp > 0) {
+                    const tier4 = Math.min(remainingPkp, 4500000000); // 5b - 500m
+                    exactAnnualTax += tier4 * 0.30;
+                    remainingPkp -= tier4;
+                }
+                if (remainingPkp > 0) {
+                    exactAnnualTax += remainingPkp * 0.35;
                 }
 
-                const monthlyTax = tax / 12;
-                const takeHome = monthlyGrossTotal - bpjsMonthly - jhtMonthly - pensionMonthly - monthlyTax;
+                const taxPaidJanNov = monthlyTax * 11;
+                // Dec tax can be higher or negative (refund)
+                const decemberTax = exactAnnualTax - taxPaidJanNov;
 
                 this.m = {
                     monthlyGross: monthlyGrossTotal,
+                    monthlyAllowance: allowance,
+                    taxableGross: taxableGross,
+                    ptkpValue: ptkpValue,
                     monthlyBPJS: bpjsMonthly,
                     monthlyJHT: jhtMonthly,
                     monthlyPension: pensionMonthly,
                     monthlyTax: monthlyTax,
                     takeHome: takeHome,
-                    annualGross: annualGross,
-                    annualContributions: deductions,
-                    taxableAnnual: taxable,
-                    annualTax: tax
+                    annualGrossIncome: annualGrossIncome,
+                    annualBiayaJabatan: annualBiayaJabatan,
+                    annualContributions: annualJHT + annualPension,
+                    exactAnnualTax: exactAnnualTax,
+                    taxPaidJanNov: taxPaidJanNov,
+                    decemberTax: decemberTax,
+                    terCategory: ter.category,
+                    terRate: ter.rate,
+                    monthlyBPJSEmployer: bpjsEmployerMonthly,
+                    jkkMonthly: jkkMonthly,
+                    jkmMonthly: jkmMonthly,
+                    jkkTierData: selectedTier
                 };
             }
         }

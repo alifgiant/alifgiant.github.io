@@ -5,7 +5,7 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "Tutorial Setup VS Code Server Di post sebelumnya part-1, saya menceritakan kenapa tutorial ini sangat menarik. Kebebasan yang ditawarkan konfigurasi ini sang..."
 readTime: "5 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## Tutorial Setup VS Code Server

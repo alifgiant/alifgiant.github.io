@@ -5,7 +5,7 @@ tags: ["Tech","Flutter"]
 featured: false
 description: "Instalasi Flutter Di post sebelumnya part-2, saya memaparkan bagaimana cara melakukan setup VM dan instalasi VS Code. Sebenarnya tutorial ini bisa berhenti h..."
 readTime: "4 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## Instalasi Flutter

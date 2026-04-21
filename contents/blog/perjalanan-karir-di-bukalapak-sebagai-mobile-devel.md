@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Tanggal 30 Juli 2021, saya secara resmi menjalani hari terakhir berstatus sebagai karyawan Bukalapak. Terhitung telah berlalu 3 tahun 4 bulan semenjak saya b..."
 readTime: "23 min"
-image: "/assets/images/blog/cover-3521a492-a5e8-4db0-9bcd-7bfed292c67c.jpg"
+image: "/assets/images/blog/cover-3521a492-a5e8-4db0-9bcd-7bfed292c67c.webp"
 ---
 
 Tanggal 30 Juli 2021, saya secara resmi menjalani hari terakhir berstatus sebagai karyawan Bukalapak. Terhitung telah berlalu 3 tahun 4 bulan semenjak saya bergabung. Mengingat kembali ke awal mula perjalanan ini, banyak sekali cerita, pengalaman yang sepertinya menarik untuk dibagikan. Termasuk, kenapa akhirnya saya memilih untuk mengundurkan diri dan kemana saya akan melanjutkan perjalanan karir.
@@ -16,7 +16,7 @@ Saya yakin pembaca artikel ini kemungkinan besar mengenal saya dan pasti mengeta
 
 Per hari ini, saya merupakan seorang pria berusia 25 tahun dan berprofesi sebagai mobile application developer (app dev). Saya mengawali perjalanan sebagai software developer semenjak masih duduk di bangku kuliah. Dimulai sebagai intern pada masa magang dan berlanjut freelance pada masa diluar magang. Selain bekerja, yang tentu saja merupakan sampingan, saya dapat dibilang cukup berprestasi sebagai mahasiswa. Saya terbiasa mengembangkan produk IT dan mengikuti beberapa perlombaan. Setelah lulus, pekerjaan full time pertama saya adalah sebagai seorang backend developer(BE dev). Saya mulai bekerja di Bukalapak sebagai seorang app dev terhitung sejak tanggal 2 April 2018.
 
-Bukalapak adalah sebuah perusahaan IT yang menyediakan platform jual beli online (online marketplace). Saya yakin orang indonesia tidak asing dengan nama Bukapalak. Terlebih, karena belakangan ini sedang ramai diperbincangkan. Karena berhasil menjadi perusahaan rintisan (startup) dengan status Unicorn yang pertama melakukan penawaran umum publik (IPO) di bursa efek Indonesia. Saya sendiri bekerja di kantor RnD Bukalapak yang ada di Bandung, Jawa Barat.
+Bukalapak adalah sebuah perusahaan IT yang menyediakan platform jual beli online (online marketplace). Saya yakin orang indonesia tidak asing dengan nama Bukapalak. Terlebih, karena belakangan ini sedang ramai diperbincangkan. Karena berhasil menjadi perusahaan rintisan (startup) dengan status Unicorn yang pertama melakukan penawaran umum publik (IPO) di bursa efek Indonesia. Saya sendiri bekerja di kantor RnD Bukalapak yang berlokasi di Bandung, Jawa Barat.
 
 ## Hiring Process
 
@@ -84,7 +84,7 @@ Mungkin teman teman ada yang bertanya.
 
 > “Kalau jam kerja dan waktu kerja fleksibel. Bagaimana caranya memastikan pekerjaan selesai?”
 
-Di Bukalapak dan mungkin hampir semua startup, diterapkan mekanisme bekerja yang di sebut “Scrum”. Secara simpel ini berarti sebuah tugas besar dipecah menjadi pekerjaan yang lebih kecil yang akan selesai dalam 1 sprint, biasanya 2 minggu. Jadi kurang lebih, “anda bebas bagaimana cara bekerjanya selama pekerjaan anda selesai dalam 2 minggu”. Untuk detail terkait scrum silahkan google sendiri lah ya 😬.
+Di Bukalapak dan mungkin hampir semua startup, diterapkan mekanisme bekerja yang disebut “Scrum”. Secara simpel ini berarti sebuah tugas besar dipecah menjadi pekerjaan yang lebih kecil yang akan selesai dalam 1 sprint, biasanya 2 minggu. Jadi kurang lebih, “anda bebas bagaimana cara bekerjanya selama pekerjaan anda selesai dalam 2 minggu”. Untuk detail terkait scrum silahkan google sendiri lah ya 😬.
 
 ## New office, new spirit
 

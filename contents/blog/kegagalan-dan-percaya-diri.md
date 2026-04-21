@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Kegagalan dan kesedihan, merupakan hal yang wajar. Semua orang pernah melaluinya bukan hanya saya maupun anda. Kalau saja Edison saat itu menyerah pada perco..."
 readTime: "3 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Kegagalan dan kesedihan, merupakan hal yang wajar. Semua orang pernah melaluinya bukan hanya saya maupun anda. Kalau saja Edison saat itu menyerah pada percobaannya yang gagal, bukan satu, dua, tapi ratusan bahkan ribuan kegagalan. Mungkin hari ini kita masih menggunakan lampu minyak. Kemungkinan besar kamu pasti pernah mendengar cerita ini. Terinspirasi dari kisahnya, lantas mengapa kita jatuh tersungkur dan tak ingin bangkit lagi?
@@ -14,7 +14,7 @@ Dulu saya pernah berkata pada seorang kawan, "saya menyukai kritikan, menyukai k
 
 Tapi rupanya itu salah. Saya tidak menyukai kritik, saya tidak menyukai kegagalan. Nobody does. Orang yang sukses pada dasarnya, karena ia tidak suka kegagalan, maka ia mencoba mengubah nya. Beberapa orang mungkin kuat untuk mencoba kembali tapi ada pula yang tidak kuat dan menyerah. Lantas apakah orang yang menyerah itu salah? Bermental lemah?
 
-![Image](/assets/images/blog/87d5bcdb-13ed-49d8-bb47-914d5144c9cd-1.png)
+![Image](/assets/images/blog/87d5bcdb-13ed-49d8-bb47-914d5144c9cd-1.webp)
 
 Saya yakin, kamu sering, atau setidaknya pernah melihat gambar diatas. Kebanyakan dari kita hanya akan melihat ilustrasi orang yang menyerah padahal sedikit lagi akan berhasil menemukan berlian, lalu berkata "jangan pernah menyerah". Namun, kita luput akan banyak detail lain dalam gambar ini. Salah satunya ialah tentang pemerannya. Ada seorang anak muda yang memiliki antusiasme tinggi namun masih jauh dari goal, ada seorang bapak tua yang sedikit lagi berhasil tapi berhenti. Apakah si bapak lemah?..
 

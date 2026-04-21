@@ -11,17 +11,19 @@
     <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
     <meta property="og:title" content="{{ title or site.name }} - {{ site.title }}" />
     <meta property="og:description" content="{{ description or site.description }}" />
-    <meta property="og:image" content="{{ site.url }}{{ image or '/assets/images/og-image.jpg' }}" />
+    <meta property="og:image" content="{{ site.url }}{{ image or '/assets/images/placeholder-blog.webp' }}" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="{{ site.url }}{{ page.url }}" />
     <meta property="twitter:title" content="{{ title or site.name }} - {{ site.title }}" />
     <meta property="twitter:description" content="{{ description or site.description }}" />
-    <meta property="twitter:image" content="{{ site.url }}{{ image or '/assets/images/og-image.jpg' }}" />
+    <meta property="twitter:image" content="{{ site.url }}{{ image or '/assets/images/placeholder-blog.webp' }}" />
 
     <!-- Compiled Tailwind CSS -->
     <link rel="stylesheet" href="/assets/main.css" />
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     
     <!-- Google Fonts (preconnect to speed up font loading) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,21 +32,18 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     
-    <!-- Prism.js Syntax Highlighting -->
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-shell-session.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-dart.min.js"></script>
+    <!-- Note: Prism.js is loaded only on pages that need syntax highlighting (blog posts, snippet tool) -->
     
     <!-- Tailwind config lives in tailwind.config.js for the compiled build -->
     
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            /* Reserve space to prevent icon font swap CLS */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
         html {
             scroll-behavior: smooth;
@@ -70,9 +69,18 @@
             font-size: 1.125rem;
             color: #44403c;
         }
+        .blog-content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.875rem, 1.4rem + 1.2vw, 2.25rem);
+            font-weight: 700;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.15;
+            color: #1c1917;
+        }
         .blog-content h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem);
             font-weight: 700;
             margin-top: 3rem;
             margin-bottom: 1.5rem;
@@ -81,7 +89,7 @@
         }
         .blog-content h3 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
+            font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
             font-weight: 600;
             margin-top: 2rem;
             margin-bottom: 1rem;
@@ -136,7 +144,8 @@
         }
     </style>
     
-    <!-- Alpine.js -->
+    
+    <!-- Alpine.js for interactive components (loaded defer - only executes after page load) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 

@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Coba jawab pertanyaan diatas.. Sudah? Mari ku tebak.. kau memilih “sok buruk” Sekali lagi, izikan aku tebak alasannya.. Karena kamu berpikir bahwa kata “sok”..."
 readTime: "8 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Coba jawab pertanyaan diatas..
@@ -102,7 +102,7 @@ Selain itu, kalimat gapapa ngomong kasar tapi ga narkoba suatu saat bisa bergese
 
 **Melihat Dari Sisi Logika Matematika**
 
-![Image](/assets/images/blog/f8469aad-9e61-46f1-8316-a0d4c9aad192-1.png)
+![Image](/assets/images/blog/f8469aad-9e61-46f1-8316-a0d4c9aad192-1.webp)
 
 Matematika adalah salah satu bidang yang memiliki kebenaran mutlak. Dimanapun tempatnya, komunitas nya 1+1 akan selalu bernilai 2. Tapi.. coba perhatikan pembuktian matematika dibawah ini.
 

@@ -1,0 +1,339 @@
+---
+layout: layouts/base.njk
+title: KUR Calculator
+description: Calculate KUR (Kredit Usaha Rakyat) monthly payments with amortization table. Max loan 500M IDR with tenure options 12-60 months.
+permalink: /tools/kur/
+---
+
+<div class="w-full max-w-6xl flex flex-col gap-12" x-data="kurTool()" x-init="recalculate()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/kur/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            {% set shortcutHint = 'You can type shorthand values: <span class="font-semibold text-text-main">50m</span>, <span class="font-semibold text-text-main">100m</span>, <span class="font-semibold text-text-main">500m</span>, or decimals like <span class="font-semibold text-text-main">150,5m</span> (case-insensitive).' %}
+            {% include "partials/input-shortcut.njk" %}
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Loan Amount (IDR)</label>
+                    <input type="text" x-model="inputs.loanAmount" @input="onCurrencyInput('loanAmount')" @blur="onCurrencyBlur('loanAmount')" placeholder="Enter amount (e.g. 100m)" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg" />
+                    <p class="text-[10px] text-text-muted ml-1">Max: 500,000,000 (SK 2023)</p>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Tenure (months)</label>
+                    <select x-model.number="tenure" @change="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none text-lg appearance-none cursor-pointer" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23333%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5em; padding-right: 2.5rem;">
+                        <option value="12">12 months (1 year)</option>
+                        <option value="18">18 months</option>
+                        <option value="24">24 months (2 years)</option>
+                        <option value="36">36 months (3 years)</option>
+                        <option value="48">48 months (4 years)</option>
+                        <option value="60">60 months (5 years)</option>
+                    </select>
+                    <p class="text-[10px] text-text-muted ml-1">SE-BI 15/9/2023</p>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <label class="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">Interest Rate (annual %)</label>
+                    <input type="text" :value="interestRate + '%'" disabled class="block w-full px-6 py-5 bg-stone-100 border-2 border-stone-100 rounded-2xl text-text-muted focus:outline-none text-lg cursor-not-allowed" />
+                    <p class="text-[10px] text-text-muted ml-1">Standard KUR Rate</p>
+                </div>
+            </div>
+
+            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Loan Summary</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Loan Amount</span><span x-text="format(loanAmount)"></span></div>
+                            <div class="flex justify-between"><span>Monthly Payment</span><span x-text="format(summary.monthlyPayment)"></span></div>
+                            <div class="flex justify-between"><span>Total Months</span><span x-text="tenure"></span></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-text-muted">Totals</div>
+                        <div class="mt-2 text-lg font-mono">
+                            <div class="flex justify-between"><span>Total Paid</span><span x-text="format(summary.totalPaid)"></span></div>
+                            <div class="flex justify-between"><span>Total Interest</span><span x-text="format(summary.totalInterest)"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted hover:bg-stone-200 transition-colors font-bold">Reset</button>
+                <button @click="exportCSV()" class="px-6 py-3 rounded-2xl bg-primary text-white hover:bg-primary/90 transition-colors font-bold">Export CSV</button>
+            </div>
+
+            <div>
+                <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Amortization Table</div>
+                <div class="overflow-x-auto rounded-2xl border border-stone-100">
+                    <table class="w-full text-sm">
+                        <thead class="bg-stone-100 text-left text-xs uppercase text-text-muted">
+                            <tr>
+                                <th class="px-4 py-3">#</th>
+                                <th class="px-4 py-3">Payment</th>
+                                <th class="px-4 py-3">Interest</th>
+                                <th class="px-4 py-3">Principal</th>
+                                <th class="px-4 py-3">Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="row in schedule" :key="row.month">
+                                <tr class="border-t">
+                                    <td class="px-4 py-2"> <span x-text="row.month"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.payment)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.interest)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.principal)"></span> </td>
+                                    <td class="px-4 py-2"> <span x-text="format(row.remaining)"></span> </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-row items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-blue-500">policy</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-blue-800">KUR Regulation (SE-BI 15/9/2023)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-xl shadow-sm" x-text="interestRate + '%'"></span>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-stone-200">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-stone-800 mb-5 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">policy</span>
+                    Regulations & Rules
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><span class="material-symbols-outlined text-sm">business</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">KUR Program Rules</h4>
+                        </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed">Government-backed credit program for micro and small enterprises. Maximum loan: <strong>500 million IDR</strong>. Standard interest rate: <strong>6.0% per annum</strong> (SE-BI 15/9/2023).</p>
+                    </div>
+                    
+                    <div class="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 rounded-full bg-amber-50 flex items-center justify-center text-amber-600"><span class="material-symbols-outlined text-sm">schedule</span></div>
+                            <h4 class="font-bold text-stone-800 text-sm">Tenure Options (SE-BI 15/9/2023)</h4>
+                        </div>
+                        <p class="text-[11px] text-stone-500 leading-relaxed">Fixed tenure periods available: <strong>12, 18, 24, 36, 48, and 60 months</strong>. Borrowers can select tenure based on business cash flow capacity and repayment capability.</p>
+                    </div>
+                </div>
+                
+                <p class="text-[10px] text-stone-400 mt-5 text-center">KUR regulations based on SE-BI 15/9/2023. Consult your bank for current implementation details.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function kurTool() {
+        return {
+            loanAmount: 0,
+            inputs: { loanAmount: '' },
+            tenure: 24,
+            interestRate: 6.0,
+            schedule: [],
+            summary: { monthlyPayment: 0, totalPaid: 0, totalInterest: 0 },
+
+            format(v) {
+                return new Intl.NumberFormat('id-ID').format(Math.round(v || 0));
+            },
+
+            onCurrencyInput(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
+
+                const value = this.parseCurrencyValue(raw);
+                this[field] = Math.min(Number.isNaN(value) ? 0 : value, 500000000);
+                this.recalculate();
+            },
+
+            onCurrencyBlur(field) {
+                const raw = String(this.inputs[field] || '').trim();
+                if (!raw) {
+                    this[field] = 0;
+                    this.inputs[field] = '';
+                    this.recalculate();
+                    return;
+                }
+
+                const value = this.parseCurrencyValue(raw);
+                this[field] = Math.min(Number.isNaN(value) ? 0 : value, 500000000);
+                this.inputs[field] = this[field] > 0 ? this.format(this[field]) : '';
+                this.recalculate();
+            },
+
+            parseCurrencyValue(input) {
+                const raw = String(input || '').trim();
+                if (!raw) return 0;
+
+                const shorthandMatch = raw.match(/^([\d.,]+)\s*([kKmMbB])$/);
+                if (shorthandMatch) {
+                    const base = this.parseLocalizedNumber(shorthandMatch[1]);
+                    if (!Number.isNaN(base)) {
+                        const suffix = shorthandMatch[2].toLowerCase();
+                        const scale = suffix === 'k' ? 1000 : suffix === 'm' ? 1000000 : 1000000000;
+                        return base * scale;
+                    }
+                }
+
+                const normalized = this.parseLocalizedNumber(raw);
+                if (!Number.isNaN(normalized)) return normalized;
+
+                const digitsOnly = raw.replace(/[^0-9]/g, '');
+                return digitsOnly ? Number(digitsOnly) : 0;
+            },
+
+            parseLocalizedNumber(value) {
+                const cleaned = String(value || '').trim().replace(/\s+/g, '');
+                if (!cleaned || !/^\d[\d.,]*$/.test(cleaned)) return NaN;
+
+                const hasDot = cleaned.includes('.');
+                const hasComma = cleaned.includes(',');
+
+                if (hasDot && hasComma) {
+                    const decimalSep = cleaned.lastIndexOf('.') > cleaned.lastIndexOf(',') ? '.' : ',';
+                    const thousandSep = decimalSep === '.' ? ',' : '.';
+                    const normalized = cleaned.replace(new RegExp(`\\${thousandSep}`, 'g'), '').replace(decimalSep, '.');
+                    return Number(normalized);
+                }
+
+                if (hasComma) {
+                    const parts = cleaned.split(',');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned.replace(',', '.') : cleaned.replace(/,/g, ''));
+                }
+
+                if (hasDot) {
+                    const parts = cleaned.split('.');
+                    const decimalLike = parts.length === 2 && parts[1].length > 0 && parts[1].length !== 3;
+                    return Number(decimalLike ? cleaned : cleaned.replace(/\./g, ''));
+                }
+
+                return Number(cleaned);
+            },
+
+            reset() {
+                this.loanAmount = 0;
+                this.inputs.loanAmount = '';
+                this.tenure = 24;
+                this.interestRate = 6.0;
+                this.schedule = [];
+                this.summary = { monthlyPayment: 0, totalPaid: 0, totalInterest: 0 };
+                this.recalculate();
+            },
+
+            exportCSV() {
+                if (!this.schedule || this.schedule.length === 0) return;
+                const header = ['month','payment','interest','principal','remaining'];
+                const rows = this.schedule.map(r => [r.month, Math.round(r.payment), Math.round(r.interest), Math.round(r.principal), Math.round(r.remaining)].join(','));
+                const csv = [header.join(',')].concat(rows).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'kur-amortization.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            },
+
+            recalculate() {
+                const principal = Number(this.loanAmount || 0);
+                const months = Number(this.tenure || 24);
+                const annualRate = Number(this.interestRate || 5.5);
+                const monthlyRate = annualRate / 100 / 12;
+
+                let balance = principal;
+                let monthlyPayment = 0;
+                const schedule = [];
+
+                // Calculate fixed monthly payment using PMT formula
+                if (monthlyRate === 0) {
+                    monthlyPayment = principal / months;
+                } else {
+                    monthlyPayment = (monthlyRate * principal) / (1 - Math.pow(1 + monthlyRate, -months));
+                }
+
+                // Generate amortization schedule
+                for (let i = 1; i <= months; i++) {
+                    const interest = balance * monthlyRate;
+                    let principal_payment = monthlyPayment - interest;
+
+                    // Adjust last payment for rounding
+                    if (i === months) {
+                        principal_payment = balance;
+                    }
+
+                    balance = Math.max(0, balance - principal_payment);
+                    schedule.push({
+                        month: i,
+                        payment: monthlyPayment,
+                        interest: interest,
+                        principal: principal_payment,
+                        remaining: balance
+                    });
+                }
+
+                // Calculate totals
+                let totalPaid = 0;
+                let totalInterest = 0;
+                for (const row of schedule) {
+                    totalPaid += row.payment;
+                    totalInterest += row.interest;
+                }
+
+                this.schedule = schedule;
+                this.summary = {
+                    monthlyPayment: monthlyPayment,
+                    totalPaid: totalPaid,
+                    totalInterest: totalInterest
+                };
+            }
+        }
+    }
+</script>

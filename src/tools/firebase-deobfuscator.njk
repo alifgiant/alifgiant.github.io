@@ -1,0 +1,283 @@
+---
+layout: layouts/base.njk
+title: Firebase Deobfuscator
+description: Convert obfuscated Firebase stacktraces or logs to readable ones using ProGuard or Symbol mapping files for both Android and Flutter.
+permalink: /tools/firebase-deobfuscator/
+---
+
+<div class="w-full max-w-5xl flex flex-col gap-12" x-data="deobfuscatorTool()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/firebase-deobfuscator/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-2xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">ProGuard / Symbol Mapping Text</label>
+                    <textarea x-model="mappingText" placeholder="Paste mapping.txt or symbol file content here (Android / Flutter)..." class="w-full h-48 md:h-64 px-6 py-4 bg-white border-2 border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary/50 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-mono text-sm shadow-sm resize-none"></textarea>
+                    <div class="flex justify-between items-center px-1">
+                        <span class="text-xs text-stone-500" x-text="mappingStatus"></span>
+                        <input type="file" id="mappingFile" accept=".txt,.symbols" class="hidden" @change="handleFileUpload">
+                        <button @click="document.getElementById('mappingFile').click()" class="text-xs font-bold text-primary hover:text-primary-dark uppercase tracking-wider">Upload mapping file</button>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Obfuscated Stacktrace or Log</label>
+                    <textarea x-model="stacktraceText" placeholder="Paste obfuscated stacktrace or log file content here..." class="w-full h-48 md:h-64 px-6 py-4 bg-white border-2 border-stone-200 rounded-2xl text-text-main focus:outline-none focus:border-primary/50 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-mono text-sm shadow-sm resize-none"></textarea>
+                    <div class="flex justify-between items-center px-1">
+                        <span class="text-xs text-stone-500" x-text="stacktraceStatus"></span>
+                        <input type="file" id="stacktraceFile" accept=".txt,.log" class="hidden" @change="handleStacktraceUpload">
+                        <button @click="document.getElementById('stacktraceFile').click()" class="text-xs font-bold text-primary hover:text-primary-dark uppercase tracking-wider">Upload log/trace file</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <button @click="deobfuscate()" :disabled="!mappingText || !stacktraceText" class="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-2xl bg-primary text-white font-bold text-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xl shadow-primary/20 hover:shadow-primary/40 transform hover:-translate-y-1 active:translate-y-0 duration-200">
+                    <span class="material-symbols-outlined text-xl" :class="isProcessing ? 'animate-spin' : ''">magic_button</span>
+                    Deobfuscate
+                </button>
+            </div>
+
+            <div x-show="resultText" x-cloak class="flex flex-col gap-3 animate-fade-in">
+                <div class="flex items-center justify-between ml-1">
+                    <label class="text-xs font-bold uppercase tracking-widest text-primary">Deobfuscated Result</label>
+                    <button @click="copyToClipboard(resultText)" class="text-xs font-bold text-stone-500 hover:text-primary transition-colors flex items-center gap-1 uppercase tracking-wider">
+                        <span class="material-symbols-outlined text-sm" x-text="copied ? 'check' : 'content_copy'"></span>
+                        <span x-text="copied ? 'Copied!' : 'Copy'"></span>
+                    </button>
+                </div>
+                <div class="rounded-[2rem] bg-stone-950 text-stone-50 p-6 md:p-8 shadow-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
+                    <pre class="relative z-10 font-mono text-sm md:text-base leading-relaxed overflow-x-auto whitespace-pre-wrap word-break-all scrollbar-thin scrollbar-thumb-stone-700 scrollbar-track-transparent" x-text="resultText"></pre>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">info</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            All deobfuscation happens locally in your browser. Your mapping.txt and stacktraces are never sent to any server. Check your console if there are parsing errors. Note that perfect restoration depends on the details preserved in the mapping file.
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+function deobfuscatorTool() {
+    return {
+        mappingText: '',
+        stacktraceText: '',
+        resultText: '',
+        mappingStatus: 'Ready to parse',
+        stacktraceStatus: '',
+        isProcessing: false,
+        copied: false,
+        mappingObj: null,
+
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.mappingStatus = `Loaded ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.mappingText = e.target.result;
+            };
+            reader.readAsText(file);
+        },
+
+        handleStacktraceUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.stacktraceStatus = `Loaded ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.stacktraceText = e.target.result;
+            };
+            reader.readAsText(file);
+        },
+
+        parseMapping() {
+            this.mappingStatus = 'Parsing mapping...';
+            // Simple robust ProGuard Mapping parser
+            const lines = this.mappingText.split('\n');
+            let currentObfuscatedClass = '';
+            const classMap = {};
+            const methodMap = {};
+            
+            for (let line of lines) {
+                line = line.trim();
+                // Skip comments and empty lines
+                if (!line || line.startsWith('#')) continue;
+                
+                // Class definitions: "original.package.Class -> obf.pkg.c:"
+                if (line.endsWith(':') && line.includes(' -> ') && !line.startsWith(' ')) {
+                    const parts = line.substring(0, line.length - 1).split(' -> ');
+                    if (parts.length === 2) {
+                        const origClass = parts[0].trim();
+                        currentObfuscatedClass = parts[1].trim();
+                        classMap[currentObfuscatedClass] = origClass;
+                        methodMap[currentObfuscatedClass] = [];
+                    }
+                } 
+                // Member definitions: methods
+                else if (currentObfuscatedClass && line.includes(' -> ') && line.includes('(')) {
+                    const parts = line.split(' -> ');
+                    if (parts.length === 2) {
+                        const left = parts[0].trim(); // "int myMethod()" or "12:15:void myMethod()"
+                        const right = parts[1].trim(); // "a"
+                        
+                        let startLine = -1;
+                        let endLine = -1;
+                        let methodSig = left;
+                        
+                        // Parse line numbers, e.g., "10:10:void method()"
+                        const colonMatch = left.match(/^(\d+):(\d+):(.*)$/);
+                        if (colonMatch) {
+                            startLine = parseInt(colonMatch[1], 10);
+                            endLine = parseInt(colonMatch[2], 10);
+                            methodSig = colonMatch[3];
+                        } else {
+                            const singleColonMatch = left.match(/^(\d+):(.*)$/);
+                            if (singleColonMatch) {
+                                startLine = parseInt(singleColonMatch[1], 10);
+                                endLine = startLine;
+                                methodSig = singleColonMatch[2];
+                            }
+                        }
+                        
+                        // Clean method signature from any trailing mapped lines like ":12:20"
+                        methodSig = methodSig.replace(/:\d+:\d+$/, '').trim();
+                        
+                        // "void myMethod(int, java.lang.String)"
+                        const spaceIdx = methodSig.indexOf(' ');
+                        const methodWithArgs = spaceIdx !== -1 ? methodSig.substring(spaceIdx + 1) : methodSig;
+                        const methodName = methodWithArgs.substring(0, methodWithArgs.indexOf('('));
+                        
+                        methodMap[currentObfuscatedClass].push({
+                            obfuscatedMethod: right,
+                            originalMethod: methodName,
+                            startLine: startLine,
+                            endLine: endLine
+                        });
+                    }
+                }
+            }
+            
+            this.mappingObj = { classMap, methodMap };
+            this.mappingStatus = `Parsed ${Object.keys(classMap).length} classes`;
+        },
+
+        processStackTrace() {
+            if (!this.mappingObj) return this.stacktraceText;
+            
+            const lines = this.stacktraceText.split('\n');
+            const result = [];
+            
+            for (let line of lines) {
+                let processedLine = line;
+                
+                // standard stack trace lines
+                const atRegex = /at ([a-zA-Z0-9_\.$]+)\.([<a-zA-Z0-9_>]+)\([^:]+(?::(\d+))?\)/;
+                const match = line.match(atRegex);
+                
+                if (match) {
+                    const [fullMatch, obfClass, obfMethod, lineNumStr] = match;
+                    const lineNum = lineNumStr ? parseInt(lineNumStr, 10) : -1;
+                    
+                    if (this.mappingObj.classMap[obfClass]) {
+                        const origClass = this.mappingObj.classMap[obfClass];
+                        let origMethod = obfMethod;
+                        
+                        if (this.mappingObj.methodMap[obfClass]) {
+                            const methods = this.mappingObj.methodMap[obfClass].filter(m => m.obfuscatedMethod === obfMethod);
+                            if (methods.length > 0) {
+                                let found = methods[0].originalMethod;
+                                for (let m of methods) {
+                                    if (lineNum !== -1 && m.startLine !== -1 && m.startLine <= lineNum && lineNum <= m.endLine) {
+                                        found = m.originalMethod;
+                                        break;
+                                    }
+                                }
+                                origMethod = found;
+                            }
+                        }
+                        
+                        const fileName = origClass.substring(origClass.lastIndexOf('.') + 1).split('$')[0] + '.java';
+                        const newLineInfo = lineNumStr ? ':' + lineNumStr : '';
+                        const replacement = `at ${origClass}.${origMethod}(${fileName}${newLineInfo})`;
+                        
+                        processedLine = line.replace(fullMatch, replacement);
+                    }
+                } else {
+                    // Try parsing exceptions headers "Caused by: a.b.c: message"
+                    const exRegex = /^([ \t]*(?:Caused by:|Fatal Exception:|Exception in thread "[^"]+")[ \t]+)([a-zA-Z0-9_\.$]+)(:.*)?$/;
+                    const exMatch = line.match(exRegex);
+                    if (exMatch) {
+                        const [_, prefix, obfExceptionClass, suffix] = exMatch;
+                        if (this.mappingObj.classMap[obfExceptionClass]) {
+                            processedLine = `${prefix}${this.mappingObj.classMap[obfExceptionClass]}${suffix || ''}`;
+                        }
+                    }
+                }
+                result.push(processedLine);
+            }
+            return result.join('\n');
+        },
+
+        deobfuscate() {
+            this.isProcessing = true;
+            this.copied = false;
+            
+            // Allow UI to update loading state
+            setTimeout(() => {
+                try {
+                    this.parseMapping();
+                    this.resultText = this.processStackTrace();
+                } catch (e) {
+                    this.resultText = "Error parsing mapping or stacktrace:\n" + e.message;
+                } finally {
+                    this.isProcessing = false;
+                }
+            }, 50);
+        },
+
+        copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                this.copied = true;
+                setTimeout(() => this.copied = false, 2000);
+            });
+        }
+    }
+}
+</script>

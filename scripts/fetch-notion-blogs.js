@@ -237,15 +237,16 @@ async function blockToMarkdown(block, pageId, imageCounter) {
             try {
                 const imageUrl = content?.file?.url || content?.external?.url;
                 if (imageUrl) {
-                    // Extract file extension from URL or default to jpg
                     const urlPath = new URL(imageUrl).pathname;
-                    const ext = path.extname(urlPath) || '.jpg';
-                    const filename = `${pageId}-${imageCounter}${ext}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+                    const ext = (path.extname(urlPath) || '.jpg').toLowerCase();
+                    const basename = `${pageId}-${imageCounter}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+                    const originalFilename = `${basename}${ext}`;
+                    const publicWebpPath = `/assets/images/blog/${basename}.webp`;
 
-                    const localPath = await downloadImage(imageUrl, filename);
+                    await downloadImage(imageUrl, originalFilename);
                     const caption = richTextToPlain(content?.caption) || '';
                     // Use figure + figcaption to show visible caption on site
-                    markdown = `![${caption || 'Image'}](${localPath})\n`;
+                    markdown = `![${caption || 'Image'}](${publicWebpPath})\n`;
                     if (caption && caption.trim()) {
                         markdown += `<figcaption class="notion-caption">${caption}</figcaption>\n\n`;
                     }
@@ -623,17 +624,19 @@ async function main() {
             // Handle cover image download
             if (props.coverUrl) {
                 try {
-                    const ext = path.extname(new URL(props.coverUrl).pathname) || '.jpg';
-                    const coverFilename = `cover-${page.id}${ext}`.replace(/[^a-zA-Z0-9.-]/g, '-');
-                    const localCoverPath = await downloadImage(props.coverUrl, coverFilename);
-                    props.image = localCoverPath;
+                    const urlPath = new URL(props.coverUrl).pathname;
+                    const ext = (path.extname(urlPath) || '.jpg').toLowerCase();
+                    const basename = `cover-${page.id}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+                    const coverFilename = `${basename}${ext}`;
+                    await downloadImage(props.coverUrl, coverFilename);
+                    props.image = `/assets/images/blog/${basename}.webp`;
                 } catch (error) {
                     console.error(`  Failed to download cover: ${error.message}`);
                 }
                 delete props.coverUrl;
             } else {
                 // Use a placeholder if no cover found
-                props.image = '/assets/images/placeholder-blog.jpg';
+                props.image = '/assets/images/placeholder-blog.webp';
             }
 
             // Generate full markdown file

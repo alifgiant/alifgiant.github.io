@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Introduction Google Cloud’s Free Tier gives you a real, fully customizable virtual machine VM. The catch? Its ruthlessly limited: just 1 vCPU, 1 GB of RAM. T..."
 readTime: "7 min"
-image: "/assets/images/blog/cover-184835c2-e62f-80f3-a623-e3188ae893b7.png"
+image: "/assets/images/blog/cover-184835c2-e62f-80f3-a623-e3188ae893b7.webp"
 ---
 
 # **Introduction**
@@ -71,12 +71,12 @@ First thing you have to do is create a cloud storage bucket. This is where you w
 <div class="notion-columns">
 <div class="notion-column">
 
-![Image](/assets/images/blog/186835c2-e62f-802f-84cd-c97caff0f8b7-1.png)
+![Image](/assets/images/blog/186835c2-e62f-802f-84cd-c97caff0f8b7-1.webp)
 
 </div>
 <div class="notion-column">
 
-![Image](/assets/images/blog/186835c2-e62f-806a-b2b3-dd9992ebb85b-1.png)
+![Image](/assets/images/blog/186835c2-e62f-806a-b2b3-dd9992ebb85b-1.webp)
 
 
 
@@ -101,7 +101,7 @@ If the URL above do not work, you might want to check on their [official page](h
 1. Bootstrap : Tiny Cloud
 1. Machine : Virtual
 
-![You can get the url by hovering on download button or click copy url on it](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-1.png)
+![You can get the url by hovering on download button or click copy url on it](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-1.webp)
 <figcaption class="notion-caption">You can get the url by hovering on download button or click copy url on it</figcaption>
 
 After download complete, copy the downloaded file to the bucket you created before
@@ -128,18 +128,18 @@ Command above will let VM to run using `UEFI` and using `GVNIC`. Also a reminder
 
 
 
-![Image](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-2.png)
+![Image](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-2.webp)
 
 ### **3. Create and Launch VM**
 
 Last but not least, you now can [Create Instance](https://console.cloud.google.com/compute/instancesAdd) based on the Alpine prebuilt image. To do that, you have to select custom images when configuring boot disk. If you have use different region on previous steps you wont see the image here. So make sure you are using same region on all steps including on the VM creation region. You also have to change your boot disk type to `Standard Persistent Disk`, by default you will be selecting `Balanced Persistent Disk` which not included in the free tier.
 
-![Select custom image and your newly created VM image.](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-3.png)
+![Select custom image and your newly created VM image.](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-3.webp)
 <figcaption class="notion-caption">Select custom image and your newly created VM image.</figcaption>
 
 After preparing boot disk, move onto `Security` section on the creation process. In this phase there is a very important thing to do, which is **adding a manually generated SSH key**. This to ensure you can connect to the VM after creation via SSH. Miss on this step will result on your VM unreachable, because by default your machine will not allowing password login.
 
-![Image](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-4.png)
+![Image](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-4.webp)
 
 To create an SSH Key, can run command below. Notice that you have to add `alpine` in the comment param. This have to be done since Google Cloud will use the comment field to determine what user it belongs to.
 
@@ -180,7 +180,7 @@ doas apk update
 doas apk add htop
 ```
 
-![Using htop](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-5.png)
+![Using htop](/assets/images/blog/184835c2-e62f-80f3-a623-e3188ae893b7-5.webp)
 <figcaption class="notion-caption">Using htop</figcaption>
 
 > 💡 Alpine do not have `sudo` bundled, it uses `doas` as replacement

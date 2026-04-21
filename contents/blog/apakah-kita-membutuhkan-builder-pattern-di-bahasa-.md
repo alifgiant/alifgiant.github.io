@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Mungkin beberapa dari pembaca tidak mengenal pattern ini, tapi pasti pernah menemukannya dalam codebase kalian. Builder pattern dapat diidentifikasi dengan m..."
 readTime: "3 min"
-image: "/assets/images/blog/cover-2fb45981-dc5d-4686-82b6-e174a1c071c8.jpg"
+image: "/assets/images/blog/cover-2fb45981-dc5d-4686-82b6-e174a1c071c8.webp"
 ---
 
 Mungkin beberapa dari pembaca tidak mengenal pattern ini, tapi pasti pernah menemukannya dalam codebase kalian. Builder pattern dapat diidentifikasi dengan mudah ketika menemukan code seperti dibawah ini.

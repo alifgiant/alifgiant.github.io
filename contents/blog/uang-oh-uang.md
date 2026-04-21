@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Premis 1: Banyak yang menilai hutang dengan bunga itu buruk, bahkan agama Islam mengharamkan. Premis 2: Terbukti, banyak orang, perusahaan bahkan negara meng..."
 readTime: "10 min"
-image: "/assets/images/blog/cover-e78cba43-891b-44ef-b048-e323dcabe772.jpg"
+image: "/assets/images/blog/cover-e78cba43-891b-44ef-b048-e323dcabe772.webp"
 ---
 
 Premis 1: Banyak yang menilai hutang dengan bunga itu buruk, bahkan agama Islam mengharamkan.
@@ -34,7 +34,7 @@ Karena terciptanya uang, setiap manusia tidak perlu lagi menjadi produsen. Kebut
 
 Bank pada dasarnya adalah pihak yang menawarkan jasa menyimpan uang dan memberi jaminan uang tersebut tidak akan hilang. Bank jaman modern menambahkan jasa lain, yaitu uang yang disimpan bisa diambil kapan saja dimana saja. Karena bank sesungguhnya merupakan usaha jasa sudah pasti pelanggannya (nasabah) harus membayar jasa tersebut (biaya admin). Tapi, berapa yang harus dibayar?
 
-![Image](/assets/images/blog/e78cba43-891b-44ef-b048-e323dcabe772-1.png)
+![Image](/assets/images/blog/e78cba43-891b-44ef-b048-e323dcabe772-1.webp)
 
 Coba kita telusuri arus kas sebuah bank (bank Mandiri). Coba kita lihat potongan arus kas[[2](https://bankmandiri.co.id/documents/38265486/38265687/Mandiri_LapKeu_Q4-2020_Ind.pdf/7a8d8227-3c83-9e0f-b70d-aa1f5b54c0a3)] bank tersebut di tahun 2020.
 

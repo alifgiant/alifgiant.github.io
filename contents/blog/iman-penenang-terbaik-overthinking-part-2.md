@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Hubungannya dengan Iman? Sebelum lebih jauh pastikan udah baca part-1https://blog.alifakbar.com/post/627830488919425024/iman-penenang-terbaik-overthinking-pa..."
 readTime: "5 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 ## Hubungannya dengan Iman?

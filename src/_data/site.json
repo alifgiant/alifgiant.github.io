@@ -98,6 +98,11 @@
             "title": "Online Dev Tools",
             "subtitle": "Useful utilities for developers and power users",
             "categories": {
+                "Favorite": {
+                    "icon": "thumb_up",
+                    "color": "bg-amber-100 text-amber-700 border-amber-200",
+                    "lightColor": "bg-amber-50 text-amber-600"
+                },
                 "Security": {
                     "icon": "shield_lock",
                     "color": "bg-rose-100 text-rose-700 border-rose-200",
@@ -116,17 +121,32 @@
             },
             "list": [
                 {
-                    "title": "Math Notes",
-                    "description": "A smart scratchpad for calculations. Type expressions and see results instantly, just like Apple Math Notes.",
-                    "url": "/tools/math-notes/",
-                    "icon": "calculate",
-                    "tag": "Utilities"
-                },
-                {
                     "title": "Deeplink Tester",
                     "description": "Test mobile app deeplinks and universal links easily.",
                     "url": "/tools/deeplink/",
                     "icon": "link",
+                    "tag": "Utilities",
+                    "tags": [
+                        "Utilities",
+                        "Favorite"
+                    ]
+                },
+                {
+                    "title": "Math Notes",
+                    "description": "A smart scratchpad for calculations. Type expressions and see results instantly, just like Apple Math Notes.",
+                    "url": "/tools/math-notes/",
+                    "icon": "calculate",
+                    "tag": "Utilities",
+                    "tags": [
+                        "Utilities",
+                        "Favorite"
+                    ]
+                },
+                {
+                    "title": "Animation Player",
+                    "description": "Preview local animation assets like GIF, Lottie JSON, animated SVG, video, and browser-playable formats.",
+                    "url": "/tools/animation-player/",
+                    "icon": "animation",
                     "tag": "Utilities"
                 },
                 {
@@ -135,41 +155,6 @@
                     "url": "/tools/bcrypt/",
                     "icon": "enhanced_encryption",
                     "tag": "Security"
-                },
-                {
-                    "title": "Text Diff",
-                    "description": "Compare two strings or code snippets to find differences.",
-                    "url": "/tools/diff/",
-                    "icon": "difference",
-                    "tag": "Utilities"
-                },
-                {
-                    "title": "Hash & Encode",
-                    "description": "Quickly generate MD5, SHA-256, and Base64 hashes/encodings.",
-                    "url": "/tools/hash/",
-                    "icon": "vpn_key",
-                    "tag": "Security"
-                },
-                {
-                    "title": "JSON Formatter",
-                    "description": "Beautify, minify, and validate JSON data instantly.",
-                    "url": "/tools/json/",
-                    "icon": "data_object",
-                    "tag": "Utilities"
-                },
-                {
-                    "title": "Regex Checker",
-                    "description": "Test and debug regular expressions with real-time matching.",
-                    "url": "/tools/regex/",
-                    "icon": "regular_expression",
-                    "tag": "Utilities"
-                },
-                {
-                    "title": "Timestamp Converter",
-                    "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
-                    "url": "/tools/timestamp/",
-                    "icon": "schedule",
-                    "tag": "Converter"
                 },
                 {
                     "title": "Case Converter",
@@ -186,18 +171,25 @@
                     "tag": "Converter"
                 },
                 {
-                    "title": "Snippet Sharer",
-                    "description": "Create and export beautiful code snippets with custom styles and syntax highlighting.",
-                    "url": "/tools/snippet/",
-                    "icon": "code_blocks",
+                    "title": "Firebase Deobfuscator",
+                    "description": "Convert obfuscated Firebase stacktraces or logs to readable ones using ProGuard or Symbol mapping files for both Android and Flutter.",
+                    "url": "/tools/firebase-deobfuscator/",
+                    "icon": "bug_report",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "Geo Tool",
+                    "description": "Digitize buildings, measure polygon areas, and manage KML/Shapefile data with high-res satellite views.",
+                    "url": "/tools/kml-viewer/",
+                    "icon": "map_search",
                     "tag": "Utilities"
                 },
                 {
-                    "title": "PDF Compressor",
-                    "description": "Compress PDF files directly in your browser without uploading them to any server.",
-                    "url": "/tools/pdf-compress/",
-                    "icon": "picture_as_pdf",
-                    "tag": "Converter"
+                    "title": "Hash & Encode",
+                    "description": "Quickly generate MD5, SHA-256, and Base64 hashes/encodings.",
+                    "url": "/tools/hash/",
+                    "icon": "vpn_key",
+                    "tag": "Security"
                 },
                 {
                     "title": "Image Compressor",
@@ -214,26 +206,87 @@
                     "tag": "Converter"
                 },
                 {
-                    "title": "Geo Tool",
-                    "description": "Digitize buildings, measure polygon areas, and manage KML/Shapefile data with high-res satellite views.",
-                    "url": "/tools/kml-viewer/",
-                    "icon": "map_search",
+                    "title": "JSON Formatter",
+                    "description": "Beautify, minify, and validate JSON data instantly.",
+                    "url": "/tools/json/",
+                    "icon": "data_object",
                     "tag": "Utilities"
-                }
-                ,
+                },
                 {
                     "title": "KPR Calculator",
                     "description": "Calculate KPR monthly payments and view full amortization table (principal, interest, remaining balance).",
                     "url": "/tools/kpr/",
                     "icon": "home",
                     "tag": "Utilities"
-                }
-                ,
+                },
+                {
+                    "title": "KUR Calculator",
+                    "description": "Calculate KUR (Kredit Usaha Rakyat) monthly payments with fixed tenure 12-60 months and max 500M IDR.",
+                    "url": "/tools/kur/",
+                    "icon": "business",
+                    "tag": "Utilities"
+                },
+                {
+                    "title": "Mermaid Diagram Generator",
+                    "description": "Generate Mermaid diagrams from code with zoom, pan, cheatsheet, and image export.",
+                    "url": "/tools/mermaid/",
+                    "icon": "schema",
+                    "tag": "Utilities"
+                },
+                {
+                    "title": "PDF Compressor",
+                    "description": "Compress PDF files directly in your browser without uploading them to any server.",
+                    "url": "/tools/pdf-compress/",
+                    "icon": "picture_as_pdf",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "PDF Merge & Remove",
+                    "description": "Merge multiple PDFs or remove specific pages directly in your browser.",
+                    "url": "/tools/pdf-merge-remove/",
+                    "icon": "content_cut",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "Regex Checker",
+                    "description": "Test and debug regular expressions with real-time matching.",
+                    "url": "/tools/regex/",
+                    "icon": "regular_expression",
+                    "tag": "Utilities"
+                },
+                {
+                    "title": "Snippet Sharer",
+                    "description": "Create and export beautiful code snippets with custom styles and syntax highlighting.",
+                    "url": "/tools/snippet/",
+                    "icon": "code_blocks",
+                    "tag": "Utilities"
+                },
                 {
                     "title": "Take-home Pay (IDR)",
                     "description": "Estimate monthly take-home salary in Indonesia (PPh21, BPJS, JHT, pension).",
                     "url": "/tools/salary/",
                     "icon": "payments",
+                    "tag": "Utilities"
+                },
+                {
+                    "title": "Text Diff",
+                    "description": "Compare two strings or code snippets to find differences.",
+                    "url": "/tools/diff/",
+                    "icon": "difference",
+                    "tag": "Utilities"
+                },
+                {
+                    "title": "Timestamp Converter",
+                    "description": "Convert Unix timestamps to readable dates and vice versa with timezone support.",
+                    "url": "/tools/timestamp/",
+                    "icon": "schedule",
+                    "tag": "Converter"
+                },
+                {
+                    "title": "World Time Tracker",
+                    "description": "Track your current system time and compare it with saved time zones around the world.",
+                    "url": "/tools/world-time/",
+                    "icon": "public",
                     "tag": "Utilities"
                 }
             ]

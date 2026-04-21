@@ -24,16 +24,26 @@ permalink: /tools/
             return this.tools.filter(tool => {
                 const matchesSearch = tool.title.toLowerCase().includes(this.search.toLowerCase()) || 
                                     tool.description.toLowerCase().includes(this.search.toLowerCase());
-                const matchesTag = this.activeTag === 'all' || tool.tag === this.activeTag;
+                const tags = Array.isArray(tool.tags)
+                    ? tool.tags
+                    : (tool.tag ? [tool.tag] : []);
+                const matchesTag = this.activeTag === 'all' || tags.includes(this.activeTag);
                 return matchesSearch && matchesTag;
             });
         },
         get allTags() {
             const tags = new Set();
             this.tools.forEach(tool => {
-                if (tool.tag) tags.add(tool.tag);
+                const toolTags = Array.isArray(tool.tags)
+                    ? tool.tags
+                    : (tool.tag ? [tool.tag] : []);
+                toolTags.forEach(tag => tags.add(tag));
             });
-            return Array.from(tags).sort();
+            return Array.from(tags).sort((a, b) => {
+                if (a === 'Favorite' && b !== 'Favorite') return -1;
+                if (a !== 'Favorite' && b === 'Favorite') return 1;
+                return a.localeCompare(b);
+            });
         }
      }">
     {# Header #}
@@ -108,10 +118,15 @@ permalink: /tools/
                     <div class="flex items-center gap-3 mb-1">
                         <h2 class="text-xl font-bold text-text-main group-hover:text-primary transition-colors truncate" x-text="tool.title"></h2>
                         <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
-                                :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
+                             :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
                             <span class="material-symbols-outlined text-[10px]" x-text="categories[tool.tag]?.icon || 'build'"></span>
                             <span x-text="tool.tag"></span>
                         </div>
+                        <template x-if="(Array.isArray(tool.tags) ? tool.tags : (tool.tag ? [tool.tag] : [])).includes('Favorite')">
+                            <div class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                                <span class="material-symbols-outlined text-[11px] leading-none">thumb_up</span>
+                            </div>
+                        </template>
                     </div>
                     <p class="text-text-muted text-sm line-clamp-1" x-text="tool.description"></p>
                 </div>
@@ -132,10 +147,17 @@ permalink: /tools/
                 </div>
                 
                 <div class="relative z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border"
-                         :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
-                        <span class="material-symbols-outlined text-sm" x-text="categories[tool.tag]?.icon || 'build'"></span>
-                        <span x-text="tool.tag"></span>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border"
+                             :class="categories[tool.tag]?.color || 'bg-stone-100 text-stone-600 border-stone-200'">
+                            <span class="material-symbols-outlined text-sm" x-text="categories[tool.tag]?.icon || 'build'"></span>
+                            <span x-text="tool.tag"></span>
+                        </div>
+                        <template x-if="(Array.isArray(tool.tags) ? tool.tags : (tool.tag ? [tool.tag] : [])).includes('Favorite')">
+                            <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                                <span class="material-symbols-outlined text-[12px] leading-none">thumb_up</span>
+                            </div>
+                        </template>
                     </div>
                     <h2 class="text-3xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors font-display"
                         x-text="tool.title">

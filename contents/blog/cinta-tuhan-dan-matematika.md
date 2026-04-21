@@ -5,7 +5,7 @@ tags: ["Rants"]
 featured: false
 description: "Sering kali kita bersyukur atas rasa cinta kepada pasangan kita. Namun kita melaknat rasa benci. Sadarkah kalian kedua rasa ini adalah karunia dan patut disy..."
 readTime: "1 min"
-image: "/assets/images/placeholder-blog.jpg"
+image: "/assets/images/placeholder-blog.webp"
 ---
 
 Sering kali kita bersyukur atas rasa cinta kepada pasangan kita. Namun kita melaknat rasa benci. Sadarkah kalian kedua rasa ini adalah karunia dan patut disyukuri. Cinta dan benci adalah 2 sisi koin yang sama. Selama salah satunya ada, kita bisa yakin sisi lainnya pasti ada. Karena tuhan adalah pemilik hati, ia mampu membolak-balikkan hati dengan begitu mudah. Cinta dapat ia ubah menjadi benci dan benci diubah menjadi cinta dengan sekejap saja.

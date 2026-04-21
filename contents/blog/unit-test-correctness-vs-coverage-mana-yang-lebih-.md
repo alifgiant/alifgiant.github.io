@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Pada suatu interview saya pernah ditanya, mana yang lebih penting correctness atau coverage pada sebuah Unit Test. Awalnya saya berpikir ini pertanyaan seder..."
 readTime: "5 min"
-image: "/assets/images/blog/cover-2d8baea2-a11f-42c9-9d3b-075480461be7.jpg"
+image: "/assets/images/blog/cover-2d8baea2-a11f-42c9-9d3b-075480461be7.webp"
 ---
 
 Pada suatu *interview* saya pernah ditanya, mana yang lebih penting *correctness* atau *coverage* pada sebuah Unit Test. Awalnya saya berpikir ini pertanyaan sederhana, yaitu tidak ada yang lebih penting, keduanya sama pentingnya. Unit test sendiri berfungsi untuk memastikan sebuah fungsi benar (*correct*) sehingga tentu saja correctness itu penting. Sedangkan *coverage* atau *code coverage* berfungsi untuk mengukur sebanyak apa kode yang telah memiliki *unit test*.

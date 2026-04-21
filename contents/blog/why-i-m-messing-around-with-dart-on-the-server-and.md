@@ -5,7 +5,7 @@ tags: ["Tech"]
 featured: false
 description: "Alright, fellow mobile developers, let's be real for a sec. Have you ever think of backend feels like a black box, a magician hat 🎩? And maybe, you've secre..."
 readTime: "6 min"
-image: "/assets/images/blog/cover-217835c2-e62f-80db-94f3-fd9d1393ea52.jpeg"
+image: "/assets/images/blog/cover-217835c2-e62f-80db-94f3-fd9d1393ea52.webp"
 ---
 
 Alright, fellow mobile developers, let's be real for a sec. Have you ever think of backend feels like a black box, a magician hat 🎩? And maybe, you've secretly wished you could peek inside, or even be the magician yourself? If that sounds familiar, then you and I are probably on the same page.
@@ -20,7 +20,7 @@ Let's get this out of the way right upfront: I am *not* telling you to go rewrit
 
 But here's the kicker, the actual *reason* I'm even writing this post: that "baby" status is exactly what makes it such a goldmine for mobile devs like us who want to learn backend stuff.
 
-![Image](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-1.png)
+![Image](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-1.webp)
 
 ### Learning the Hard Way (Which is the Best Way, Kinda) 🫣
 
@@ -44,7 +44,7 @@ But that "longer" time? It's an investment, pure and simple. You're not just lea
 
 While I've hammered home that Dart's server ecosystem is young and perhaps not for the absolute biggest projects, let's not mistake "young" for "slow." Dart's raw performance? It's actually pretty solid. If you peek at benchmarks like those on [sharkbench.dev/web](https://sharkbench.dev/web), you'll see it comfortably holds its own. It might not be top of the charts, but it's far from being a snail. For most applications, especially the kind you'd start with to learn, Dart's speed won't be your bottleneck. It's perfectly capable.
 
-![giphy](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-2.gif)
+![giphy](/assets/images/blog/217835c2-e62f-80db-94f3-fd9d1393ea52-2.webp)
 <figcaption class="notion-caption">giphy</figcaption>
 
 So, if you're like me – a mobile developer with a burning curiosity about what goes on beyond the app screen, and you're willing to embrace a little bit of a challenge for a huge learning payoff – then seriously, give Dart on the server a shot. It's been an eye-opener for me, and I bet it will be for you too.
