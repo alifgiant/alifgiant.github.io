@@ -868,17 +868,20 @@ D --> A`,
                 // Diagram and control keywords.
                 escaped = escaped.replace(/\b(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram-v2|stateDiagram|erDiagram|journey|gantt|pie|mindmap|timeline|gitGraph|xychart-beta|architecture-beta|block|treeView-beta|subgraph|classDef|class|style|linkStyle|click|title|participant|actor|loop|alt|else|opt|par|and|end|note|section|accTitle|accDescr|direction|TB|TD|BT|LR|RL)\b/g, '<span class="syntax-mermaid-keyword">$1</span>');
 
-                // Arrows and relationships.
-                escaped = escaped.replace(/(---|-->|==>|-\.->|\.->|->>|-->>|<->|<-->|<-|->|\|\||\|\{)/g, '<span class="syntax-mermaid-arrow">$1</span>');
+                // Arrows — match the HTML-escaped forms produced by escapeHtml above.
+                // e.g. --> becomes --&gt; after escaping, so we must match that form.
+                escaped = escaped.replace(/(---|--&gt;&gt;|--&gt;|==&gt;|-\.&gt;|\.&gt;|-&gt;&gt;|&lt;-&gt;|&lt;--&gt;|&lt;-|-&gt;)/g, '<span class="syntax-mermaid-arrow">$1</span>');
 
-                // Node labels and edge labels.
-                escaped = escaped.replace(/(\[[^\]]+\]|\{[^}]+\}|\([^)]*\)|\(\([^)]*\)\)|\|[^|]+\|)/g, '<span class="syntax-mermaid-label">$1</span>');
+                // Node labels and edge labels — exclude < and > so we never match inside HTML tags.
+                escaped = escaped.replace(/(\[[^\]<>]+\]|\{[^}<>]+\}|\(\([^)<>]*\)\)|\([^)<>]*\)|\|[^|<>]+\|)/g, '<span class="syntax-mermaid-label">$1</span>');
 
                 // Number values.
                 escaped = escaped.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="syntax-mermaid-number">$1</span>');
 
-                // Punctuation connectors.
-                escaped = escaped.replace(/(:|;|,)/g, '<span class="syntax-mermaid-connector">$1</span>');
+                // Punctuation connectors — intentionally exclude ";" because it is the
+                // terminal character of every HTML entity (&gt; &lt; &amp; etc.) and
+                // wrapping it in a span would corrupt those entities and widen the overlay.
+                escaped = escaped.replace(/([,:])/g, '<span class="syntax-mermaid-connector">$1</span>');
 
                 return escaped;
             },
