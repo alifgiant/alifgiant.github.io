@@ -71,9 +71,8 @@ permalink: /tools/kpr/
                     <input type="number" step="0.01" x-model.number="floatingRate" @input="recalculate()" class="block w-full px-6 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main" />
                 </div>
                 <div class="flex flex-col gap-4">
-                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Rate Duration (years)</label>
-                    <input type="text" readonly :value="totalYears - fixedYears" class="block w-full px-6 py-5 bg-stone-100 border-2 border-stone-200 rounded-2xl text-text-muted text-lg cursor-default select-none" tabindex="-1" />
-                    <p class="text-xs text-text-muted ml-1 -mt-2">Auto-calculated: Total − Fixed</p>
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Floating Rate Duration (years) — Auto</label>
+                    <input type="text" disabled :value="totalYears - fixedYears" class="block w-full px-6 py-5 bg-stone-100 border-2 border-stone-200 rounded-2xl text-text-muted text-lg cursor-not-allowed" />
                 </div>
                 <div class="flex items-center justify-center gap-4 h-full">
                     <button @click="reset()" class="px-6 py-3 rounded-2xl bg-stone-100 text-text-muted border">Reset</button>
