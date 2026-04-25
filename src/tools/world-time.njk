@@ -125,6 +125,19 @@ permalink: /tools/world-time/
                                     <span class="text-text-main font-semibold" x-text="zoneName(zone)"></span>
                                     <span class="text-text-muted" x-text="offsetLabel(zone)"></span>
                                 </div>
+
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Note</label>
+                                    <input
+                                        type="text"
+                                        :value="zoneNotes[zone] || ''"
+                                        @input="updateZoneNote(zone, $event.target.value)"
+                                        @mousedown.stop
+                                        @touchstart.stop
+                                        placeholder="e.g. Team members in this zone"
+                                        class="block w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all cursor-text select-text"
+                                    >
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -142,7 +155,7 @@ permalink: /tools/world-time/
     <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
         <span class="material-symbols-outlined text-primary">info</span>
         <div class="text-sm text-text-muted leading-relaxed">
-            Saved time zones stay in your browser using local storage.
+            Saved time zones and notes stay in your browser using local storage.
         </div>
     </div>
 
@@ -158,6 +171,7 @@ permalink: /tools/world-time/
     function worldTimeTool() {
         return {
             storageKey: 'world-time-tracked-zones',
+            notesStorageKey: 'world-time-zone-notes',
             timer: null,
             now: Date.now(),
             mode: 'live',
@@ -170,6 +184,7 @@ permalink: /tools/world-time/
             touchStartIndex: null,
             systemTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
             trackedTimezones: [],
+            zoneNotes: {},
             selectedTimezone: '',
             enrichedSelectableTimezones: [],
             _availableTimezones: null,
@@ -211,6 +226,7 @@ permalink: /tools/world-time/
             init() {
                 this.setCustomFieldsFromNow();
                 this.loadTrackedTimezones();
+                this.loadZoneNotes();
                 this.timer = window.setInterval(() => {
                     this.now = Date.now();
                 }, 1000);
@@ -368,6 +384,31 @@ permalink: /tools/world-time/
             removeTrackedTimezone(zone) {
                 this.trackedTimezones = this.trackedTimezones.filter(item => item !== zone);
                 this.saveTrackedTimezones();
+                const notes = { ...this.zoneNotes };
+                delete notes[zone];
+                this.zoneNotes = notes;
+                this.saveZoneNotes();
+            },
+
+            loadZoneNotes() {
+                try {
+                    const saved = localStorage.getItem(this.notesStorageKey);
+                    this.zoneNotes = saved ? JSON.parse(saved) : {};
+                    if (!this.zoneNotes || typeof this.zoneNotes !== 'object' || Array.isArray(this.zoneNotes)) {
+                        this.zoneNotes = {};
+                    }
+                } catch (error) {
+                    this.zoneNotes = {};
+                }
+            },
+
+            saveZoneNotes() {
+                localStorage.setItem(this.notesStorageKey, JSON.stringify(this.zoneNotes));
+            },
+
+            updateZoneNote(zone, note) {
+                this.zoneNotes = { ...this.zoneNotes, [zone]: note };
+                this.saveZoneNotes();
             },
 
             startDrag(zone) {
