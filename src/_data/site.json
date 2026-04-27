@@ -231,7 +231,11 @@
                     "description": "Generate Mermaid diagrams from code with zoom, pan, cheatsheet, and image export.",
                     "url": "/tools/mermaid/",
                     "icon": "schema",
-                    "tag": "Utilities"
+                    "tag": "Utilities",
+                    "tags": [
+                        "Utilities",
+                        "Favorite"
+                    ]
                 },
                 {
                     "title": "PDF Compressor",
