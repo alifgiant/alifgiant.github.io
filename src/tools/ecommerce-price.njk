@@ -102,63 +102,51 @@ permalink: /tools/ecommerce-price/
     </div>
 
     {# History #}
-    <div x-show="history.length > 0" class="flex flex-col gap-4">
+    <div x-show="history.length > 0" class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-bold text-text-main">Riwayat Perhitungan</h2>
+            <h2 class="text-sm font-bold uppercase tracking-widest text-text-muted">Riwayat Perhitungan</h2>
             <span class="text-xs text-text-muted" x-text="`${history.length} item`"></span>
         </div>
 
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
             <template x-for="(item, index) in history" :key="item.id">
-                <div class="relative bg-white rounded-[2rem] p-6 border border-stone-100 shadow-lg shadow-primary/5 flex flex-col gap-4">
+                <div class="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 border border-stone-100 shadow-sm">
+                    {# Number badge #}
+                    <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-stone-100 text-[10px] font-bold text-text-muted" x-text="history.length - index"></span>
+
+                    {# Input: desired price #}
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] text-text-muted leading-none mb-0.5">Diinginkan</span>
+                        <span class="text-sm font-semibold text-text-main font-mono truncate" x-text="'Rp ' + fmt(item.desiredPrice)"></span>
+                    </div>
+
+                    {# Arrow + cut #}
+                    <div class="flex items-center gap-1 flex-shrink-0 text-rose-500">
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        <span class="text-xs font-bold" x-text="item.platformCut + '%'"></span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </div>
+
+                    {# Result: platform price #}
+                    <div class="flex flex-col min-w-0 flex-1">
+                        <span class="text-[10px] text-primary leading-none mb-0.5">Harga di Platform</span>
+                        <span class="text-base font-bold text-primary font-mono truncate" x-text="'Rp ' + fmt(item.platformPrice)"></span>
+                    </div>
+
+                    {# Markup badge #}
+                    <span class="flex-shrink-0 hidden sm:inline-flex items-center px-2 py-0.5 rounded-full bg-stone-50 border border-stone-200 text-[10px] font-semibold text-text-muted whitespace-nowrap" x-text="'+' + item.markupPercent + '%'"></span>
+
+                    {# Timestamp #}
+                    <span class="flex-shrink-0 hidden md:block text-[10px] text-stone-300 whitespace-nowrap" x-text="item.timestamp"></span>
+
                     {# Delete button #}
                     <button
                         @click="removeItem(item.id)"
-                        class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-stone-100 hover:bg-rose-100 hover:text-rose-600 text-stone-400 transition-all"
+                        class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full hover:bg-rose-100 hover:text-rose-600 text-stone-300 transition-all"
                         title="Hapus"
                     >
-                        <span class="material-symbols-outlined text-base">close</span>
+                        <span class="material-symbols-outlined text-sm">close</span>
                     </button>
-
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">#<span x-text="history.length - index"></span></span>
-                        <span class="text-xs text-stone-300 mx-1">·</span>
-                        <span class="text-xs text-text-muted" x-text="item.timestamp"></span>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="flex flex-col gap-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Harga yang Diinginkan</span>
-                            <span class="text-xl font-bold text-text-main font-mono" x-text="'Rp ' + fmt(item.desiredPrice)"></span>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Potongan Platform</span>
-                            <span class="text-xl font-bold text-rose-600 font-mono" x-text="item.platformCut + '%'"></span>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <span class="text-xs font-bold uppercase tracking-widest text-primary">Harga di Platform</span>
-                            <span class="text-2xl font-bold text-primary font-mono" x-text="'Rp ' + fmt(item.platformPrice)"></span>
-                        </div>
-                    </div>
-
-                    <div class="bg-stone-50 rounded-xl p-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-                        <div class="flex flex-col gap-0.5">
-                            <span class="text-xs text-text-muted">Potongan Nominal</span>
-                            <span class="font-semibold text-rose-500 font-mono" x-text="'Rp ' + fmt(item.cutAmount)"></span>
-                        </div>
-                        <div class="flex flex-col gap-0.5">
-                            <span class="text-xs text-text-muted">Yang Kamu Terima</span>
-                            <span class="font-semibold text-green-600 font-mono" x-text="'Rp ' + fmt(item.desiredPrice)"></span>
-                        </div>
-                        <div class="flex flex-col gap-0.5">
-                            <span class="text-xs text-text-muted">Efektif Diterima</span>
-                            <span class="font-semibold font-mono" x-text="item.effectivePercent + '% dari harga platform'"></span>
-                        </div>
-                        <div class="flex flex-col gap-0.5">
-                            <span class="text-xs text-text-muted">Kenaikan Harga</span>
-                            <span class="font-semibold font-mono" x-text="item.markupPercent + '% lebih tinggi'"></span>
-                        </div>
-                    </div>
                 </div>
             </template>
         </div>
