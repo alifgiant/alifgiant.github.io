@@ -1,0 +1,240 @@
+---
+layout: layouts/base.njk
+title: E-Commerce Seller Price Calculator
+description: Calculate the listing price for e-commerce platforms (Shopee, Tokopedia, Grab, Gojek, etc.) so you receive your target profit after platform fees.
+permalink: /tools/ecommerce-price/
+---
+
+<div class="w-full max-w-3xl flex flex-col gap-12" x-data="ecommercePriceTool()">
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/ecommerce-price/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    {# Input Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10">
+        <div class="flex flex-col gap-6">
+            <h2 class="text-xl font-bold text-text-main">Masukkan Data Penjualan</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">
+                        Harga Jual yang Diinginkan (IDR)
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted font-semibold text-sm select-none">Rp</span>
+                        <input
+                            type="text"
+                            inputmode="numeric"
+                            x-model="inputs.desiredPrice"
+                            @input="formatDesiredPrice()"
+                            @keydown.enter="calculate()"
+                            placeholder="Contoh: 50.000"
+                            class="block w-full pl-10 pr-4 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary text-lg transition-colors"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">
+                        Potongan Platform (%)
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="number"
+                            min="0"
+                            max="99"
+                            step="0.1"
+                            x-model.number="platformCut"
+                            @keydown.enter="calculate()"
+                            placeholder="Contoh: 20"
+                            class="block w-full pl-4 pr-10 py-5 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary text-lg transition-colors"
+                        />
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted font-semibold text-sm select-none">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button
+                    @click="calculate()"
+                    :disabled="!canCalculate"
+                    class="flex-1 md:flex-none md:px-10 py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-base"
+                >
+                    <span class="flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-xl">calculate</span>
+                        Hitung Harga di Platform
+                    </span>
+                </button>
+                <button
+                    @click="clearAll()"
+                    x-show="history.length > 0"
+                    class="px-6 py-4 bg-stone-100 text-text-muted font-bold rounded-2xl hover:bg-stone-200 active:scale-95 transition-all text-sm"
+                >
+                    Hapus Semua
+                </button>
+            </div>
+
+            <p class="text-xs text-text-muted">
+                <span class="font-semibold">Rumus:</span>
+                Harga di Platform = Harga Inginkan ÷ (1 − Potongan %)
+            </p>
+        </div>
+    </div>
+
+    {# History #}
+    <div x-show="history.length > 0" class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-text-muted">Riwayat Perhitungan</h2>
+            <span class="text-xs text-text-muted" x-text="`${history.length} item`"></span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <template x-for="(item, index) in history" :key="item.id">
+                <div class="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 border border-stone-100 shadow-sm">
+                    {# Number badge #}
+                    <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-stone-100 text-[10px] font-bold text-text-muted" x-text="history.length - index"></span>
+
+                    {# Input: desired price #}
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] text-text-muted leading-none mb-0.5">Diinginkan</span>
+                        <span class="text-sm font-semibold text-text-main font-mono truncate" x-text="'Rp ' + fmt(item.desiredPrice)"></span>
+                    </div>
+
+                    {# Arrow + cut #}
+                    <div class="flex items-center gap-1 flex-shrink-0 text-rose-500">
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        <span class="text-xs font-bold" x-text="item.platformCut + '%'"></span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </div>
+
+                    {# Result: platform price #}
+                    <div class="flex flex-col min-w-0 flex-1">
+                        <span class="text-[10px] text-primary leading-none mb-0.5">Harga di Platform</span>
+                        <span class="text-base font-bold text-primary font-mono truncate" x-text="'Rp ' + fmt(item.platformPrice)"></span>
+                    </div>
+
+                    {# Markup badge #}
+                    <span class="flex-shrink-0 hidden sm:inline-flex items-center px-2 py-0.5 rounded-full bg-stone-50 border border-stone-200 text-[10px] font-semibold text-text-muted whitespace-nowrap" x-text="'+' + item.markupPercent + '%'"></span>
+
+                    {# Timestamp #}
+                    <span class="flex-shrink-0 hidden md:block text-[10px] text-stone-300 whitespace-nowrap" x-text="item.timestamp"></span>
+
+                    {# Delete button #}
+                    <button
+                        @click="removeItem(item.id)"
+                        class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full hover:bg-rose-100 hover:text-rose-600 text-stone-300 transition-all"
+                        title="Hapus"
+                    >
+                        <span class="material-symbols-outlined text-sm">close</span>
+                    </button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    {# Empty state #}
+    <div x-show="history.length === 0" class="w-full py-16 flex flex-col items-center justify-center text-center gap-3 bg-stone-50 rounded-[2.5rem] border-2 border-dashed border-stone-200">
+        <span class="material-symbols-outlined text-5xl text-stone-300">storefront</span>
+        <p class="text-text-muted text-sm max-w-xs">Masukkan harga dan potongan platform lalu tekan <strong>Hitung</strong> — riwayat akan muncul di sini.</p>
+    </div>
+
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function ecommercePriceTool() {
+        return {
+            inputs: { desiredPrice: '' },
+            platformCut: 20,
+            history: [],
+            _idCounter: 0,
+
+            get canCalculate() {
+                const price = this.parseNumber(this.inputs.desiredPrice);
+                return price > 0 && this.platformCut >= 0 && this.platformCut < 100;
+            },
+
+            fmt(value) {
+                return new Intl.NumberFormat('id-ID').format(Math.round(value || 0));
+            },
+
+            parseNumber(raw) {
+                const cleaned = String(raw || '').replace(/\./g, '').replace(/,/g, '.').trim();
+                const num = parseFloat(cleaned);
+                return isNaN(num) ? 0 : num;
+            },
+
+            formatDesiredPrice() {
+                const raw = String(this.inputs.desiredPrice || '').replace(/[^0-9]/g, '');
+                if (!raw) {
+                    this.inputs.desiredPrice = '';
+                    return;
+                }
+                const num = parseInt(raw, 10);
+                this.inputs.desiredPrice = new Intl.NumberFormat('id-ID').format(num);
+            },
+
+            calculate() {
+                const desiredPrice = this.parseNumber(this.inputs.desiredPrice);
+                const cut = Number(this.platformCut) || 0;
+
+                if (desiredPrice <= 0 || cut < 0 || cut >= 100) return;
+
+                const platformPrice = desiredPrice / (1 - cut / 100);
+                const cutAmount = platformPrice - desiredPrice;
+                const effectivePercent = Math.round((desiredPrice / platformPrice) * 1000) / 10;
+                const markupPercent = Math.round(((platformPrice - desiredPrice) / desiredPrice) * 1000) / 10;
+
+                const now = new Date();
+                const timestamp = now.toLocaleString('id-ID', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                this.history.unshift({
+                    id: ++this._idCounter,
+                    timestamp,
+                    desiredPrice,
+                    platformCut: cut,
+                    platformPrice: Math.ceil(platformPrice),
+                    cutAmount: Math.ceil(cutAmount),
+                    effectivePercent,
+                    markupPercent
+                });
+            },
+
+            removeItem(id) {
+                this.history = this.history.filter(item => item.id !== id);
+            },
+
+            clearAll() {
+                this.history = [];
+            }
+        };
+    }
+</script>
