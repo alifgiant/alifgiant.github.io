@@ -116,10 +116,10 @@ permalink: /tools/currency-rates/
             lastFetchedAt: null,
             errorMessage: '',
             trackedPairs: [
-                { id: 'USD/IDR', base: 'USD', quote: 'IDR', rate: null, error: '' },
-                { id: 'SAR/IDR', base: 'SAR', quote: 'IDR', rate: null, error: '' },
-                { id: 'CYN/IDR', base: 'CYN', quote: 'IDR', rate: null, error: '' },
-                { id: 'SGD/IDR', base: 'SGD', quote: 'IDR', rate: null, error: '' }
+                { id: 'USD/IDR', base: 'USD', apiBase: 'USD', quote: 'IDR', rate: null, error: '' },
+                { id: 'SAR/IDR', base: 'SAR', apiBase: 'SAR', quote: 'IDR', rate: null, error: '' },
+                { id: 'CYN/IDR', base: 'CYN', apiBase: 'CNY', quote: 'IDR', rate: null, error: '' },
+                { id: 'SGD/IDR', base: 'SGD', apiBase: 'SGD', quote: 'IDR', rate: null, error: '' }
             ],
 
             init() {
@@ -191,7 +191,8 @@ permalink: /tools/currency-rates/
                 try {
                     const nextPairs = await Promise.all(this.trackedPairs.map(async pair => {
                         try {
-                            const response = await fetch(`https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(pair.base)}&symbols=${encodeURIComponent(pair.quote)}`);
+                            const requestBase = pair.apiBase || pair.base;
+                            const response = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(requestBase)}&symbols=${encodeURIComponent(pair.quote)}`);
                             if (!response.ok) {
                                 throw new Error(`API returned ${response.status}`);
                             }
