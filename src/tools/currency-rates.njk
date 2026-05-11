@@ -206,13 +206,17 @@ permalink: /tools/currency-rates/
                             if (!requestBase || !quote) {
                                 throw new Error(`Invalid currency pair: ${pair.id}`);
                             }
-                            const response = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(requestBase)}&symbols=${encodeURIComponent(quote)}`);
+                            const response = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(requestBase)}&quotes=${encodeURIComponent(quote)}`);
                             if (!response.ok) {
                                 throw new Error(`API returned ${response.status}`);
                             }
 
                             const payload = await response.json();
-                            const rate = payload?.rates?.[pair.quote];
+                            const arrayPayload = Array.isArray(payload) ? payload[0] : undefined;
+                            const arrayRate = arrayPayload?.quote === pair.quote ? arrayPayload.rate : undefined;
+                            const rate = typeof arrayRate === 'number'
+                                ? arrayRate
+                                : payload?.rates?.[pair.quote];
                             if (typeof rate !== 'number') {
                                 throw new Error(`Rate not found for ${pair.id}`);
                             }
