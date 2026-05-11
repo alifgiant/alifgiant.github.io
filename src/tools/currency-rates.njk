@@ -213,7 +213,7 @@ permalink: /tools/currency-rates/
 
                             const payload = await response.json();
                             const arrayRate = Array.isArray(payload)
-                                ? payload.find(item => item?.quote === quote)?.rate
+                                ? payload.find(item => item?.quote === pair.quote)?.rate
                                 : undefined;
                             const rate = typeof arrayRate === 'number'
                                 ? arrayRate
