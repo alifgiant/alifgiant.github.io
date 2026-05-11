@@ -240,7 +240,13 @@ permalink: /tools/currency-rates/
                 try {
                     const response = await fetch('https://api.frankfurter.dev/v2/currencies');
                     if (response.ok) {
-                        this.availableCurrencies = await response.json();
+                        const data = await response.json();
+                        // v2 API returns an array of {code, name} objects
+                        if (Array.isArray(data)) {
+                            this.availableCurrencies = Object.fromEntries(data.map(item => [item.code, item.name]));
+                        } else {
+                            this.availableCurrencies = data;
+                        }
                         this.updateSelectedCurrency();
                     }
                 } catch (error) {
