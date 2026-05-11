@@ -204,7 +204,7 @@ permalink: /tools/currency-rates/
                             const requestBase = pair.base;
                             const quote = pair.quote;
                             if (!requestBase || !quote) {
-                                throw new Error('Invalid currency pair');
+                                throw new Error(`Invalid currency pair: ${pair.id}`);
                             }
                             const response = await fetch(`https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(requestBase)}&symbols=${encodeURIComponent(quote)}`);
                             if (!response.ok) {
@@ -214,12 +214,13 @@ permalink: /tools/currency-rates/
                             const payload = await response.json();
                             const rate = payload?.rates?.[pair.quote];
                             if (typeof rate !== 'number') {
-                                throw new Error('Missing rate');
+                                throw new Error(`Rate not found for ${pair.id}`);
                             }
 
                             return { ...pair, rate, error: '' };
                         } catch (error) {
-                            return { ...pair, rate: null, error: `Unable to fetch ${pair.id}.` };
+                            const message = error instanceof Error ? error.message : `Unable to fetch ${pair.id}.`;
+                            return { ...pair, rate: null, error: message };
                         }
                     }));
 
