@@ -172,7 +172,7 @@
                 },
                 {
                     "title": "Currency Rates Tracker",
-                    "description": "Track selected currency exchange rates against IDR with one-click refresh.",
+                    "description": "Track and compare currency exchange rates with a customizable base currency and amount.",
                     "url": "/tools/currency-rates/",
                     "icon": "currency_exchange",
                     "tag": "Utilities"
