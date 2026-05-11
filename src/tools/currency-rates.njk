@@ -158,6 +158,7 @@ permalink: /tools/currency-rates/
                         this.lastFetchedAt = parsed.lastFetchedAt;
                     }
                 } catch (error) {
+                    console.warn('Failed to restore currency rates state from localStorage.', error);
                     this.lastFetchedAt = null;
                 }
             },
