@@ -355,7 +355,9 @@ permalink: /tools/currency-rates/
                         throw new Error(`API returned ${response.status}`);
                     }
                     const payload = await response.json();
-                    this.rates = (payload && typeof payload.rates === 'object') ? payload.rates : {};
+                    // API returns an array of { date, base, quote, rate } objects
+                    const ratesArray = Array.isArray(payload) ? payload : [];
+                    this.rates = Object.fromEntries(ratesArray.map(item => [item.quote, item.rate]));
                     this.lastFetchedAt = fetchedAt;
                     this.saveState();
                 } catch (error) {
