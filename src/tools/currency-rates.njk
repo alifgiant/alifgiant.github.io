@@ -213,10 +213,11 @@ permalink: /tools/currency-rates/
             trackedCurrencies: ['IDR', 'SAR', 'CNY', 'SGD'],
             selectedCurrency: '',
             rates: {},
+            _amountFormatter: null,
+            _rateFormatter: null,
 
             init() {
                 this.loadState();
-                this.now = Date.now();
                 this.timer = window.setInterval(() => {
                     this.now = Date.now();
                 }, 1000);
@@ -399,20 +400,26 @@ permalink: /tools/currency-rates/
                 if (typeof value !== 'number' || !isFinite(value)) {
                     return '—';
                 }
-                return new Intl.NumberFormat(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(value);
+                if (!this._amountFormatter) {
+                    this._amountFormatter = new Intl.NumberFormat(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+                return this._amountFormatter.format(value);
             },
 
             formatRate(value) {
                 if (typeof value !== 'number' || !isFinite(value)) {
                     return '—';
                 }
-                return new Intl.NumberFormat(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(value);
+                if (!this._rateFormatter) {
+                    this._rateFormatter = new Intl.NumberFormat(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 6
+                    });
+                }
+                return this._rateFormatter.format(value);
             }
         };
     }
