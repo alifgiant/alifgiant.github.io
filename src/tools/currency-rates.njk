@@ -212,7 +212,12 @@ permalink: /tools/currency-rates/
                             }
 
                             const payload = await response.json();
-                            const rate = payload?.rates?.[pair.quote];
+                            const arrayRate = Array.isArray(payload)
+                                ? payload.find(item => item?.quote === quote)?.rate
+                                : undefined;
+                            const rate = typeof arrayRate === 'number'
+                                ? arrayRate
+                                : payload?.rates?.[pair.quote];
                             if (typeof rate !== 'number') {
                                 throw new Error(`Rate not found for ${pair.id}`);
                             }
