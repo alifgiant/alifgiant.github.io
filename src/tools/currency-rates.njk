@@ -71,7 +71,7 @@ permalink: /tools/currency-rates/
                         <template x-if="typeof pair.rate === 'number'">
                             <div class="flex flex-col gap-1">
                                 <span class="text-4xl font-bold text-text-main leading-none tabular-nums" x-text="formatRate(pair.rate)"></span>
-                                <span class="text-sm text-text-muted" x-text="`1 ${pair.displayBase || pair.base} = ${formatRate(pair.rate)} ${pair.quote}`"></span>
+                                <span class="text-sm text-text-muted" x-text="`1 ${pair.displayBase} = ${formatRate(pair.rate)} ${pair.quote}`"></span>
                             </div>
                         </template>
 
@@ -118,6 +118,7 @@ permalink: /tools/currency-rates/
             trackedPairs: [
                 { id: 'USD/IDR', base: 'USD', displayBase: 'USD', quote: 'IDR', rate: null, error: '' },
                 { id: 'SAR/IDR', base: 'SAR', displayBase: 'SAR', quote: 'IDR', rate: null, error: '' },
+                // Keep CYN label in UI per product requirement while querying CNY from API.
                 { id: 'CYN/IDR', base: 'CNY', displayBase: 'CYN', quote: 'IDR', rate: null, error: '' },
                 { id: 'SGD/IDR', base: 'SGD', displayBase: 'SGD', quote: 'IDR', rate: null, error: '' }
             ],
@@ -144,6 +145,7 @@ permalink: /tools/currency-rates/
                             if (!savedPair || typeof savedPair !== 'object') {
                                 return defaultPair;
                             }
+                            // Keep canonical base/display mapping from defaults; only restore dynamic fetch state.
                             return {
                                 ...defaultPair,
                                 rate: typeof savedPair.rate === 'number' ? savedPair.rate : null,
