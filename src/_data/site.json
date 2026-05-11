@@ -171,6 +171,13 @@
                     "tag": "Converter"
                 },
                 {
+                    "title": "Currency Rates Tracker",
+                    "description": "Track selected currency exchange rates against IDR with one-click refresh.",
+                    "url": "/tools/currency-rates/",
+                    "icon": "currency_exchange",
+                    "tag": "Utilities"
+                },
+                {
                     "title": "Firebase Deobfuscator",
                     "description": "Convert obfuscated Firebase stacktraces or logs to readable ones using ProGuard or Symbol mapping files for both Android and Flutter.",
                     "url": "/tools/firebase-deobfuscator/",
