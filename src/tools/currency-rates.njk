@@ -70,7 +70,8 @@ permalink: /tools/currency-rates/
                 </div>
 
                 <!-- Add pair -->
-                <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-4 md:items-end">
+                <fieldset class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-4 md:items-end">
+                    <legend class="sr-only">Add tracked currency pair</legend>
                     <div class="flex flex-col gap-3">
                         <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Base Currency</label>
                         <select
@@ -104,7 +105,7 @@ permalink: /tools/currency-rates/
                         <span class="material-symbols-outlined text-base">add</span>
                         Add pair
                     </button>
-                </div>
+                </fieldset>
 
                 <template x-if="trackedPairs.length">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -156,7 +157,7 @@ permalink: /tools/currency-rates/
                                                 stroke-width="3.5"
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                :stroke="pairIsUpward(pair) ? '#16a34a' : '#dc2626'"
+                                                :stroke="pairIsUpward(pair) ? trendUpColor : trendDownColor"
                                             ></path>
                                         </svg>
                                     </div>
@@ -219,6 +220,8 @@ permalink: /tools/currency-rates/
             pairFormBase: 'USD',
             pairFormTarget: 'IDR',
             pairRates: {},
+            trendUpColor: '#16a34a',
+            trendDownColor: '#dc2626',
             _rateFormatter: null,
 
             init() {
@@ -312,7 +315,9 @@ permalink: /tools/currency-rates/
                     }
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed.trackedPairs)) {
-                        this.trackedPairs = parsed.trackedPairs;
+                        this.trackedPairs = parsed.trackedPairs
+                            .filter(pair => pair && typeof pair.base === 'string' && typeof pair.target === 'string')
+                            .map(pair => ({ base: pair.base, target: pair.target }));
                     } else if (Array.isArray(parsed.trackedCurrencies)) {
                         const legacyBase = typeof parsed.baseCurrency === 'string' ? parsed.baseCurrency : 'USD';
                         this.trackedPairs = parsed.trackedCurrencies
@@ -392,7 +397,7 @@ permalink: /tools/currency-rates/
             async fetchPairRates(base, target) {
                 const endDate = new Date();
                 const startDate = new Date(endDate);
-                // Includes today as day 14 by going back 13 calendar days.
+                // Requests a 14-calendar-day range by including today and the preceding 13 days.
                 startDate.setDate(endDate.getDate() - 13);
                 const start = startDate.toISOString().slice(0, 10);
                 const end = endDate.toISOString().slice(0, 10);
@@ -435,14 +440,36 @@ permalink: /tools/currency-rates/
                 const fetchedAt = Date.now();
 
                 try {
-                    const entries = await Promise.all(
+                    const results = await Promise.all(
                         this.trackedPairs.map(async pair => {
-                            const result = await this.fetchPairRates(pair.base, pair.target);
-                            return [this.pairKey(pair.base, pair.target), result];
+                            const key = this.pairKey(pair.base, pair.target);
+                            try {
+                                const result = await this.fetchPairRates(pair.base, pair.target);
+                                return { key, result, ok: true };
+                            } catch (error) {
+                                return { key, ok: false };
+                            }
                         })
                     );
-                    this.pairRates = Object.fromEntries(entries);
+
+                    const nextPairRates = { ...this.pairRates };
+                    let failedCount = 0;
+                    for (const item of results) {
+                        if (item.ok) {
+                            nextPairRates[item.key] = item.result;
+                        } else {
+                            failedCount += 1;
+                        }
+                    }
+
+                    this.pairRates = nextPairRates;
                     this.lastFetchedAt = fetchedAt;
+                    if (failedCount > 0) {
+                        const successCount = results.length - failedCount;
+                        this.errorMessage = successCount > 0
+                            ? `Updated ${successCount} pair(s). ${failedCount} pair(s) failed to refresh.`
+                            : 'Unable to fetch exchange rates right now. Please try again.';
+                    }
                     this.saveState();
                 } catch (error) {
                     this.errorMessage = 'Unable to fetch exchange rates right now. Please try again.';
@@ -469,7 +496,7 @@ permalink: /tools/currency-rates/
                 this.trackedPairs = this.trackedPairs.filter(
                     pair => this.pairKey(pair.base, pair.target) !== pairId
                 );
-                const { [pairId]: _removed, ...remainingRates } = this.pairRates;
+                const { [pairId]: _removedPairRate, ...remainingRates } = this.pairRates;
                 this.pairRates = remainingRates;
                 this.saveState();
             },
