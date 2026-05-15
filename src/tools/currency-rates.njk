@@ -71,7 +71,7 @@ permalink: /tools/currency-rates/
 
                 <!-- Add pair -->
                 <fieldset class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-4 md:items-end">
-                    <legend class="sr-only">Form to add a new currency exchange pair for tracking</legend>
+                    <legend class="sr-only">Add currency exchange pair</legend>
                     <div class="flex flex-col gap-3">
                         <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Base Currency</label>
                         <select
@@ -149,7 +149,7 @@ permalink: /tools/currency-rates/
                                             viewBox="0 0 320 100"
                                             class="w-full h-24"
                                             role="img"
-                                            :aria-label="`30-day trend for ${pair.base} to ${pair.target} exchange rate`"
+                                            :aria-label="`30-day trend for ${pair.base} vs ${pair.target} exchange rate`"
                                         >
                                             <path
                                                 :d="pairChartPath(pair)"
@@ -402,7 +402,7 @@ permalink: /tools/currency-rates/
             async fetchPairRates(base, target) {
                 const endDate = new Date();
                 const startDate = new Date(endDate);
-                // Requests data in a 30-day window: today plus the preceding 29 calendar days.
+                // Subtracts 29 days from today to get a 30-day range including today.
                 startDate.setDate(endDate.getDate() - (this.historyWindowDays - 1));
                 const start = startDate.toISOString().slice(0, 10);
                 const end = endDate.toISOString().slice(0, 10);
