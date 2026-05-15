@@ -397,7 +397,7 @@ permalink: /tools/currency-rates/
             async fetchPairRates(base, target) {
                 const endDate = new Date();
                 const startDate = new Date(endDate);
-                // Requests a 14-calendar-day range by including today and the preceding 13 days.
+                // Requests data in a 14-day window: today plus the preceding 13 calendar days.
                 startDate.setDate(endDate.getDate() - 13);
                 const start = startDate.toISOString().slice(0, 10);
                 const end = endDate.toISOString().slice(0, 10);
@@ -466,9 +466,11 @@ permalink: /tools/currency-rates/
                     this.lastFetchedAt = fetchedAt;
                     if (failedCount > 0) {
                         const successCount = results.length - failedCount;
-                        this.errorMessage = successCount > 0
-                            ? `Updated ${successCount} pair(s). ${failedCount} pair(s) failed to refresh.`
-                            : 'Unable to fetch exchange rates right now. Please try again.';
+                        if (successCount > 0) {
+                            this.errorMessage = `Updated ${successCount} pair(s). ${failedCount} pair(s) failed to refresh.`;
+                        } else {
+                            this.errorMessage = 'Unable to fetch exchange rates right now. Please try again.';
+                        }
                     }
                     this.saveState();
                 } catch (error) {
@@ -488,7 +490,20 @@ permalink: /tools/currency-rates/
                 };
                 this.trackedPairs = [...this.trackedPairs, newPair];
                 this.saveState();
-                this.fetchAllPairRates(true);
+                this.refreshTrackedPair(newPair);
+            },
+
+            async refreshTrackedPair(pair) {
+                try {
+                    const result = await this.fetchPairRates(pair.base, pair.target);
+                    const key = this.pairKey(pair.base, pair.target);
+                    this.pairRates = { ...this.pairRates, [key]: result };
+                    this.lastFetchedAt = Date.now();
+                    this.errorMessage = '';
+                    this.saveState();
+                } catch (error) {
+                    this.errorMessage = `Unable to fetch latest rate for ${pair.base} → ${pair.target}.`;
+                }
             },
 
             removeTrackedPair(pairToRemove) {
