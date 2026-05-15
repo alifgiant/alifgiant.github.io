@@ -144,7 +144,12 @@ permalink: /tools/currency-rates/
                                             <span :class="pairIsUpward(pair) ? 'text-emerald-600' : 'text-rose-600'" x-text="pairIsUpward(pair) ? 'Upward trend' : 'Downward trend'"></span>
                                             <span class="text-text-muted">Last 14 days</span>
                                         </div>
-                                        <svg viewBox="0 0 320 100" class="w-full h-24">
+                                        <svg
+                                            viewBox="0 0 320 100"
+                                            class="w-full h-24"
+                                            role="img"
+                                            :aria-label="`14-day trend for ${pair.base} to ${pair.target} exchange rate`"
+                                        >
                                             <path
                                                 :d="pairChartPath(pair)"
                                                 fill="none"
@@ -387,6 +392,7 @@ permalink: /tools/currency-rates/
             async fetchPairRates(base, target) {
                 const endDate = new Date();
                 const startDate = new Date(endDate);
+                // Includes today as day 14 by going back 13 calendar days.
                 startDate.setDate(endDate.getDate() - 13);
                 const start = startDate.toISOString().slice(0, 10);
                 const end = endDate.toISOString().slice(0, 10);
@@ -541,7 +547,7 @@ permalink: /tools/currency-rates/
                     path += ` Q ${current.x} ${current.y} ${midpointX} ${midpointY}`;
                 }
                 const last = points[points.length - 1];
-                path += ` T ${last.x} ${last.y}`;
+                path += ` L ${last.x} ${last.y}`;
                 return path;
             },
 
