@@ -401,7 +401,7 @@ permalink: /tools/currency-rates/
                 startDate.setDate(endDate.getDate() - 13);
                 const start = startDate.toISOString().slice(0, 10);
                 const end = endDate.toISOString().slice(0, 10);
-                const url = `https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(base)}&quote=${encodeURIComponent(target)}&start=${start}&end=${end}`;
+                const url = `https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(base)}&quotes=${encodeURIComponent(target)}&from=${start}&to=${end}`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`API returned ${response.status}`);
