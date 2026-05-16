@@ -132,6 +132,7 @@ permalink: /tools/currency-rates/
                                             class="text-xs font-semibold tabular-nums"
                                             :class="pairIsUpward(pair) ? 'text-emerald-600' : 'text-rose-600'"
                                             x-text="formatPercent(pairChangePercent(pair))"
+                                            x-show="pairChangePercent(pair) !== null"
                                             :aria-label="`30-day rate change: ${formatPercent(pairChangePercent(pair))}`"
                                         ></span>
                                     </div>
@@ -575,7 +576,7 @@ permalink: /tools/currency-rates/
             },
 
             formatPercent(value) {
-                if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+                if (typeof value !== 'number' || !isFinite(value)) {
                     return '—';
                 }
                 const sign = value >= 0 ? '+' : '';
