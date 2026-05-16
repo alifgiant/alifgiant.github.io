@@ -132,7 +132,7 @@ permalink: /tools/currency-rates/
                                             class="text-xs font-semibold tabular-nums"
                                             :class="pairIsUpward(pair) ? 'text-emerald-600' : 'text-rose-600'"
                                             x-text="formatPercent(pairChangePercent(pair))"
-                                            :aria-label="`Change: ${formatPercent(pairChangePercent(pair))} (${pairIsUpward(pair) ? 'increase' : 'decrease'})`"
+                                            :aria-label="`30-day rate change: ${formatPercent(pairChangePercent(pair))}`"
                                         ></span>
                                     </div>
                                 </template>
@@ -476,7 +476,7 @@ permalink: /tools/currency-rates/
                     if (failedCount > 0) {
                         const successCount = results.length - failedCount;
                         if (successCount > 0) {
-                            this.errorMessage = `Updated ${successCount} pair(s). ${failedCount} pair(s) failed to refresh.`;
+                            this.errorMessage = `Updated ${successCount} ${successCount !== 1 ? 'pairs' : 'pair'}. ${failedCount} ${failedCount !== 1 ? 'pairs' : 'pair'} failed to refresh.`;
                         } else {
                             this.errorMessage = 'Unable to fetch exchange rates right now. Please try again.';
                         }
@@ -575,7 +575,7 @@ permalink: /tools/currency-rates/
             },
 
             formatPercent(value) {
-                if (typeof value !== 'number' || !isFinite(value)) {
+                if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
                     return '—';
                 }
                 const sign = value >= 0 ? '+' : '';
