@@ -59,111 +59,122 @@ permalink: /tools/currency-rates/
                 <div class="rounded-2xl border border-rose-200 bg-rose-50 text-rose-700 px-4 py-3 text-sm" x-text="errorMessage"></div>
             </template>
 
-            <!-- Base Currency Card -->
-            <div class="rounded-[2rem] bg-stone-950 text-stone-50 p-8 md:p-10 shadow-2xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
-                <div class="relative z-10 flex flex-col gap-6">
-                    <span class="text-xs font-bold uppercase tracking-[0.3em] text-stone-400">Base Currency</span>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-stone-400">Currency</label>
-                            <select
-                                x-model="baseCurrency"
-                                @change="onBaseCurrencyChange()"
-                                :disabled="isCurrenciesLoading"
-                                class="block w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-2xl text-stone-50 focus:outline-none focus:border-primary/50 transition-all text-base disabled:opacity-50"
-                            >
-                                <template x-for="currency in allCurrencies()" :key="currency.code">
-                                    <option :value="currency.code" x-text="`${currency.code} – ${currency.name}`"></option>
-                                </template>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-stone-400">Amount</label>
-                            <input
-                                type="number"
-                                x-model.number="baseAmount"
-                                min="0"
-                                step="any"
-                                @change="saveState()"
-                                class="block w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-2xl text-stone-50 focus:outline-none focus:border-primary/50 transition-all text-base"
-                                style="font-size: 16px;"
-                            >
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-4xl md:text-5xl font-bold leading-none tabular-nums" x-text="formatAmount(baseAmount) + ' ' + baseCurrency"></span>
-                        <span class="text-sm text-stone-400" x-text="availableCurrencies[baseCurrency] || ''"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="h-px bg-stone-100"></div>
-
             <!-- Tracked currencies section -->
             <div class="flex flex-col gap-5">
                 <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h3 class="text-xl md:text-2xl font-bold text-text-main">Tracked Currencies</h3>
-                        <p class="text-sm text-text-muted">Add currencies to compare. Default list is IDR, SAR, CNY, and SGD. Rates refresh with the button above.</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-text-main">Tracked Currency Pairs</h3>
+                        <p class="text-sm text-text-muted">Save a base and target currency pair. Each card shows latest rate and a 30-day trend line.</p>
                     </div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted" x-text="trackedCurrencies.length + ' tracked'"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted" x-text="trackedPairs.length + ' tracked'"></span>
                 </div>
 
-                <!-- Add currency -->
-                <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-4 md:items-end">
+                <!-- Add pair -->
+                <fieldset class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-4 md:items-end">
+                    <legend class="sr-only">Add currency exchange pair</legend>
                     <div class="flex flex-col gap-3">
-                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Add Currency</label>
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Base Currency</label>
                         <select
-                            x-model="selectedCurrency"
-                            :disabled="isCurrenciesLoading || addableCurrencies().length === 0"
+                            x-model="pairFormBase"
+                            @change="onPairFormBaseChange()"
+                            :disabled="isCurrenciesLoading"
                             class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner disabled:opacity-50"
                         >
-                            <template x-for="currency in addableCurrencies()" :key="currency.code">
+                            <template x-for="currency in allCurrencies()" :key="currency.code">
+                                <option :value="currency.code" x-text="`${currency.code} – ${currency.name}`"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Target Currency</label>
+                        <select
+                            x-model="pairFormTarget"
+                            :disabled="isCurrenciesLoading"
+                            class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner disabled:opacity-50"
+                        >
+                            <template x-for="currency in allCurrencies()" :key="currency.code">
                                 <option :value="currency.code" x-text="`${currency.code} – ${currency.name}`"></option>
                             </template>
                         </select>
                     </div>
                     <button
-                        @click="addTrackedCurrency()"
-                        :disabled="!selectedCurrency || isLoading"
+                        @click="addTrackedPair()"
+                        :disabled="!canAddPair() || isLoading"
                         class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-primary text-white font-bold hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-primary/20"
                     >
                         <span class="material-symbols-outlined text-base">add</span>
-                        Add currency
+                        Add pair
                     </button>
-                </div>
+                </fieldset>
 
-                <template x-if="trackedCurrencies.length">
+                <template x-if="trackedPairs.length">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <template x-for="code in trackedCurrencies" :key="code">
+                        <template x-for="pair in trackedPairs" :key="pairKey(pair.base, pair.target)">
                             <div class="rounded-[2rem] border border-stone-200 bg-stone-50/80 p-6 md:p-7 shadow-sm flex flex-col gap-4">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="flex flex-col gap-1 min-w-0">
-                                        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Currency</span>
-                                        <h3 class="text-2xl font-bold text-text-main leading-tight" x-text="code"></h3>
-                                        <span class="text-sm text-text-muted" x-text="availableCurrencies[code] || ''"></span>
+                                        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Pair</span>
+                                        <h3 class="text-2xl font-bold text-text-main leading-tight tabular-nums" x-text="`${pair.base} → ${pair.target}`"></h3>
                                     </div>
                                     <button
-                                        @click="removeTrackedCurrency(code)"
+                                        @click="removeTrackedPair(pair)"
                                         class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-text-muted hover:text-rose-600 hover:bg-rose-50 border border-stone-200 transition-colors flex-shrink-0"
-                                        aria-label="Remove tracked currency"
+                                        aria-label="Remove tracked pair"
                                     >
                                         <span class="material-symbols-outlined text-base">delete</span>
                                     </button>
                                 </div>
 
-                                <template x-if="typeof rates[code] === 'number'">
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-4xl font-bold text-text-main leading-none tabular-nums" x-text="formatAmount(baseAmount * rates[code]) + ' ' + code"></span>
-                                        <span class="text-sm text-text-muted" x-text="`1 ${baseCurrency} = ${formatRate(rates[code])} ${code}`"></span>
-                                        <span class="text-sm text-text-muted" x-text="rates[code] > 0 ? `1 ${code} = ${formatRate(1 / rates[code])} ${baseCurrency}` : ''"></span>
+                                <template x-if="hasPairLatestRate(pair)">
+                                    <div class="flex flex-col gap-0.5">
+                                        <span class="text-4xl font-bold text-text-main leading-none tabular-nums" x-text="formatRate(pairLatestRate(pair))"></span>
+                                        <span
+                                            class="text-xs font-semibold tabular-nums"
+                                            :class="pairIsUpward(pair) ? 'text-emerald-600' : 'text-rose-600'"
+                                            x-text="formatPercent(pairChangePercent(pair))"
+                                            x-show="pairChangePercent(pair) !== null"
+                                            :aria-label="`30-day rate change: ${formatPercent(pairChangePercent(pair))}`"
+                                        ></span>
                                     </div>
                                 </template>
 
-                                <template x-if="typeof rates[code] !== 'number'">
+                                <template x-if="!hasPairLatestRate(pair)">
                                     <div class="rounded-2xl border border-dashed border-stone-300 bg-white/80 px-4 py-5 text-sm text-text-muted">
-                                        Rate unavailable. Use Refetch to load.
+                                        Latest rate unavailable. Use Refetch to load.
+                                    </div>
+                                </template>
+
+                                <template x-if="pairHistoryRates(pair).length >= 2">
+                                    <div class="rounded-2xl border border-stone-200 bg-white p-4">
+                                        <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider mb-3">
+                                            <span :class="pairIsUpward(pair) ? 'text-emerald-600' : 'text-rose-600'" x-text="pairIsUpward(pair) ? '↑ Upward' : '↓ Downward'"></span>
+                                            <span class="text-text-muted">Last 30 days</span>
+                                        </div>
+                                        <svg
+                                            viewBox="0 0 320 100"
+                                            class="w-full h-24"
+                                            role="img"
+                                            :aria-label="`30-day trend for ${pair.base} vs ${pair.target} exchange rate`"
+                                        >
+                                            <path
+                                                :d="pairChartPath(pair)"
+                                                fill="none"
+                                                stroke-width="3.5"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                :stroke="pairIsUpward(pair) ? trendUpColor : trendDownColor"
+                                            ></path>
+                                        </svg>
+                                        <div class="mt-2 flex items-center justify-between gap-3 text-[11px] leading-tight text-text-muted tabular-nums">
+                                            <span x-text="formatRate(pairStartRate(pair))"></span>
+                                            <span x-text="formatRate(pairEndRate(pair))"></span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="pairHistoryRates(pair).length < 2">
+                                    <div class="rounded-2xl border border-dashed border-stone-300 bg-white/80 px-4 py-5 text-sm text-text-muted">
+                                        Not enough historical data for chart yet.
                                     </div>
                                 </template>
                             </div>
@@ -171,9 +182,9 @@ permalink: /tools/currency-rates/
                     </div>
                 </template>
 
-                <template x-if="!trackedCurrencies.length">
+                <template x-if="!trackedPairs.length">
                     <div class="rounded-[2rem] border border-dashed border-stone-300 bg-stone-50/70 px-6 py-8 text-center text-text-muted">
-                        No tracked currencies yet. Add one from the selector above.
+                        No tracked pairs yet. Add one from the selectors above.
                     </div>
                 </template>
             </div>
@@ -184,7 +195,7 @@ permalink: /tools/currency-rates/
     <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
         <span class="material-symbols-outlined text-primary">info</span>
         <div class="text-sm text-text-muted leading-relaxed">
-            Rates are throttled to one refresh per minute to avoid excessive API usage. Your base currency, amount, tracked currencies, and cached rates are saved in your browser.
+            Rates are throttled to one refresh per minute to avoid excessive API usage. Your tracked pairs and cached rate history are saved in your browser.
         </div>
     </div>
 
@@ -201,6 +212,7 @@ permalink: /tools/currency-rates/
         return {
             storageKey: 'currency-rates-tool-state-v2',
             minRefetchMs: 60 * 1000,
+            historyWindowDays: 30,
             isLoading: false,
             isCurrenciesLoading: false,
             now: Date.now(),
@@ -209,12 +221,17 @@ permalink: /tools/currency-rates/
             errorMessage: '',
 
             availableCurrencies: {},
-            baseCurrency: 'USD',
-            baseAmount: 1,
-            trackedCurrencies: ['IDR', 'SAR', 'CNY', 'SGD'],
-            selectedCurrency: '',
-            rates: {},
-            _amountFormatter: null,
+            trackedPairs: [
+                { base: 'USD', target: 'IDR' },
+                { base: 'SAR', target: 'IDR' },
+                { base: 'CNY', target: 'IDR' },
+                { base: 'SGD', target: 'IDR' }
+            ],
+            pairFormBase: 'USD',
+            pairFormTarget: 'IDR',
+            pairRates: {},
+            trendUpColor: '#16a34a',
+            trendDownColor: '#dc2626',
             _rateFormatter: null,
 
             init() {
@@ -224,7 +241,7 @@ permalink: /tools/currency-rates/
                 }, 1000);
                 this.loadAvailableCurrencies();
                 if (this.canRefetch()) {
-                    this.fetchRates();
+                    this.fetchAllPairRates();
                 }
             },
 
@@ -247,7 +264,8 @@ permalink: /tools/currency-rates/
                         } else {
                             this.availableCurrencies = data;
                         }
-                        this.updateSelectedCurrency();
+                        this.normalizeTrackedPairs();
+                        this.normalizePairForm();
                     }
                 } catch (error) {
                     console.warn('Failed to load available currencies.', error);
@@ -257,20 +275,45 @@ permalink: /tools/currency-rates/
             },
 
             allCurrencies() {
-                return Object.entries(this.availableCurrencies).map(([code, name]) => ({ code, name }));
-            },
-
-            addableCurrencies() {
                 return Object.entries(this.availableCurrencies)
-                    .filter(([code]) => code !== this.baseCurrency && !this.trackedCurrencies.includes(code))
-                    .map(([code, name]) => ({ code, name }));
+                    .map(([code, name]) => ({ code, name }))
+                    .sort((a, b) => a.code.localeCompare(b.code));
             },
 
-            updateSelectedCurrency() {
-                const addable = this.addableCurrencies();
-                const stillAddable = addable.find(c => c.code === this.selectedCurrency);
-                if (!stillAddable) {
-                    this.selectedCurrency = addable.length > 0 ? addable[0].code : '';
+            pairKey(base, target) {
+                return `${base}__${target}`;
+            },
+
+            normalizeTrackedPairs() {
+                const validCodes = new Set(Object.keys(this.availableCurrencies));
+                const unique = new Set();
+                this.trackedPairs = this.trackedPairs
+                    .filter(pair => pair && typeof pair.base === 'string' && typeof pair.target === 'string')
+                    .map(pair => ({ base: pair.base, target: pair.target }))
+                    .filter(pair => pair.base !== pair.target)
+                    .filter(pair => validCodes.size === 0 || (validCodes.has(pair.base) && validCodes.has(pair.target)))
+                    .filter(pair => {
+                        const key = this.pairKey(pair.base, pair.target);
+                        if (unique.has(key)) {
+                            return false;
+                        }
+                        unique.add(key);
+                        return true;
+                    });
+            },
+
+            normalizePairForm() {
+                const codes = this.allCurrencies().map(c => c.code);
+                if (!codes.length) {
+                    return;
+                }
+
+                if (!codes.includes(this.pairFormBase)) {
+                    this.pairFormBase = codes[0];
+                }
+                if (!codes.includes(this.pairFormTarget) || this.pairFormTarget === this.pairFormBase) {
+                    const fallbackTarget = codes.find(code => code !== this.pairFormBase);
+                    this.pairFormTarget = fallbackTarget || this.pairFormBase;
                 }
             },
 
@@ -281,21 +324,29 @@ permalink: /tools/currency-rates/
                         return;
                     }
                     const parsed = JSON.parse(saved);
-                    if (typeof parsed.baseCurrency === 'string') {
-                        this.baseCurrency = parsed.baseCurrency;
+                    if (Array.isArray(parsed.trackedPairs)) {
+                        this.trackedPairs = parsed.trackedPairs
+                            .filter(pair => pair && typeof pair.base === 'string' && typeof pair.target === 'string')
+                            .map(pair => ({ base: pair.base, target: pair.target }));
+                    } else if (Array.isArray(parsed.trackedCurrencies)) {
+                        const legacyBase = typeof parsed.baseCurrency === 'string' ? parsed.baseCurrency : 'USD';
+                        this.trackedPairs = parsed.trackedCurrencies
+                            .filter(c => typeof c === 'string' && c.length > 0)
+                            .map(target => ({ base: legacyBase, target }));
                     }
-                    if (typeof parsed.baseAmount === 'number' && parsed.baseAmount >= 0) {
-                        this.baseAmount = parsed.baseAmount;
+                    if (typeof parsed.pairFormBase === 'string') {
+                        this.pairFormBase = parsed.pairFormBase;
                     }
-                    if (Array.isArray(parsed.trackedCurrencies)) {
-                        this.trackedCurrencies = parsed.trackedCurrencies.filter(c => typeof c === 'string' && c.length > 0);
+                    if (typeof parsed.pairFormTarget === 'string') {
+                        this.pairFormTarget = parsed.pairFormTarget;
                     }
-                    if (parsed.rates && typeof parsed.rates === 'object' && !Array.isArray(parsed.rates)) {
-                        this.rates = parsed.rates;
+                    if (parsed.pairRates && typeof parsed.pairRates === 'object' && !Array.isArray(parsed.pairRates)) {
+                        this.pairRates = parsed.pairRates;
                     }
                     if (typeof parsed.lastFetchedAt === 'number') {
                         this.lastFetchedAt = parsed.lastFetchedAt;
                     }
+                    this.normalizeTrackedPairs();
                 } catch (error) {
                     console.warn('Failed to restore currency rates state from localStorage.', error);
                 }
@@ -303,10 +354,10 @@ permalink: /tools/currency-rates/
 
             saveState() {
                 localStorage.setItem(this.storageKey, JSON.stringify({
-                    baseCurrency: this.baseCurrency,
-                    baseAmount: this.baseAmount,
-                    trackedCurrencies: this.trackedCurrencies,
-                    rates: this.rates,
+                    trackedPairs: this.trackedPairs,
+                    pairFormBase: this.pairFormBase,
+                    pairFormTarget: this.pairFormTarget,
+                    pairRates: this.pairRates,
                     lastFetchedAt: this.lastFetchedAt
                 }));
             },
@@ -330,19 +381,63 @@ permalink: /tools/currency-rates/
                 if (this.isLoading || !this.canRefetch()) {
                     return;
                 }
-                await this.fetchRates();
+                await this.fetchAllPairRates();
             },
 
-            async onBaseCurrencyChange() {
-                // Remove the new base currency from tracked list if it was there
-                this.trackedCurrencies = this.trackedCurrencies.filter(c => c !== this.baseCurrency);
-                this.rates = {};
-                this.updateSelectedCurrency();
-                // Fetch fresh rates for the new base; bypasses the cooldown since the base changed
-                await this.fetchRates(true);
+            onPairFormBaseChange() {
+                if (this.pairFormBase === this.pairFormTarget) {
+                    const fallback = this.allCurrencies().find(currency => currency.code !== this.pairFormBase);
+                    this.pairFormTarget = fallback ? fallback.code : this.pairFormBase;
+                }
+                this.saveState();
             },
 
-            async fetchRates(bypassCooldown = false) {
+            canAddPair() {
+                if (!this.pairFormBase || !this.pairFormTarget) {
+                    return false;
+                }
+                if (this.pairFormBase === this.pairFormTarget) {
+                    return false;
+                }
+                return !this.trackedPairs.some(
+                    pair => pair.base === this.pairFormBase && pair.target === this.pairFormTarget
+                );
+            },
+
+            async fetchPairRates(base, target) {
+                const endDate = new Date();
+                const startDate = new Date(endDate);
+                // Subtracts 29 days from today to get a 30-day range including today.
+                startDate.setDate(endDate.getDate() - (this.historyWindowDays - 1));
+                const start = startDate.toISOString().slice(0, 10);
+                const end = endDate.toISOString().slice(0, 10);
+                const url = `https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(base)}&quotes=${encodeURIComponent(target)}&from=${encodeURIComponent(start)}&to=${encodeURIComponent(end)}`;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+                const payload = await response.json();
+
+                let points = [];
+                if (Array.isArray(payload)) {
+                    points = payload
+                        .filter(item => item && item.quote === target && typeof item.rate === 'number' && item.date)
+                        .map(item => ({ date: item.date, rate: item.rate }));
+                } else if (payload && typeof payload === 'object' && payload.rates && typeof payload.rates === 'object') {
+                    points = Object.entries(payload.rates)
+                        .map(([date, value]) => ({
+                            date,
+                            rate: typeof value === 'number' ? value : (value && typeof value[target] === 'number' ? value[target] : null)
+                        }))
+                        .filter(item => typeof item.rate === 'number');
+                }
+
+                points.sort((a, b) => a.date.localeCompare(b.date));
+                const latest = points.length ? points[points.length - 1].rate : null;
+                return { latest, points };
+            },
+
+            async fetchAllPairRates(bypassCooldown = false) {
                 if (this.isLoading) {
                     return;
                 }
@@ -355,17 +450,38 @@ permalink: /tools/currency-rates/
                 const fetchedAt = Date.now();
 
                 try {
-                    const response = await fetch(
-                        `https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(this.baseCurrency)}`
+                    const results = await Promise.all(
+                        this.trackedPairs.map(async pair => {
+                            const key = this.pairKey(pair.base, pair.target);
+                            try {
+                                const result = await this.fetchPairRates(pair.base, pair.target);
+                                return { key, result, ok: true };
+                            } catch (error) {
+                                return { key, ok: false };
+                            }
+                        })
                     );
-                    if (!response.ok) {
-                        throw new Error(`API returned ${response.status}`);
+
+                    const nextPairRates = { ...this.pairRates };
+                    let failedCount = 0;
+                    for (const item of results) {
+                        if (item.ok) {
+                            nextPairRates[item.key] = item.result;
+                        } else {
+                            failedCount += 1;
+                        }
                     }
-                    const payload = await response.json();
-                    // API returns an array of { date, base, quote, rate } objects
-                    const ratesArray = Array.isArray(payload) ? payload : [];
-                    this.rates = Object.fromEntries(ratesArray.map(item => [item.quote, item.rate]));
+
+                    this.pairRates = nextPairRates;
                     this.lastFetchedAt = fetchedAt;
+                    if (failedCount > 0) {
+                        const successCount = results.length - failedCount;
+                        if (successCount > 0) {
+                            this.errorMessage = `Updated ${successCount} ${successCount !== 1 ? 'pairs' : 'pair'}. ${failedCount} ${failedCount !== 1 ? 'pairs' : 'pair'} failed to refresh.`;
+                        } else {
+                            this.errorMessage = 'Unable to fetch exchange rates right now. Please try again.';
+                        }
+                    }
                     this.saveState();
                 } catch (error) {
                     this.errorMessage = 'Unable to fetch exchange rates right now. Please try again.';
@@ -374,18 +490,39 @@ permalink: /tools/currency-rates/
                 }
             },
 
-            addTrackedCurrency() {
-                if (!this.selectedCurrency || this.trackedCurrencies.includes(this.selectedCurrency)) {
+            addTrackedPair() {
+                if (!this.canAddPair()) {
                     return;
                 }
-                this.trackedCurrencies = [...this.trackedCurrencies, this.selectedCurrency];
-                this.updateSelectedCurrency();
+                const newPair = {
+                    base: this.pairFormBase,
+                    target: this.pairFormTarget
+                };
+                this.trackedPairs = [...this.trackedPairs, newPair];
                 this.saveState();
+                this.refreshTrackedPair(newPair);
             },
 
-            removeTrackedCurrency(code) {
-                this.trackedCurrencies = this.trackedCurrencies.filter(c => c !== code);
-                this.updateSelectedCurrency();
+            async refreshTrackedPair(pair) {
+                try {
+                    const result = await this.fetchPairRates(pair.base, pair.target);
+                    const key = this.pairKey(pair.base, pair.target);
+                    this.pairRates = { ...this.pairRates, [key]: result };
+                    this.lastFetchedAt = Date.now();
+                    this.errorMessage = '';
+                    this.saveState();
+                } catch (error) {
+                    this.errorMessage = `Unable to fetch latest rate for ${pair.base} → ${pair.target}.`;
+                }
+            },
+
+            removeTrackedPair(pairToRemove) {
+                const pairId = this.pairKey(pairToRemove.base, pairToRemove.target);
+                this.trackedPairs = this.trackedPairs.filter(
+                    pair => this.pairKey(pair.base, pair.target) !== pairId
+                );
+                const { [pairId]: _removedPairRate, ...remainingRates } = this.pairRates;
+                this.pairRates = remainingRates;
                 this.saveState();
             },
 
@@ -405,17 +542,91 @@ permalink: /tools/currency-rates/
                 return `Latest fetch: ${formatted}`;
             },
 
-            formatAmount(value) {
+            hasPairLatestRate(pair) {
+                const key = this.pairKey(pair.base, pair.target);
+                return typeof this.pairRates[key]?.latest === 'number';
+            },
+
+            pairLatestRate(pair) {
+                const key = this.pairKey(pair.base, pair.target);
+                return this.pairRates[key]?.latest;
+            },
+
+            pairHistoryRates(pair) {
+                const key = this.pairKey(pair.base, pair.target);
+                return Array.isArray(this.pairRates[key]?.points) ? this.pairRates[key].points : [];
+            },
+
+            pairStartRate(pair) {
+                return this.pairHistoryRates(pair)[0]?.rate;
+            },
+
+            pairEndRate(pair) {
+                const history = this.pairHistoryRates(pair);
+                return history[history.length - 1]?.rate;
+            },
+
+            pairChangePercent(pair) {
+                const start = this.pairStartRate(pair);
+                const end = this.pairEndRate(pair);
+                if (typeof start !== 'number' || typeof end !== 'number' || start === 0) {
+                    return null;
+                }
+                return ((end - start) / start) * 100;
+            },
+
+            formatPercent(value) {
                 if (typeof value !== 'number' || !isFinite(value)) {
                     return '—';
                 }
-                if (!this._amountFormatter) {
-                    this._amountFormatter = new Intl.NumberFormat(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
+                const sign = value >= 0 ? '+' : '';
+                return `${sign}${value.toFixed(2)}%`;
+            },
+
+            pairIsUpward(pair) {
+                const history = this.pairHistoryRates(pair);
+                if (history.length < 2) {
+                    return false;
                 }
-                return this._amountFormatter.format(value);
+                return this.pairEndRate(pair) > this.pairStartRate(pair);
+            },
+
+            pairChartPath(pair) {
+                const history = this.pairHistoryRates(pair);
+                if (history.length < 2) {
+                    return '';
+                }
+                const width = 320;
+                const height = 100;
+                const padding = 8;
+                const rates = history.map(item => item.rate);
+                const minRate = Math.min(...rates);
+                const maxRate = Math.max(...rates);
+                const range = maxRate - minRate || 1;
+                const stepX = (width - padding * 2) / (history.length - 1);
+                const points = history.map((item, index) => {
+                    const normalized = (item.rate - minRate) / range;
+                    return {
+                        x: padding + index * stepX,
+                        y: (height - padding) - normalized * (height - padding * 2)
+                    };
+                });
+
+                if (points.length === 2) {
+                    return `M ${points[0].x} ${points[0].y} L ${points[1].x} ${points[1].y}`;
+                }
+
+                let path = `M ${points[0].x} ${points[0].y}`;
+                for (let i = 1; i < points.length - 1; i += 1) {
+                    const current = points[i];
+                    const next = points[i + 1];
+                    const midpointX = (current.x + next.x) / 2;
+                    const midpointY = (current.y + next.y) / 2;
+                    path += ` Q ${current.x} ${current.y} ${midpointX} ${midpointY}`;
+                }
+                const last = points[points.length - 1];
+                path += ` L ${last.x} ${last.y}`;
+                return path;
             },
 
             formatRate(value) {
