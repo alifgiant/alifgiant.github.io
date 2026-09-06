@@ -1,0 +1,216 @@
+---
+layout: layouts/base.njk
+title: Barcode Generator
+description: Generate CODE128 or EAN-13 barcodes with the encoded value shown below for easy printing.
+permalink: /tools/barcode/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.12.3/dist/JsBarcode.all.min.js" integrity="sha384-vmcSy8TM1KhZWBIKMKTR8AxbrJQCuConAolGY+42odu9ZGIzw8L8xAT/u7ul4X2U" crossorigin="anonymous"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="barcodeTool()" x-init="init()">
+    {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/barcode/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            {# Content Input #}
+            <div class="flex flex-col gap-3">
+                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Content</label>
+                <input type="text" x-model="inputText" @input="process()" placeholder="e.g. 123456789012"
+                    class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner font-mono">
+            </div>
+
+            {# Format Selection #}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <template x-for="fmt in formats" :key="fmt.id">
+                    <button @click="selectedFormat = fmt.id; process()"
+                            :class="selectedFormat === fmt.id ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-stone-50 text-text-muted border-stone-100 hover:bg-white hover:border-primary/20'"
+                            class="px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all duration-300">
+                        <span x-text="fmt.name"></span>
+                    </button>
+                </template>
+            </div>
+
+            {# Error Message #}
+            <div x-show="errorMessage" x-cloak class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-sm font-bold">
+                <span x-text="errorMessage"></span>
+            </div>
+
+            {# Render Area #}
+            <div x-show="!errorMessage" x-cloak class="flex flex-col items-center gap-4 p-6 bg-stone-50 rounded-2xl border-2 border-stone-100">
+                <svg x-ref="barcodeSvg" class="max-w-full"></svg>
+
+                {# Human-readable value below the barcode, for print/capture #}
+                <div class="flex flex-col items-center gap-1">
+                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Encoded Value</span>
+                    <span x-text="inputText" class="font-mono text-xl font-bold text-text-main tracking-widest select-all"></span>
+                </div>
+            </div>
+
+            {# Actions #}
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button @click="download('png')" :disabled="!!errorMessage" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Download PNG
+                </button>
+                <button @click="download('svg')" :disabled="!!errorMessage" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-100 text-text-main font-bold text-sm hover:bg-stone-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Download SVG
+                </button>
+                <button @click="copyToClipboard(inputText)" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-100 text-text-main font-bold text-sm hover:bg-stone-200 transition-all">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                    <span x-text="copyLabel"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {# Info Note #}
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">privacy_tip</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            <strong>Client-side Processing:</strong> Barcodes are generated locally in your browser. Your data is never transmitted to any server.
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function barcodeTool() {
+        return {
+            inputText: '123456789012',
+            selectedFormat: 'CODE128',
+            errorMessage: '',
+            copyLabel: 'Copy',
+            formats: [
+                { id: 'CODE128', name: 'CODE128' },
+                { id: 'EAN13', name: 'EAN-13' }
+            ],
+
+            init() {
+                this.process();
+            },
+
+            process() {
+                if (!this.$refs.barcodeSvg) {
+                    return;
+                }
+
+                if (!this.inputText || !this.inputText.trim()) {
+                    this.errorMessage = 'Please enter a value to encode.';
+                    this.$refs.barcodeSvg.innerHTML = '';
+                    return;
+                }
+
+                if (this.selectedFormat === 'EAN13' && !/^\d{12,13}$/.test(this.inputText)) {
+                    this.errorMessage = 'EAN-13 requires exactly 12 or 13 digits (numbers only).';
+                    this.$refs.barcodeSvg.innerHTML = '';
+                    return;
+                }
+
+                this.$refs.barcodeSvg.innerHTML = '';
+                try {
+                    JsBarcode(this.$refs.barcodeSvg, this.inputText, {
+                        format: this.selectedFormat,
+                        lineColor: '#1c1917',
+                        width: 2,
+                        height: 100,
+                        displayValue: true,
+                        fontSize: 16,
+                        margin: 10
+                    });
+                    this.errorMessage = '';
+                } catch (e) {
+                    this.errorMessage = 'Invalid value for ' + this.selectedFormat + ' format. ' + (e.message || '');
+                }
+            },
+
+            download(type) {
+                if (this.errorMessage) return;
+                const svg = this.$refs.barcodeSvg;
+                const svgData = new XMLSerializer().serializeToString(svg);
+
+                if (type === 'svg') {
+                    const blob = new Blob([svgData], { type: 'image/svg+xml' });
+                    const url = URL.createObjectURL(blob);
+                    this.triggerDownload(url, 'barcode.svg');
+                    URL.revokeObjectURL(url);
+                    return;
+                }
+
+                const EXPORT_SCALE = 3; // 3x scale for print-quality resolution
+                const img = new Image();
+                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(svgBlob);
+                img.onload = () => {
+                    const baseWidth = svg.width.baseVal.value || svg.getBoundingClientRect().width;
+                    const baseHeight = svg.height.baseVal.value || svg.getBoundingClientRect().height;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = baseWidth * EXPORT_SCALE;
+                    canvas.height = baseHeight * EXPORT_SCALE;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    URL.revokeObjectURL(url);
+                    canvas.toBlob((blob) => {
+                        const pngUrl = URL.createObjectURL(blob);
+                        this.triggerDownload(pngUrl, 'barcode.png');
+                        URL.revokeObjectURL(pngUrl);
+                    });
+                };
+                img.onerror = () => {
+                    URL.revokeObjectURL(url);
+                    this.errorMessage = 'Failed to render PNG export. Please try the SVG download instead.';
+                };
+                img.src = url;
+            },
+
+            triggerDownload(url, filename) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            },
+
+            copyToClipboard(text) {
+                if (!text) return;
+                navigator.clipboard.writeText(text);
+                this.copyLabel = 'Copied!';
+                setTimeout(() => this.copyLabel = 'Copy', 2000);
+            }
+        }
+    }
+</script>

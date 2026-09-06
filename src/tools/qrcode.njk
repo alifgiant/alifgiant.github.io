@@ -1,0 +1,221 @@
+---
+layout: layouts/base.njk
+title: QR Code Generator
+description: Generate styled QR codes from text or URLs with rounded, dot, and square styles.
+permalink: /tools/qrcode/
+---
+
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js" integrity="sha384-P7sw4KeI1SDhOs6wYFsBysIIHFqMTgG4y9vunEfL8ZuV0WhnHsh9MRu9Rso17MtY" crossorigin="anonymous"></script>
+
+<div class="w-full max-w-4xl flex flex-col gap-12" x-data="qrcodeTool()" x-init="init()">
+    {# Header #}
+    {% set tool = {} %}
+    {% for item in site.pages.tools.list %}
+        {% if item.url == "/tools/qrcode/" %}
+            {% set tool = item %}
+        {% endif %}
+    {% endfor %}
+    {% set cat = site.pages.tools.categories[tool.tag] %}
+
+    <div class="flex flex-col gap-4 text-center items-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ cat.color }}">
+            <span class="material-symbols-outlined text-sm">{{ cat.icon }}</span>
+            {{ tool.tag }}
+        </div>
+        <div class="w-16 h-16 rounded-2xl {{ cat.lightColor }} flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-4xl">{{ tool.icon }}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-text-main font-display">
+            {{ tool.title }}
+        </h1>
+        <p class="text-lg text-text-muted max-w-xl leading-relaxed">
+            {{ tool.description }}
+        </p>
+    </div>
+
+    {# Tool Card #}
+    <div class="bg-white/80 backdrop-blur-md border border-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-primary/10 transition-all duration-500">
+        <div class="flex flex-col gap-8">
+            {# Content Input #}
+            <div class="flex flex-col gap-3">
+                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Text or URL</label>
+                <input type="text" x-model="inputText" @input="process()" placeholder="https://alifakbar.com"
+                    class="block w-full px-6 py-4 bg-stone-50 border-2 border-stone-100 rounded-2xl text-text-main placeholder-stone-400 focus:outline-none focus:border-primary/30 focus:bg-white transition-all text-lg shadow-inner font-mono">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {# Size #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">
+                        Size: <span x-text="size"></span>px
+                    </label>
+                    <input type="range" x-model.number="size" @input="process()" min="150" max="500" step="10" class="w-full accent-primary">
+                </div>
+
+                {# Error Correction #}
+                <div class="flex flex-col gap-3">
+                    <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Error Correction</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <template x-for="lvl in errorLevels" :key="lvl">
+                            <button @click="errorLevel = lvl; process()"
+                                    :class="errorLevel === lvl ? 'bg-primary text-white border-primary' : 'bg-stone-50 text-text-muted border-stone-100 hover:bg-white hover:border-primary/20'"
+                                    class="px-3 py-2 rounded-xl border-2 font-bold text-xs transition-all duration-300">
+                                <span x-text="lvl"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            {# Style Selection #}
+            <div class="flex flex-col gap-3">
+                <label class="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Dot Style</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <template x-for="s in styles" :key="s.id">
+                        <button @click="selectedStyle = s.id; process()"
+                                :class="selectedStyle === s.id ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-stone-50 text-text-muted border-stone-100 hover:bg-white hover:border-primary/20'"
+                                class="px-4 py-3 rounded-xl border-2 font-bold text-sm transition-all duration-300">
+                            <span x-text="s.name"></span>
+                        </button>
+                    </template>
+                </div>
+                <div x-show="selectedStyle !== 'square'" x-cloak class="mt-1 ml-1 text-xs text-text-muted flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm text-amber-500">warning</span>
+                    Rounded/dot styles can slightly reduce scan reliability on some readers. Test before printing at scale.
+                </div>
+            </div>
+
+            {# Error Message #}
+            <div x-show="errorMessage" x-cloak class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-sm font-bold">
+                <span x-text="errorMessage"></span>
+            </div>
+
+            {# Render Area #}
+            <div x-show="!errorMessage" x-cloak class="flex flex-col items-center gap-4 p-6 bg-stone-50 rounded-2xl border-2 border-stone-100">
+                <div x-ref="qrContainer" class="flex items-center justify-center"></div>
+            </div>
+
+            {# Actions #}
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button @click="download('png')" :disabled="!!errorMessage" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Download PNG
+                </button>
+                <button @click="download('svg')" :disabled="!!errorMessage" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-100 text-text-main font-bold text-sm hover:bg-stone-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Download SVG
+                </button>
+                <button @click="copyToClipboard(inputText)" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-100 text-text-main font-bold text-sm hover:bg-stone-200 transition-all">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                    <span x-text="copyLabel"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {# Info Note #}
+    <div class="bg-primary/5 rounded-3xl p-6 flex gap-4 border border-primary/10">
+        <span class="material-symbols-outlined text-primary">privacy_tip</span>
+        <div class="text-sm text-text-muted leading-relaxed">
+            <strong>Client-side Processing:</strong> QR codes are generated locally in your browser. Your data is never transmitted to any server.
+        </div>
+    </div>
+
+    {# Back Button #}
+    <div class="flex justify-center">
+        <a href="/tools/" class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Tools
+        </a>
+    </div>
+</div>
+
+<script>
+    function qrcodeTool() {
+        return {
+            inputText: 'https://alifakbar.com',
+            size: 250,
+            errorLevel: 'M',
+            errorLevels: ['L', 'M', 'Q', 'H'],
+            selectedStyle: 'square',
+            styles: [
+                { id: 'square', name: 'Square' },
+                { id: 'rounded', name: 'Rounded' },
+                { id: 'dots', name: 'Circle / Dots' },
+                { id: 'classy', name: 'Classy' }
+            ],
+            errorMessage: '',
+            copyLabel: 'Copy',
+            qrCode: null,
+
+            init() {
+                this.qrCode = new QRCodeStyling(this.buildOptions());
+                this.qrCode.append(this.$refs.qrContainer);
+                this.process();
+            },
+
+            dotsTypeForStyle() {
+                switch (this.selectedStyle) {
+                    case 'rounded': return 'rounded';
+                    case 'dots': return 'dots';
+                    case 'classy': return 'classy';
+                    default: return 'square';
+                }
+            },
+
+            buildOptions() {
+                return {
+                    width: this.size,
+                    height: this.size,
+                    type: 'svg',
+                    data: this.inputText.trim() ? this.inputText : ' ',
+                    qrOptions: { errorCorrectionLevel: this.errorLevel },
+                    dotsOptions: {
+                        color: '#1c1917',
+                        type: this.dotsTypeForStyle()
+                    },
+                    cornersSquareOptions: {
+                        color: '#1c1917',
+                        type: this.selectedStyle === 'square' ? 'square' : 'extra-rounded'
+                    },
+                    cornersDotOptions: {
+                        color: '#1c1917',
+                        type: this.selectedStyle === 'square' ? 'square' : 'dot'
+                    },
+                    backgroundOptions: { color: '#ffffff' }
+                };
+            },
+
+            process() {
+                if (!this.inputText || !this.inputText.trim()) {
+                    this.errorMessage = 'Please enter text or a URL to encode.';
+                    if (this.$refs.qrContainer) {
+                        this.$refs.qrContainer.innerHTML = '';
+                    }
+                    return;
+                }
+
+                try {
+                    this.errorMessage = '';
+                    if (this.qrCode) {
+                        this.qrCode.update(this.buildOptions());
+                    }
+                } catch (e) {
+                    this.errorMessage = 'Unable to generate QR code. ' + (e.message || '');
+                }
+            },
+
+            download(type) {
+                if (this.errorMessage || !this.qrCode) return;
+                this.qrCode.download({ name: 'qrcode', extension: type });
+            },
+
+            copyToClipboard(text) {
+                if (!text) return;
+                navigator.clipboard.writeText(text);
+                this.copyLabel = 'Copied!';
+                setTimeout(() => this.copyLabel = 'Copy', 2000);
+            }
+        }
+    }
+</script>

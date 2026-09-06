@@ -150,6 +150,13 @@
                     "tag": "Utilities"
                 },
                 {
+                    "title": "Barcode Generator",
+                    "description": "Generate CODE128 or EAN-13 barcodes with the encoded value shown below for easy printing.",
+                    "url": "/tools/barcode/",
+                    "icon": "barcode",
+                    "tag": "Utilities"
+                },
+                {
                     "title": "Bcrypt Hash",
                     "description": "Securely hash and verify strings using the bcrypt algorithm.",
                     "url": "/tools/bcrypt/",
@@ -257,6 +264,13 @@
                     "url": "/tools/pdf-merge-remove/",
                     "icon": "content_cut",
                     "tag": "Converter"
+                },
+                {
+                    "title": "QR Code Generator",
+                    "description": "Generate styled QR codes from text or URLs with rounded, dot, and square styles.",
+                    "url": "/tools/qrcode/",
+                    "icon": "qr_code_2",
+                    "tag": "Utilities"
                 },
                 {
                     "title": "Regex Checker",
