@@ -62,7 +62,7 @@ Sudah ok sama pertimbangan diatas? Ok, sekarang kita gas.
   ![Image](/assets/images/blog/e7de39f1-b0b4-4044-9440-01ccce32504a-1.webp)
 1. Kamu akan dibawa ke halaman seperti sebuah VS Code. Nah dihalaman inilah inti dari metode yang akan diterapkan. Untuk sementara silahkan buka tab baru pada browser, kita akan kembali kehalaman ini pada step lain.
   ![Image](/assets/images/blog/8f19fdb6-bbbd-4a67-bf27-7dda2751245a-1.webp)
-1. Kita akan menggunakan kode yang dibagikan pada [Untitled](https://www.notion.so/771ef38657244c27b9389734a9cbff44). Untuk Tutorial kali ini langsung buka step 2.
+1. Kita akan menggunakan kode yang dibagikan pada [Untitled](https://app.notion.com/p/771ef38657244c27b9389734a9cbff44). Untuk Tutorial kali ini langsung buka step 2.
   ![Image](/assets/images/blog/90e5a461-13af-48a0-ae8f-de76f5677ae8-1.webp)
   
   

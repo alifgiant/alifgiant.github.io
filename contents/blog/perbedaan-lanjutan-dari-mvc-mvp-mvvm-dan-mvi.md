@@ -3,12 +3,12 @@ title: "Perbedaan (Lanjutan) dari MVC, MVP, MVVM dan MVI"
 date: "2021-07-20"
 tags: ["Tech"]
 featured: false
-description: "Artikel kali ini ingin melajutkan tulisan saya sebelumnya Perbedaan Sederhana dari MVC, MVP, MVVM dan MVIhttps://www.notion.so/712d06d102ce46f387041cb444ba87..."
+description: "Artikel kali ini ingin melajutkan tulisan saya sebelumnya Perbedaan Sederhana dari MVC, MVP, MVVM dan MVIhttps://app.notion.com/p/712d06d102ce46f387041cb444b..."
 readTime: "8 min"
 image: "/assets/images/blog/cover-d2022170-cd56-41ac-9b04-e01025f2a9f6.webp"
 ---
 
-Artikel kali ini ingin melajutkan tulisan saya sebelumnya [Perbedaan Sederhana dari MVC, MVP, MVVM dan MVI](https://www.notion.so/712d06d102ce46f387041cb444ba87e2) . Pada artikel itu, saya memberikan gambaran dengan bahasa sehari hari agar mudah dipahami. Namun tentu saja hanya sebatas kulitnya. Pada kesempatan kali ini saya ingin menjawab beberapa pertanyaan lanjutan yang diberikan oleh teman yang memiliki pengalaman lebih jauh dalam dunia pemograman. Jika kamu belum pernah membaca artikel sebelumnya, sebaiknya lowongkan waktu membaca artikel itu sebelum melanjukan membaca.
+Artikel kali ini ingin melajutkan tulisan saya sebelumnya [Perbedaan Sederhana dari MVC, MVP, MVVM dan MVI](https://app.notion.com/p/712d06d102ce46f387041cb444ba87e2) . Pada artikel itu, saya memberikan gambaran dengan bahasa sehari hari agar mudah dipahami. Namun tentu saja hanya sebatas kulitnya. Pada kesempatan kali ini saya ingin menjawab beberapa pertanyaan lanjutan yang diberikan oleh teman yang memiliki pengalaman lebih jauh dalam dunia pemograman. Jika kamu belum pernah membaca artikel sebelumnya, sebaiknya lowongkan waktu membaca artikel itu sebelum melanjukan membaca.
 
 ## 1. Karena masalahnya Callback Hell, apakah MVC kembali relevan jika menggunakan ?
 
