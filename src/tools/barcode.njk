@@ -189,6 +189,10 @@ permalink: /tools/barcode/
                         URL.revokeObjectURL(pngUrl);
                     });
                 };
+                img.onerror = () => {
+                    URL.revokeObjectURL(url);
+                    this.errorMessage = 'Failed to render PNG export. Please try the SVG download instead.';
+                };
                 img.src = url;
             },
 
