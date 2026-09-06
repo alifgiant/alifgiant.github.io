@@ -122,6 +122,10 @@ permalink: /tools/barcode/
             },
 
             process() {
+                if (!this.$refs.barcodeSvg) {
+                    return;
+                }
+
                 if (!this.inputText || !this.inputText.trim()) {
                     this.errorMessage = 'Please enter a value to encode.';
                     this.$refs.barcodeSvg.innerHTML = '';
@@ -134,6 +138,7 @@ permalink: /tools/barcode/
                     return;
                 }
 
+                this.$refs.barcodeSvg.innerHTML = '';
                 try {
                     JsBarcode(this.$refs.barcodeSvg, this.inputText, {
                         format: this.selectedFormat,
