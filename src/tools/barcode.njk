@@ -122,7 +122,7 @@ permalink: /tools/barcode/
             },
 
             process() {
-                if (!this.inputText) {
+                if (!this.inputText || !this.inputText.trim()) {
                     this.errorMessage = 'Please enter a value to encode.';
                     this.$refs.barcodeSvg.innerHTML = '';
                     return;
@@ -163,7 +163,7 @@ permalink: /tools/barcode/
                     return;
                 }
 
-                const scale = 3;
+                const EXPORT_SCALE = 3; // 3x scale for print-quality resolution
                 const img = new Image();
                 const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
                 const url = URL.createObjectURL(svgBlob);
@@ -171,8 +171,8 @@ permalink: /tools/barcode/
                     const baseWidth = svg.width.baseVal.value || svg.getBoundingClientRect().width;
                     const baseHeight = svg.height.baseVal.value || svg.getBoundingClientRect().height;
                     const canvas = document.createElement('canvas');
-                    canvas.width = baseWidth * scale;
-                    canvas.height = baseHeight * scale;
+                    canvas.width = baseWidth * EXPORT_SCALE;
+                    canvas.height = baseHeight * EXPORT_SCALE;
                     const ctx = canvas.getContext('2d');
                     ctx.fillStyle = '#ffffff';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
