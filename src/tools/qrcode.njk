@@ -189,6 +189,9 @@ permalink: /tools/qrcode/
             process() {
                 if (!this.inputText || !this.inputText.trim()) {
                     this.errorMessage = 'Please enter text or a URL to encode.';
+                    if (this.$refs.qrContainer) {
+                        this.$refs.qrContainer.innerHTML = '';
+                    }
                     return;
                 }
 
