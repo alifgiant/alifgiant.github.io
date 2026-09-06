@@ -5,7 +5,7 @@ description: Generate styled QR codes from text or URLs with rounded, dot, and s
 permalink: /tools/qrcode/
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js" integrity="sha384-P7sw4KeI1SDhOs6wYFsBysIIHFqMTgG4y9vunEfL8ZuV0WhnHsh9MRu9Rso17MtY" crossorigin="anonymous"></script>
 
 <div class="w-full max-w-4xl flex flex-col gap-12" x-data="qrcodeTool()" x-init="init()">
     {# Header #}
@@ -168,7 +168,7 @@ permalink: /tools/qrcode/
                     width: this.size,
                     height: this.size,
                     type: 'svg',
-                    data: this.inputText || ' ',
+                    data: this.inputText.trim() ? this.inputText : ' ',
                     qrOptions: { errorCorrectionLevel: this.errorLevel },
                     dotsOptions: {
                         color: '#1c1917',

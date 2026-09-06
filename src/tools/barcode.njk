@@ -5,7 +5,7 @@ description: Generate CODE128 or EAN-13 barcodes with the encoded value shown be
 permalink: /tools/barcode/
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.12.3/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.12.3/dist/JsBarcode.all.min.js" integrity="sha384-vmcSy8TM1KhZWBIKMKTR8AxbrJQCuConAolGY+42odu9ZGIzw8L8xAT/u7ul4X2U" crossorigin="anonymous"></script>
 
 <div class="w-full max-w-4xl flex flex-col gap-12" x-data="barcodeTool()" x-init="init()">
     {# Header #}
@@ -124,6 +124,7 @@ permalink: /tools/barcode/
             process() {
                 if (!this.inputText) {
                     this.errorMessage = 'Please enter a value to encode.';
+                    this.$refs.barcodeSvg.innerHTML = '';
                     return;
                 }
 
