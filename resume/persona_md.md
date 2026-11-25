@@ -57,7 +57,11 @@ Telkom University (2013-2017) | GPA: 3.5
 
 ## Professional Work Experience
 
-### Senior Software Engineer, Mobile - Grab (Aug 2021 - Present)
+### Senior Product Engineer - Tamara (April 2026 - Present)
+- Lead mobile development of repayment features
+
+
+### Senior Software Engineer, Mobile - Grab (Aug 2021 - April 2026)
 **4+ years at Southeast Asia's leading super-app (40+ million users)**
 
 #### 2H2021 - New Joiner Excellence
