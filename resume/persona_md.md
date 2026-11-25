@@ -10,7 +10,7 @@
 - **Personal Website**: [alifakbar.com](https://alifakbar.com/)
 
 ## Professional Summary
-Results-driven Senior Mobile App Engineer with **8+ years of comprehensive experience** spanning mobile development, backend systems, game development, and IoT platforms. Possesses deep expertise in Flutter/Dart ecosystem with proven track record of leading large-scale technical initiatives, optimizing application performance, and mentoring engineering teams. Strong academic foundation with published research in IoT and smart systems, combined with extensive practical experience at scale across Southeast Asia's leading technology companies.
+Results-driven Senior Mobile App Engineer with **9+ years of comprehensive experience** spanning mobile development, backend systems, game development, and IoT platforms. Possesses deep expertise in Flutter/Dart ecosystem with proven track record of leading large-scale technical initiatives, optimizing application performance, and mentoring engineering teams. Strong academic foundation with published research in IoT and smart systems, combined with extensive practical experience at scale across Southeast Asia's leading technology companies.
 
 ## Education
 **Bachelor of Informatics Engineering**  
